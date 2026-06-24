@@ -1,0 +1,55 @@
+{
+  "metadata": {
+    "file": "AI协作项目全生命周期框架.md",
+    "version": "v1.6.3",
+    "date": "2026-06-21",
+    "generated_by": "DeepSeek-V4-Pro (via Claude Code CLI)",
+    "script": "count_chars_v163.py",
+    "note": "中文标点regex已修正——包含·(U+00B7间隔号), 验证脚本verify_chars_v163.py独立交叉确认"
+  },
+  "character_counts": {
+    "total": 163479,
+    "utf8_bytes": 315547,
+    "utf8_kb": 308.2,
+    "cjk_chars": 66069,
+    "cjk_pct": 40.4,
+    "cn_punctuation": 8182,
+    "cn_punct_pct": 5.0,
+    "latin_letters": 30972,
+    "latin_pct": 18.9,
+    "digits": 8030,
+    "digits_pct": 4.9,
+    "ascii_punctuation": 24978,
+    "ascii_punct_pct": 15.3,
+    "spaces": 19377,
+    "spaces_pct": 11.9,
+    "newlines": 3709,
+    "newlines_pct": 2.3,
+    "other": 2162,
+    "cn_total": 74251,
+    "cn_total_pct": 45.4
+  },
+  "structure": {
+    "total_lines": 3710,
+    "non_empty_lines": 2686,
+    "headings": 245,
+    "table_rows": 754,
+    "internal_links": 27,
+    "mermaid_blocks": 6,
+    "code_blocks": 48
+  },
+  "content_zones": {
+    "body_text": 61474,
+    "body_text_pct": 37.6,
+    "code_blocks": 24093,
+    "code_blocks_pct": 14.7,
+    "code_content_only": 23517,
+    "tables": 53435,
+    "tables_pct": 32.7,
+    "blockquotes": 18932,
+    "headings_only": 4579,
+    "horizontal_rules": 96,
+    "empty_lines": 870,
+    "other": 0
+  }
+}

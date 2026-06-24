@@ -1,0 +1,24 @@
+flowchart TD
+    Start{需要多个<br/>子任务?}
+
+    Start -->|否| Single[单 Agent<br/>不需要 Workflow]
+
+    Start -->|是| Depend{子任务之间<br/>有依赖吗?}
+
+    Depend -->|无依赖| BranchRisk{有分支依赖/汇聚<br/>或隐藏耦合风险<br/>且阶段≥3?}
+    BranchRisk -->|是| Mode8A["<b>Pipeline DAG</b>（模式8）<br/>声明依赖 + 过滤"]
+    BranchRisk -->|否| Mode1["<b>pipeline</b>（模式1，默认）"]
+
+    Depend -->|有依赖<br/>含分支/汇聚| Mode8B["<b>Pipeline DAG</b>（模式8）"]
+
+    Depend -->|需要等<br/>所有结果| BarrierReally{真的需要<br/>等所有结果吗?}
+    BarrierReally -->|确认| BarrierP[barrier parallel]
+    BarrierReally -->|可写成<br/>pipeline stage| Mode1
+
+    Start -->|审查/验证型| ReviewType{审查类型?}
+    ReviewType -->|多维度<br/>正式审查| Mode9["<b>Structured Multi-Role Review</b>（模式9）"]
+    Mode9 --> Mode7["<b>Creator-Verifier</b>（模式7）<br/>独立终判"]
+    ReviewType -->|快速验证| Mode3["<b>adversarial verify</b>（模式3）<br/>快速检查档位 ≥1/2"]
+    ReviewType -->|发现型| Mode5["<b>loop-until-dry</b>（模式5）"]
+
+    Start -->|探索型<br/>多方案比较| Mode4["<b>judge panel</b>（模式4）"]

@@ -1,0 +1,211 @@
+{
+  "metadata": {
+    "title": "独立审查报告",
+    "date": "2026-06-13",
+    "model": "Codex / GPT-5 (internal build/version not exposed)",
+    "requested_filename_model_alias": "ChatGPT-5.5",
+    "object": "AI协作项目全生命周期框架 v1.3 + methodological-review-sop.md + meta-audit-checklist.md",
+    "author_model": "DeepSeek-v4-pro",
+    "independence": {
+      "different_backend": true,
+      "context_isolated_from_creation": true,
+      "source_material_anchor_risk": true,
+      "statement": "审查者未参与创作过程；实际读取三份目标文件。目标文件自身包含作者预判和既往审查链叙述，因此存在材料内锚定风险，不应声称达到完全裸环境。"
+    }
+  },
+  "overall_assessment": "三份文件已经形成可追溯的方法论闭环：框架定义问题和分层机制，SOP 将独立审查操作化，清单负责审查框架是否自洽。§3.7 的只观测不阻断方向合理，也诚实披露了语义漂移和误报成本等盲区。主要问题是 OPEN-1 被标为已覆盖偏乐观，§3.7 存在编号、阈值和 detector-only 边界不一致，SOP 与清单可执行但较重，且清单混入大量作者个人 memory/Claude 环境检查。",
+  "dimension_scores": [
+    {
+      "dimension": "准确性",
+      "score": 6.5,
+      "reasons": [
+        "OPEN-1 的核心诊断基本成立：离散 Human Gate 难以覆盖 Loop 内连续微调。",
+        "§3.6 正确区分事实层、解释层、裁决层，§3.7 也承认语义漂移不可完全检测。",
+        "“句法信号零误判”过强，确定性 diff 仍可能产生合法变更误报。",
+        "§3.7 对 Spec S3/S5/S6/S7 的引用与 §2.2 定义不一致。",
+        "红级提前 HG-1 与“只观测、不阻断”的边界不清。"
+      ],
+      "locations": [
+        "AI协作项目全生命周期框架.md:337-370",
+        "AI协作项目全生命周期框架.md:427",
+        "AI协作项目全生命周期框架.md:463-467",
+        "AI协作项目全生命周期框架.md:496",
+        "AI协作项目全生命周期框架.md:706-710"
+      ]
+    },
+    {
+      "dimension": "完整性",
+      "score": 7.0,
+      "reasons": [
+        "框架 §9.2、SOP、meta-audit 三者有明确衔接。",
+        "§3.7 覆盖信号、聚合、退役、宪法审计、闭环策展、schema 和退出条件。",
+        "DriftDetectionReport 缺少 evidence_ref、human_decision、false_positive、review_minutes 等校准字段。",
+        "SOP 未为 §3.7 的 AI 语义信号独立复审提供专门模式。",
+        "清单没有直接检查 §3.7 漂移检测报告是否实际生成和产生有效信号。"
+      ],
+      "locations": [
+        "AI协作项目全生命周期框架.md:1234-1251",
+        "AI协作项目全生命周期框架.md:632-690",
+        "AI协作项目全生命周期框架.md:716-719",
+        "AI协作项目全生命周期框架.md:733"
+      ]
+    },
+    {
+      "dimension": "可执行性",
+      "score": 6.0,
+      "reasons": [
+        "SOP 的四步流程、角色分工、独立性声明和 JSON 结构足够具体。",
+        "触发条件 T1-T4/S1-S3 基本合理。",
+        "用户声明不需要审查可绕过高风险场景，缺少风险接受记录。",
+        "SOP 未处理源材料本身带有作者预判时的材料内污染。",
+        "meta-audit 大量条目需要访问个人 memory、全局 skill、硬件记录，外部审查者执行成本高。"
+      ],
+      "locations": [
+        "methodological-review-sop.md:17-36",
+        "methodological-review-sop.md:38-42",
+        "methodological-review-sop.md:87-120",
+        "methodological-review-sop.md:134",
+        "meta-audit-checklist.md:297-417"
+      ]
+    },
+    {
+      "dimension": "一致性",
+      "score": 5.5,
+      "reasons": [
+        "核心术语如后端模型、上下文隔离、裸环境、provenance 基本一致。",
+        "§3.7 在不同位置同时被称为草案和正式化。",
+        "§1.6 的“已覆盖”与 §3.6/§14 的未独立交叉确认、待人类裁决存在张力。",
+        "meta-audit I-011 称未来审查机制未制度化，但框架 §9.2 已列入 SOP 和清单。",
+        "SOP C8 有 Ruby/rubric 笔误。"
+      ],
+      "locations": [
+        "AI协作项目全生命周期框架.md:177-178",
+        "AI协作项目全生命周期框架.md:394",
+        "AI协作项目全生命周期框架.md:396",
+        "AI协作项目全生命周期框架.md:734",
+        "AI协作项目全生命周期框架.md:2048-2055",
+        "methodological-review-sop.md:139",
+        "meta-audit-checklist.md:287-293"
+      ]
+    },
+    {
+      "dimension": "过度工程风险",
+      "score": 4.5,
+      "reasons": [
+        "§3.7 同时引入五类信号、约 25 个监测项、四级告警、全规则生命周期、宪法审计、闭环策展和完整 schema。",
+        "对个人项目和短周期任务，维护负担可能超过 §3.7 自设的 30 分钟阈值。",
+        "“所有显式约束和规则”都携带生命周期字段在 2000 行框架中不现实。",
+        "应拆为最低强制版/默认版/完整版，默认保留事实层和少量红旗。"
+      ],
+      "locations": [
+        "AI协作项目全生命周期框架.md:413-483",
+        "AI协作项目全生命周期框架.md:503-515",
+        "AI协作项目全生命周期框架.md:708"
+      ]
+    },
+    {
+      "dimension": "独立性与自反性",
+      "score": 6.5,
+      "reasons": [
+        "SOP 的后端不同 × 上下文隔离两轴定义正确。",
+        "清单承认自身由框架作者生成，并要求由独立审查者首次执行。",
+        "框架 §14 对作者自审、同 house 记忆共享、ChatGPT 未接战 OPEN-1 等局限披露较坦诚。",
+        "SOP 要求剥离作者评分/自评，但框架和清单正文保留大量预判，造成材料内锚定。",
+        "操作者角色缺少可审计 provenance，材料筛选和提示词仍可能受作者影响。",
+        "“标记”计入通过率分子但不改变 FAIL 状态，可能美化非独立环节。"
+      ],
+      "locations": [
+        "methodological-review-sop.md:52-67",
+        "methodological-review-sop.md:97-101",
+        "meta-audit-checklist.md:13",
+        "meta-audit-checklist.md:581-586",
+        "AI协作项目全生命周期框架.md:2081"
+      ]
+    }
+  ],
+  "key_findings": [
+    {
+      "id": 1,
+      "severity": "High",
+      "finding": "OPEN-1 从待决/结构性缺口改成已覆盖过早；§3.7 只是未验证的监测方案，且仍承认盲区和未独立交叉确认。",
+      "location": "AI协作项目全生命周期框架.md:177-178; AI协作项目全生命周期框架.md:394; AI协作项目全生命周期框架.md:706-710; AI协作项目全生命周期框架.md:2081",
+      "recommendation": "改为“已操作化，待试跑验证”；完成真实项目验证后再降级严重性。"
+    },
+    {
+      "id": 2,
+      "severity": "High",
+      "finding": "§3.7 对 Spec S3/S5/S6/S7 的引用与 §2.2 定义不一致，影响对齐信号检测。",
+      "location": "AI协作项目全生命周期框架.md:198-204; AI协作项目全生命周期框架.md:463-467",
+      "recommendation": "修正编号映射；若需要“不做什么/优先级/交付物规格”，应在 Spec 模板中显式新增字段。"
+    },
+    {
+      "id": 3,
+      "severity": "High",
+      "finding": "红级“提前 HG-1”与“只观测、不阻断”边界不清，可能实质新增闸门。",
+      "location": "AI协作项目全生命周期框架.md:406; AI协作项目全生命周期框架.md:496; AI协作项目全生命周期框架.md:730",
+      "recommendation": "明确红级只是异步通知还是必须停等人；若会暂停 Loop，应承认为例外阻断。"
+    },
+    {
+      "id": 4,
+      "severity": "Moderate",
+      "finding": "“句法信号零误判”断言不成立。",
+      "location": "AI协作项目全生命周期框架.md:427",
+      "recommendation": "改为“低主观性、可复核”；补充合法结构变更导致误报的处理规则。"
+    },
+    {
+      "id": 5,
+      "severity": "Moderate",
+      "finding": "§3.7 schema 缺少校准所需字段，无法支撑采纳率、一致率、耗时等退出条件。",
+      "location": "AI协作项目全生命周期框架.md:632-690; AI协作项目全生命周期框架.md:716-719",
+      "recommendation": "为每条 trigger 增加 evidence_ref、human_decision、false_positive、review_minutes、calibration_notes。"
+    },
+    {
+      "id": 6,
+      "severity": "Moderate",
+      "finding": "SOP 允许用户声明“不需要审查”，可能绕过正式交付和不可逆操作的强制审查。",
+      "location": "methodological-review-sop.md:38-42",
+      "recommendation": "对 T2/T3/P0 场景改为“可豁免但必须记录风险接受人、原因、时间戳”。"
+    },
+    {
+      "id": 7,
+      "severity": "Moderate",
+      "finding": "SOP “评推理不评结论”与 D2“事实准确性”存在张力。",
+      "location": "methodological-review-sop.md:184-193",
+      "recommendation": "改为“先评事实与结论可靠性，再评推理质量”；或把 D2 从该约束中排除。"
+    },
+    {
+      "id": 8,
+      "severity": "Moderate",
+      "finding": "meta-audit 清单混入大量作者个人 memory、Claude house、硬件和 skill inventory 项，不适合作为通用配套工具。",
+      "location": "meta-audit-checklist.md:297-417; meta-audit-checklist.md:423-453",
+      "recommendation": "拆成“框架项目自审清单”和“衍生项目通用清单”。"
+    },
+    {
+      "id": 9,
+      "severity": "Moderate",
+      "finding": "清单自带大量“预判 PASS/FAIL”，会污染独立审查。",
+      "location": "meta-audit-checklist.md:43-201; meta-audit-checklist.md:207-293",
+      "recommendation": "把预判移到附录或单独作者备忘；执行版只保留条件、标准、证据栏。"
+    },
+    {
+      "id": 10,
+      "severity": "Low",
+      "finding": "SOP C8 写成 “Ruby纯净”。",
+      "location": "methodological-review-sop.md:139",
+      "recommendation": "改为 “rubric 纯净”。"
+    }
+  ],
+  "total_score": {
+    "weighted_total": 6.1,
+    "scale": "1-10",
+    "weighting": "six dimensions equally weighted",
+    "recommendation": "修改后通过"
+  },
+  "recommendations_to_author": [
+    "将 OPEN-1 状态改为“已操作化，待验证”，不要用“已覆盖”描述未试跑的检测层。",
+    "先修 §3.7 的 Spec 编号、红级边界和 schema 校准字段，否则监测层无法可靠落地。",
+    "把 §3.7 拆成最低强制版/默认版/完整版：默认只保留事实层和少量红旗，语义信号和全规则退役进入完整版。",
+    "将 meta-audit 清单去预判化，并拆分个人项目自审项与通用审查项。",
+    "在 SOP 中补上“作者自带结论材料”的处理规则：预判必须剥离；不能剥离时，审查报告必须降级声明材料内锚定风险。"
+  ]
+}

@@ -1,0 +1,174 @@
+前提：我没有逐行审查原文，只能审查这三段分析的论证强度。按红队标准看，原分析有价值，但明显偏向“为现有框架辩护”。
+
+**总评**
+
+最薄弱的结论是：`理想读者 = 作者同构者`，以及由此推出的“不需要大幅通俗化”。这两个判断把一个方便的私人工具定位，滑向了方法论有效性的结论。若该文档只是作者个人操作手册，可以成立；若它自称“框架”、接受审查、希望可复用，则这个结论过窄。
+
+**主要发现**
+
+`CRITICAL`：受众分析遗漏了“非同构但高价值”的读者群。  
+被忽略的读者至少包括：未来的作者自己、协作者、外部审查者、复现实验者、AI agent/自动化执行者、项目接手者、非量化但有复杂项目经验的人、以及只想复用某一层工具的人。尤其是“未来的自己”不应被假设为永远拥有当前上下文和经验密度。一个全生命周期方法论如果只对“另一个当前作者”清晰，长期可维护性会很弱。
+
+`MAJOR`：“不需要通俗化”把“通俗化”误解成“降维”。  
+真正需要的可能不是降低智力门槛，而是降低操作摩擦：更清楚的入口、失败案例、使用前提、最小路径、何时不用、例子与反例。专家文档也需要可扫描、可执行、可复核。若读者看不懂就归因于“没踩过坑”，会让框架免疫于可用性批评。
+
+`MAJOR`：稳定性分类混淆了“理念稳定”和“文本稳定”。  
+例如“四条核心信念”“七层骨架”“证据五级分类”“独立审查定义”“逃生口硬规则”可以是宪法级原则，但并不等于基本不变。它们仍需要定期审计，因为 AI 能力、工具形态、项目风险、合规要求、协作模式都会改变这些原则的边界条件。
+
+`MAJOR`：被标为“基本不变”的内容里，有些恰恰是最需要被挑战的元假设。  
+“七层架构骨架”可能不适合探索型研究、持续运营项目、多人组织项目或强监管项目。“Human Gate”的位置也可能不是固定点，而是多个风险闸门。“独立审查”在多 agent、自审、外部人工审查之间的定义也会随工具变化而变。白色层更合理的标签是“低频变更，但必须周期性反证”。
+
+`MAJOR`：绿色层 40% 很可能被高估。  
+Spec 组件、Prompt 模板结构、闭合条件、使用强度分档，看似结构级，实际会被模型能力、任务类型、失败经验快速改写。尤其在一个仍处于实践演化中的个人方法论里，“低频结构”往往只是暂时未被足够多场景冲击。除非有版本历史证明这些部分跨多个项目保持稳定，否则 40% 缺乏支撑。
+
+`MEDIUM`：红色高频层也有分类过度。  
+“版本头/变更记录”不是每个实验都应改，而是每个发布或有效版本变更才改。“成熟度评估表”“OPEN 项状态”也未必每项目高频更新，可能是里程碑更新。否则框架会产生维护噪音，把 Dev Log 的流水记录误混进框架正文。
+
+`MEDIUM`：黄色层中有些内容可能比分析承认的更高频。  
+外部对标、漂移检测参数、Workflow 模式库会受到模型、IDE、agent 工具、上下文窗口、价格、平台政策影响。它们不是简单“积累到一定量再更新”，而可能需要事件触发式更新。
+
+`MAJOR`：遗漏了“外部依赖漂移”这一完整维度。  
+原分析只提到模型型号耦合，但更大的依赖包括：AI 产品形态、工具链、上下文长度、成本、隐私/安全约束、文件系统能力、浏览器/插件生态、合规环境、项目协作方式。这些不是证据条目的问题，而是框架可用性的环境假设问题。建议增加“Assumption / Dependency Register”。
+
+`MAJOR`：遗漏了“验证维度”。  
+框架稳定性不应只按更新频率分类，还应问：什么证据能证明这一层有效？指标是什么？项目完成率、返工率、提示迭代成本、失败恢复能力、审查发现率、认知负荷、外部读者执行一致性，都可能是验证指标。没有验证维度，稳定性分类容易变成作者直觉。
+
+`MEDIUM`：对 OPEN-4 的归因过早。  
+“作者-读者同构假设”可能是原因之一，但未测试也可能来自：没有招募外部读者、没有定义测试协议、文档太长、反馈成本高、担心打破现有结构、缺少成功判据。单独归因为同构假设，有解释过度的问题。
+
+**结论**
+
+原分析的主要盲点是：它把“这是为我自己设计的复杂工具”解释成“所以不需要更强的可读性、外部读者、稳定性审计”。这个推理不稳。
+
+更稳妥的修正是：承认该框架的核心受众是作者本人和同构高阶使用者，但同时把“外部审查者、未来自己、协作者、AI 执行者、局部复用者”列为二级受众；把“基本不变”改成“宪法层，低频变更但定期反证”；并增加外部依赖漂移、验证指标、读者可执行性测试三个维度。
+
+
+=== STDERR ===
+Reading prompt from stdin...
+OpenAI Codex v0.138.0
+--------
+workdir: <PROJECT_ROOT>\_reviews\prompts
+model: gpt-5.5
+provider: packycode
+approval: never
+sandbox: danger-full-access
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019eea4e-cf9d-7172-b067-eb6ca769bd9d
+--------
+user
+你是一个独立方法论审查者。你的任务是审查以下分析，找出其中可能存在的盲点、过度自信、或未充分论证的结论。请以魔鬼代言人/红队视角工作——你的默认立场是挑战而非确认。
+
+## 背景
+
+有一个叫"AI协作项目全生命周期框架"的文档（v1.6.2，~3659行中文markdown），它是一个元层次方法论文档，描述如何用AI协作跑完一个完整项目。文档包含七层生命周期（Spec→Prompt→Loop→Workflow→Retrospect→Closure + Human Gate）+ 四跨层关切 + Dev Log产物体系。文档作者是一个金融工程专业学生，该文档是作者为自己的AI协作实践设计的方法论工具。
+
+## 需要你审查的分析
+
+有人（框架作者本人）对该文档做了以下分析：
+
+### 分析1：受众定位
+- 结论：框架的"理想读者"是另一个作者自己——独立研究者，有量化/学术训练背景，用AI做多类型项目，对方法论本身有兴趣
+- 主张：不需要大幅通俗化，因为框架已内建了分层阅读机制（§1.4使用强度分档/§1.7核心vs外挂/§9.9阅读导航），目标受众不需要降维
+- 认为通俗化的真实瓶颈不在措辞，而在经验前置——没踩过坑的人天然无法理解某层为什么存在
+
+### 分析2：内容稳定性四层分类
+将框架内容按更新频率分为四层：
+- 🔴 高频（每个新实验/项目）：实验证据、二维证据等级条目、成熟度评估表、OPEN项状态、版本头/变更记录、被动观测经验种子
+- 🟡 中频（积累到一定量）：反模式清单、Workflow模式库、外部对标、案例研究、阅读导航、漂移检测参数
+- 🟢 低频（需试跑验证的结构级变更）：七层定义、Spec组件清单、Human Gate位置、Prompt模板结构、使用强度分档、闭合条件
+- ⚪ 基本不变：四条核心信念、七层架构骨架、最小核心+外挂原则、证据五级分类、独立审查定义、逃生口硬规则
+
+估算比例：🔴~15% / 🟡~20% / 🟢~40% / ⚪~10% / 配套~15%
+
+### 分析3：衍生发现
+- 指出当前实验证据与特定模型型号耦合（GPT-5.5 temp=0等），缺乏"模型退役→证据重评估"触发机制
+- 指出OPEN-4未测的部分原因是作者-读者同构假设
+- 建议在§1.8加一条"作者-读者同构假设"局限声明
+
+## 审查要求
+
+请从以下角度独立评估上述分析：
+
+1. **受众分析是否遗漏了重要读者群？** 有没有可能的使用场景或读者类型被"作者-读者同构"的框架忽略了？
+2. **稳定性四层分类有没有分类错误？** 有没有被标为"基本不变"但实际上会需要更新的内容？有没有被标为"高频"但其实是低频的内容？
+3. **比例估算合理吗？** 🟢层真的占40%吗？还是说很多🟢层内容其实比想象中更不稳定？
+4. **有没有整个被遗漏的维度？** 无论受众还是稳定性分析，有没有一个完整的视角被忽略了？
+5. **"不需要通俗化"的结论是否站得住脚？** 有什么反对理由？
+
+请给出具体发现（如果有的话），标注严重性（CRITICAL/MAJOR/MEDIUM/MINOR/OBSERVATION），并说明你的推理。
+**Evaluating estimation methods**
+
+I'm estimating proportions, and I think green represents about 40%. I feel suspicious if the line count mixes templates and procedures. It seems like low-frequency structural content might be fragile since the framework is still in development. Maybe I should propose an alternative approach: separating conceptual invariants, operational policies, and evidence documents. I also wonder if a "half-life" matrix could help by assessing model/tool dependency against audience and project-domain dependencies, along with empirical support.
+codex
+我会把审查对象限定在“这三段分析的论证质量”，不是替原文背书。下面按红队方式列问题，重点看它哪里把假设当成结论。
+**Considering project structure**
+
+I'm thinking about the seven-layer bones framework and how it might not be invariant if the actual projects differ. It's possible that discovery and research loops occur even before the specifications are made. Post-closure monitoring seems like it could be a separate process too. I wonder if procurement, legal, and security aspects are adequately covered. It looks like the "Retrospect" phase might take place throughout the entire project lifecycle. There's a lot to unpack here!
+**Evaluating project frameworks**
+
+I’m considering whether it could be heuristic instead of ontology. I wonder if "Human Gate" might function as a crosscutting concept rather than a layer. If the framework operates at a meta-level, it should be tested across various project types. I'm noting that frequent updates to maturity tables and version headers can lead to unnecessary clutter. Perhaps separating "append-only project evidence" from the main framework content will help streamline processes and avoid confusion about updates.
+**Analyzing methodology and drift**
+
+I'm noticing that active methodology could involve significant methodological churn, where "green" maybe should be seen as 20 or 30 rather than 40. I need to account for an empirical version history. There are various omitted dimensions to consider, such as context drift that affects stability—this includes everything from legal to team dynamics. 
+
+Additionally, I’ve overlooked how to validate or adopt frameworks. I must establish metrics related to project completion and defect rates, ensuring we're optimizing for outcomes, not just coherence. Lastly, artifact granularity might need reevaluation to enhance clarity in documentation.
+**Exploring alternative causes**
+
+I’m considering alternative causes for the challenges I'm facing, such as the absence of a defined test protocol, high costs of recruiting readers, fears around invalidation, and a lack of success metrics. The documentation might also be too lengthy or not well-suited for external experiments. I shouldn't focus too heavily on just one cause. Additionally, while the model coupling discovery is promising, it might be a bit too narrow in scope for what I'm trying to accomplish.
+**Evaluating evaluation protocols**
+
+I'm in the quant research domain, thinking about a model-independent evaluation protocol and a "compatibility matrix." There's a concern that having an "experience prerequisite" could be a bottleneck, but it doesn't mean we can't simplify things. Many expert documents include "failure stories" to help build tacit knowledge, which is key. 
+
+I also need to differentiate between beginner-friendly documents and those aimed at novices, possibly using progressive disclosure. It's important to define the adoption boundary and consider some recommendations for improving the document's clarity and structure.
+**Finalizing evaluation summary**
+
+I need to draft a clear "summary conclusion" without citations. I should aim for 50-70 lines, ideally around 60, while being a bit verbose but not overwhelming. It’s important to specify that severity should reflect the document's goal of being a transferable methodology, with potential downgrades for personal tools.
+
+I’ll start with reviewing limitations, then the overall assessment, followed by a findings list with severity headings, possibly in bullet points. I want to clarify that I don't accept the conclusions from the original analysis fully. I’ll make sure to address everything from five angles and mention my estimates for strengths and weaknesses in a manageable way.
+codex
+前提：我没有逐行审查原文，只能审查这三段分析的论证强度。按红队标准看，原分析有价值，但明显偏向“为现有框架辩护”。
+
+**总评**
+
+最薄弱的结论是：`理想读者 = 作者同构者`，以及由此推出的“不需要大幅通俗化”。这两个判断把一个方便的私人工具定位，滑向了方法论有效性的结论。若该文档只是作者个人操作手册，可以成立；若它自称“框架”、接受审查、希望可复用，则这个结论过窄。
+
+**主要发现**
+
+`CRITICAL`：受众分析遗漏了“非同构但高价值”的读者群。  
+被忽略的读者至少包括：未来的作者自己、协作者、外部审查者、复现实验者、AI agent/自动化执行者、项目接手者、非量化但有复杂项目经验的人、以及只想复用某一层工具的人。尤其是“未来的自己”不应被假设为永远拥有当前上下文和经验密度。一个全生命周期方法论如果只对“另一个当前作者”清晰，长期可维护性会很弱。
+
+`MAJOR`：“不需要通俗化”把“通俗化”误解成“降维”。  
+真正需要的可能不是降低智力门槛，而是降低操作摩擦：更清楚的入口、失败案例、使用前提、最小路径、何时不用、例子与反例。专家文档也需要可扫描、可执行、可复核。若读者看不懂就归因于“没踩过坑”，会让框架免疫于可用性批评。
+
+`MAJOR`：稳定性分类混淆了“理念稳定”和“文本稳定”。  
+例如“四条核心信念”“七层骨架”“证据五级分类”“独立审查定义”“逃生口硬规则”可以是宪法级原则，但并不等于基本不变。它们仍需要定期审计，因为 AI 能力、工具形态、项目风险、合规要求、协作模式都会改变这些原则的边界条件。
+
+`MAJOR`：被标为“基本不变”的内容里，有些恰恰是最需要被挑战的元假设。  
+“七层架构骨架”可能不适合探索型研究、持续运营项目、多人组织项目或强监管项目。“Human Gate”的位置也可能不是固定点，而是多个风险闸门。“独立审查”在多 agent、自审、外部人工审查之间的定义也会随工具变化而变。白色层更合理的标签是“低频变更，但必须周期性反证”。
+
+`MAJOR`：绿色层 40% 很可能被高估。  
+Spec 组件、Prompt 模板结构、闭合条件、使用强度分档，看似结构级，实际会被模型能力、任务类型、失败经验快速改写。尤其在一个仍处于实践演化中的个人方法论里，“低频结构”往往只是暂时未被足够多场景冲击。除非有版本历史证明这些部分跨多个项目保持稳定，否则 40% 缺乏支撑。
+
+`MEDIUM`：红色高频层也有分类过度。  
+“版本头/变更记录”不是每个实验都应改，而是每个发布或有效版本变更才改。“成熟度评估表”“OPEN 项状态”也未必每项目高频更新，可能是里程碑更新。否则框架会产生维护噪音，把 Dev Log 的流水记录误混进框架正文。
+
+`MEDIUM`：黄色层中有些内容可能比分析承认的更高频。  
+外部对标、漂移检测参数、Workflow 模式库会受到模型、IDE、agent 工具、上下文窗口、价格、平台政策影响。它们不是简单“积累到一定量再更新”，而可能需要事件触发式更新。
+
+`MAJOR`：遗漏了“外部依赖漂移”这一完整维度。  
+原分析只提到模型型号耦合，但更大的依赖包括：AI 产品形态、工具链、上下文长度、成本、隐私/安全约束、文件系统能力、浏览器/插件生态、合规环境、项目协作方式。这些不是证据条目的问题，而是框架可用性的环境假设问题。建议增加“Assumption / Dependency Register”。
+
+`MAJOR`：遗漏了“验证维度”。  
+框架稳定性不应只按更新频率分类，还应问：什么证据能证明这一层有效？指标是什么？项目完成率、返工率、提示迭代成本、失败恢复能力、审查发现率、认知负荷、外部读者执行一致性，都可能是验证指标。没有验证维度，稳定性分类容易变成作者直觉。
+
+`MEDIUM`：对 OPEN-4 的归因过早。  
+“作者-读者同构假设”可能是原因之一，但未测试也可能来自：没有招募外部读者、没有定义测试协议、文档太长、反馈成本高、担心打破现有结构、缺少成功判据。单独归因为同构假设，有解释过度的问题。
+
+**结论**
+
+原分析的主要盲点是：它把“这是为我自己设计的复杂工具”解释成“所以不需要更强的可读性、外部读者、稳定性审计”。这个推理不稳。
+
+更稳妥的修正是：承认该框架的核心受众是作者本人和同构高阶使用者，但同时把“外部审查者、未来自己、协作者、AI 执行者、局部复用者”列为二级受众；把“基本不变”改成“宪法层，低频变更但定期反证”；并增加外部依赖漂移、验证指标、读者可执行性测试三个维度。
+tokens used
+9,877

@@ -1,0 +1,225 @@
+{
+  "metadata": {
+    "title": "外部依赖登记表",
+    "version": "v1.0",
+    "date": "2026-06-21",
+    "generation_model": "DeepSeek-V4-Pro (via Claude Code CLI shell)",
+    "source": "v1.6.3 维护流程补全——受众与稳定性分析的两路异后端独立审查（Codex GPT-5.5 + Qwen qwen3.7-max）共同识别的结构性缺口",
+    "positioning": "配套目录外挂——参考工具，非强制合规项",
+    "parent_document": "AI协作项目全生命周期框架.md §1.8 局限 #10"
+  },
+  "dependencies": {
+    "toolchain": [
+      {
+        "id": "T1",
+        "dependency": "Claude Code CLI worktree",
+        "affected_sections": [
+          "§9.1 可复现性环境",
+          "§6 Workflow 隔离模式",
+          "§9.2 独立审查的上下文隔离"
+        ],
+        "change_signal": "worktree 功能变更、废弃、或语义改变",
+        "last_checked": "2026-06-21",
+        "status": "正常"
+      },
+      {
+        "id": "T2",
+        "dependency": "Claude Code CLI MCP 协议",
+        "affected_sections": [
+          "§11 系统集成",
+          "_protocols-and-tools/ 工具脚本"
+        ],
+        "change_signal": "MCP 协议版本 breaking change",
+        "last_checked": "2026-06-21",
+        "status": "正常"
+      },
+      {
+        "id": "T3",
+        "dependency": "Claude Code CLI agent 子进程",
+        "affected_sections": [
+          "§6 Workflow"
+        ],
+        "change_signal": "agent 行为模型变更、新增能力使手写模式冗余",
+        "last_checked": "2026-06-21",
+        "status": "正常"
+      },
+      {
+        "id": "T4",
+        "dependency": "Claude Code CLI memory 系统",
+        "affected_sections": [
+          "L0 Spec (memory/ 载体)",
+          "§3.7 漂移检测"
+        ],
+        "change_signal": "memory 格式/存储位置变更",
+        "last_checked": "2026-06-21",
+        "status": "正常"
+      },
+      {
+        "id": "T5",
+        "dependency": "pandoc 3.10",
+        "affected_sections": [
+          "DOCX 生成管道"
+        ],
+        "change_signal": "pandoc Major 版本升级",
+        "last_checked": "2026-06-21",
+        "status": "正常"
+      },
+      {
+        "id": "T6",
+        "dependency": "mermaid-cli (mmdc)",
+        "affected_sections": [
+          "Mermaid 图表渲染 → DOCX 嵌入"
+        ],
+        "change_signal": "mmdc 版本升级导致的渲染差异",
+        "last_checked": "2026-06-21",
+        "status": "正常"
+      }
+    ],
+    "models": [
+      {
+        "id": "M1",
+        "model": "GPT-5.5 (via Codex CLI)",
+        "role": "A2/A3 对照实验被试 + 多次独立审查后端",
+        "change_signal": "模型退役、API 变更、行为特征显著变化",
+        "last_used": "2026-06-21",
+        "status": "正常"
+      },
+      {
+        "id": "M2",
+        "model": "qwen3.7-max (via Qwen CLI)",
+        "role": "A2 跨模型复现 + 多次独立审查后端",
+        "change_signal": "同上",
+        "last_used": "2026-06-21",
+        "status": "正常"
+      },
+      {
+        "id": "M3",
+        "model": "Kimi-K2.7-Code (via Kimi Code CLI)",
+        "role": "v1.4 独立审查 + headroom 对标审查",
+        "change_signal": "同上",
+        "last_used": "2026-06-15",
+        "status": "近期未使用"
+      },
+      {
+        "id": "M4",
+        "model": "GLM-5.2 (via ZCode CLI)",
+        "role": "v1.5.1 冻结期编辑者（非审查者）",
+        "change_signal": "同上",
+        "last_used": "2026-06-15",
+        "status": "仅编辑者角色；近期未使用"
+      },
+      {
+        "id": "M5",
+        "model": "Opus 4.8 (via Claude Code CLI)",
+        "role": "v1.2 再再审查④",
+        "change_signal": "同上",
+        "last_used": "2026-06-11",
+        "status": "历史审查者；长期未使用"
+      },
+      {
+        "id": "M6",
+        "model": "DeepSeek-V4-Pro (via Claude Code CLI)",
+        "role": "框架作者模型——所有版本编辑 + 审查提示词设计",
+        "change_signal": "同 Claude Code CLI house",
+        "last_used": "2026-06-21",
+        "status": "当前"
+      }
+    ],
+    "platform": [
+      {
+        "id": "P1",
+        "dependency": "Claude Code CLI 上下文窗口",
+        "affected_sections": [
+          "§9.7 经验注入预算规则"
+        ],
+        "change_signal": "窗口显著扩大(≥2×)或缩小(≤0.5×)",
+        "last_checked": "2026-06-21",
+        "status": "正常"
+      },
+      {
+        "id": "P2",
+        "dependency": "Claude Code CLI Workflow 并发上限",
+        "affected_sections": [
+          "§6 Workflow"
+        ],
+        "change_signal": "并发上限变更",
+        "last_checked": "2026-06-21",
+        "status": "正常"
+      },
+      {
+        "id": "P3",
+        "dependency": "Git Bash (Windows)",
+        "affected_sections": [
+          "所有 shell 命令/脚本执行"
+        ],
+        "change_signal": "Windows 更新影响 Git Bash 可用性",
+        "last_checked": "2026-06-21",
+        "status": "正常"
+      },
+      {
+        "id": "P4",
+        "dependency": "Python 3.12.7",
+        "affected_sections": [
+          "所有 Python 脚本"
+        ],
+        "change_signal": "Python 版本 EOL 或强制升级",
+        "last_checked": "2026-06-21",
+        "status": "正常"
+      }
+    ],
+    "external_methodology_references": [
+      {
+        "id": "R1",
+        "reference": "Spec-Driven Development (DeepLearning.AI)",
+        "cited_in": [
+          "§13.2 外部参考"
+        ],
+        "change_signal": "SDD 方法论本身发生范式转移",
+        "last_checked": "2026-06-21",
+        "status": "正常"
+      },
+      {
+        "id": "R2",
+        "reference": "AWS Generative AI Atlas 五模式",
+        "cited_in": [
+          "§13.2",
+          "§6 L3 Workflow 模式"
+        ],
+        "change_signal": "AWS 更新模式定义",
+        "last_checked": "2026-06-21",
+        "status": "正常"
+      },
+      {
+        "id": "R3",
+        "reference": "headroom CacheAligner (detector-only 哲学)",
+        "cited_in": [
+          "§3.6",
+          "§3.7 漂移检测层"
+        ],
+        "change_signal": "headroom 项目活跃度变化",
+        "last_checked": "2026-06-13",
+        "status": "久未检查"
+      }
+    ]
+  },
+  "check_schedule": {
+    "minor_upgrade": "全量检查 toolchain + models + platform",
+    "breaking_change": "立即检查该依赖所在行",
+    "quarterly_or_5_versions": "全量检查 external_methodology_references",
+    "patch_upgrade": "仅当改动涉及受影响章节时才检查对应依赖"
+  },
+  "impact_template": {
+    "dependency_id": "",
+    "change_description": "",
+    "impact_assessment": "无影响 / 需修订（具体节） / 需退役对应规则",
+    "revision_content": "",
+    "execution_date": "",
+    "executor": ""
+  },
+  "known_limitations": [
+    "本登记表为快照工具，不提供自动监测——依赖变化靠人工检查节奏发现",
+    "当前仅覆盖框架直接操作中使用的依赖，未穷举所有潜在依赖",
+    "外部方法论参考的'变化信号'定义模糊——方法论范式转移的判断标准待细化",
+    "本表初次创建（v1.0），尚未经过完整检查周期的实证验证"
+  ]
+}

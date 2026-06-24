@@ -1,0 +1,61 @@
+flowchart TD
+    L0["<b>L0: Spec（项目宪法）</b><br/>跨任务不变项：架构/约定/红线/质量标准<br/>载体：CLAUDE.md + memory/ + .json"]
+
+    L0 -.->|约束所有下层| Cross
+    L0 -.->|约束所有下层| HG1
+    L0 -.->|约束所有下层| L1
+    L0 -.->|约束所有下层| L3
+
+    L0 --> Cross
+
+    subgraph Cross["跨层关切"]
+        direction LR
+        C1["可复现性环境"]
+        C2["评估度量计划"]
+        C3["风险依赖登记"]
+    end
+
+    Cross --> HG1
+
+    HG1["<b>L-H: Human Gate（人类闸门）</b><br/>关键决策点 → 等人确认 → 通过/驳回/修改<br/>触发：重大Spec变更 / Workflow关键产出 / 闭合决策"]
+
+    HG1 --> L1
+
+    subgraph L1["L1: Prompt（任务规格）"]
+        direction LR
+        L1A["任务A<br/>[探索型/执行型/审查型]"]
+        L1B["任务B<br/>..."]
+        L1C["任务C<br/>..."]
+    end
+
+    L1A --> L2A
+    L1B --> L2B
+    L1C --> L2C
+
+    subgraph L2["L2: Loop（执行迭代）"]
+        direction LR
+        L2A["任务A自主迭代<br/>[探索8/3 执行5/2 修复3/2]"]
+        L2B["任务B自主迭代<br/>..."]
+        L2C["任务C自主迭代<br/>..."]
+    end
+
+    L2A --> L3
+    L2B --> L3
+    L2C --> L3
+
+    L3["<b>L3: Workflow（多任务编排）</b><br/>并行执行 + 交叉验证 + 合成<br/>模式：pipeline / parallel / loop-until-dry / judge-panel"]
+
+    L3 --> HG2
+
+    HG2["<b>L-H: Human Gate（产出审查）</b><br/>人看结果 → 通过/驳回/修改"]
+
+    HG2 --> L4
+    HG2 --> Back
+
+    L4["<b>L4: Retrospect（回顾沉淀）</b><br/>回顾 → 提炼 → 写回 Spec<br/>[深度/轻量两版]"]
+
+    Back["回到 L1 / L0<br/>下一轮任务或修正 Spec"]
+
+    L4 --> L5
+
+    L5["<b>L5: Closure（项目闭合）</b><br/>判定闭合条件 → 终期产物 → 归档 → 标记 CLOSED<br/>最后一步：Retrospect → 写回跨项目方法论"]

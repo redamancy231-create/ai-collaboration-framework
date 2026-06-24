@@ -1,0 +1,32 @@
+# === 发布包边界 ===
+# 本文件定义了 GitHub 公开仓库的排除项。
+# 仅当前目录会被 push；以下同级目录不在发布范围内：
+#   ../开源发布准备/  — 发布准备工作目录（不发布）
+#   ../_attic/         — 阁楼备份（不发布）
+# ===================
+
+# Build artifacts (构建产物——已移至 ../_attic/框架构建产物_20260623/，规则保留以防重跑脚本后重新生成被追踪)
+_pipeline_output/
+*.pyc
+__pycache__/
+
+# Mermaid render cache (生成产物——png/svg/pdf 已移走，保留 .mmd 源 + .emf 矢量图)
+_mermaid_png/*.png
+_mermaid_png/*.svg
+_mermaid_png/*.pdf
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup files (防同步/重生成脚本产生备份副本落入发布包)
+*.backup
+*.bak
+
+# Large binaries (发布为 GitHub Release，不进 git 历史)
+AI协作项目全生命周期框架.docx
+
+# IDE
+.vscode/
+.idea/

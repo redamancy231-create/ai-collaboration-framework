@@ -1,0 +1,51 @@
+你是一次独立交叉验证审查。你的角色：GPT-5.5（Codex CLI），独立后端+隔离上下文，审查对象是 DeepSeek-V4-Pro 刚刚完成的三件套版本同步操作。
+
+## 背景
+
+项目目录：../AI协作项目全生命周期框架/
+三件套：.md（源，v1.5.3）/ .json（刚更新到v1.5.3）/ .docx（刚从md重新生成）
+
+操作：以 .md v1.5.3 为准，将 .json 从 v1.5.1 同步到 v1.5.3，然后重新生成 .docx。
+
+## 你的任务
+
+逐一核实以下项目，报告 PASS/FAIL/CAVEAT，发现任何问题给出具体行号和修正建议。
+
+### 1. 版本元数据一致性
+- 读 .md 前5行，确认版本号为 v1.5.3
+- 读 .json metadata.version 和 metadata.date，确认 = "1.5.3" 和 "2026-06-18"
+- 读 .json metadata.model，应包含 "DeepSeek-v4-pro"
+- 读 .json metadata.freeze_status.frozen，应为 false
+
+### 2. changelog 完整性  
+- 检查 .json changelog 是否包含 v1_5_2 和 v1_5_3 两个新条目
+- v1_5_2 应含 Protocol 3 试跑1回写的 8 项变更 (P3-0 ~ P3-7)
+- v1_5_3 应含 PocketFlow A类资产写回的 5 项变更 (PF-1 ~ PF-5)
+- 对照 .md §14 变更记录验证关键事实一致
+
+### 3. edit_history 完整性
+- .json metadata.edit_history 应有 4 条记录
+- 最后一条（v1.5.3）的 date="2026-06-18"，scope 应提及 PocketFlow
+- 倒数第二条（v1.5.2）的 date="2026-06-16"，scope 应提及 Protocol 3
+
+### 4. 新增结构性节
+- 检查 .json 是否新增了 framework_architecture_principle（对应 md §1.7）
+- 检查 .json 是否新增了 reading_navigation（对应 md §9.9）
+- 检查 .json 是否新增了 anti_patterns_catalog（对应 md 附录H）
+- 每节至少抽查 2 个关键字段与 md 原文对照
+
+### 5. independent_reviews 更新
+- .json metadata.independent_reviews 应包含 PocketFlow 三轮审查记录（R1 DeepSeek / R2 ChatGPT-5.5 / R3 GLM-5.2）
+
+### 6. docx 重新生成确认
+- docx 文件修改时间应为今天（2026-06-18）
+- docx 文件大小应 > 原文件（因为 md 增加了 §1.7/§9.9/附录H 等新内容）
+- 抽查 docx 中是否包含 v1.5.3 相关文本（如"PocketFlow"或"最小核心+示例外挂"）
+
+### 7. 回归检查
+- .json 原有节是否保持完整（如 framework_self_governance / drift_detection / evidence_classification 等）
+- .json 文件是否为合法 JSON（能被解析器完整读取）
+
+## 输出格式
+
+逐项给出 PASS/FAIL/CAVEAT，FAIL 必须附具体文件+行号+修正建议。最后给出总体裁决。

@@ -1,0 +1,186 @@
+{
+  "metadata": {
+    "prompt_id": "qwen_review_prompt_v1.5",
+    "review_round": 5,
+    "date": "2026-06-14",
+    "target": "AI协作项目全生命周期框架 v1.5",
+    "target_directory": "<PROJECT_ROOT>",
+    "reviewer": {
+      "model": "qwen3.7-max",
+      "cli": "Qwen Code CLI",
+      "backend": "Qwen / Alibaba"
+    },
+    "independence": {
+      "status": "zero-involvement",
+      "backend_different_from_authors": true,
+      "backend_different_from_r1_r2_r4": true,
+      "backend_different_from_r3": true,
+      "authors_backend": "DeepSeek-V4-Pro (Claude Code CLI)",
+      "prior_reviewers": [
+        "ChatGPT-5.5 (Codex CLI) — R1, R2, R4",
+        "Kimi-K2.7-Code (Kimi Code CLI) — R3"
+      ]
+    }
+  },
+
+  "review_context": {
+    "framework_summary": "AI协作项目全生命周期框架 is a meta-level methodology specification describing how to run complete projects with AI collaboration. It covers a lifecycle from Spec (L0) through Closure (L5) plus cross-layer concerns.",
+    "v1_5_additions": [
+      "§6.2 模式8: Pipeline DAG (声明式管道执行) — from GitNexus runner.ts/types.ts",
+      "§6.2 模式9: Structured Multi-Role Review (结构化多角色审查) — from GitNexus PR Swarm Review",
+      "§9.2 升级: 多轮多后端独立审查编排 — from GitNexus R1→R2→R3 review实战",
+      "§9.6: 证据分类与声称校准 (S/E/I/J/Sp五级) — from R2 review trigger + R3 validation"
+    ],
+    "r4_review_outcome": {
+      "grade": "C+ (5.43/10)",
+      "five_issues_found": [
+        "JSON companion still v1.4 — CRITICAL",
+        "Version metadata contradictions — HIGH",
+        "GitNexus provenance unverifiable — HIGH",
+        "Evidence taxonomy not self-applied — HIGH",
+        "Mode 8/9 not integrated into decision tree/templates — HIGH"
+      ],
+      "all_five_fixed": true,
+      "additional_design_fixes": [
+        "Mode 8 trigger revised from 'stage count >= 3' to 'branching dependencies or hidden-coupling risk'",
+        "Mode 9 Solo mode independence caveat added",
+        "Multi-round review blind-first assessment rule added",
+        "Decision tree and upgrade triggers updated for Mode 8/9"
+      ]
+    },
+    "review_history": [
+      {"round": "R1", "reviewer": "ChatGPT-5.5", "version": "v1.3", "focus": "factual accuracy, analytical rigor, independence, methodology quality, completeness"},
+      {"round": "R2", "reviewer": "ChatGPT-5.5", "version": "v1.4", "focus": "process soundness, domain depth, utility/actionability, epistemological hygiene"},
+      {"round": "R3", "reviewer": "Kimi-K2.7-Code", "version": "v1.4", "focus": "decision relevance, competitive grounding, narrative framing, meta-analysis"},
+      {"round": "R4", "reviewer": "ChatGPT-5.5", "version": "v1.5", "focus": "new content quality, integration/coherence, methodological soundness, actionability"}
+    ]
+  },
+
+  "files_to_review": [
+    {"file": "AI协作项目全生命周期框架.md", "size": "~164KB", "language": "Chinese (UTF-8)", "role": "PRIMARY REVIEW TARGET"},
+    {"file": "AI协作项目全生命周期框架.json", "size": "~88KB", "language": "mixed", "role": "Verify v1.5 sync"},
+    {"file": "AI协作项目全生命周期框架_v1.5_独立审查报告.md", "size": "~16KB", "language": "English", "role": "R4 review findings and fixes"},
+    {"file": "AI协作项目全生命周期框架_v1.5_独立审查报告.json", "size": "~9KB", "language": "mixed", "role": "R4 structured data"},
+    {"file": "methodological-review-sop.md", "size": "~22KB", "language": "Chinese", "role": "Companion SOP"},
+    {"file": "meta-audit-checklist.md", "size": "~34KB", "language": "Chinese", "role": "Companion checklist"}
+  ],
+
+  "encoding_note": "CRITICAL: All Chinese content is UTF-8 encoded. If you see garbled characters, explicitly set encoding to UTF-8.",
+
+  "review_dimensions": {
+    "1_fix_verification": {
+      "weight": 0.25,
+      "description": "Verify that the 5 R4 issues were genuinely fixed",
+      "checklist": [
+        "Is the JSON truly synced to v1.5 (version field, evidence_classification section, provenance_notes)?",
+        "Are metadata contradictions resolved (header, status line, footer all say v1.5)?",
+        "Is GitNexus provenance properly annotated with evidence labels [I]/[S] and source caveats?",
+        "Is the evidence taxonomy self-applied to v1.5 changelog entries?",
+        "Are Mode 8/9 integrated into the decision tree (§6.3) and upgrade triggers (§6.4)?"
+      ],
+      "also_check": "Did any of the fixes introduce new inconsistencies (regression)?"
+    },
+    "2_cross_backend_perspective": {
+      "weight": 0.25,
+      "description": "Use your Qwen/Alibaba backend to see what ChatGPT and Kimi reviewers could not",
+      "questions": [
+        "What do you notice that a ChatGPT-family reviewer might be blind to?",
+        "Are there assumptions reflecting Western/American AI development norms?",
+        "The framework was written in Chinese by a Chinese-speaking author. Both you and Kimi are Chinese-backend models. Does this shared cultural context reveal anything the ChatGPT reviewers missed — or does it create its own blind spots?",
+        "Does the framework's China-centric perspective (Zhihu/CSDN sources, Chinese AI ecosystem references) hold up under your scrutiny?"
+      ]
+    },
+    "3_practical_usability": {
+      "weight": 0.25,
+      "description": "After 5 versions and all fixes, is the framework actually usable by a new practitioner?",
+      "questions": [
+        "If handed this framework to run a project, what would your first 30 minutes look like? Where would you get stuck?",
+        "Which sections would you actually reference during a real project? Which would you skip?",
+        "Has the framework become a methodology encyclopedia that needs a 'quick start' extraction?",
+        "Rate the onboarding experience on a scale of 1-10."
+      ]
+    },
+    "4_methodology_maturity": {
+      "weight": 0.25,
+      "description": "The framework labels itself '草案，待试跑验证' — evaluate whether this is still honest after 5 versions",
+      "questions": [
+        "Is 'draft' still an honest label, or has it become a shield against accountability?",
+        "What specific conditions would justify moving from draft to v1.0 stable?",
+        "The framework draws from 6+ completed projects. Is this sufficient empirical basis?",
+        "After 5 rounds of self-referential review, is dogfooding generating diminishing returns?",
+        "What is the single most important thing needed before 'stable'?"
+      ]
+    }
+  },
+
+  "output_requirements": {
+    "file_1": {
+      "path": "AI协作项目全生命周期框架_v1.5_独立审查报告_R5.md",
+      "format": "English markdown",
+      "sections": [
+        "1. Reviewer Identity — declare model (Qwen3.7-Max), confirm zero-involvement, note relationship to R1-R4",
+        "2. Fix Verification — per-issue verification with evidence",
+        "3. Cross-Backend Perspective — what you see that prior reviewers didn't",
+        "4. Practical Usability — onboarding score, first-30-minutes walkthrough, reference-worthy vs. skippable sections",
+        "5. Methodology Maturity — is draft still honest? conditions for stable?",
+        "6. Overall Assessment — independent grade, comparison to R4's C+",
+        "7. Metadata — model, date, backend, relationship to prior rounds"
+      ]
+    },
+    "file_2": {
+      "path": "AI协作项目全生命周期框架_v1.5_独立审查报告_R5.json",
+      "format": "JSON",
+      "schema": {
+        "metadata": {
+          "reviewer_model": "qwen3.7-max",
+          "review_round": 5,
+          "review_date": "2026-06-14",
+          "independence_status": "zero-involvement",
+          "backend": "Qwen/Alibaba",
+          "backend_different_from_authors": true,
+          "backend_different_from_r1_r2_r4": true,
+          "backend_different_from_r3": true,
+          "prior_reviews": ["R1 ChatGPT-5.5 v1.3", "R2 ChatGPT-5.5 v1.4", "R3 Kimi-K2.7-Code v1.4", "R4 ChatGPT-5.5 v1.5"],
+          "reviewed_files": []
+        },
+        "fix_verification": {
+          "json_synced": {"status": "pass|fail", "evidence": ""},
+          "metadata_consistent": {"status": "pass|fail", "evidence": ""},
+          "provenance_annotated": {"status": "pass|fail", "evidence": ""},
+          "taxonomy_self_applied": {"status": "pass|fail", "evidence": ""},
+          "modes_integrated": {"status": "pass|fail", "evidence": ""},
+          "regressions_found": []
+        },
+        "cross_backend_perspective": {
+          "chatgpt_blind_spots": [],
+          "china_ecosystem_observations": [],
+          "unique_qwen_insights": []
+        },
+        "practical_usability": {
+          "onboarding_score": 0,
+          "first_30_minutes_stuck_points": [],
+          "reference_worthy_sections": [],
+          "skippable_sections": [],
+          "needs_quick_start_extraction": true
+        },
+        "methodology_maturity": {
+          "draft_label_still_honest": true,
+          "conditions_for_stable": [],
+          "empirical_basis_assessment": "",
+          "dogfooding_diminishing_returns": true,
+          "single_most_important_need": ""
+        },
+        "overall_grade": "",
+        "comparison_to_r4_grade": ""
+      }
+    }
+  },
+
+  "critical_reminders": [
+    "You are the FIFTH reviewer. Don't repeat R1-R4 — read them, acknowledge them, then add what they missed.",
+    "Your Qwen backend is the key value of this round. Notice things ChatGPT and Kimi reviewers couldn't.",
+    "The framework is a draft — don't penalize honesty. DO evaluate whether 'draft' is still fair after 5 versions.",
+    "The authors just fixed 5 issues per R4. Acknowledge fixes, but don't let them excuse remaining problems.",
+    "Read EVERY file completely before writing anything."
+  ]
+}

@@ -1,0 +1,325 @@
+{
+  "metadata": {
+    "document_type": "标准操作程序",
+    "title": "独立审查标准操作程序 (Independent Review SOP)",
+    "version": "v1.0",
+    "date": "2026-06-13",
+    "status": "草案，待试跑验证",
+    "model": "DeepSeek-V4-Pro (Claude Code CLI)",
+    "language": "zh-CN",
+    "subject": "独立审查执行标准操作程序",
+    "predecessor_documents": [
+      "AI协作项目全生命周期框架.md §9.2 (独立性定义)",
+      "多模型对照实验/裁判运行_CherryStudio_clean_checklist.md",
+      "多模型对照实验/选手运行_裸API_clean_checklist.md",
+      "多模型对照实验/rubric独立复审_对照清单.md",
+      "kill-test-first_复审_GPT55_prompt.md (审查提示词范例)"
+    ],
+    "paired_md": "独立审查标准操作程序_SOP.md"
+  },
+
+  "trigger_conditions": {
+    "mandatory": [
+      {
+        "id": "T1",
+        "condition": "创建或重大修改方法论资产",
+        "examples": ["新建/改skill", "playbook", "复用包", "预登记协议", "框架文档"]
+      },
+      {
+        "id": "T2",
+        "condition": "闭合项目或里程碑",
+        "examples": ["项目终期总结", "阶段报告定稿", "正式交付物发布"]
+      },
+      {
+        "id": "T3",
+        "condition": "关键决策点（HG闸门）",
+        "examples": ["HG-0启动", "HG-1里程碑", "HG-2 Spec变更", "HG-3闭合"]
+      },
+      {
+        "id": "T4",
+        "condition": "作者等于审查者的实际或潜在情形",
+        "examples": ["同一后端模型同时参与设计/执行/初步审查，全链路无独立声音"]
+      }
+    ],
+    "recommended": [
+      {
+        "id": "S1",
+        "condition": "产出将对外发布或作为学术依据"
+      },
+      {
+        "id": "S2",
+        "condition": "结论依赖于AI生成的关键数据或推理"
+      },
+      {
+        "id": "S3",
+        "condition": "上次独立审查距今超过3个里程碑"
+      }
+    ],
+    "negative_examples": [
+      "修bug、复现实验、补测试",
+      "已冻结协议内的常规对照臂",
+      "纯格式/排版调整",
+      "用户本人已作为独立审查者亲自审过"
+    ],
+    "trigger_question": "这个产出或决策，如果事后被发现有问题，最贵的修正成本是什么？如果成本是'重做项目'或'声誉损害'，就走独立审查。"
+  },
+
+  "independence_definition": {
+    "source": "框架 §9.2",
+    "formula": "独立审查 = (后端模型不同) AND (上下文隔离)",
+    "axes": {
+      "axis_1_distinct_backend": {
+        "label": "后端模型不同",
+        "pass_condition": "审查者后端模型与作者后端模型不是同一个，属于不同供应商或不同模型系列",
+        "fail_examples": [
+          "同一后端换CLI壳再审一遍",
+          "同一后端换标签再审（'这次我当审查者'）"
+        ]
+      },
+      "axis_2_context_isolation": {
+        "label": "上下文隔离",
+        "pass_condition": "全新会话、关闭所有项目memory/知识库/技能、审查者看不到作者的设计过程与内部讨论",
+        "fail_examples": [
+          "审查者读了作者的MEMORY.md、CLAUDE.md、框架文档结论章节后被预锚定"
+        ]
+      }
+    },
+    "tiers": {
+      "independent": {
+        "label": "独立",
+        "condition": "轴1 AND 轴2 均通过",
+        "evidentiary_weight": "可作为独立证据引用，计入'N方独立共识'"
+      },
+      "semi_independent": {
+        "label": "半独立",
+        "condition": "轴1通过但轴2未完全隔离；或轴2通过但作者后端不可考",
+        "evidentiary_weight": "可用于内部校验，但不得声称'独立'，引用时须注明局限"
+      },
+      "non_independent": {
+        "label": "非独立",
+        "condition": "任一轴明确不通过",
+        "evidentiary_weight": "仅可标注为'内部反方检查'或'自审'，不具备独立审查效力"
+      }
+    },
+    "decision_tree": "作者后端已知？→审查者后端≠作者？→上下文隔离？→独立/半独立/非独立"
+  },
+
+  "roles": {
+    "author": {
+      "duty": "产出被审对象",
+      "who": "执行任务的AI或人",
+      "constraint": null
+    },
+    "operator": {
+      "duty": "搭建裸环境、盲化材料、传递输入输出",
+      "who": "用户本人或其指定代理人",
+      "constraint": "不能是作者（作者知道自己写了什么，盲化无效）；不在传递中添油加醋或选择性过滤"
+    },
+    "reviewer": {
+      "duty": "独立阅读被审对象、评分、挑战、给终判",
+      "who": "与作者不同的后端模型（裸会话），或独立人类专家",
+      "constraint": "不能是作者（同一后端模型）；不能与作者共享上下文"
+    }
+  },
+
+  "process": {
+    "name": "四步一核",
+    "phases": [
+      {"step": 0, "name": "前置准备：裸环境搭建", "checklist_ref": "§5"},
+      {"step": 1, "name": "事实提取与溯源验证", "section_ref": "§6"},
+      {"step": 2, "name": "独立评分", "section_ref": "§7"},
+      {"step": 3, "name": "对抗式挑战", "section_ref": "§8"},
+      {"step": 4, "name": "终判与记录", "section_ref": "§9"},
+      {"step": "post", "name": "后置核验：独立性审计", "section_ref": "§10"}
+    ],
+    "key_constraints": [
+      "步骤二评分必须在步骤三挑战之前给出",
+      "步骤一和步骤三可由同一审查者执行，但事实提取必须先于对抗式挑战",
+      "若用两个不同审查者分做步骤二和步骤三，两者需各自满足独立于作者"
+    ]
+  },
+
+  "bare_env_checklist": [
+    {"id": "C1", "check": "独立APP/会话壳：新建助手，不复用已有"},
+    {"id": "C2", "check": "模型确认：记录完整模型ID（非模糊标签）"},
+    {"id": "C3", "check": "系统提示中性：不放persona/方法论/项目背景"},
+    {"id": "C4", "check": "记忆/知识库全关"},
+    {"id": "C5", "check": "工具全关（代码解释器/Python/MCP/联网搜索）"},
+    {"id": "C6", "check": "跨会话记忆关闭"},
+    {"id": "C7", "check": "采样参数固定并记录"},
+    {"id": "C8", "check": "全新会话（每次审查）"},
+    {"id": "C9", "check": "自检通过：审查者确认不了解被审项目"}
+  ],
+
+  "step_1_fact_extraction": {
+    "confidence_tiers": {
+      "T1": {"label": "可独立核实", "definition": "有公开可查的原始来源，审查者可自行验证"},
+      "T2": {"label": "可交叉验证", "definition": "有多个独立来源可佐证，但没有单一官方源"},
+      "T3": {"label": "作者自报", "definition": "只有作者自己提供的，外部无法独立核实"},
+      "T4": {"label": "不可验证", "definition": "缺乏任何可核实的路径"}
+    },
+    "output_schema": {
+      "claim_id": "序号",
+      "claim_text": "原文或精确概括",
+      "tier": "T1-T4",
+      "verification_source": "可验证源，或'作者自报'",
+      "confidence": "审查者主观信心 1-5"
+    }
+  },
+
+  "step_2_scoring": {
+    "dimensions": {
+      "D1": "事实准确性 — 声明有据，数字正确，无编造",
+      "D2": "逻辑一致性 — 内部无矛盾，推论链完整",
+      "D3": "边界诚实 — 坦承局限、不确定、失败模式",
+      "D4": "方法论恰当性 — 方法匹配问题，工具选择合理",
+      "D5": "可复现性 — 他人能否独立复现",
+      "D6": "增量价值 — 相比已有方法/基线，新贡献是什么"
+    },
+    "scale": "1-5 (1=最差，5=最优)，N/A=无法判断",
+    "scoring_rules": [
+      "评推理质量，不评结论正误或偏好",
+      "评分基于被审对象自身内容，非审查者先验知识",
+      "无法判断标N/A并说明理由"
+    ]
+  },
+
+  "step_3_adversarial_challenge": {
+    "challenge_areas": {
+      "A": "支撑高分的T3/T4声明是否可靠？",
+      "B": "评分标准本身是否隐含偏向？",
+      "C": "被审对象的'发现'是否有更简单的解释？",
+      "D": "从作者利益出发，最希望审查者漏掉什么？",
+      "E": "若该方法论/决策完全失败，最可能的死因是什么？"
+    },
+    "requirements": [
+      "每个方面至少一条实质性质疑",
+      "标注挑战类型：可独立验证 / 方法论质疑",
+      "不得修饰、软化——保持魔鬼代言人锋利"
+    ],
+    "score_adjustment_rules": [
+      "调整每项记录：原分→新分，原因引用步骤三具体挑战编号",
+      "不可调整的分数注明'经挑战后维持原分，原因___'"
+    ]
+  },
+
+  "step_4_verdict": {
+    "options": ["保留", "小改后保留", "重大修改", "弃用"],
+    "fields": [
+      "verdict（终判）",
+      "verdict_reason（一句话理由）",
+      "score_original（原评分）",
+      "score_adjusted（调整后评分，如有）",
+      "key_strengths（≤3条）",
+      "key_weaknesses（≤3条，按严重度）",
+      "critical_risks（保留时的不确定性）",
+      "reviewer_confidence（1-5 + 不确定来源）",
+      "independence_declaration（独立/半独立/非独立）"
+    ]
+  },
+
+  "independence_declaration_template": {
+    "author_backend_model": "作者后端模型（或'不可考'）",
+    "reviewer_backend_model": "审查者完整模型ID",
+    "reviewer_cli_shell": "审查者CLI/壳",
+    "axis_1_distinct": "是/否",
+    "axis_2_isolated": "是/否 + 隔离措施说明",
+    "operator_distinct_from_author": "是/否",
+    "independence_level": "独立 / 半独立 / 非独立"
+  },
+
+  "post_audit": {
+    "checklist": {
+      "A1": "后端provenance已记录？",
+      "A2": "自检已通过？",
+      "A3": "操作者输入无身份/背景/预期结论泄露？",
+      "A4": "审查者输出无'知道得太多'的迹象？",
+      "A5": "审查提示词作者≠被审对象作者（或已标注偏倚）？",
+      "A6": "评分在挑战前给出？",
+      "A7": "调整有完整记录？",
+      "A8": "非换会话标签的'自我安慰'式审查？"
+    },
+    "conclusions": {
+      "pass": "所有检查项通过→标记为'独立'审查",
+      "conditional_pass": "部分未完全通过→标记半独立及具体局限",
+      "fail": "A1/A2/A3/A4/A8任一项失败→降级为'非独立'"
+    }
+  },
+
+  "red_flags": {
+    "R1": {"description": "审查者与作者确认为同一后端模型", "severity": "致命"},
+    "R2": {"description": "审查会话中发现作者的项目memory/Spec/设计文档", "severity": "致命"},
+    "R3": {"description": "审查者自检中'认得'被审项目或作者", "severity": "致命"},
+    "R4": {"description": "操作者传递了含作者身份/背景/预期结论的信息", "severity": "高"},
+    "R5": {"description": "步骤二评分在步骤三挑战之后才给出", "severity": "高"},
+    "R6": {"description": "审查提示词由作者撰写且结果明显沿提示词方向倾斜", "severity": "高"},
+    "R7": {"description": "审查者采样参数中途被改", "severity": "中"},
+    "R8": {"description": "用旧会话接着评", "severity": "中"},
+    "R9": {"description": "产出被事后修改实质内容未记amendment", "severity": "中"}
+  },
+
+  "common_failure_modes": {
+    "pseudo_independence": [
+      {"mode": "换壳不换模", "surface": "'这是GPT-5.5审的'", "reality": "两个CLI接同一后端", "prevention": "当场记录完整模型ID"},
+      {"mode": "换会话不洗脑", "surface": "'新会话审的'", "reality": "CLI memory全局加载", "prevention": "审计memory加载状态，自检问句"},
+      {"mode": "操作者走后门", "surface": "'就给了要审的文档'", "reality": "附带解释性说明或预期", "prevention": "抽查操作者输入"},
+      {"mode": "评论式独立", "surface": "'我也觉得这有问题'", "reality": "附和已知批评而非独立发现", "prevention": "对比审查者发现与已知问题列表"}
+    ],
+    "review_decay": [
+      {"mode": "漂移式放水", "symptom": "审查次数增多→评分变温和", "prevention": "审查者轮替，同审查者连审≤3次"},
+      {"mode": "疲劳式评分", "symptom": "各维分数挤在3-4", "prevention": "设评分锚点对照"},
+      {"mode": "和睦偏差", "symptom": "避免极端分", "prevention": "提示词明确要求'若判断真是1或5就写1或5'"}
+    ],
+    "tool_limitation": [
+      {"mode": "裸环境阻断核实", "symptom": "步骤一只做分类未做核实", "prevention": "标注'工具受限'，不把T3/T4当事实"},
+      {"mode": "数据不可用→替代", "symptom": "用替代数据而非停止", "prevention": "框架§4.3: 停且报，不用替代数据"}
+    ]
+  },
+
+  "output_format": {
+    "file_naming": "独立审查_[被审对象简称]_[审查者模型简称]_YYYY-MM-DD.{md,json}",
+    "md_structure": [
+      "元数据",
+      "独立性声明",
+      "步骤一：事实提取与溯源验证",
+      "步骤二：独立评分",
+      "步骤三：对抗式挑战",
+      "步骤四：终判",
+      "后置核验结果"
+    ],
+    "json_structure": {
+      "metadata": {},
+      "independence_declaration": {},
+      "facts_extracted": [],
+      "scoring": {},
+      "adversarial_challenge": [],
+      "verdict": {},
+      "post_audit": {}
+    }
+  },
+
+  "cross_references": {
+    "forward": {
+      "framework_9.2": "定义'什么才算独立审查'——本SOP是其操作化执行手册",
+      "bare_env_checklists_source": "多模型对照实验三套checklist——本SOP §5整合为通用版"
+    },
+    "backward": [
+      {"sop_section": "§2 独立性定义", "existing_asset": "框架 §9.2", "relation": "SOP是框架定义的执行细化"},
+      {"sop_section": "§5 裸环境搭建", "existing_asset": "多模型对照实验/三套裸环境checklist", "relation": "提炼自三套，做了通用化"},
+      {"sop_section": "§6-9 四步流程", "existing_asset": "kill-test-first_复审_GPT55_prompt.md", "relation": "该提示词是SOP步骤1-4在skill审查场景的具体实例"},
+      {"sop_section": "§9.2 独立性声明", "existing_asset": "kill-test-first SKILL.md 固定输出块", "relation": "格式对齐，SOP版更完整"},
+      {"sop_section": "§12 红旗条款", "existing_asset": "裸环境checklist §F", "relation": "统一化为独立审查通用红旗"},
+      {"sop_section": "§13.3 数据不可用", "existing_asset": "框架 §4.3 + ETF R5事故记忆", "relation": "写入SOP为硬约束"}
+    ]
+  },
+
+  "changelog": [
+    {
+      "version": "v1.0",
+      "date": "2026-06-13",
+      "changes": "初版，基于框架§9.2独立性定义 + 多模型对照实验裸环境实践 + kill-test-first审查经验 + Claude Code Ultimate Guide对抗式QC模式适配",
+      "model": "DeepSeek-V4-Pro (Claude Code CLI)",
+      "status": "待试跑验证"
+    }
+  ]
+}

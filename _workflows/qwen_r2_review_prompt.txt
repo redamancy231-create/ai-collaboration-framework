@@ -1,0 +1,50 @@
+你是一次独立的第二轮交叉验证审查。你的角色：qwen3.7-max（Qwen Code CLI），独立后端+隔离上下文。
+
+第一轮审查（GPT-5.5 / Codex CLI）已完成，发现并修复了 changelog PF 编号不一致等机械问题。本轮只审一个维度，其余不管。
+
+## 审查范围（唯一）
+
+对照以下三对 md→json 映射，判断 json 的结构化提取是否忠实于 md 原文。
+
+### 1. §1.7 框架架构原则 → json.framework_architecture_principle
+
+读 md §1.7（从"### 1.7 框架自身的架构原则"到下一个"###"或"---"前），对照 json 的 framework_architecture_principle 节。逐项核实：
+
+a. **核心定义** — md 的"最低强制核心"7 项是否在 json 中完整保留？json 是否有遗漏项？
+b. **外挂目录** — md 的 4 个配套目录（_reviews/_research/_protocols-and-tools/_archive）的角色描述是否在 json 中准确对应？
+c. **区分标准** — md 的三条判定规则（普遍性/强制性/稳定性）的 core vs external 描述是否在 json 中保留？
+d. **反模式警示** — md 的 4 种反模式（核心膨胀/外挂遗忘/核心虚无/外挂强制化）是否在 json 中都有对应条目？
+e. **边界默认原则** — "默认进外挂"的规则和理由是否在 json 中保留？
+f. **交叉引用** — md 末尾"与 §1.4/§9.9 的关系"说明是否在 json 中保留？
+
+### 2. §9.9 阅读导航 → json.reading_navigation
+
+读 md §9.9（从"### 9.9 阅读导航与难度分层"到下一个"---"前），对照 json 的 reading_navigation 节。逐项核实：
+
+a. **难度定义** — md 的四级难度（☆☆☆/★☆☆/★★☆/★★★）含义和典型读者画像是否准确对应？
+b. **章节对照表** — md 表格有 15 行，json chapter_difficulty_map 是否也是 15 条？每条的 chapter/difficulty/type/timing 是否与 md 一致？
+c. **阅读路径** — md 的三条路径（A 最小启动/B 标准实践/C 完整方法论）的 audience/order/time 是否准确对应？
+d. **使用说明** — md 的 5 条使用说明是否在 json usage_notes 中完整保留？
+e. **升级路径** — md 的 "[Sp]→[J]需..." 条件是否在 json upgrade_path 中保留？
+f. **交叉引用** — md 末尾"与 §1.4/§1.7 的关系"是否在 json relationship 中保留？
+
+### 3. 附录 H 反模式清单 → json.anti_patterns_catalog
+
+读 md 附录 H（从"### 附录 H: 反模式清单"到下一个"---"或"## 13"前），对照 json 的 anti_patterns_catalog 节。逐项核实：
+
+a. **收录标准** — md 的三条收录标准是否在 json 中准确保留？
+b. **H.1 文件系统作IPC** — md 的案例/后果(3条)/规则/来源/适用层/严重性是否在 json 中完整保留？
+c. **H.2 极简主义隐性成本** — md 的案例/后果(4条)/规则(abc三条)/来源/适用层/严重性是否完整？
+d. **H.3 继承层次膨胀** — md 的案例/后果(4条)/规则/来源/适用层/严重性是否完整？规则中"判断标准"是否保留？
+e. **H.4 重试-状态耦合** — md 的案例/后果(4条)/规则/来源/适用层/严重性是否完整？
+f. **扩展预留** — md 末尾的"已知候选(静态规则腐化)"是否在 json expansion_reserved 中保留？
+
+## 判定规则
+
+- PASS：描述"完整/准确/无遗漏"
+- FAIL：描述具体遗漏项（哪个字段/哪条规则/哪个后果），给出 json 位置和修正建议
+- CAVEAT：有简化但核心语义无损，标注简化了什么
+
+## 输出格式
+
+三节各一组 PASS/FAIL/CAVEAT。FAIL 必须附具体 json 路径+缺失内容。最后总体裁决。

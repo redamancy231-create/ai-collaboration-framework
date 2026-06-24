@@ -1,0 +1,297 @@
+{
+  "metadata": {
+    "document_type": "external_review_report",
+    "schema_version": "1.0",
+    "review_object": {
+      "name": "AI协作项目全生命周期框架",
+      "version": "v1.1"
+    },
+    "review_date": "2026-06-11",
+    "reviewer": "ChatGPT-5.5",
+    "reviewer_role": "独立第二意见，未参与框架设计",
+    "review_duration": "约45分钟",
+    "source_markdown": "AI协作项目全生命周期框架_ChatGPT-5.5审查报告.md",
+    "generated_json": "AI协作项目全生命周期框架_ChatGPT-5.5审查报告.json",
+    "language": "zh-CN"
+  },
+  "executive_summary": {
+    "overall_position": "框架可作为高质量操作手册草案继续投入，但不应称为已定稿的完整生命周期框架。",
+    "maturity_assessment": "更接近 v0.7：概念骨架明确，模板可用，但执行成本、自动化缺口、概念边界和实证验证仍不足。",
+    "strongest_parts": [
+      "把 AI 协作项目拆为 Spec、Prompt、Loop、Workflow、Retrospect、Closure 等可维护层次",
+      "用 Human Gate 显式保留人类关键决策权",
+      "Spec、会话交接、风险登记和 Closure 清单能减少遗忘、漂移和无休止迭代"
+    ],
+    "weakest_parts": [
+      "外部对标中把 Retrospect、Closure、Dev Log 标为公开资料未找到形式化对应物的表述过强",
+      "Dev Log 依赖 AI 自动维护，但缺少强制机制、检测机制和失败补救机制",
+      "框架自身缺少死亡判据，容易把失败归因于执行不到位而非框架无效"
+    ],
+    "investment_recommendation": "继续投入，但方向应转为缩小可执行核心、真实项目试跑、建立自我死亡判据，而不是继续扩展概念层和模板。"
+  },
+  "verdict_summary": {
+    "认同": 1,
+    "部分认同": 3,
+    "反对": 3,
+    "by_judgment": {
+      "J1": "部分认同",
+      "J2": "部分认同",
+      "J3": "认同",
+      "J4": "部分认同",
+      "J5": "反对",
+      "J6": "反对",
+      "J7": "反对"
+    }
+  },
+  "core_judgments": [
+    {
+      "id": "J1",
+      "statement": "七层架构覆盖完整生命周期",
+      "verdict": "部分认同",
+      "confidence": "高",
+      "basis": "七层覆盖项目启动、任务规格、执行迭代、多任务编排、里程碑回顾和闭合，主流程成立。但缺少机会筛选、需求澄清、利益相关方、资源预算、权限安全、数据治理、实验验证计划、工具自动化和回归测试等治理环节。",
+      "correction": "不要再增加完整大层。建议在 L0 Spec 前增加 Intake/Discovery 最小入口，或作为 HG-0 必填子表；同时把权限、安全、预算、验证计划提升为 Spec 必填项。"
+    },
+    {
+      "id": "J2",
+      "statement": "Human Gate 的 4 个闸门位置和触发条件是充分的",
+      "verdict": "部分认同",
+      "confidence": "高",
+      "basis": "HG-0、HG-1、HG-2、HG-3 覆盖启动、里程碑、Spec 变更和闭合，主干合理，AI 的 5 条闸门职责基本可执行。但任何 Spec 变更都走 HG-2 会带来过高摩擦，HG-1 的学术和工程触发频率也偏粗。",
+      "correction": "把 HG-2 分为低风险批处理、中风险确认、高风险强制闸门；新增风险升级、权限申请、外部提交等闸门类型；AI 在闸门处应固定输出状态、差异、影响范围、选项、推荐、不可逆后果和需人回答的问题。"
+    },
+    {
+      "id": "J3",
+      "statement": "Dev Log 的设计方向正确但成熟度不足，定义为待实证是诚实的",
+      "verdict": "认同",
+      "confidence": "高",
+      "basis": "把变更意图、根因、影响和关联审阅从代码头注释中移出，独立保存为项目级记录，方向正确。成熟度评估中把 AI 自动追加、双视图一致性、FK 健壮性、跨项目泛化和追溯效果列为待实证或零数据，是诚实的。",
+      "correction": "Dev Log 的核心假设不是根本不可行，但仅靠 AI 自觉维护不可行。应改为 AI 草稿、自动差异检测、人类抽查、链接校验的混合机制，并加入 Git diff 对账、链接校验、Session End 强制检查和漏记率指标。"
+    },
+    {
+      "id": "J4",
+      "statement": "Workflow 的 6 种编排模式覆盖实际需求，决策树可用",
+      "verdict": "部分认同",
+      "confidence": "中",
+      "basis": "六种模式都能映射到真实场景，但对日常个人工作流偏重。多数项目高频需要的是 pipeline、verification、discovery 三类。决策树也容易让人误解 pipeline 只适用于无依赖任务。",
+      "correction": "把模式库压缩为三大模式加特殊插件：执行流水线、独立验证、发现扩展。决策树应先问任务目的，再根据成本和风险升级。"
+    },
+    {
+      "id": "J5",
+      "statement": "与外部行业实践的对标是充分的",
+      "verdict": "反对",
+      "confidence": "高",
+      "basis": "外部对标不充分，独特贡献表述过强。Retrospect 在 Scrum 中是正式事件，SRE/DevOps 有 postmortem，Closure 在 PMI、PRINCE2 和通用项目管理中有成熟流程，Dev Log 与 changelog、ADR、release notes、issue tracker、runbook、postmortem、decision log 均有重叠。",
+      "correction": "将公开资料未找到形式化对应物改为未找到完全同构于本框架的个人 AI 协作轻量组合；补充 Scrum Retrospective、SRE postmortem、Keep a Changelog、ADR、项目关闭流程、AI agent guardrails、LLM eval regression suites 等对标。"
+    },
+    {
+      "id": "J6",
+      "statement": "框架可以直接用于下一个新项目，不需要重大修改",
+      "verdict": "反对",
+      "confidence": "高",
+      "basis": "框架可作为审查清单或骨架，但不能无重大修改地直接用于学术论文、量化策略和工程开发三类项目。附录 A-G 缺少项目类型适配、优先级裁剪和最低可运行版本。",
+      "correction": "为每类项目做一页式启动包：必填 10 项、可选 10 项、禁填项、首个里程碑、最小 Dev Log 规则。先以 30% 复杂度运行，再逐步启用高级层。"
+    },
+    {
+      "id": "J7",
+      "statement": "框架自身的死亡判据是明确的",
+      "verdict": "反对",
+      "confidence": "高",
+      "basis": "框架要求每个项目和 Prompt 有死亡判据，但没有给自己设置死亡判据。这会导致失败被解释为执行不到位，而不是框架过重或无效。",
+      "correction": "加入框架级死亡判据：连续 3 个真实项目无改善、维护耗时超过项目总工时 15%、连续 2 个项目绕过 50% 以上模板、Dev Log 漏记率超过 20% 且无法自动化降到 5% 以下时，必须大修或降级。"
+    }
+  ],
+  "structural_omissions": [
+    "需求或机会入口：缺少判断一个项目是否值得进入 Spec 的 Intake/Discovery 流程",
+    "资源与成本治理：缺少项目预算、token 成本、时间成本、人力成本和认知负担上限",
+    "权限、安全与数据治理：缺少文件写入、联网、数据隐私、敏感信息、凭据处理和外部提交的硬闸门",
+    "验证和回归基础设施：缺少 golden set、回归测试、benchmark、自动链接校验和文档一致性检查",
+    "利益相关方与交付对象：导师、审稿人、竞赛平台、业务方、代码用户等没有明确位置",
+    "模型与工具版本管理：缺少模型版本、prompt 版本、agent 配置、工具权限和运行环境变化记录规则"
+  ],
+  "internal_tensions": [
+    "已定稿与待实证冲突：文档状态说已定稿，但 Dev Log 有 7/10 待实证或零数据",
+    "Human Gate 被称为非独立层，却在七层速览中作为 L-H 层呈现",
+    "正常 Loop 不记日志，但 Retrospect 又需要回溯细节，跨会话时会脆弱",
+    "AI 自动维护 Dev Log 与人类抽查责任边界不清",
+    "所有 Spec 变更走 HG-2 与频繁反向沉淀存在摩擦",
+    "永久保留 memory 与 30 天提醒可能造成长期噪音"
+  ],
+  "over_engineering": [
+    "Workflow 六模式并列，对个人工作流偏重",
+    "Dev Log 双视图加 FK 导航维护成本高，容易链接断裂和索引不一致",
+    "Closure 对小项目要求过多终期产物，缺少项目等级分档",
+    "Retrospect 每次至少 1 条失效和 1 条意外可能诱导伪发现",
+    "所有 Spec 修改强制 HG 会降低低价值变更效率",
+    "30 天 memory 自动提醒若无清理和降权机制，会变成低信噪比噪声"
+  ],
+  "ambiguous_concepts": [
+    "项目",
+    "里程碑",
+    "重大、重要、关键",
+    "有意义的变更",
+    "独立模型或独立 Agent",
+    "完成标准与成功标准",
+    "Retrospect 候选",
+    "闭合、暂停、封存、重启"
+  ],
+  "missing_cross_layer_interactions": [
+    {
+      "interface": "Retrospect -> Spec",
+      "gap": "缺少变更 schema、影响评估模板、版本号和审批记录"
+    },
+    {
+      "interface": "Dev Log -> Retrospect",
+      "gap": "缺少提取查询、统计口径和证据标准"
+    },
+    {
+      "interface": "Risk Register -> Human Gate",
+      "gap": "风险升级后如何改变 Prompt、Workflow 或 Closure 条件不明确"
+    },
+    {
+      "interface": "Evaluation -> Closure",
+      "gap": "评估指标如何成为闭合证据不够明确"
+    },
+    {
+      "interface": "Session Handoff -> Dev Log/Spec",
+      "gap": "project_status、Dev Log、Spec 候选之间的边界需要表格化"
+    },
+    {
+      "interface": "Workflow -> Prompt",
+      "gap": "Workflow 失败后如何重写下一轮 Prompt 没有明确回流接口"
+    },
+    {
+      "interface": "Git -> Dev Log",
+      "gap": "缺少自动对账机制，漏记可能长期存在"
+    }
+  ],
+  "testability": {
+    "empirically_testable_claims": [
+      "使用框架是否降低跨会话恢复时间",
+      "Dev Log 是否降低 Bug 根因追溯时间",
+      "Human Gate 是否减少方向性错误和无效迭代",
+      "Workflow adversarial verify 是否比单模型审查发现更多高严重问题",
+      "Retrospect 写回是否提高下一项目的执行质量",
+      "Closure 清单是否减少未归档、未清理、未交付的遗漏"
+    ],
+    "belief_or_preference_claims": [
+      "七层就是完整生命周期",
+      "6 种 Workflow 模式是必要集合",
+      "Retrospect 和 Closure 是本框架独特贡献",
+      "30 天 memory 提醒是合适阈值",
+      "所有 Spec 变更都必须人审"
+    ],
+    "validation_experiments": [
+      {
+        "name": "历史回放实验",
+        "design": "选 2 个已完成项目，用框架重建 Spec、Gate、Dev Log、Retrospect，测量能否准确恢复关键决策、Bug 根因和闭合证据。"
+      },
+      {
+        "name": "新项目 A/B 试跑",
+        "design": "选 2 个相似规模新项目，一个用完整框架，一个用最小版框架，比较完成时间、返工次数、交接恢复时间、产出质量和人类确认次数。"
+      },
+      {
+        "name": "Dev Log 漏记测试",
+        "design": "连续 10 次真实变更后，用 Git diff 和文件时间线对账，统计 AI 漏记率、错误链接率、主文档与分支文档不一致率。"
+      },
+      {
+        "name": "审查有效性测试",
+        "design": "同一交付物分别经单模型审查、adversarial verify、human review，比较高严重问题召回率和误报率。"
+      },
+      {
+        "name": "成本收益记录",
+        "design": "每个项目记录框架维护耗时、报告和模板字数、HG 等待次数，并与实际减少的返工时间比较。"
+      }
+    ]
+  },
+  "framework_death_criteria": [
+    {
+      "criterion": "无改善判据",
+      "threshold": "连续 3 个真实项目使用框架后，交接恢复时间、返工次数、漏交付项、Bug 追溯时间没有相对历史基线改善至少 20%，则大修。"
+    },
+    {
+      "criterion": "维护成本判据",
+      "threshold": "框架维护和填表耗时超过项目总工时 15%，且没有可量化收益，则降级为最小版。"
+    },
+    {
+      "criterion": "绕过率判据",
+      "threshold": "连续 2 个项目中，用户或 AI 实际绕过超过 50% 的模板或闸门，说明框架不适配实际工作，应重构。"
+    },
+    {
+      "criterion": "Dev Log 失败判据",
+      "threshold": "10 次真实变更中漏记超过 2 次，或链接错误超过 10%，且无法通过自动化校验改进，则取消双视图加 FK 方案，退回单一时间轴。"
+    },
+    {
+      "criterion": "Human Gate 过载判据",
+      "threshold": "HG-2 变更确认中超过 70% 被人直接批准且无实质讨论，说明闸门过密，应分级。"
+    },
+    {
+      "criterion": "外部审查无增益判据",
+      "threshold": "连续 3 次独立模型审查没有发现人类或后续执行认为有价值的问题，则降低审查频率或更换审查方式。"
+    }
+  ],
+  "top3_recommendations": [
+    {
+      "priority": 1,
+      "problem": "框架太完整但未证明可执行",
+      "recommendation": "做最小可运行版：L0 必填 6 项、HG 3 类、Workflow 3 模式、Dev Log 单时间轴、Closure 分级。",
+      "rationale": "先降低执行成本，才能真实试跑并收集数据。"
+    },
+    {
+      "priority": 2,
+      "problem": "缺少实证验证和自我死亡判据",
+      "recommendation": "在下一个项目中预登记指标：交接恢复时间、漏记率、返工次数、审查发现率、维护耗时，并写入死亡判据。",
+      "rationale": "避免框架只能继续自我扩展，不能被证伪。"
+    },
+    {
+      "priority": 3,
+      "problem": "Dev Log 可靠性不足",
+      "recommendation": "加自动对账：Git diff 未记录文件检查、链接校验、Session End 强制清单、HG-1 抽查记录。",
+      "rationale": "Dev Log 是新增核心产物，若不可靠，会污染 Retrospect 和 Closure。"
+    }
+  ],
+  "prompt_review": {
+    "positive": "提示词质量较高，明确要求独立审查、信心水平、已证/未证区分和开放问题，有助于降低自我正当化。",
+    "potential_biases": [
+      "7 个判断的措辞大多先陈述框架结论，再要求审查，容易让审查者围绕设计者的问题域打转",
+      "不要同情设计者的措辞可能造成反向偏差，让审查者为显得独立而过度否定",
+      "提示词指定 ChatGPT-5.5 身份，但没有要求披露实际执行环境、可用工具和外部检索范围"
+    ]
+  },
+  "external_benchmark_notes": {
+    "position": "公开实践足以反驳 Retrospect、Closure、Dev Log 没有形式化对应物的强表述，但不否定本框架的组合价值。",
+    "recommended_reframing": "本框架的定位应从别人没有改为把既有工程、项目管理和 AI 协作实践裁剪成个人 AI 项目的统一操作手册。"
+  },
+  "external_references": [
+    {
+      "name": "Scrum Guide",
+      "relevance": "Sprint Retrospective 是正式 Scrum 事件",
+      "url": "https://scrumguides.org/scrum-guide.html"
+    },
+    {
+      "name": "Google SRE Postmortem Culture",
+      "relevance": "形式化事故复盘和组织学习",
+      "url": "https://sre.google/sre-book/postmortem-culture/"
+    },
+    {
+      "name": "Keep a Changelog",
+      "relevance": "面向人类可读的变更日志规范",
+      "url": "https://keepachangelog.com/en/1.1.0/"
+    },
+    {
+      "name": "Architecture Decision Records",
+      "relevance": "记录架构决策的轻量文档实践",
+      "url": "https://adr.github.io/"
+    },
+    {
+      "name": "PMI project closure reference",
+      "relevance": "项目关闭或阶段关闭实践",
+      "url": "https://www.pmi.org/learning/library/importance-of-closing-process-group-9949"
+    },
+    {
+      "name": "PRINCE2 project closure reference",
+      "relevance": "项目关闭流程包含验收、移交、评估和关闭建议",
+      "url": "https://www.prince2.com/usa/blog/prince2-project-closure"
+    }
+  ]
+}

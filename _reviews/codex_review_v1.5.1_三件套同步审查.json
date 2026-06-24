@@ -1,0 +1,156 @@
+{
+  "review_title": "AI协作项目全生命周期框架 v1.5.1 三件套同步审查",
+  "actual_model": "OpenAI GPT-5",
+  "backend": "Codex CLI / Codex 后端",
+  "reviewer": "Codex",
+  "review_date": "2026-06-14",
+  "objects": [
+    "AI协作项目全生命周期框架.md",
+    "AI协作项目全生命周期框架.json",
+    "AI协作项目全生命周期框架.docx"
+  ],
+  "overall_score": 8.2,
+  "verdict": "MINOR",
+  "dimension_scores": {
+    "D1_md_json_consistency": {
+      "weight": 0.30,
+      "score": 8.0,
+      "summary": "四个新增节点与 md 正文基本对应，changelog/provenance 已落地；但存在“5项/四节”、旧 companion_review、审查记录格式不统一等小问题。"
+    },
+    "D2_v1_5_to_v1_5_1_sync_completeness": {
+      "weight": 0.25,
+      "score": 9.3,
+      "summary": "md 头部、目录、§14、文末状态和 JSON metadata.version 均已同步到 v1.5.1；剩余 v1.5 多为合法历史引用。"
+    },
+    "D3_content_quality_internal_consistency": {
+      "weight": 0.20,
+      "score": 7.8,
+      "summary": "新增四节整体自洽，§3.7.0 与只观测原则一致，§3.7.4.1 数值与草案一致；扣分来自证据标注局部不显式和 §9.7 摘要容易误读。"
+    },
+    "D4_json_structure_quality": {
+      "weight": 0.15,
+      "score": 8.6,
+      "summary": "JSON 有效、无重复键、新节点命名基本一致；建议规范 companion_review 与 independent_reviews 字段。"
+    },
+    "D5_docx_generation_quality": {
+      "weight": 0.10,
+      "score": 6.5,
+      "summary": "DOCX 可读取，只有一个 TOC 字段，四个新增节存在；但标题编号大面积叠加，影响 Word 版可读性。"
+    }
+  },
+  "weighted_score_calculation": {
+    "D1": 2.4,
+    "D2": 2.325,
+    "D3": 1.56,
+    "D4": 1.29,
+    "D5": 0.65,
+    "total": 8.225,
+    "rounded": 8.2
+  },
+  "key_checks": {
+    "json_parse_valid": true,
+    "json_duplicate_keys": 0,
+    "json_metadata_version": "1.5.1",
+    "json_revision": "v1.5.1 (2026-06-14)",
+    "md_header_version": "v1.5.1",
+    "md_changelog_version": "v1.5.1 (2026-06-14)",
+    "md_footer_status_version": "v1.5.1",
+    "new_nodes_present": {
+      "event_stream_health": true,
+      "adaptive_weight_retirement": true,
+      "experience_injection_budget": true,
+      "research_experience_objects": true
+    },
+    "provenance_notes_present": true,
+    "docx_readable": true,
+    "docx_toc_field_count": 1,
+    "docx_key_sections_present": {
+      "section_3_7_0": true,
+      "section_3_7_4_1": true,
+      "section_9_7": true,
+      "section_9_8": true
+    },
+    "docx_visual_render_performed": false
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "P1",
+      "title": "DOCX 标题编号大面积叠加",
+      "evidence": [
+        "DOCX OOXML 正文出现 `1.4.7.13.7.0 事件流健康度监测`",
+        "DOCX OOXML 正文出现 `1.10.79.7 经验注入上下文预算规则`",
+        "脚本检测到 83 个疑似叠加编号标题"
+      ],
+      "impact": "Word 版内容同步存在，但标题层级和可读性明显受损。",
+      "recommendation": "调整 pandoc/reference docx 或生成脚本，避免 Word 自动编号与 md 手写编号同时生效；重新生成 DOCX 后检查标题文本。"
+    },
+    {
+      "id": "F2",
+      "severity": "P2",
+      "title": "§3.7.0 与 §3.7.4.1 在 md 正文本节内未显式标注 [Sp]",
+      "evidence": [
+        "md 头部和 §14 标注四个新增节为 [Sp]",
+        "JSON 新增节点 `_evidence_level` 均为 [Sp]",
+        "md §3.7.0 与 §3.7.4.1 本节正文缺少独立证据等级行"
+      ],
+      "impact": "跨件总体一致，但不满足最严格的正文逐节证据标注要求。",
+      "recommendation": "在 §3.7.0 和 §3.7.4.1 各加 `**证据等级**：整体 [Sp]...`，或在标题中加入 `[Sp]`。"
+    },
+    {
+      "id": "F3",
+      "severity": "P2",
+      "title": "JSON 中“方法论提取5项”与四节新增未完全对齐",
+      "evidence": [
+        "JSON metadata.derived_from[8] 写“方法论提取5项→框架v1.5.1”",
+        "JSON changelog.v1_5_1.trigger 写“方法论提取5项”",
+        "md §14 与 JSON added 实际列出 4 个新增节"
+      ],
+      "impact": "读者无法判断第 5 项是否已落地、合并、放弃或只是同步残留。",
+      "recommendation": "若确有第 5 项，新增 `methodology_extracts` 数组并标注处理状态；否则统一改为“方法论提取4项/四节”。"
+    },
+    {
+      "id": "F4",
+      "severity": "P3",
+      "title": "§9.7 摘要“3条子规则”与“子规则4 A/B测试”容易误读",
+      "evidence": [
+        "md §9.7 摘要列出三条子规则",
+        "同节及待验证项引用 §9.7 子规则4 A/B 测试",
+        "完整草案确有“子规则4：本场景 A/B 验证”"
+      ],
+      "impact": "不是断链，但主文档摘要像编号遗漏。",
+      "recommendation": "改为“前三条操作子规则；第 4 条为升级验证规则，见草案 §9.7”。"
+    },
+    {
+      "id": "F5",
+      "severity": "P3",
+      "title": "JSON metadata.companion_review 指向旧审查文件",
+      "evidence": [
+        "metadata.companion_review 为旧的 `AI协作项目全生命周期框架_对ChatGPT-5.5回应的再再审查.json`",
+        "v1.5.1 当前审查文件只在 changelog.v1_5_1.companion_files 中出现"
+      ],
+      "impact": "元数据入口容易把读者带到旧审查链。",
+      "recommendation": "改为 `companion_reviews` 数组并标注 current/legacy，或将当前入口更新为 v1.5.1 Codex 审查报告。"
+    },
+    {
+      "id": "F6",
+      "severity": "P3",
+      "title": "metadata.independent_reviews 字段归一化不足",
+      "evidence": [
+        "R3/R4 有日期、评分、裁决",
+        "早期记录缺日期/裁决",
+        "DeepSeek R1 记录在 independent_reviews 中但 note 标注为作者侧审查，非独立"
+      ],
+      "impact": "机器可读性和审计清晰度略受影响。",
+      "recommendation": "为每条记录补 `independence_level`、`scored`、`verdict`，并尽量补齐历史日期。"
+    }
+  ],
+  "positive_findings": [
+    "未发现 P0 阻断问题。",
+    "md 与 JSON 的核心版本号均为 v1.5.1。",
+    "md 目录、§14 变更记录、文末状态行均已更新到 v1.5.1。",
+    "JSON 四个新增结构节点存在且证据等级均为 [Sp]。",
+    "DOCX 可读取，只有一个 TOC 字段，四个新增节均存在。"
+  ],
+  "final_recommendation": "先修复 DOCX 标题编号，再补两处 [Sp] 显式标注，并统一“5项/四节”“3条/子规则4”的表述。完成后可升级为 READY。"
+}

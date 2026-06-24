@@ -1,0 +1,15 @@
+flowchart TD
+    Start([Loop 开始]) --> Execute["<b>执行</b><br/>跑代码"]
+    Execute --> Check["<b>检查</b><br/>看结果"]
+
+    Check --> Decide{结果符合<br/>完成标准?}
+
+    Decide -->|YES| Exit["<b>退出</b><br/>报告完成"]
+    Decide -->|NO| Fix["<b>修复</b><br/>修Bug"]
+
+    Fix --> GuardCheck{"<b>运行时检查</b>"}
+
+    GuardCheck -->|"触发否决条件"| Stop["<b>STOP</b><br/>停止并报告"]
+    GuardCheck -->|"超迭代上限"| Report["报告并等人"]
+    GuardCheck -->|"连续 N 轮无效"| HG["触发 Human Gate"]
+    GuardCheck -->|"全部通过"| Execute

@@ -1,0 +1,184 @@
+{
+  "metadata": {
+    "artifact_type": "framework_draft_sections",
+    "framework_version_target": "1.3.2",
+    "generated_at": "2026-06-14",
+    "generator_model": "DeepSeek-V4-Pro",
+    "source_project": "Evolver/EvoMap analysis (arXiv:2604.15097)",
+    "source_analysis_validated_by": "Qwen qwen3.7-max independent review (convergence Δ0.1)",
+    "status": "draft_pending_user_approval",
+    "version": "v1.3.2"
+  },
+  "new_sections": [
+    {
+      "id": "§3.7.0",
+      "name": "信号熵检测层",
+      "parent_section": "§3.7 漂移检测层",
+      "rules": [
+        {
+          "id": "rule_1",
+          "name": "历史频率抑制",
+          "trigger": "同一信号在最近8次事件中出现≥3次",
+          "action": "标记over_processed，抑制后续3周期",
+          "cold_start_threshold_multiplier": 2.0
+        },
+        {
+          "id": "rule_2",
+          "name": "修复循环检测",
+          "trigger": "连续≥3次intent=repair",
+          "action": "自动注入intent=explore信号",
+          "cold_start_threshold": 6
+        },
+        {
+          "id": "rule_3",
+          "name": "空周期检测",
+          "trigger": "连续≥5次blast_radius=0",
+          "action": "触发steady_state告警（仅告警不自动干预）"
+        }
+      ],
+      "signal_entropy_thresholds": {
+        "healthy": {
+          "max": 0.2,
+          "action": "none"
+        },
+        "mild": {
+          "min": 0.2,
+          "max": 0.5,
+          "action": "log_to_monitor"
+        },
+        "moderate": {
+          "min": 0.5,
+          "max": 0.8,
+          "action": "low_priority_alert_to_§3.7.2"
+        },
+        "severe": {
+          "min": 0.8,
+          "action": "high_priority_alert_+_suggest_manual_review"
+        }
+      },
+      "implementation": "signal_entropy.py",
+      "estimated_hours": 3
+    },
+    {
+      "id": "§9.6",
+      "name": "紧凑表示原则",
+      "parent_section": "§9 安全边界",
+      "sub_rules": [
+        {
+          "id": "sr1",
+          "name": "单一经验编码上限",
+          "max_chars": 500,
+          "config_param": "MAX_EXPERIENCE_CHARS"
+        },
+        {
+          "id": "sr2",
+          "name": "结构化编码优先",
+          "required_fields": [
+            "signal",
+            "confidence",
+            "context",
+            "source"
+          ],
+          "rationale": "Evolver论文4,590次试验→紧凑结构化230tokens优于冗长文档2,500tokens（量化场景待独立验证）"
+        },
+        {
+          "id": "sr3",
+          "name": "历史压缩",
+          "window_size": 20,
+          "method": "滚动窗口+统计摘要（频率分布/成功率趋势/最近成功正样本）"
+        }
+      ],
+      "verification_required": true,
+      "verification_method": "量化场景A/B测试：紧凑JSON格式 vs 自然语言格式→AI产出因子IC/IC_IR",
+      "anti_patterns": [
+        "未经验证假设'文档越详细越好'",
+        "将本原则等同于'所有prompt都要尽可能短'",
+        "忽略模型依赖性和场景泛化性的待验证状态"
+      ],
+      "estimated_hours": 0.5
+    },
+    {
+      "id": "§7",
+      "name": "研究经验对象（REO）",
+      "parent_section": null,
+      "position": "between_§6_and_§8",
+      "reo_types": [
+        {
+          "type": "gene",
+          "description": "可跨项目复用的验证策略",
+          "storage": "reo/genes/gene_*.json"
+        },
+        {
+          "type": "capsule",
+          "description": "具体研究步骤的成功快照",
+          "storage": "reo/capsules/capsule_*.json"
+        },
+        {
+          "type": "event",
+          "description": "每次实验的完整审计日志",
+          "storage": "reo/events.jsonl（append-only）"
+        }
+      ],
+      "reo_json_schema": {
+        "required_top_level": [
+          "reo_id",
+          "type",
+          "hypothesis",
+          "test",
+          "result",
+          "validation_rule",
+          "epigenetic_mark",
+          "signals",
+          "created_at",
+          "model"
+        ],
+        "epigenetic_mark_schema": {
+          "success": "int",
+          "total": "int",
+          "boost": "float"
+        }
+      },
+      "integration_with_kill_test_first": "预注册模板扩展intent_distribution字段 + kill_condition→validation_rule映射",
+      "implementation_phases": [
+        {
+          "phase": 1,
+          "name": "最小可用",
+          "description": "JSON schema + 手动创建/读取"
+        },
+        {
+          "phase": 2,
+          "name": "半自动",
+          "description": "Python脚本自动生成Event型REO"
+        },
+        {
+          "phase": 3,
+          "name": "全自动",
+          "description": "Gene自动推荐 + 冲突检测"
+        }
+      ],
+      "estimated_hours": 8
+    }
+  ],
+  "modified_sections": [
+    {
+      "id": "§3.7.3",
+      "change": "规则退役→表观遗传权重",
+      "mechanism": {
+        "boost_initial": 0.0,
+        "delta_success": 0.05,
+        "delta_failure": -0.15,
+        "hard_suppression_threshold": -0.3,
+        "inert_suppression_streak": 8,
+        "context_aware": true
+      },
+      "integration_with_§3.7.0": "频率抑制标记影响boost更新频率；修复循环注入的exploration为被抑制资产提供复活机会"
+    }
+  ],
+  "implementation_order": [
+    "§9.6",
+    "§3.7.0",
+    "§3.7.3",
+    "§7"
+  ],
+  "note": "所有Evolver来源思想已经过去隐喻化处理——生物学隐喻（基因/表观遗传/进化）→金融/工程术语"
+}

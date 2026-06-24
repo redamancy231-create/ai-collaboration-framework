@@ -1,0 +1,434 @@
+{
+  "metadata": {
+    "artifact_type": "framework_draft_sections",
+    "framework_version_target": "1.5.1",
+    "draft_version": "2.0",
+    "status": "modified_pass_codex_r4_7.2",
+    "codex_r4_review": {
+      "score": 7.2,
+      "verdict": "修改后通过",
+      "delta_from_r3": 2.9,
+      "remaining_issues_resolved": 6,
+      "report_path": "框架v1.5.1_Codex审查报告.md"
+    },
+    "previous_version": {
+      "version": "1.3.2_draft_v1",
+      "status": "rejected",
+      "codex_score": 4.3,
+      "rejection_reasons": [
+        "版本错位（基于过期v1.3结构，主文档已是v1.5）",
+        "自动干预违反§3.7.1'只观测不阻断'核心约束",
+        "boost -= (-0.15)符号错误",
+        "假去隐喻化（声明已去但保留Gene/Capsule/Epigenetic等术语）",
+        "二次确认偏误（选择性引用Qwen审查中支持部分）",
+        "来源证据校准不足（4,590 retained analyses被当作RCT背书）"
+      ]
+    },
+    "corrections_applied": [
+      "P0",
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5",
+      "P6",
+      "P7",
+      "P8",
+      "P9"
+    ],
+    "generated_at": "2026-06-14",
+    "generator_model": "DeepSeek-V4-Pro",
+    "review_chain": [
+      {
+        "round": "R1",
+        "reviewer": "DeepSeek-V4-Pro",
+        "object": "Evolver项目",
+        "score": 4.2
+      },
+      {
+        "round": "R2",
+        "reviewer": "Qwen qwen3.7-max",
+        "object": "Evolver分析报告方法论可靠性",
+        "score": 6.5
+      },
+      {
+        "round": "R3",
+        "reviewer": "Codex ChatGPT-5.5",
+        "object": "框架v1.3.2草案",
+        "score": 4.3,
+        "verdict": "驳回"
+      }
+    ],
+    "source_project": {
+      "name": "Evolver/EvoMap",
+      "arxiv": "2604.15097",
+      "composite_score": 4.15,
+      "score_convergence": "DeepSeek 4.2 / Qwen 4.1 (Δ0.1)",
+      "key_limitations": [
+        "核心算法混淆（javascript-obfuscator）",
+        "无统计推断（无CI/p值/效应量）",
+        "试验非独立（retained analyses非RCT）",
+        "单模型家族（仅Gemini 3.1）",
+        "单任务域（科学代码求解）"
+      ]
+    },
+    "version": "v2.0"
+  },
+  "new_sections": [
+    {
+      "id": "§3.7.0",
+      "name": "事件流健康度监测",
+      "parent": "§3.7 漂移检测层",
+      "position": "before §3.7.1",
+      "core_constraint": "只观测不阻断（与§3.7.1一致）",
+      "rules": [
+        {
+          "id": "rule_1",
+          "name": "重复信号频率监测",
+          "trigger": "同一信号类型在最近8个周期中出现≥3次",
+          "output": "标记over_processed + 频率计数 + 建议手动抑制",
+          "auto_action": "否（不自动抑制、不修改日志）",
+          "cold_start_threshold": {
+            "min_events": 10,
+            "multiplier": 2.0
+          }
+        },
+        {
+          "id": "rule_2",
+          "name": "修复循环监测",
+          "trigger": "连续≥3次intent=repair",
+          "output": "repair_loop_alert → HG-1建议",
+          "auto_action": "否（不自动注入explore）",
+          "cold_start_threshold": {
+            "first_cycles": 5,
+            "multiplier": 2.0
+          }
+        },
+        {
+          "id": "rule_3",
+          "name": "空周期监测",
+          "trigger": "连续≥5次blast_radius=0",
+          "output": "steady_state_alert（仅记录，不提交HG）",
+          "auto_action": "否"
+        }
+      ],
+      "event_stream_health": {
+        "formula": "clamp(0,1, w1×freq_score + w2×repair_score + w3×empty_score)",
+        "weights": {
+          "w1": 0.3,
+          "w2": 0.5,
+          "w3": 0.2
+        },
+        "components": {
+          "freq_score": "最近8周期被标记over_processed的信号类型数/8",
+          "repair_score": "min(1.0, 连续repair周期数/6)",
+          "empty_score": "min(1.0, 连续空周期数/10)"
+        },
+        "healthy": {
+          "max": 0.2
+        },
+        "mild": {
+          "range": [
+            0.2,
+            0.5
+          ],
+          "action": "记录监测日志"
+        },
+        "moderate": {
+          "range": [
+            0.5,
+            0.8
+          ],
+          "action": "输入§3.7.3作为普通监测项"
+        },
+        "severe": {
+          "range": [
+            0.8,
+            1.0
+          ],
+          "action": "输入§3.7.3高权重+附HG-1建议"
+        }
+      },
+      "integration": {
+        "inputs_from": "L2 Loop迭代事件日志",
+        "outputs_to": [
+          "§3.7.3信号聚合",
+          "§3.7.4规则退役参考"
+        ],
+        "does_not_output_to": [
+          "§3.7.5宪法审计"
+        ],
+        "no_new_alert_levels": true
+      },
+      "implementation": {
+        "script": "event_health.py",
+        "estimated_hours": 3,
+        "disable_switch": "EVENT_HEALTH_ENABLED=0",
+        "dry_run_default": true
+      }
+    },
+    {
+      "id": "§3.7.4.1",
+      "name": "自适应权重淘汰",
+      "parent": "§3.7.4 规则退役自动化",
+      "type": "补充替代（非强制替换）",
+      "formula": {
+        "corrected": "weight += delta",
+        "delta_success": {
+          "value": 0.05,
+          "configurable": true
+        },
+        "delta_failure": {
+          "value": -0.15,
+          "configurable": true
+        },
+        "delta_no_impact": {
+          "value": 0.0,
+          "configurable": true
+        }
+      },
+      "suppression": {
+        "hard_suppression_threshold": {
+          "value": -0.3,
+          "configurable": true
+        },
+        "inert_suppression_streak": {
+          "value": 8,
+          "configurable": true
+        },
+        "mechanism": "候选标记 + HG-1人工确认后才移出活跃资产池；确认前资产仍正常使用",
+        "states": [
+          "active",
+          "suppression_candidate",
+          "inert_candidate",
+          "suppressed",
+          "inert"
+        ]
+      },
+      "context_aware": true,
+      "value_provenance": "Evolver epigenetic suppression设计选择（源码混淆，不可独立验证数值）→标注[可配置]+首次试跑需敏感性分析",
+      "tuning_advice": {
+        "risk_averse": "非对称比5:1",
+        "exploratory": "非对称比2:1",
+        "default": "非对称比3:1"
+      }
+    },
+    {
+      "id": "§9.7",
+      "name": "经验注入上下文预算规则",
+      "parent": "§9 跨层关切",
+      "position": "after §9.6",
+      "evidence_level": "Sp",
+      "upgrade_requirement": "完成子规则4 A/B测试→[J]",
+      "sub_rules": [
+        {
+          "id": "sr1",
+          "name": "注入长度上限",
+          "max_chars": 500,
+          "config_key": "MAX_EXPERIENCE_INJECTION_CHARS",
+          "scope": "注入层compact_view仅，存储层不受限"
+        },
+        {
+          "id": "sr2",
+          "name": "结构化编码优先",
+          "required_fields": [
+            "signal",
+            "confidence",
+            "context",
+            "source"
+          ],
+          "format": "JSON，非自然语言"
+        },
+        {
+          "id": "sr3",
+          "name": "历史压缩",
+          "window_size": 20,
+          "method": "滚动窗口compact_view + 统计摘要（频率/趋势/最近正样本）"
+        },
+        {
+          "id": "sr4",
+          "name": "本场景A/B验证",
+          "status": "待执行（升级到[J]的前提）",
+          "design": {
+            "tasks": "≥30个独立因子设计任务",
+            "repetitions": 3,
+            "arms": {
+              "A": "JSON compact_view",
+              "B": "等效自然语言"
+            },
+            "metrics": [
+              "IC均值",
+              "IC_IR",
+              "夏普比率",
+              "token消耗"
+            ],
+            "quant_risk_metrics": [
+              "换手率",
+              "样本外Sharpe",
+              "最大回撤",
+              "因子相关性矩阵"
+            ],
+            "statistical_method": "配对Wilcoxon signed-rank test (α=0.05) + Hodges-Lehmann CI + bootstrap 95% CI (10,000 resamples)",
+            "hold_out": "30任务中随机留出10个(33%)仅用于最终验证",
+            "data_split": "训练期60%/验证期40%，IC仅验证期计算",
+            "sampling": "分层抽样（指数×因子类型×中性化方式笛卡尔积）",
+            "minimum_meaningful_effect": "IC均值Δ≥0.005 AND token节省≥20%",
+            "failure_criterion": "Arm A IC显著劣于Arm B→降级[F]",
+            "partial_pass": "IC无差异但token节省≥20%→作为成本优化建议有条件采纳",
+            "time_estimate": "首次搭建2-3h + 运行6-8h（需全自动评估流水线）"
+          }
+        }
+      ],
+      "storage_injection_separation": {
+        "storage_layer": "REO完整JSON/事件日志/审查报告——无字符限制",
+        "injection_layer": "compact_view ≤500字符——受本规则约束",
+        "connection": "compact_view字段连接两层"
+      }
+    },
+    {
+      "id": "§9.8",
+      "name": "研究经验对象（REO）",
+      "parent": "§9 跨层关切",
+      "position": "after §9.7",
+      "reo_types": [
+        {
+          "type": "validation_rule",
+          "new_name": "验证规则",
+          "old_name": "Gene",
+          "storage": "reo/rules/rule_*.json",
+          "key_fields": [
+            "reo_id",
+            "hypothesis",
+            "validation_rule",
+            "performance_track",
+            "evidence_level"
+          ]
+        },
+        {
+          "type": "success_snapshot",
+          "new_name": "成功快照",
+          "old_name": "Capsule",
+          "storage": "reo/snapshots/snap_*.json",
+          "key_fields": [
+            "reo_id",
+            "hypothesis",
+            "result_summary",
+            "parent_audit_ids",
+            "pre_registration_id"
+          ]
+        },
+        {
+          "type": "audit_record",
+          "new_name": "审计记录",
+          "old_name": "Event",
+          "storage": "reo/events.jsonl（append-only）",
+          "key_fields": [
+            "reo_id",
+            "event_type",
+            "outcome",
+            "intent",
+            "blast_radius",
+            "pre_registration_id"
+          ]
+        }
+      ],
+      "formal_json_schema": true,
+      "schema_validation": "Python jsonschema库",
+      "promotion_rules": [
+        {
+          "from": "audit_record",
+          "to": "success_snapshot",
+          "trigger": "同一hypothesis的audit_record≥3条且outcome=success（hypothesis匹配：归一化文本编辑距离≤3 + 关键实体完全匹配）",
+          "action": "系统提示，操作者手动确认；晋升后生成event_type=decision的审计记录"
+        },
+        {
+          "from": "success_snapshot",
+          "to": "validation_rule",
+          "trigger": "同一snapshot被≥2个不同项目通过parent_audit_ids引用且performance_track.weight≥0.3",
+          "action": "系统提示，操作者手动确认；引用计数跨REO目录扫描"
+        },
+        {
+          "from": "any",
+          "to": "anti_pattern",
+          "trigger": "audit_record outcome=failure且失败次数≥成功次数",
+          "action": "记录到validation_rule.anti_patterns（不删除原对象）"
+        },
+        {
+          "from": "validation_rule",
+          "to": "conflict_resolution",
+          "trigger": "新rule与已有rule逻辑矛盾（LLM-based配对比较检测）",
+          "action": "HG-2人工裁决；裁决结果写入审计记录作为先例"
+        }
+      ],
+      "promotion_mechanisms": {
+        "hypothesis_identity_resolution": "归一化文本编辑距离≤3 + 关键实体完全匹配 [HYPOTHESIS_MATCH_MAX_EDIT_DISTANCE=3]",
+        "cross_project_reference_counting": "扫描REFERENCE_SCAN_PATHS，引用须来自不同source_artifact",
+        "conflict_detection": "LLM-based配对比较（直接对立/范围冲突/时序矛盾三分类）",
+        "audit_trail": "每次晋升/否决/冲突裁决生成event_type=decision的审计记录"
+      },
+      "kill_test_first_integration": {
+        "source_of_truth": "预注册中的kill_condition（不可变）",
+        "audit_record": "通过pre_registration_id引用预注册，不复制validation_rule",
+        "drift_protection": "审计记录不存储独立validation_rule——单一真源"
+      },
+      "implementation_phases": [
+        {
+          "phase": 0,
+          "name": "前置",
+          "task": "事件日志schema + 字段填充责任"
+        },
+        {
+          "phase": 1,
+          "name": "最小可用",
+          "task": "JSON Schema + validator + 手动创建"
+        },
+        {
+          "phase": 2,
+          "name": "半自动",
+          "task": "自动审计记录生成脚本"
+        },
+        {
+          "phase": 3,
+          "name": "按需",
+          "task": "验证规则自动推荐 + 冲突检测"
+        }
+      ]
+    }
+  ],
+  "implementation_order": [
+    "事件日志schema定义（Prerequisite）",
+    "§3.7.0 事件流健康度",
+    "§9.7 上下文预算规则",
+    "§9.8 Phase 0-1 REO最小可用",
+    "§3.7.4.1 自适应权重（需≥20条事件）",
+    "§9.8 Phase 2 REO半自动",
+    "§9.7 子规则4 A/B测试"
+  ],
+  "meta_lessons": [
+    {
+      "id": "ML1",
+      "lesson": "草案必须基于最新主文档版本号编写，声明所基于的版本",
+      "source": "P0版本错位"
+    },
+    {
+      "id": "ML2",
+      "lesson": "任何新增监测层必须遵守'只观测不阻断'——这是§3.7的硬约束",
+      "source": "P1边界违反"
+    },
+    {
+      "id": "ML3",
+      "lesson": "来源质量低≠提取思想不可用，但需完整证据限定和[Sp]标注",
+      "source": "P6证据校准"
+    },
+    {
+      "id": "ML4",
+      "lesson": "去隐喻化必须是执行性的（逐术语替换），不能是声明性的",
+      "source": "P2假去隐喻"
+    },
+    {
+      "id": "ML5",
+      "lesson": "二次确认偏误需结构性缓解：强制负面限定与正面引用等长或更长",
+      "source": "Codex D5.3+同一会话三次复现"
+    }
+  ]
+}

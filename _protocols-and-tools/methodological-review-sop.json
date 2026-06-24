@@ -1,0 +1,554 @@
+{
+  "metadata": {
+    "title": "独立审查标准操作程序 (Independent Review SOP)",
+    "version": "v1.0.4",
+    "version_note": "v1.4配套+C10/A9+Kimi审查修订",
+    "date": "2026-06-13",
+    "model": "DeepSeek-v4-pro (via Claude Code CLI shell)",
+    "status": "草案冻结，待试跑",
+    "forward_reference": "本文档是对 AI协作项目全生命周期框架 §9.2「独立审查」的具体操作化落地",
+    "backward_reference": "AI协作项目全生命周期框架 §9.2 应引用本文档作为其操作性附件",
+    "revision": "v1.4配套更新：C10/A9/version_binding/evidence_level"
+  },
+  "sections": {
+    "s1_trigger": {
+      "title": "何时触发",
+      "mandatory_triggers": {
+        "T1": {
+          "condition": "方法论资产产出",
+          "description": "框架、SOP、分类体系、评估rubric、模板——任何会被后续项目复用的结构性产出"
+        },
+        "T2": {
+          "condition": "结论将进入用户论文/正式交付物",
+          "description": "包括毕业论文、学术报告、对外发布的分析结论"
+        },
+        "T3": {
+          "condition": "决策涉及资源分配或不可逆操作",
+          "description": "数据删除、架构推倒重来、公开发布、提交竞赛结果"
+        },
+        "T4": {
+          "condition": "两个以上模型/agent给出冲突结论",
+          "description": "需要独立第三方裁决时"
+        }
+      },
+      "suggested_triggers": {
+        "S1": "单模型产出但复杂度高（超过3个推理步骤的链式结论）",
+        "S2": "使用了新颖/未经验证的方法",
+        "S3": "作者模型已知有系统性盲点"
+      },
+      "negative_examples": [
+        "纯格式转换（无内容判断）",
+        "已有独立审查结论且输入未变",
+        "用户明确声明「不需要审查」（需记录声明时间和上下文）"
+      ]
+    },
+    "s2_independence_definition": {
+      "title": "独立性定义与判定",
+      "two_axes": {
+        "axis1_backend": {
+          "name": "后端模型独立性",
+          "rule": "审查者使用的后端模型必须与作者使用的后端模型不同",
+          "not_independent": [
+            "另一个agent",
+            "另一个会话标签",
+            "同一模型的不同温度参数"
+          ],
+          "grading": {
+            "different_company": "独立",
+            "same_company_different_model": "半独立（需在报告中声明并降权）"
+          }
+        },
+        "axis2_context": {
+          "name": "上下文隔离性",
+          "rule": "审查者不得接触作者的中间推理、评分、结论",
+          "allowed_input": [
+            "源材料（被审查对象）",
+            "审查rubric",
+            "裸环境"
+          ]
+        }
+      },
+      "independence_levels": {
+        "IND": {
+          "label": "独立",
+          "axis1": "不同后端",
+          "axis2": "完全隔离",
+          "usage": "可作为一级证据"
+        },
+        "SEMI": {
+          "label": "半独立",
+          "axis1": "同公司不同型号 或 轴2部分隔离",
+          "axis2": "部分隔离",
+          "usage": "可作为二级证据，需声明局限性"
+        },
+        "NON": {
+          "label": "非独立",
+          "axis1": "同一后端 或 轴2未隔离",
+          "axis2": "未隔离",
+          "usage": "不可作为独立审查使用，仅作内部交叉检查"
+        }
+      },
+      "decision_tree": {
+        "question1": "审查者后端 ≠ 作者后端？",
+        "branch_yes": {
+          "question2": "上下文完全隔离？",
+          "branch_yes": "[IND] 独立",
+          "branch_no": "[SEMI] 半独立（声明泄露点）"
+        },
+        "branch_no": {
+          "question2": "同公司不同型号？",
+          "branch_yes": {
+            "question3": "上下文完全隔离？",
+            "branch_yes": "[SEMI] 半独立",
+            "branch_no": "[NON] 非独立"
+          },
+          "branch_no": "[NON] 非独立"
+        }
+      }
+    },
+    "s3_roles": {
+      "title": "角色分工",
+      "triangle": {
+        "author": {
+          "who": "产出被审查内容的模型/人",
+          "cannot_be": "—",
+          "responsibility": "提供源材料，回答事实性问题（但不得透露自身评分/推理）"
+        },
+        "operator": {
+          "who": "执行审查流程的人（通常是用户或指定的协调agent）",
+          "cannot_be": "不能是作者模型，不能是审查者模型",
+          "responsibility": "搭建裸环境、传递材料、收集结果、确保信息防火墙"
+        },
+        "reviewer": {
+          "who": "执行独立评分的模型",
+          "cannot_be": "不能与作者同后端，不能接触作者中间产出",
+          "responsibility": "独立阅读源材料→评分→挑战→终判"
+        }
+      },
+      "operator_firewall_duties": [
+        "从作者处提取源材料时，剥离所有评分、自评、结论性判断",
+        "向审查者传递前，验证裸环境完整性（§5 checklist）",
+        "不得向审查者透露「作者认为哪里好/哪里有问题」",
+        "不得向作者透露审查者的评分直到终判完成"
+      ]
+    },
+    "s4_execution_flow": {
+      "title": "执行流程",
+      "overview": "源材料 → [步骤一: 事实提取] → [步骤二: 独立评分] → [步骤三: 对抗式挑战] → [步骤四: 终判]",
+      "key_constraints": {
+        "scoring_before_challenge": "步骤二（评分）必须在步骤三（挑战）之前——评分须基于初次理解，颠倒将导致污染",
+        "devils_advocate_no_softening": "挑战方须尽最大努力找出问题，不得以「但总的来说还是不错的」收尾",
+        "provenance_every_step": "每步产出必须标注provenance：模型后端+会话标识+时间戳"
+      }
+    },
+    "s5_bare_environment": {
+      "title": "裸环境搭建",
+      "checklist": {
+        "C1": {
+          "item": "新会话/新对话",
+          "standard": "审查者会话不包含任何项目历史",
+          "verification": "检查会话开头无上下文"
+        },
+        "C2": {
+          "item": "无memory注入",
+          "standard": "审查者不加载用户的memory/偏好文件",
+          "verification": "确认未传递MEMORY.md或等效文件"
+        },
+        "C3": {
+          "item": "无项目文档",
+          "standard": "审查者不接触项目的其他文档",
+          "verification": "只传递本SOP + 源材料 + rubric"
+        },
+        "C4": {
+          "item": "无作者评分",
+          "standard": "源材料中剥离所有自评/结论",
+          "verification": "操作者预处理源材料"
+        },
+        "C5": {
+          "item": "无中间产出",
+          "standard": "审查者不看到作者草稿/推理链",
+          "verification": "只传递最终产出"
+        },
+        "C6": {
+          "item": "不同后端",
+          "standard": "审查者使用与作者不同的模型后端",
+          "verification": "记录双方后端provenance"
+        },
+        "C7": {
+          "item": "无先验标签",
+          "standard": "不告知审查者「这是谁写的」「什么水平」",
+          "verification": "匿名化源材料"
+        },
+        "C8": {
+          "item": "Rubric纯净",
+          "standard": "审查rubric不含导向性语言",
+          "verification": "操作者审核rubric措辞"
+        },
+        "C9": {
+          "item": "时间戳记录",
+          "standard": "每步操作记录时间戳",
+          "verification": "用于后置审计"
+        }
+      },
+      "degradation_detection": {
+        "full_bare": {
+          "condition": "C1-C9全部通过",
+          "result": "[IND]可达"
+        },
+        "partial_degradation": {
+          "condition": "C6不可行（同后端）",
+          "result": "最多 [NON]"
+        },
+        "severe_degradation": {
+          "condition": "C1-C4任一不可行",
+          "result": "流程降级为「内部交叉检查」，不适用本SOP"
+        }
+      }
+    },
+    "s6_fact_extraction": {
+      "title": "步骤一：事实提取",
+      "confidence_tiers": {
+        "T1": {
+          "label": "VERIFIED",
+          "definition": "可被公开可查来源验证",
+          "example": "引用自权威文献、官方文档、可复现的实验结果"
+        },
+        "T2": {
+          "label": "CONSISTENT",
+          "definition": "与审查者自身知识一致",
+          "example": "与模型训练数据中的共识一致"
+        },
+        "T3": {
+          "label": "PLAUSIBLE",
+          "definition": "逻辑自洽但无法验证",
+          "example": "推理链内部一致，但缺乏外部锚点"
+        },
+        "T4": {
+          "label": "UNVERIFIABLE",
+          "definition": "无法判断真伪",
+          "example": "超出审查者知识范围且无法查证"
+        }
+      },
+      "declaration_types": {
+        "FACT": "可验证的事实断言",
+        "INFERENCE": "从事实推导的结论",
+        "ASSUMPTION": "未声明的假设",
+        "VALUE": "价值判断/偏好"
+      },
+      "tool_limited_rule": "如果审查者因工具限制无法验证某声明，须标注 [TOOL-LIMITED] 而非降级置信度"
+    },
+    "s7_scoring": {
+      "title": "步骤二：独立评分",
+      "dimensions": {
+        "D1_logic": {
+          "name": "逻辑有效性",
+          "range": "1-5",
+          "description": "推理链是否无逻辑跳跃/循环/矛盾"
+        },
+        "D2_accuracy": {
+          "name": "事实准确性",
+          "range": "1-5",
+          "description": "可验证事实是否正确（参考§6 T1-T2）"
+        },
+        "D3_method": {
+          "name": "方法适当性",
+          "range": "1-5",
+          "description": "所选方法是否适合研究问题"
+        },
+        "D4_completeness": {
+          "name": "完整性",
+          "range": "1-5",
+          "description": "是否覆盖了必要的维度/边界条件/替代解释"
+        },
+        "D5_clarity": {
+          "name": "清晰度",
+          "range": "1-5",
+          "description": "表达是否清晰、结构是否合理"
+        },
+        "D6_insight": {
+          "name": "新颖性/洞察深度",
+          "range": "1-5",
+          "description": "是否有超出常规的洞察（对方法论资产尤其重要）"
+        }
+      },
+      "constraints": {
+        "score_reasoning_not_conclusion": "评「推理如何到达结论」，不评「结论对不对」",
+        "na_allowed": "如果某维度不适用于该材料类型，标记N/A并说明理由",
+        "anchor_required": "每项评分须附一句话锚定（为什么给这个分）",
+        "out_of_domain": "审查者缺乏某维度领域知识时，标记 [OUT-OF-DOMAIN] 而非强行评分"
+      },
+      "composite_score_rule": "综合评分 = 各维度评分的算术平均（N/A维度排除）。不做加权——加权本身是价值判断，应由人类用户决定。"
+    },
+    "s8_adversarial_challenge": {
+      "title": "步骤三：对抗式挑战",
+      "five_aspects": {
+        "A": {
+          "aspect": "替代解释",
+          "trigger_question": "「有没有其他解释能同样好地说明这些事实？」"
+        },
+        "B": {
+          "aspect": "隐藏假设",
+          "trigger_question": "「哪些假设被当成了既定事实？」"
+        },
+        "C": {
+          "aspect": "边界条件",
+          "trigger_question": "「在什么情况下这个结论会失效？」"
+        },
+        "D": {
+          "aspect": "反例/反证",
+          "trigger_question": "「有没有与结论矛盾的事实或案例？」"
+        },
+        "E": {
+          "aspect": "方法论替代",
+          "trigger_question": "「用另一种方法会不会得出不同结论？」"
+        }
+      },
+      "constraints": {
+        "no_softening": "每个挑战须以最尖锐的形式提出，不得附加缓和语",
+        "specific_not_abstract": "挑战须指向材料中的具体段落/声明/推理步骤，不得泛泛而谈",
+        "post_challenge_adjustment": "完成(A)-(E)所有挑战后，审查者重新审视步骤二的评分"
+      },
+      "adjustment_rules": {
+        "if_new_problem_found": "下调相关维度评分，记录「从X调整为Y，原因：挑战(Z)揭示...」",
+        "if_no_new_problem": "维持原评分，记录「经受住(A)-(E)挑战，评分不变」",
+        "if_fatal_problem": "触发红旗R1-R3（见§12），可能直接建议「弃用」"
+      }
+    },
+    "s9_final_judgment": {
+      "title": "步骤四：终判",
+      "verdicts": {
+        "KEEP": {
+          "meaning": "材料质量合格，可直接使用",
+          "action": "标注审查结论，归档"
+        },
+        "MINOR_REVISION": {
+          "meaning": "有可改进之处但不影响核心结论",
+          "action": "列出修改建议，作者修改后无需重新审查"
+        },
+        "MAJOR_REVISION": {
+          "meaning": "存在影响核心结论的问题",
+          "action": "列出问题，作者修改后须重新审查"
+        },
+        "DISCARD": {
+          "meaning": "材料不可用，核心结论不可靠",
+          "action": "记录弃用原因，触发根因分析"
+        }
+      },
+      "must_include": [
+        "综合评分（D1-D6平均）+ 各维度明细",
+        "独立性级别（[IND]/[SEMI]/[NON]）",
+        "关键挑战摘要（A-E中最重要的2-3个挑战）",
+        "终判结论 + 理由",
+        "独立性声明（见下）"
+      ],
+      "independence_declaration_format": {
+        "reviewer_backend": "<模型名称>",
+        "author_backend": "<作者模型名称>",
+        "axis1_different_backend": "true/false",
+        "axis2_context_isolated": "true/false",
+        "independence_level": "IND | SEMI | NON",
+        "degradation_notes": "<退化说明，如无可省略>",
+        "session_id": "<审查者会话标识>",
+        "timestamp": "<ISO 8601>"
+      }
+    },
+    "s10_post_hoc_audit": {
+      "title": "后置核验",
+      "audit_items": {
+        "A1": {
+          "item": "后端验证",
+          "standard": "审查者后端 ≠ 作者后端"
+        },
+        "A2": {
+          "item": "会话隔离",
+          "standard": "审查者会话无项目上下文泄露"
+        },
+        "A3": {
+          "item": "评分在前",
+          "standard": "步骤二的评分时间戳早于步骤三的挑战时间戳"
+        },
+        "A4": {
+          "item": "挑战不软化",
+          "standard": "步骤三的(A)-(E)不包含缓和语"
+        },
+        "A5": {
+          "item": "provenance完整",
+          "standard": "每步有后端+会话+时间戳记录"
+        },
+        "A6": {
+          "item": "声明嵌入",
+          "standard": "终判包含完整的independence_declaration"
+        },
+        "A7": {
+          "item": "调整有据",
+          "standard": "如有评分调整，记录了调整幅度和理由"
+        },
+        "A8": {
+          "item": "N/A有理",
+          "standard": "如有N/A标记，有合理说明"
+        }
+      },
+      "audit_conclusions": {
+        "PASS": {
+          "condition": "A1-A8全部通过",
+          "usage": "审查结论可作为正式证据使用"
+        },
+        "CONDITIONAL_PASS": {
+          "condition": "非关键项不通过（A5/A7/A8），独立性核心项（A1-A4/A6）通过",
+          "usage": "标注条件，可使用但需说明局限性"
+        },
+        "FAIL": {
+          "condition": "A1-A4或A6任一不通过",
+          "usage": "审查结论不可使用，需重新审查"
+        }
+      }
+    },
+    "s11_output_format": {
+      "title": "输出格式",
+      "dual_files": {
+        "md": "完整审查报告，包含所有步骤、评分、挑战、终判、审计结论",
+        "json": "结构化数据，字段与md章节一一对应"
+      }
+    },
+    "s12_red_flags": {
+      "title": "红旗条款",
+      "flags": {
+        "R1": {
+          "flag": "核心事实错误",
+          "trigger": "步骤一发现T2级以上的事实错误且影响核心结论",
+          "action": "直接建议「弃用」，不进入步骤二"
+        },
+        "R2": {
+          "flag": "循环推理",
+          "trigger": "结论被用作推导自身的前提",
+          "action": "建议「重大修改」"
+        },
+        "R3": {
+          "flag": "范畴错误",
+          "trigger": "方法不适用于研究问题类型",
+          "action": "建议「弃用」或「重大修改」"
+        },
+        "R4": {
+          "flag": "独立性伪证",
+          "trigger": "审计发现审查者实际接触了作者中间产出",
+          "action": "审查结论作废，重新审查"
+        },
+        "R5": {
+          "flag": "换壳不换模",
+          "trigger": "「审查者」和「作者」实际是同一后端的不同包装",
+          "action": "审查结论作废"
+        },
+        "R6": {
+          "flag": "审查衰减",
+          "trigger": "审查者的评分/挑战显著低于该模型在类似任务上的历史表现",
+          "action": "标记为「低置信度」，考虑补充审查"
+        },
+        "R7": {
+          "flag": "数据不可用替代",
+          "trigger": "审查者因数据不可用而使用了替代数据，但未声明替代的局限性",
+          "action": "标记为「数据污染风险」"
+        },
+        "R8": {
+          "flag": "时间错位",
+          "trigger": "审查者使用了已过时的信息验证「当前」结论",
+          "action": "标记时间局限性"
+        },
+        "R9": {
+          "flag": "裸环境泄露",
+          "trigger": "审计发现C1-C9任一未通过但未在报告中声明",
+          "action": "审查结论降级"
+        }
+      }
+    },
+    "s13_failure_modes": {
+      "title": "常见失败模式",
+      "modes": {
+        "pseudo_independence": {
+          "name": "伪独立",
+          "phenomenon": "「另一台机器上的同一个模型」被当作「独立审查者」",
+          "detection": "轴1后端相同 = 非独立，无论包装成什么",
+          "example": "Claude Code的不同agent做对抗——同一后端，非独立",
+          "prevention": "轴1强制不同后端（§2.1），provenance当场记录"
+        },
+        "review_decay": {
+          "name": "审查衰减",
+          "phenomenon": "审查者的对抗性随时间递减——第5次审查比第1次显著温和",
+          "detection": "对比同一审查者在不同时间点的(A)-(E)挑战尖锐度",
+          "prevention": "魔鬼代言人不得软化约束（§8.2），审计A4"
+        },
+        "tool_limitation_camouflage": {
+          "name": "工具受限伪装",
+          "phenomenon": "审查者因工具限制无法验证，但未标注[TOOL-LIMITED]，而是给出了模糊的评分",
+          "detection": "逐条检查步骤一声明的验证方式",
+          "prevention": "§6.3强制标注规则，§7.2的N/A和[OUT-OF-DOMAIN]机制"
+        }
+      }
+    },
+    "s14_cross_references": {
+      "title": "衔接索引",
+      "forward_ref": "AI协作项目全生命周期框架 §9.2「独立审查」→ 本SOP（操作性落地）",
+      "backward_refs": {
+        "framework_s9_2": {
+          "relation": "继承并操作化",
+          "description": "§2 独立性定义 继承自框架§9.2"
+        },
+        "multimodel_bare_env": {
+          "relation": "提炼并通用化",
+          "description": "§5 裸环境搭建 提炼自多模型对照实验三套裸环境checklist"
+        },
+        "kill_test_first": {
+          "relation": "互补",
+          "description": "§8 对抗式挑战 互补于kill-test-first——前者事前否决，本SOP事后审查"
+        },
+        "multimodel_red_flags": {
+          "relation": "提炼并扩展",
+          "description": "§12 红旗条款 提炼自多模型对照实验红旗记录"
+        },
+        "etf_r5_accident": {
+          "relation": "教训",
+          "description": "§13 失败模式「数据不可用→替代」来自ETF R5消融事故"
+        }
+      },
+      "complementarity": {
+        "vs_kill_test_first": {
+          "timing": {
+            "kill_test_first": "事前（动手前）",
+            "sop": "事后（产出后）"
+          },
+          "focus": {
+            "kill_test_first": "「该不该做」",
+            "sop": "「做得好不好」"
+          },
+          "independence": {
+            "kill_test_first": "要求独立后端+裸环境",
+            "sop": "要求独立后端+裸环境"
+          },
+          "output": {
+            "kill_test_first": "否决/有条件通过/通过",
+            "sop": "保留/小改/重大修改/弃用"
+          },
+          "relation": "互补，可串联使用"
+        },
+        "vs_multimodel_experiment": "多模型对照实验是验证「多模型>单模型」假设的预登记实验。本SOP吸收了其实践教训：三层污染排查→§5裸环境checklist，红旗与治理→§12红旗条款，模型provenance不可考→§9.3强制性独立声明"
+      }
+    }
+  },
+  "appendices": {
+    "A_glossary": {
+      "后端 (Backend)": "实际执行推理的模型，如 deepseek-v4-pro, claude-sonnet-4-20250514, gpt-5",
+      "源材料 (Source Material)": "被审查的产出物",
+      "裸环境 (Bare Environment)": "不含项目上下文、不含作者中间产出、不含memory的审查者会话环境",
+      "操作者 (Operator)": "搭建裸环境并作为信息防火墙的人/agent",
+      "魔鬼代言人 (Devil's Advocate)": "系统性地为对立面辩护的角色，用于压力测试",
+      "provenance": "模型后端来源记录，用于事后追溯独立性"
+    },
+    "B_revision_history": [
+      {
+        "version": "v1.0",
+        "date": "2026-06-13",
+        "changes": "初版，14章+2附录",
+        "author_model": "DeepSeek-v4-pro (via Claude Code CLI shell)"
+      }
+    ]
+  }
+}

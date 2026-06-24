@@ -1,0 +1,1954 @@
+Reading prompt from stdin...
+OpenAI Codex v0.138.0
+--------
+workdir: 
+model: gpt-5.5
+provider: packycode
+approval: never
+sandbox: danger-full-access
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ef804-6790-7032-a45e-5870acd0de5d
+--------
+user
+你是一名独立审查者。任务：核对 `AI协作项目全生命周期框架.json` 是否正确同步了 `.md` 的 2026-06-23 发布前订正。
+
+请用你自己的搜索策略（grep/读取/解析 JSON），不要依赖我给的关键词。工作目录已是项目根目录。
+
+## 背景
+
+`.json` 是 `.md` 的手工维护结构化镜像（不是逐行镜像，没有全量生成器）。2026-06-23 有一批"发布前订正"先进了 `.md`，刚才有人把其中 3 处补进了 `.json`。请独立验证这 3 处是否正确、完整、且没有引入副作用。
+
+## 需要你核对的 3 处
+
+1. **§13.1.2 项目代号说明**：`.md` 的 §13.1.2 有一张 9 行的项目代号表（代号 / 一句话定性 / 案例库是否公开）。请确认 `.json` 里是否新增了对应的结构化内容，且 9 个代号、定性、公开状态与 `.md` 表格**逐行一致**（特别注意 prompt-tdd / 形态匹配 / BDC2026 / 并购重组 / ETF 项目 V3.6 / PocketFlow / GitNexus / Evolver / Small_Scale 这 9 个，公开状态"否/是"是否对得上）。
+
+2. **§13.2 Constraint Decoupling 措辞**：`.md` 的 §13.2 表格里 Constraint Decoupling 一行，"本框架可借鉴的"列写的是"已采纳"（不是"已验证"）。请确认 `.json` 里对应的 Constraint_Decoupling 条目 status 是否也是"已采纳"。同时确认 `.json` 里**其他**用到"已验证"的地方**没有被误改**（应只改这一处）。
+
+3. **"今日操作"→"当日操作"**：`.md` 的 §14 changelog/版本时间线里，旧的"今日操作"措辞已改为"当日操作"。请确认 `.json` 的 version_timeline 里相应字段也已改为"当日操作"，且没有过期的"今日操作"残留（注意：metadata.release_prep_errata_20260623 这个订正说明字段里出现的"今日操作→当日操作"是描述文字，属正常，不算残留）。
+
+## 额外检查
+
+4. `.json` 是否仍是**合法 JSON**（能被 json.load 解析）。
+5. `.json` 的版本号是否仍为 v1.6.4（本次订正不升版本号）。
+6. 是否有**意料外的副作用**：本次只应改动这 3 处 + 新增一个 metadata 订正说明字段，请确认没有其他内容被破坏（可对比 `AI协作项目全生命周期框架.json.pre_v164_sync.backup` 备份文件做 diff）。
+
+## 输出格式
+
+对每一项给出：PASS / FAIL / 部分通过，附你查到的证据（行号或字段路径）。最后给总体裁决。请只陈述你独立查到的事实，不要假设我说的就是对的。
+
+codex
+我会先从文件结构和相关章节定位开始，分别抽取 `.md`、当前 `.json`、备份 `.json` 的内容，再用结构化解析和 diff 交叉核对。
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'Get-ChildItem -Force' in 
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "rg -n \"13\\.1\\.2|13\\.2|Constraint Decoupling|Constraint_Decoupling|今日操作|当日操作|release_prep_errata|version|v1\\.6\\.4\" ." in 
+ succeeded in 183ms:
+.\project.yaml:8:  description: "AI 协作方法论框架——半开放的个人方法论工具（v1.6.4）"
+.\project.yaml:69:version:
+.\project.yaml:71:  label: "v1.6.4 — prompt-tdd A1 实验写回 §6.3.2 [E-] ceiling-limited + 发布前订正(M8/M10+8处措辞)"
+.\README.md:3:**版本**：v1.6.4（2026-06-22）  
+.\README.md:47:├── verify_version_consistency.py       ← 版本一致性校验脚本
+.\CLAUDE.md:5:- 当前状态：active（v1.6.4，冻结已解除；prompt-tdd A1/A2/A3 三实验链全部写回+M8/M10证据标注订正，2026-06-24）
+.\CLAUDE.md:14:  - `AI协作项目全生命周期框架.md`（主文档，约 16 万字符/约 310KB，v1.6.4，含 6 Mermaid 图；精确统计随版本变动不在此维护）
+.\CLAUDE.md:15:  - `AI协作项目全生命周期框架.json`（主配套，~170KB，v1.6.4）
+.\CLAUDE.md:16:  - `AI协作项目全生命周期框架.docx`（docx版，~816KB，v1.6.4）
+.\CLAUDE.md:34:  - 主文档：`AI协作项目全生命周期框架.md`（约 310KB，v1.6.4）
+.\CLAUDE.md:35:  - 主配套JSON：`AI协作项目全生命周期框架.json`（~170KB，v1.6.4）
+.\CLAUDE.md:44:  - `AI协作项目全生命周期框架.md` —— 主框架文档（~313KB，v1.6.4）
+.\CLAUDE.md:45:  - `AI协作项目全生命周期框架.json` —— 主配套（~170KB，v1.6.4）
+.\CLAUDE.md:46:  - `AI协作项目全生命周期框架.docx` —— docx版（~816KB，v1.6.4）
+.\CLAUDE.md:75:- **v1.6.4（2026-06-22）**：prompt-tdd A1 Flow-as-Node实验写回——§6.3.2 [E-] ceiling-limited，7轮双后端审查链闭合，三实验链（A1+A2+A3）全部写回
+.\CLAUDE.md:146:- PocketFlow/prompt-tdd项目 —— v1.5.3-v1.6.4 全部写回来源
+.\inventory.csv:21:_archive/v1.5.1冻结期_待执行协议清单.md,.md,13.2,2026-06-21 21:59
+.\inventory.csv:203:verify_version_consistency.py,.py,13.4,2026-06-23 01:42
+.\project_status.md:17:- **主文档订正 8 处**（Codex CLI 执行 + Opus 复核,挂 v1.6.4 不升版）：
+.\project_status.md:18:  - M1 header v1.6"待 Codex 验证"→ 已闭合；M2 §2.6"待自动化"→ 已脚本化；M3 §14 changelog"今日操作"→"当日操作"
+.\project_status.md:19:  - M4 新增 §13.1.2 项目代号说明表（9 代号）；M5/M6 形态匹配/prompt-tdd 补定性
+.\project_status.md:20:  - A-1 §10.2"你们 ETF 项目 V3.6"→ 中性第三人称；A-2 §13.2"我们的"→"本框架"、"已验证"→"已采纳"
+.\project_status.md:21:  - 复核：11 项目标措辞零残留；修了 Codex 一处双重括号；记录登记于 header + §14「v1.6.4 发布前订正批次」
+.\project_status.md:49:- 当前阶段: v1.6.4（发布准备中）——P0全9项通过+正体中文翻译完成(经Qwen审校修正)+路径清理完成
+.\project_status.md:60:- 讨论 GitHub 配置：仓库命名/tag v1.6.4/描述+topics → P1 → 等 push 前
+.\verify_version_consistency.py:8:    - 主 JSON metadata.version
+.\verify_version_consistency.py:10:    - project.yaml version.number
+.\verify_version_consistency.py:20:用法: python verify_version_consistency.py [--fix] [--skip-archive] [--verbose]
+.\verify_version_consistency.py:47:def find_version_in_text(text, patterns=None):
+.\verify_version_consistency.py:52:            r'version[:\s]+"?v?(\d+\.\d+(?:\.\d+)?)',  # version字段
+.\verify_version_consistency.py:65:def extract_md_version(text):
+.\verify_version_consistency.py:99:        # 跳过框架更新/配套引用（"v1.6.4 框架配套更新"）
+.\verify_version_consistency.py:113:def check_version(expected, found, source_name, detail=""):
+.\verify_version_consistency.py:157:        md_ver = extract_md_version(md_text)
+.\verify_version_consistency.py:163:            json_ver = jd.get('metadata', {}).get('version', None)
+.\verify_version_consistency.py:170:            ok, msg = check_version(md_ver, json_ver, f"{md_rel} (v{md_ver}) ↔ {json_rel} ({json_ver})")
+.\verify_version_consistency.py:172:            ok, msg = False, f"  FAIL: {md_rel}=v{md_ver} but {json_rel} has NO version in metadata"
+.\verify_version_consistency.py:174:            ok, msg = False, f"  FAIL: {json_rel}=v{json_ver} but {md_rel} has NO detectable version"
+.\verify_version_consistency.py:176:            ok, msg = False, f"  FAIL: {md_rel} ↔ {json_rel}: neither has detectable version"
+.\verify_version_consistency.py:199:    version_file = PROJECT / "VERSION"
+.\verify_version_consistency.py:200:    if not version_file.exists():
+.\verify_version_consistency.py:204:    EXPECTED_VERSION = version_file.read_text(encoding='utf-8').strip()
+.\verify_version_consistency.py:205:    print(f"Expected framework version: {EXPECTED_VERSION}")
+.\verify_version_consistency.py:219:    md_hits = find_version_in_text(md_text[:2000])
+.\verify_version_consistency.py:221:        ok, msg = check_version(EXPECTED_VERSION, md_hits[0][2], "主MD版本头")
+.\verify_version_consistency.py:227:    # 2. JSON metadata.version
+.\verify_version_consistency.py:231:        json_ver = j.get('metadata', {}).get('version', 'MISSING')
+.\verify_version_consistency.py:232:        ok, msg = check_version(EXPECTED_VERSION, json_ver, "主JSON metadata.version")
+.\verify_version_consistency.py:234:        ok, msg = False, f"  FAIL: 主JSON metadata.version: {e}"
+.\verify_version_consistency.py:243:            ok, msg = check_version(EXPECTED_VERSION, rev_ver_match.group(1), "主JSON metadata.revision")
+.\verify_version_consistency.py:251:        ok, msg = check_version(EXPECTED_VERSION, readme_ver.group(1), "README.md")
+.\verify_version_consistency.py:261:        ok, msg = check_version(EXPECTED_VERSION, yaml_ver.group(1), "project.yaml")
+.\verify_version_consistency.py:269:    ref_hits = find_version_in_text(ref_text)
+.\verify_version_consistency.py:286:        ok, msg = check_version(EXPECTED_VERSION, status_ver.group(1), "project_status.md")
+.\verify_version_consistency.py:302:                        ok, msg = check_version(EXPECTED_VERSION, latest, "docx core.xml")
+.\PUBLISHING.md:3:**For**: `AI协作项目全生命周期框架` v1.6.4  
+.\PUBLISHING.md:12:- **A working document**, not a finished product. Version numbers (v1.6.4) reflect iterative refinement, not stable releases.
+.\PUBLISHING.md:32:| JSON companion | AI-generated structured representation | Human verified version consistency |
+.\PUBLISHING.md:45:If you cite this work, please include the version number (e.g., "v1.6.4") as the content may change.
+.\_workflows\char_stats_v163.json:4:    "version": "v1.6.3",
+.\AI协作项目全生命周期框架.json:5:    "version": "v1.6.4",
+.\AI协作项目全生命周期框架.json:7:    "status": "草案, v1.6.4 (§6.3.2 Flow-as-Node嵌套工作流对照证据[E-] ceiling-limited, 经7轮双后端审查链闭合). v1.6.4新增: §6.3.2(Flow-as-Node对照实验: Tier 0负证据, 3/5类别天花板, ΔF1=0.000, 7轮审查链Codex GPT-5.5×4+Qwen qwen3.7-max×3, 0未闭合发现). v1.6.3新增: §1.8局限#9(作者-读者同构)+#10(外部依赖漂移)+§2.6规则退役判定+配套外部依赖登记表+可调参数索引+OPEN-4协议修订, 经Codex GPT-5.5+Qwen qwen3.7-max双后端审查零分歧收敛. v1.6.2新增: §7.7(被动观测: 定义与概念边界+三次经验种子+扩展分类框架待实证+Failure Space 10种失效模式+硬约束+深度版模板增强) + §9.11(跨层可观测性设计: L0-L5各层可观测性关切+三原则). v1.6.1新增: §4.1.1 Qwen复现段落(A_flat=0.806/B_structured=0.792/Δ=−0.014, 方向一致, GPT-5.5+Qwen双模型点证据, 证据二维M0→M2→M1*(v1.6.4订正)) + §1.8局限声明更新 + §6.3.1交叉引用更新 + §9.6.1 A2行M0→M2. v1.6 P0新增: §9.6.1(二维证据等级: 内部强度A-D × 跨模型推广性M0-M3/N/A) + §9.10(MF三层模板: 问题识别+解决方案适用条件+已知反例/失效模式) + §4.1.1.1(对照实验设计强制检查清单CK1-CK6, Tier 1硬门+条件触发). v1.6 P1新增: §2.6(框架维护流程: 版本号规则/审查门/三件套同步/冻结期) + §1.8(已知局限与诚实声明: 8条系统性局限) + §9.9路径D(方法论迁移者30-45min) + 附录H反向交叉引用. v1.5.5新增: §6.3.1路由声明格式对照证据[E-](A3实验写回). v1.5.4新增: §4.1.1执行合约[E-](A2实验写回). v1.5.3新增: §1.7(最小核心+示例外挂)+§9.9(阅读导航)+附录H(反模式清单). v1.5.2写回: Protocol 3试跑1的6项改进. v1.5.1新增: §3.7.0+§3.7.4.1+§9.7+§9.8(四个[Sp]节). 方法论来源: prompt-tdd A1+A2+A3三实验链+被动观测三事件跨案例分析+Evolver项目(4.1-4.2/10)+PocketFlow(DeepSeek/ChatGPT-5.5/GLM-5.2)+GitNexus+Small_Scale. v1.6.4经Codex GPT-5.5×4+Qwen qwen3.7-max×3审查链闭合. v1.6.3经Codex+Qwen双后端审查零分歧收敛. v1.6.2经Codex GPT-5.5魔鬼代言人审查(有条件支持, 意见已系统性纳入). v1.6经Codex GPT-5.5初审(FAIL_WITH_MAJOR_ISSUES)→修正→重审(FAIL_WITH_CAVEATS)→修正. v1.6.1经Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR + 5 MEDIUM/MINOR)→修正. 审查独立性: [SEMI]——后端不同但提示词由作者撰写.",
+.\AI协作项目全生命周期框架.json:8:    "status_note": "草案冻结已解除(Protocol 3试跑1 Retrospect完成, 条件满足). v1.6.4写回prompt-tdd A1 Flow-as-Node Tier 0实验(PF-A1-001: Flow-as-Node [E-] ceiling-limited→§6.3.2, 7轮双后端审查链闭合). v1.6.3维护流程补全+诚实声明扩展(Codex+Qwen双后端审查零分歧收敛). v1.6.2写回被动观测+跨层可观测性设计(Codex+Qwen双后端审查). v1.6.1写回prompt-tdd A2 Qwen跨模型复现(PF-8扩展: Qwen复现[E-]→§4.1.1, 证据二维M0→M2→M1*(v1.6.4订正)). v1.6写回A2+A3深度复盘(P0证据体系升级+P1维护性增强). v1.5.5写回prompt-tdd A3实验(PF-9: Action Routing [E-]→§6.3.1). v1.5.4写回prompt-tdd A2实验(PF-8: prep/exec/post [E-]→§4.1.1). v1.5.3写回PocketFlow A类资产(3项: §1.7+§9.9+附录H). v1.5.2写回Protocol 3试跑1反馈(6项改进). 仍待多项目验证. v1.5.1新增: §3.7.0事件流健康度监测[Sp]+§3.7.4.1自适应权重淘汰[Sp]+§9.7经验注入上下文预算规则[Sp]+§9.8研究经验对象(REO)[Sp]. 方法论来源=Evolver项目分析(arXiv:2604.15097,综合评分4.1-4.2/10,四轮独立审查跨三个后端). 完整规格见_research/框架v1.5.1_新增节草案.md. v1.5新增: §6.2模式8/9+§9.2+§9.6. v1.4新增: §3.7.2.6/§5.3.1/§6.2/§6.5.1/§9.1/§1.5/§9.4/附录H. v1.3遗留OPEN-1~4状态不变(OPEN-5已于v1.5.1冻结期关闭→§8.8). v1.3新增§3.7漂移检测层(五类信号+告警聚合+规则退役+宪法审计+闭环策展+监测模板)——将OPEN-1从候选草案升级为正式操作化方案. 经ChatGPT-5.5独立审查全件(加权6.1/10,修改后通过), 10项修订已执行. 21个决策点已拍板, 但Dev Log 7/10组件待实证、框架整体已经2次真实试跑(Protocol 3+prompt-tdd A1/A2/A3).",
+.\AI协作项目全生命周期框架.json:9:    "description": "AI协作项目的完整操作化框架——从Spec到Closure的七层+四跨层关切+开发手册产物. v1.6.4新增: §6.3.2 Flow-as-Node嵌套工作流对照证据[E-] ceiling-limited(prompt-tdd A1 Tier 0实验, GPT-5.5 temp=0, n=20/臂, 7轮双后端审查链闭合). v1.6.3新增: §1.8局限#9(作者-读者同构)+#10(外部依赖漂移)+§2.6规则退役判定+配套外部依赖登记表+可调参数索引+OPEN-4协议修订(Codex+Qwen双后端审查零分歧收敛). v1.6.2新增: §7.7被动观测+§9.11跨层可观测性设计(Codex GPT-5.5魔鬼代言人审查). v1.6.1新增: A2 Qwen跨模型复现写回(首次跨模型方向一致弱复现, 证据二维M0→M2→M1*(v1.6.4订正)). v1.6新增: §9.6.1二维证据等级+§9.10 MF三层模板+§4.1.1.1对照实验设计强制检查清单+§2.6框架维护流程+§1.8诚实声明+§9.9路径D+附录H反向交叉引用. v1.5.5新增§6.3.1路由声明格式对照证据[E-](A3实验写回). v1.5.4新增§4.1.1执行合约[E-](A2实验写回). v1.5.3新增§1.7(最小核心+示例外挂)+§9.9(阅读导航)+附录H(反模式清单). v1.1新增Dev Log(开发手册). v1.2经三模型独立审查链校准. v1.3新增§3.7漂移检测层(五类信号+四级告警+规则退役+宪法审计+闭环策展+监测模板). v1.4新增§3.7.2.6难度分层监测+§5.3.1能力获取vs行为塑造+§6.5.1文件系统IPC反面模式+§9.1训练-评估对齐/Import完整性/配置验证/接口退化. v1.5新增§6.2模式8(Pipeline DAG)+模式9(Structured Multi-Role Review)+§9.2多轮多后端独立审查编排+§9.6证据分类(S/E/I/J/Sp). v1.5.1新增§3.7.0事件流健康度监测+§3.7.4.1自适应权重淘汰+§9.7经验注入上下文预算规则+§9.8研究经验对象(REO). v1.5.2写回Protocol 3试跑1的6项改进(C1/C5测量方法/HG-0双检查点/审查频率适应性上调/HG交互留存/C8≥2轮异后端建议/S-tier降级阈值). v1.5.3新增§1.7(最小核心+示例外挂)+§9.9(阅读导航与难度分层)+附录H(反模式清单). 方法论来源=prompt-tdd A1+A2+A3三实验链+PocketFlow三轮独立分析+Evolver项目分析(GitNexus→Small_Scale→PilotDeck→Evolver四项目链). 基于ETF项目V3.6代码头部注释实践提炼. v1.6.4发布前订正(M8/M10): §4.1.1[B+/M2]→[B+/M1*](阴性方向一致+条件偏差, Codex+Qwen双后端审查)+§9.6.1新增规则#6(阴性结果的M等级降级).",
+.\AI协作项目全生命周期框架.json:15:        "relevant_version": "v1.2"
+.\AI协作项目全生命周期框架.json:20:        "relevant_version": "v1.5.1"
+.\AI协作项目全生命周期框架.json:25:        "relevant_version": "v1.5.1"
+.\AI协作项目全生命周期框架.json:30:        "relevant_version": "v1.5.1"
+.\AI协作项目全生命周期框架.json:35:        "relevant_version": "v1.5.4",
+.\AI协作项目全生命周期框架.json:52:      "prompt-tdd A1 Flow-as-Node对照实验(2026-06-22: 层级化vs扁平工作流描述, GPT-5.5 temp=0, n=20/臂, 7轮双后端审查链, PF-A1-001→框架v1.6.4 §6.3.2 [E-] ceiling-limited)"
+.\AI协作项目全生命周期框架.json:54:    "revision": "v1.6.4 (2026-06-22)",
+.\AI协作项目全生命周期框架.json:55:    "revision_source": "v1.6 Minor升级(A2+A3深度复盘 + Codex v1.5.5交叉验证 + prompt-tdd A2+A3实验写回 + 跨版本维护实践规范化 + PocketFlow三轮独立分析 + Evolver/GitNexus/Small_Scale项目分析) + v1.6.1 Patch升级(A2 Qwen qwen3.7-max跨模型复现写回) + v1.6.2 Patch升级(§7.7被动观测+§9.11跨层可观测性设计) + v1.6.3 Patch升级(维护流程补全+诚实声明扩展) + v1.6.4 Minor升级(prompt-tdd A1 Flow-as-Node Tier 0实验写回——§6.3.2 [E-] ceiling-limited, 7轮双后端审查链闭合)",
+.\AI协作项目全生命周期框架.json:321:        "version": "v1.5.5",
+.\AI协作项目全生命周期框架.json:335:        "version": "v1.6.2",
+.\AI协作项目全生命周期框架.json:516:        "version": "v1.6",
+.\AI协作项目全生命周期框架.json:526:        "version": "v1.6.1",
+.\AI协作项目全生命周期框架.json:537:    "mermaid_conversion": {
+.\AI协作项目全生命周期框架.json:558:        "version": "1.6.4",
+.\AI协作项目全生命周期框架.json:562:        "summary": "v1.6.4 Minor升级——prompt-tdd A1 实验写回 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited。Tier 0负证据(3/5类别天花板, ΔF1=0.000)。",
+.\AI协作项目全生命周期框架.json:565:            "id": "v1.6.4-1",
+.\AI协作项目全生命周期框架.json:571:            "id": "v1.6.4-2",
+.\AI协作项目全生命周期框架.json:573:            "desc": "Header元数据新增A1写回声明(v1.6.4描述段+状态行更新)",
+.\AI协作项目全生命周期框架.json:577:            "id": "v1.6.4-3",
+.\AI协作项目全生命周期框架.json:579:            "desc": "§14版本时间线新增v1.6.4行+本变更节",
+.\AI协作项目全生命周期框架.json:583:            "id": "v1.6.4-4",
+.\AI协作项目全生命周期框架.json:585:            "desc": "VERSION(1.6.3→1.6.4) + JSON metadata全量更新(date/status/changelog/version_label/revision) + README/CLAUDE/project_status/project.yaml/reference_files同步至v1.6.4",
+.\AI协作项目全生命周期框架.json:596:        "version": "1.6.3",
+.\AI协作项目全生命周期框架.json:607:        "version": "v1.6.2",
+.\AI协作项目全生命周期框架.json:659:        "version": "v1.6.1",
+.\AI协作项目全生命周期框架.json:662:        "trigger": "A2 Qwen qwen3.7-max跨模型复现完成——48/48收集成功, Codex GPT-5.5单评分者盲评: A_flat=0.806, B_structured=0.792, Δ=−0.014, 方向与GPT-5.5原实验一致(A ≥ B, H1不被支持), 首次跨模型方向一致弱复现, 证据二维M0→M2→M1*(v1.6.4订正)",
+.\AI协作项目全生命周期框架.json:663:        "summary": "v1.6.1 Patch升级——A2 Qwen跨模型复现写回. §4.1.1新增复现段落(含限制声明) + §1.8局限声明更新 + §6.3.1交叉引用更新 + §9.6.1 A2证据二维M0→M2→M1*(v1.6.4订正). 经Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR + 5 MEDIUM/MINOR)→修正.",
+.\AI协作项目全生命周期框架.json:686:            "desc": "§9.6.1 A2行证据二维M0→M2→M1*(v1.6.4订正)(跨2模型家族验证)",
+.\AI协作项目全生命周期框架.json:721:        "version": "v1.6",
+.\AI协作项目全生命周期框架.json:783:        "version": "v1.5.5",
+.\AI协作项目全生命周期框架.json:793:        "version": "v1.5.4",
+.\AI协作项目全生命周期框架.json:816:    "version_timeline": [
+.\AI协作项目全生命周期框架.json:819:        "version": "v1.0 → v1.1",
+.\AI协作项目全生命周期框架.json:827:        "version": "v1.2",
+.\AI协作项目全生命周期框架.json:835:        "version": "v1.3 → v1.4",
+.\AI协作项目全生命周期框架.json:843:        "version": "v1.5 → v1.5.1",
+.\AI协作项目全生命周期框架.json:851:        "version": "v1.5.2",
+.\AI协作项目全生命周期框架.json:859:        "version": "v1.5.3",
+.\AI协作项目全生命周期框架.json:867:        "version": "v1.5.4",
+.\AI协作项目全生命周期框架.json:869:        "evidence": "当日操作；三件套全量同步+Codex交叉验证通过",
+.\AI协作项目全生命周期框架.json:875:        "version": "v1.5.5",
+.\AI协作项目全生命周期框架.json:877:        "evidence": "当日操作；A3闭合报告写回",
+.\AI协作项目全生命周期框架.json:882:        "version": "v1.6",
+.\AI协作项目全生命周期框架.json:884:        "evidence": "当日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正",
+.\AI协作项目全生命周期框架.json:889:        "version": "v1.6.1",
+.\AI协作项目全生命周期框架.json:890:        "event": "Patch升级: A2 Qwen qwen3.7-max跨模型复现写回——§4.1.1新增复现段落+§1.8局限声明更新+§6.3.1交叉引用更新+§9.6.1 A2证据二维M0→M2→M1*(v1.6.4订正); 伴随改进: §2.6三件套同步协议新增VERSION文件检查(教训: VERSION自v1.5.4起未更新) + JSON root changelog清理(→metadata.changelog_legacy)",
+.\AI协作项目全生命周期框架.json:891:        "evidence": "当日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)",
+.\AI协作项目全生命周期框架.json:895:    "version_timeline_note": "时间线基于独立文件证据（旧版docx/md快照的版本头与footer）交叉核实。06-13存疑——仅changelog文本证据且已知同源错误。教训：changelog文本≠文件快照；未来版本应保留每版独立快照。详见.md §14版本时间线。",
+.\AI协作项目全生命周期框架.json:936:            "sub_version": "v1.2追加(同日,ETF复盘驱动)"
+.\AI协作项目全生命周期框架.json:943:            "sub_version": "v1.2追加(同日,ETF复盘驱动)"
+.\AI协作项目全生命周期框架.json:1005:            "location": "§13.2",
+.\AI协作项目全生命周期框架.json:1129:        "source_document": "../PocketFlow-analysis/Methodology_Asset_Conversion.md §8.5汇总表",
+.\AI协作项目全生命周期框架.json:1202:    "changelog_legacy_note": "Legacy changelog entries (v1.2 through v1_5_3) in original per-version dict format. Current changelog (v1.5.4+) is in metadata.changelog as a list. Moved from root level to metadata on 2026-06-20 during v1.6.1 sync cleanup.",
+.\AI协作项目全生命周期框架.json:1203:    "version_label": "v1.6.4——prompt-tdd A1 实验写回 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited，经7轮双后端审查链闭合",
+.\AI协作项目全生命周期框架.json:1205:    "release_prep_errata_20260623": "2026-06-23 发布前订正（不升版本号，挂 v1.6.4）补入 .json：新增 §13.1.2 项目代号说明（project_codenames）+ §13.2 Constraint Decoupling 已验证→已采纳 + version_timeline 今日操作→当日操作。对应 .md 的 §14「v1.6.4 发布前订正批次」。同步执行：Claude Opus 4.8 (via Claude Code CLI)，2026-06-24。"
+.\AI协作项目全生命周期框架.json:2939:      "Constraint_Decoupling": {
+.\AI协作项目全生命周期框架.json:2969:      "Agent版本管理（versioning/canary/rollback）",
+.\AI协作项目全生命周期框架.json:2973:      "_comment": "v1.6.4 发布前订正（2026-06-23）新增。对应 md §13.1.2 项目代号说明。代号是框架方法论的证据来源，个人项目案例库不随框架公开发布，此处仅作可理解性锚点。",
+.\AI协作项目全生命周期框架.json:3125:    "pocketflow_v1_5_3": "[Sp] v1.5.3新增三节(§1.7/§9.9/附录H)的思想源于PocketFlow项目(../PocketFlow-analysis/)的三轮独立分析. B1(最小核心+示例外挂)和B2(难度分层)的可迁移性经DeepSeek/ChatGPT-5.5/GLM-5.2三方确认; 反模式H.2-H.4的案例事实经源码直接验证[S]，可迁移性经≥2后端确认[J]. 但在本框架场景中的行为有效性/读者反馈/反模式触发频率均待试跑验证. PocketFlow分析报告和Methodology_Asset_Conversion.md存在于PocketFlow-analysis目录下."
+.\AI协作项目全生命周期框架.json:3635:      "单模型证据主导——A2/A3最初均基于GPT-5.5 temp=0单模型。2026-06-20更新: A2经Qwen qwen3.7-max跨模型复现(48/48收集, Codex盲评, Δ=−0.014方向一致), 首次跨模型方向一致弱复现, 证据二维M0→M2→M1*(v1.6.4订正)。A3尚未经跨模型复现。A2+A3的跨任务方向一致观察仍限GPT-5.5。以上结论严格限定于temp=0/CLI默认中文结构化判别任务内。",
+.\AI协作项目全生命周期框架.json:3652:      "versioning": "语义化版本(Major.Minor.Patch), Major需≥3后端审查+试跑, Minor需≥2后端审查, Patch可单后端",
+.\AI协作项目全生命周期框架.json:3660:      "version": "v1.6.1",
+.\AI协作项目全生命周期框架.json:3670:        ".json配套——包含version_timeline+新节execution_contract",
+.\AI协作项目全生命周期框架.json:3677:        "version": "v1.6.4",
+.\AI协作项目全生命周期框架.json:3679:        "md": "v1.6.4 ✅",
+.\AI协作项目全生命周期框架.json:3680:        "json": "v1.6.4 ✅ (本次同步, metadata全量更新+§6.3.2新增)",
+.\AI协作项目全生命周期框架.json:3681:        "docx": "v1.6.4 ✅ (2026-06-22 pandoc全量重生成, Mermaid 6图PNG, 边距1.8cm)",
+.\AI协作项目全生命周期框架.json:3682:        "version_file": "1.6.4 ✅"
+.\_workflows\codex_crosscheck_v161_sync_prompt.txt:11:- [ ] .json metadata.version 是否为 "1.6.1"？
+.\_workflows\codex_crosscheck_v161_sync_prompt.txt:12:- [ ] .docx core_properties.version 是否为 v1.6.1？
+.\_workflows\codex_crosscheck_v161_sync_prompt.txt:25:- [ ] version_timeline 最后一条是否为 v1.6.1？
+.\reference_files.md:25:- [AI协作项目全生命周期框架.md](AI协作项目全生命周期框架.md) — 主文档 v1.6.4
+.\reference_files.md:26:- [AI协作项目全生命周期框架.json](AI协作项目全生命周期框架.json) — 机器可读版 v1.6.4
+.\reference_files.md:27:- [AI协作项目全生命周期框架.docx](AI协作项目全生命周期框架.docx) — Word版 v1.6.4（2026-06-22 pandoc全量重生成，边距1.8cm）
+.\reference_files.md:31:- [CLAUDE.md](CLAUDE.md) — 项目CLAUDE.md v1.6.4
+.\reference_files.md:33:- [project.yaml](project.yaml) — DOCX管道项目配置v1.6.4
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:5:    "version": "v1.6.4",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:7:    "status": "草案, v1.6.4 (§6.3.2 Flow-as-Node嵌套工作流对照证据[E-] ceiling-limited, 经7轮双后端审查链闭合). v1.6.4新增: §6.3.2(Flow-as-Node对照实验: Tier 0负证据, 3/5类别天花板, ΔF1=0.000, 7轮审查链Codex GPT-5.5×4+Qwen qwen3.7-max×3, 0未闭合发现). v1.6.3新增: §1.8局限#9(作者-读者同构)+#10(外部依赖漂移)+§2.6规则退役判定+配套外部依赖登记表+可调参数索引+OPEN-4协议修订, 经Codex GPT-5.5+Qwen qwen3.7-max双后端审查零分歧收敛. v1.6.2新增: §7.7(被动观测: 定义与概念边界+三次经验种子+扩展分类框架待实证+Failure Space 10种失效模式+硬约束+深度版模板增强) + §9.11(跨层可观测性设计: L0-L5各层可观测性关切+三原则). v1.6.1新增: §4.1.1 Qwen复现段落(A_flat=0.806/B_structured=0.792/Δ=−0.014, 方向一致, GPT-5.5+Qwen双模型点证据, 证据二维M0→M2→M1*(v1.6.4订正)) + §1.8局限声明更新 + §6.3.1交叉引用更新 + §9.6.1 A2行M0→M2. v1.6 P0新增: §9.6.1(二维证据等级: 内部强度A-D × 跨模型推广性M0-M3/N/A) + §9.10(MF三层模板: 问题识别+解决方案适用条件+已知反例/失效模式) + §4.1.1.1(对照实验设计强制检查清单CK1-CK6, Tier 1硬门+条件触发). v1.6 P1新增: §2.6(框架维护流程: 版本号规则/审查门/三件套同步/冻结期) + §1.8(已知局限与诚实声明: 8条系统性局限) + §9.9路径D(方法论迁移者30-45min) + 附录H反向交叉引用. v1.5.5新增: §6.3.1路由声明格式对照证据[E-](A3实验写回). v1.5.4新增: §4.1.1执行合约[E-](A2实验写回). v1.5.3新增: §1.7(最小核心+示例外挂)+§9.9(阅读导航)+附录H(反模式清单). v1.5.2写回: Protocol 3试跑1的6项改进. v1.5.1新增: §3.7.0+§3.7.4.1+§9.7+§9.8(四个[Sp]节). 方法论来源: prompt-tdd A1+A2+A3三实验链+被动观测三事件跨案例分析+Evolver项目(4.1-4.2/10)+PocketFlow(DeepSeek/ChatGPT-5.5/GLM-5.2)+GitNexus+Small_Scale. v1.6.4经Codex GPT-5.5×4+Qwen qwen3.7-max×3审查链闭合. v1.6.3经Codex+Qwen双后端审查零分歧收敛. v1.6.2经Codex GPT-5.5魔鬼代言人审查(有条件支持, 意见已系统性纳入). v1.6经Codex GPT-5.5初审(FAIL_WITH_MAJOR_ISSUES)→修正→重审(FAIL_WITH_CAVEATS)→修正. v1.6.1经Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR + 5 MEDIUM/MINOR)→修正. 审查独立性: [SEMI]——后端不同但提示词由作者撰写.",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:8:    "status_note": "草案冻结已解除(Protocol 3试跑1 Retrospect完成, 条件满足). v1.6.4写回prompt-tdd A1 Flow-as-Node Tier 0实验(PF-A1-001: Flow-as-Node [E-] ceiling-limited→§6.3.2, 7轮双后端审查链闭合). v1.6.3维护流程补全+诚实声明扩展(Codex+Qwen双后端审查零分歧收敛). v1.6.2写回被动观测+跨层可观测性设计(Codex+Qwen双后端审查). v1.6.1写回prompt-tdd A2 Qwen跨模型复现(PF-8扩展: Qwen复现[E-]→§4.1.1, 证据二维M0→M2→M1*(v1.6.4订正)). v1.6写回A2+A3深度复盘(P0证据体系升级+P1维护性增强). v1.5.5写回prompt-tdd A3实验(PF-9: Action Routing [E-]→§6.3.1). v1.5.4写回prompt-tdd A2实验(PF-8: prep/exec/post [E-]→§4.1.1). v1.5.3写回PocketFlow A类资产(3项: §1.7+§9.9+附录H). v1.5.2写回Protocol 3试跑1反馈(6项改进). 仍待多项目验证. v1.5.1新增: §3.7.0事件流健康度监测[Sp]+§3.7.4.1自适应权重淘汰[Sp]+§9.7经验注入上下文预算规则[Sp]+§9.8研究经验对象(REO)[Sp]. 方法论来源=Evolver项目分析(arXiv:2604.15097,综合评分4.1-4.2/10,四轮独立审查跨三个后端). 完整规格见_research/框架v1.5.1_新增节草案.md. v1.5新增: §6.2模式8/9+§9.2+§9.6. v1.4新增: §3.7.2.6/§5.3.1/§6.2/§6.5.1/§9.1/§1.5/§9.4/附录H. v1.3遗留OPEN-1~4状态不变(OPEN-5已于v1.5.1冻结期关闭→§8.8). v1.3新增§3.7漂移检测层(五类信号+告警聚合+规则退役+宪法审计+闭环策展+监测模板)——将OPEN-1从候选草案升级为正式操作化方案. 经ChatGPT-5.5独立审查全件(加权6.1/10,修改后通过), 10项修订已执行. 21个决策点已拍板, 但Dev Log 7/10组件待实证、框架整体已经2次真实试跑(Protocol 3+prompt-tdd A1/A2/A3).",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:9:    "description": "AI协作项目的完整操作化框架——从Spec到Closure的七层+四跨层关切+开发手册产物. v1.6.4新增: §6.3.2 Flow-as-Node嵌套工作流对照证据[E-] ceiling-limited(prompt-tdd A1 Tier 0实验, GPT-5.5 temp=0, n=20/臂, 7轮双后端审查链闭合). v1.6.3新增: §1.8局限#9(作者-读者同构)+#10(外部依赖漂移)+§2.6规则退役判定+配套外部依赖登记表+可调参数索引+OPEN-4协议修订(Codex+Qwen双后端审查零分歧收敛). v1.6.2新增: §7.7被动观测+§9.11跨层可观测性设计(Codex GPT-5.5魔鬼代言人审查). v1.6.1新增: A2 Qwen跨模型复现写回(首次跨模型方向一致弱复现, 证据二维M0→M2→M1*(v1.6.4订正)). v1.6新增: §9.6.1二维证据等级+§9.10 MF三层模板+§4.1.1.1对照实验设计强制检查清单+§2.6框架维护流程+§1.8诚实声明+§9.9路径D+附录H反向交叉引用. v1.5.5新增§6.3.1路由声明格式对照证据[E-](A3实验写回). v1.5.4新增§4.1.1执行合约[E-](A2实验写回). v1.5.3新增§1.7(最小核心+示例外挂)+§9.9(阅读导航)+附录H(反模式清单). v1.1新增Dev Log(开发手册). v1.2经三模型独立审查链校准. v1.3新增§3.7漂移检测层(五类信号+四级告警+规则退役+宪法审计+闭环策展+监测模板). v1.4新增§3.7.2.6难度分层监测+§5.3.1能力获取vs行为塑造+§6.5.1文件系统IPC反面模式+§9.1训练-评估对齐/Import完整性/配置验证/接口退化. v1.5新增§6.2模式8(Pipeline DAG)+模式9(Structured Multi-Role Review)+§9.2多轮多后端独立审查编排+§9.6证据分类(S/E/I/J/Sp). v1.5.1新增§3.7.0事件流健康度监测+§3.7.4.1自适应权重淘汰+§9.7经验注入上下文预算规则+§9.8研究经验对象(REO). v1.5.2写回Protocol 3试跑1的6项改进(C1/C5测量方法/HG-0双检查点/审查频率适应性上调/HG交互留存/C8≥2轮异后端建议/S-tier降级阈值). v1.5.3新增§1.7(最小核心+示例外挂)+§9.9(阅读导航与难度分层)+附录H(反模式清单). 方法论来源=prompt-tdd A1+A2+A3三实验链+PocketFlow三轮独立分析+Evolver项目分析(GitNexus→Small_Scale→PilotDeck→Evolver四项目链). 基于ETF项目V3.6代码头部注释实践提炼. v1.6.4发布前订正(M8/M10): §4.1.1[B+/M2]→[B+/M1*](阴性方向一致+条件偏差, Codex+Qwen双后端审查)+§9.6.1新增规则#6(阴性结果的M等级降级).",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:15:        "relevant_version": "v1.2"
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:20:        "relevant_version": "v1.5.1"
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:25:        "relevant_version": "v1.5.1"
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:30:        "relevant_version": "v1.5.1"
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:35:        "relevant_version": "v1.5.4",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:52:      "prompt-tdd A1 Flow-as-Node对照实验(2026-06-22: 层级化vs扁平工作流描述, GPT-5.5 temp=0, n=20/臂, 7轮双后端审查链, PF-A1-001→框架v1.6.4 §6.3.2 [E-] ceiling-limited)"
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:54:    "revision": "v1.6.4 (2026-06-22)",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:55:    "revision_source": "v1.6 Minor升级(A2+A3深度复盘 + Codex v1.5.5交叉验证 + prompt-tdd A2+A3实验写回 + 跨版本维护实践规范化 + PocketFlow三轮独立分析 + Evolver/GitNexus/Small_Scale项目分析) + v1.6.1 Patch升级(A2 Qwen qwen3.7-max跨模型复现写回) + v1.6.2 Patch升级(§7.7被动观测+§9.11跨层可观测性设计) + v1.6.3 Patch升级(维护流程补全+诚实声明扩展) + v1.6.4 Minor升级(prompt-tdd A1 Flow-as-Node Tier 0实验写回——§6.3.2 [E-] ceiling-limited, 7轮双后端审查链闭合)",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:321:        "version": "v1.5.5",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:335:        "version": "v1.6.2",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:516:        "version": "v1.6",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:526:        "version": "v1.6.1",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:537:    "mermaid_conversion": {
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:558:        "version": "1.6.4",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:562:        "summary": "v1.6.4 Minor升级——prompt-tdd A1 实验写回 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited。Tier 0负证据(3/5类别天花板, ΔF1=0.000)。",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:565:            "id": "v1.6.4-1",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:571:            "id": "v1.6.4-2",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:573:            "desc": "Header元数据新增A1写回声明(v1.6.4描述段+状态行更新)",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:577:            "id": "v1.6.4-3",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:579:            "desc": "§14版本时间线新增v1.6.4行+本变更节",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:583:            "id": "v1.6.4-4",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:585:            "desc": "VERSION(1.6.3→1.6.4) + JSON metadata全量更新(date/status/changelog/version_label/revision) + README/CLAUDE/project_status/project.yaml/reference_files同步至v1.6.4",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:596:        "version": "1.6.3",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:607:        "version": "v1.6.2",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:659:        "version": "v1.6.1",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:662:        "trigger": "A2 Qwen qwen3.7-max跨模型复现完成——48/48收集成功, Codex GPT-5.5单评分者盲评: A_flat=0.806, B_structured=0.792, Δ=−0.014, 方向与GPT-5.5原实验一致(A ≥ B, H1不被支持), 首次跨模型方向一致弱复现, 证据二维M0→M2→M1*(v1.6.4订正)",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:663:        "summary": "v1.6.1 Patch升级——A2 Qwen跨模型复现写回. §4.1.1新增复现段落(含限制声明) + §1.8局限声明更新 + §6.3.1交叉引用更新 + §9.6.1 A2证据二维M0→M2→M1*(v1.6.4订正). 经Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR + 5 MEDIUM/MINOR)→修正.",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:686:            "desc": "§9.6.1 A2行证据二维M0→M2→M1*(v1.6.4订正)(跨2模型家族验证)",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:721:        "version": "v1.6",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:783:        "version": "v1.5.5",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:793:        "version": "v1.5.4",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:816:    "version_timeline": [
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:819:        "version": "v1.0 → v1.1",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:827:        "version": "v1.2",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:835:        "version": "v1.3 → v1.4",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:843:        "version": "v1.5 → v1.5.1",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:851:        "version": "v1.5.2",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:859:        "version": "v1.5.3",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:867:        "version": "v1.5.4",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:869:        "evidence": "当日操作；三件套全量同步+Codex交叉验证通过",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:875:        "version": "v1.5.5",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:877:        "evidence": "今日操作；A3闭合报告写回",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:882:        "version": "v1.6",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:884:        "evidence": "今日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:889:        "version": "v1.6.1",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:890:        "event": "Patch升级: A2 Qwen qwen3.7-max跨模型复现写回——§4.1.1新增复现段落+§1.8局限声明更新+§6.3.1交叉引用更新+§9.6.1 A2证据二维M0→M2→M1*(v1.6.4订正); 伴随改进: §2.6三件套同步协议新增VERSION文件检查(教训: VERSION自v1.5.4起未更新) + JSON root changelog清理(→metadata.changelog_legacy)",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:891:        "evidence": "今日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:895:    "version_timeline_note": "时间线基于独立文件证据（旧版docx/md快照的版本头与footer）交叉核实。06-13存疑——仅changelog文本证据且已知同源错误。教训：changelog文本≠文件快照；未来版本应保留每版独立快照。详见.md §14版本时间线。",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:936:            "sub_version": "v1.2追加(同日,ETF复盘驱动)"
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:943:            "sub_version": "v1.2追加(同日,ETF复盘驱动)"
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:1005:            "location": "§13.2",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:1129:        "source_document": "../PocketFlow-analysis/Methodology_Asset_Conversion.md §8.5汇总表",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:1202:    "changelog_legacy_note": "Legacy changelog entries (v1.2 through v1_5_3) in original per-version dict format. Current changelog (v1.5.4+) is in metadata.changelog as a list. Moved from root level to metadata on 2026-06-20 during v1.6.1 sync cleanup.",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:1203:    "version_label": "v1.6.4——prompt-tdd A1 实验写回 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited，经7轮双后端审查链闭合",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:2938:      "Constraint_Decoupling": {
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:2968:      "Agent版本管理（versioning/canary/rollback）",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:3073:    "pocketflow_v1_5_3": "[Sp] v1.5.3新增三节(§1.7/§9.9/附录H)的思想源于PocketFlow项目(../PocketFlow-analysis/)的三轮独立分析. B1(最小核心+示例外挂)和B2(难度分层)的可迁移性经DeepSeek/ChatGPT-5.5/GLM-5.2三方确认; 反模式H.2-H.4的案例事实经源码直接验证[S]，可迁移性经≥2后端确认[J]. 但在本框架场景中的行为有效性/读者反馈/反模式触发频率均待试跑验证. PocketFlow分析报告和Methodology_Asset_Conversion.md存在于PocketFlow-analysis目录下."
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:3583:      "单模型证据主导——A2/A3最初均基于GPT-5.5 temp=0单模型。2026-06-20更新: A2经Qwen qwen3.7-max跨模型复现(48/48收集, Codex盲评, Δ=−0.014方向一致), 首次跨模型方向一致弱复现, 证据二维M0→M2→M1*(v1.6.4订正)。A3尚未经跨模型复现。A2+A3的跨任务方向一致观察仍限GPT-5.5。以上结论严格限定于temp=0/CLI默认中文结构化判别任务内。",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:3600:      "versioning": "语义化版本(Major.Minor.Patch), Major需≥3后端审查+试跑, Minor需≥2后端审查, Patch可单后端",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:3608:      "version": "v1.6.1",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:3618:        ".json配套——包含version_timeline+新节execution_contract",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:3625:        "version": "v1.6.4",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:3627:        "md": "v1.6.4 ✅",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:3628:        "json": "v1.6.4 ✅ (本次同步, metadata全量更新+§6.3.2新增)",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:3629:        "docx": "v1.6.4 ✅ (2026-06-22 pandoc全量重生成, Mermaid 6图PNG, 边距1.8cm)",
+.\AI协作项目全生命周期框架.json.pre_v164_sync.backup:3630:        "version_file": "1.6.4 ✅"
+.\AI协作项目全生命周期框架.md:3:> **版本**: v1.6.4（**v1.6.4：prompt-tdd A1 实验写回 §6.3.2——Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited**）  
+.\AI协作项目全生命周期框架.md:6:> **发布前订正（2026-06-23，Claude Opus 4.8 via Claude Code CLI）**: 不升版本号的措辞订正与可理解性补充（过期时效声明更新 + 新增 §13.1.2 项目代号说明 + 面向公开读者的口吻中性化）。无机制/证据等级变更。详见 §14「v1.6.4 发布前订正批次」。
+.\AI协作项目全生命周期框架.md:7:> **v1.6.4 新增（2026-06-22，DeepSeek-V4-Pro via Claude Code CLI）**: prompt-tdd A1 Flow-as-Node Tier 0 对照实验写回——新增 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited（Tier 0 负证据；3/5 类别天花板，ΔF1=0.000）。经 7 轮双后端审查链（Codex GPT-5.5 ×4 + Qwen qwen3.7-max ×3），0 未闭合发现。同时更新 header 元数据新增 A1 写回声明。详见 §14。  
+.\AI协作项目全生命周期框架.md:20:> **状态**: **草案，两次真实试跑已回写（分析型+实验型），仍待多项目验证**（v1.6.4: prompt-tdd A1 实验写回 §6.3.2 [E-] ceiling-limited / v1.6.3: 维护流程补全+诚实声明扩展 / v1.6.2: 被动观测机制 / v1.6: 证据体系升级+维护性增强 / v1.5.5: prompt-tdd A3 实验写回 §6.3.1 [E-] / v1.5.4: prompt-tdd A2 实验写回 §4.1.1 [E-] / v1.5.2 写回 Protocol 3 试跑1反馈；v1.5.1 新增: §3.7.0 事件流健康度监测 [Sp] + §3.7.4.1 自适应权重淘汰 [Sp] + §9.7 经验注入上下文预算规则 [Sp] + §9.8 研究经验对象(REO) [Sp]。方法论来源=Evolver项目分析(arXiv:2604.15097, 综合评分4.1-4.2/10, 四轮独立审查跨三个后端)。完整规格见 `_research/框架v1.5.1_新增节草案.md`。v1.5 新增: §6.2 模式8/9 + §9.2 + §9.6。v1.4 新增: §3.7.2.6/§5.3.1/§6.2/§6.5.1/§9.1/§1.5/§9.4/附录H。v1.3 遗留 OPEN-1~4 状态不变（OPEN-5 已于 v1.5.1 冻结期关闭 → §8.8））  
+.\AI协作项目全生命周期框架.md:56:14. [变更记录（v1.1 → v1.6.4）](#14-变更记录v11--v164)
+.\AI协作项目全生命周期框架.md:155:| 可复现性 | 环境/依赖/数据/随机种子 | `reference_python_versions.md`（部分） |
+.\AI协作项目全生命周期框架.md:203:| OPEN-2 | 框架级死亡判据缺预登记基线——判据已写入（§1.5）但无基线无法触发 | 中 | **部分验证（v1.5.2 试跑1回写 + v1.6.4 试跑2回写）**：预登记载体已建立=配套文件 `框架级成熟度评估表.{md,json}`；两条真实基线已记录（分析型项目+实验型项目），但死亡判据仍需连续项目数据才可触发 | §1.5 + 框架级成熟度评估表 |
+.\AI协作项目全生命周期框架.md:355:| S9 | 可复现性声明 | 学术/量化须 pip freeze+Python版本+随机种子+数据快照（标注获取日期和来源）；工程/探索最低记录Python版本。不要求Docker | 学术/量化项目必须 | `reference_python_versions.md`（部分）✅ |
+.\AI协作项目全生命周期框架.md:358:注：形态匹配=已封存的金融形态识别个人项目，详见 §13.1.2 项目代号说明。
+.\AI协作项目全生命周期框架.md:438:2. `.json` 配套 → 从 `.md` 重新生成（通过 `_workflows/` 下的逐版本同步脚本，半自动化，尚无统一 CLI/CI 集成）。JSON 须包含 `version_timeline` + 新节的 `execution_contract`
+.\AI协作项目全生命周期框架.md:1050:> **代号说明**: prompt-tdd=作者的 prompt 工程对照实验个人项目（详见 §13.1.2 项目代号说明）  
+.\AI协作项目全生命周期框架.md:1070:**交叉引用**：本结论与 §6.3（模式选择决策树）的"不做过度工程化"原则一致——不应为所有场景默认套用三阶段分段格式。**v1.5.5 更新**：与 §6.3.1（路由声明格式对照证据 [E-]）的 A3 发现共同构成 GPT-5.5 temp=0 中文结构化判别任务内的方向一致阴性观察。**v1.6.1 更新**：A2 经 Qwen 跨模型方向一致的弱复现——非严格条件复现（§1.8 / §9.6.1），A3 尚未跨模型复现。**v1.6.4 发布前订正**：证据标注从 [B+/M2] 修正为 [B+/M1*]（Codex+Qwen 双后端独立审查裁决，2026-06-24）。方法论片段 PT-M1（天花板效应检测）、PT-M8（工程门/科学门分离）见 `../prompt-tdd/methodology_extraction/evidence_card_a2.md`。
+.\AI协作项目全生命周期框架.md:2257:6. **阴性/零效应结果的 M 等级降级**（v1.6.4 发布前订正，2026-06-24）：当跨模型验证的结果为阴性（H1 不被支持）或零效应（Δ≈0），M 等级仅表示"结论方向跨模型一致（均未检测到假设效应）"，不表示目标干预的有效性被跨模型验证。阴性方向一致的信息增益低于阳性方向一致——共同天花板/地板效应可使漏检概率不独立（如两模型均因任务区分度不足而得出 null，而非独立确认了 null）。此类条目应降一级标注（如 M2→M1*），`*` 注明"阴性方向一致"。本条经 Codex GPT-5.5 + Qwen qwen3.7-max 双后端独立审查后新增（审查报告见 `_reviews/m8m10_review_*_20260624.md`）
+.\AI协作项目全生命周期框架.md:2745:跨层: 可复现性  reference_python_versions.md      按项目类型分档要求
+.\AI协作项目全生命周期框架.md:3247:#### 13.1.2 项目代号说明
+.\AI协作项目全生命周期框架.md:3263:### 13.2 值得关注的外部工作
+.\AI协作项目全生命周期框架.md:3270:| **Constraint Decoupling** (Capital One, 2026.01) | 任务描述和约束分离为 checklist 提升合规 82%→91.5%；88% 成功编辑是重新措辞 | 已采纳——本框架的 Prompt 模板已将"否决条件"独立为一栏 |
+.\AI协作项目全生命周期框架.md:3286:| Agent 版本管理 | AWS Atlas | Agent 本身的 versioning/canary/rollback——目前本框架只版本化管理代码和 Spec |
+.\AI协作项目全生命周期框架.md:3291:## 14. 变更记录（v1.1 → v1.6.4）
+.\AI协作项目全生命周期框架.md:3307:| 2026-06-19 | v1.5.4 | prompt-tdd A2 Tier 1 实验写回——§4.1.1 执行合约 [E-]（prep/exec/post 未证实优于一体式） | 当日操作；三件套全量同步 + Codex 交叉验证通过 | ✅ 确认 |
+.\AI协作项目全生命周期框架.md:3308:| 2026-06-20 | v1.5.5 | prompt-tdd A3 Action Routing 实验写回——§6.3.1 路由声明格式对照证据 [E-]（声明式未证实优于 NL） | 当日操作；A3 闭合报告写回（活动期自记） | 🟡 较可信 |
+.\AI协作项目全生命周期框架.md:3309:| 2026-06-20 | v1.6 | Minor 升级：P0 证据体系升级（§9.6.1/§9.10/§4.1.1.1）+ P1 维护性增强（§2.6/§1.8/§9.9路径D/附录H反向引用） | 当日操作；经 Codex GPT-5.5 初审(FAIL_WITH_MAJOR)→修正→重审(FAIL_WITH_CAVEATS)→修正闭合；三件套同步 | 🟡 较可信（当日操作，.md+JSON 经 Codex 审查闭合，.docx 待目视确认） |
+.\AI协作项目全生命周期框架.md:3310:| 2026-06-20 | v1.6.1 | Patch 升级：A2 Qwen qwen3.7-max 跨模型复现写回——§4.1.1 新增复现段落 + §1.8 局限声明更新 + §6.3.1 交叉引用更新 + §9.6.1 A2 证据二维 M0→M2；伴随改进：§2.6 三件套同步协议新增 VERSION 文件检查（教训：VERSION 自 v1.5.4 起未更新）+ JSON root changelog 清理（→ metadata.changelog_legacy） | 当日操作；Qwen 复现全流程数据可复现（raw_outputs_qwen/ + scores_qwen/ + qwen_replication_report.md/.json）；Codex GPT-5.5 交叉验证报告通过 | 🟡 较可信（当日操作，复现数据完整，报告经 Codex 审查修正） |
+.\AI协作项目全生命周期框架.md:3311:| 2026-06-21 | v1.6.2 | Patch 升级：新增 §7.7「被动观测：意外发现的发现机制」——基于用户记忆系统三次被动观测事件跨案例分析 + Codex GPT-5.5 魔鬼代言人独立审查（总体判断：有条件支持）。新增内容包括：定义与概念边界（§7.7.1）、三次经验种子（§7.7.2）、扩展分类框架待实证（§7.7.3）、Failure Space 10 种失效模式+硬约束（§7.7.4）、深度版 Retrospect 模板增强（§7.7.5）。伴随更新：目录、metadata header、§9 跨层交叉引用、附录 C 深度版模板。 | 当日操作；概念经 Codex GPT-5.5 异后端魔鬼代言人审查；审查意见已系统性纳入（定义收紧/模式降级/补Failure Space/模板增强） | 🟡 较可信（当日操作，Codex 审查报告完整，跨后端验证通过） |
+.\AI协作项目全生命周期框架.md:3312:| 2026-06-21 | v1.6.3 | Patch 升级（维护流程补全+诚实声明扩展）：经两路异后端独立审查（Codex GPT-5.5 魔鬼代言人 + Qwen qwen3.7-max 完备性检查）后执行——(1) §1.8 新增局限 #9（作者-读者同构）和 #10（外部依赖漂移）；(2) §2.6 新增"规则退役判定"子节；(3) 配套新增外部依赖登记表（.md+.json）+可调参数索引（.md）；(4) OPEN-4 试读计时协议修订。 | 当日操作（同日第二条 Patch）；两后端在"外部依赖缺失""基本不变层过度声称""不需要通俗化是最弱结论"上零分歧收敛 | 🟡 较可信（当日操作，两路审查报告完整，跨后端验证通过） |
+.\AI协作项目全生命周期框架.md:3313:| 2026-06-22 | v1.6.4 | Minor 升级：prompt-tdd A1 Flow-as-Node Tier 0 实验写回——新增 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited（Tier 0 负证据；3/5 类别天花板，ΔF1=0.000，7 轮双后端审查链，0 未闭合发现）。Header 元数据新增 A1 写回声明。 | 当日操作；§6.3.2 内容经 Codex V2 终态验证(4M+2m 全修正)+Qwen 轻量框架文本检查(一致确认)；VERSION 同步更新 | 🟡 较可信（当日操作，写回内容经双后端终态验证） |
+.\AI协作项目全生命周期框架.md:3317:### v1.6.4 发布前订正批次（2026-06-23，Claude Opus 4.8 via Claude Code CLI）
+.\AI协作项目全生命周期框架.md:3319:**性质**：不升版本号的发布前措辞订正与可理解性补充（无机制变更、无证据等级改动），统一挂在 v1.6.4 名下。触发自 GitHub 公开发布准备——经 4 角度文档审查（口吻一致性/代号可理解性/证据标注诚实性/时效与占位符，Claude Opus 4.8 主导，Codex GPT-5.5 独立清点交叉验证发布包结构）。
+.\AI协作项目全生命周期框架.md:3322:1. **过期时效订正**：(a) header v1.6 "待 Codex 异后端交叉验证 / pre-release draft" → 更新为"已经 Codex GPT-5.5 初审→重审→修正闭合"（与 §14 v1.6 交叉验证记录一致）；(b) §2.6 三件套同步协议 ".json/.docx 当前手动待自动化/待脚本化" → 更新为"通过 `_workflows/` 下同步脚本生成（半自动化）"，反映已有同步脚本实际；(c) §14 版本时间线表 7 处"今日操作/本日操作"相对时间词 → "当日操作"。
+.\AI协作项目全生命周期框架.md:3323:2. **个人项目代号可理解性**：新增 §13.1.2「项目代号说明」一览表（9 个代号 + 一句话定性 + 案例库是否公开）；§2.2 形态匹配首次出现处、§4.1.1 prompt-tdd 首个来源块补代号定性。
+.\AI协作项目全生命周期框架.md:3324:3. **面向公开读者的口吻**：(a) §10.2 "你们在 ETF 项目 V3.6……" 私人称呼 → 中性第三人称"作者在某 ETF 量化项目"；(b) §13.2 外部对标表第一人称复数"我们的……"→"本框架……"，"已验证"（实为采纳关系）→"已采纳"。
+.\AI协作项目全生命周期框架.md:3475:- `../PocketFlow-analysis/Methodology_Asset_Conversion.md` §8.5 汇总表
+.\AI协作项目全生命周期框架.md:3659:| headroom 三组件条目（标注为"可借鉴的架构原则"） | §13.2 | v1.3 草案（2026-06-13 早前） | 正式化 |
+.\AI协作项目全生命周期框架.md:3736:- `methodological-review-sop.md`：v1.0.1→v1.0.2，§5 新增 C10 版本绑定 + §10 新增 A9 版本绑定审计 + §11.2 JSON schema 新增 version_binding 和 evidence_level 字段（T9, T10）
+.\AI协作项目全生命周期框架.md:3786:> **本文档状态**: v1.6.4，v1.6.4 prompt-tdd A1 实验写回 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited（经7轮双后端审查链：Codex GPT-5.5 ×4 + Qwen qwen3.7-max ×3，0未闭合发现），仍待多项目验证。v1.6.3 维护流程补全+诚实声明扩展（经Codex GPT-5.5 + Qwen qwen3.7-max 双后端独立审查写入）——新增 §1.8 局限#9/#10 + §2.6 规则退役判定 + 配套外部依赖登记表+可调参数索引。v1.6.2 新增 §7.7 被动观测+§9.11 跨层可观测性设计。v1.6.1 A2 Qwen 跨模型复现写回（首次跨模型方向一致复现，证据二维 M0→M2；v1.6.4 发布前订正 M2→M1*，经 Codex+Qwen 双后端独立审查）。v1.6 新增 §9.6.1（二维证据等级）+ §9.10（三层MF模板）+ §4.1.1.1（对照实验设计强制检查清单）+ §2.6（维护流程）+ §1.8（诚实声明）+ §9.9 路径D（方法论迁移者）+ 附录H反向交叉引用。v1.5.5 新增 §6.3.1 路由声明格式对照证据 [E-]（A3: 声明式 vs NL 路由描述对照实验，阴性结论，GPT-5.5 temp=0 中文路由任务）。v1.5.4 新增 §4.1.1 执行合约 [E-]（A2: prep/exec/post vs 一体式编号列表对照实验，H1 不被支持）。v1.5.3 新增 §1.7（最小核心+示例外挂）+ §9.9（阅读导航与难度分层）+ 附录 H（反模式清单）。v1.5.2 写回 Protocol 3 试跑1的 6 项改进。v1.5→v1.5.1 变更新增 §3.7.0/§3.7.4.1/§9.7/§9.8（四个[Sp]节）。方法论来源：prompt-tdd A1+A2+A3 三实验链(7+6+10轮独立审查) + PocketFlow 三轮独立分析 + Protocol 3 试跑1 + 被动观测三事件跨案例分析 + Evolver项目分析(arXiv:2604.15097, 综合评分4.1-4.2/10)。v1.5.1草案经Codex ChatGPT-5.5 R3→R4审查(R3驳回4.3→R4修改后通过7.2)。v1.5新增§6.2模式8/9+§9.2+§9.6，经ChatGPT-5.5审查C+(5.43/10)。审查独立性：[SEMI]——后端不同但提示词由作者撰写。**仍待验证**：v1.6 新增节的行为有效性（二维体系/三层模板/检查清单待试跑）；四个[Sp]节的行为有效性；§9.7 A/B测试(30因子×3重复×双臂)；REO Phase 0-3实施；S-tier Protocol 3 降级阈值；A3 跨模型复现 + 更多任务域验证。
+.\_workflows\char_stats_v164.json:2:  "version": "v1.6.4",
+.\_workflows\analyze-claude-code-guide-wf_2bad0858-e71.js:117:2. What's the version history pattern?
+.\_workflows\analyze-claude-code-guide-wf_2bad0858-e71.js:217:2. **版本追踪负担**: The project tracks Claude Code releases. With ~26K lines of docs referencing specific version numbers, how sustainable is this? Look for version drift.
+.\zh-Hant\reference_files.md:26:- [AI協作專案全生命週期框架.md](../AI协作项目全生命周期框架.md) — 主檔案 v1.6.4
+.\zh-Hant\reference_files.md:27:- [AI協作專案全生命週期框架.json](../AI协作项目全生命周期框架.json) — 機器可讀版 v1.6.4
+.\zh-Hant\reference_files.md:28:- [AI協作專案全生命週期框架.docx](../AI协作项目全生命周期框架.docx) — Word版 v1.6.4（2026-06-22 pandoc全量重生成，邊距1.8cm）
+.\zh-Hant\reference_files.md:32:- [CLAUDE.md](../CLAUDE.md) — 專案CLAUDE.md v1.6.4
+.\zh-Hant\reference_files.md:34:- [project.yaml](../project.yaml) — DOCX管道專案組態v1.6.4
+.\zh-Hant\README.md:3:**版本**：v1.6.4（2026-06-22）  
+.\zh-Hant\README.md:49:├── verify_version_consistency.py       ← 版本一致性校验脚本
+.\_workflows\convert-three-methodological-assets-wf_eae7b704-c49.js:32:  `Read the JSON version at:
+.\_workflows\convert-three-methodological-assets-wf_eae7b704-c49.js:180:   - Are pre-commit hooks, version sync scripts, etc. actually configured and running?
+.\_workflows\convert-three-methodological-assets-wf_eae7b704-c49.js:185:- A trigger mechanism: when should this audit run? (suggest: per framework version release + monthly)
+.\_workflows\convert-three-methodological-assets-wf_eae7b704-c49.js:212:4. Update the version number to v1.3
+.\_workflows\convert-three-methodological-assets-wf_eae7b704-c49.js:227:IMPORTANT: Actually write both files using the Write tool. Read the current files first, then produce the updated versions.`,
+.\zh-Hant\AI协作项目全生命周期框架.md:3:> **版本**: v1.6.4（**v1.6.4：prompt-tdd A1 實驗寫回 §6.3.2——Flow-as-Node 巢狀工作流對照證據 [E-] ceiling-limited**）  
+.\zh-Hant\AI协作项目全生命周期框架.md:6:> **v1.6.4 新增（2026-06-22，DeepSeek-V4-Pro via Claude Code CLI）**: prompt-tdd A1 Flow-as-Node Tier 0 對照實驗寫回——新增 §6.3.2 Flow-as-Node 巢狀工作流對照證據 [E-] ceiling-limited（Tier 0 負證據；3/5 類別天花板，ΔF1=0.000）。經 7 輪雙後端審查鏈（Codex GPT-5.5 ×4 + Qwen qwen3.7-max ×3），0 未閉合發現。同時更新 header 後設資料新增 A1 寫回宣告。詳見 §14。  
+.\zh-Hant\AI协作项目全生命周期框架.md:19:> **狀態**: **草案，兩次真實試跑已回寫（分析型+實驗型），仍待多專案驗證**（v1.6.4: prompt-tdd A1 實驗寫回 §6.3.2 [E-] ceiling-limited / v1.6.3: 維護流程補全+誠實聲明擴充套件 / v1.6.2: 被動觀測機制 / v1.6: 證據體系升級+維護性增強 / v1.5.5: prompt-tdd A3 實驗寫回 §6.3.1 [E-] / v1.5.4: prompt-tdd A2 實驗寫回 §4.1.1 [E-] / v1.5.2 寫回 Protocol 3 試跑1反饋；v1.5.1 新增: §3.7.0 事件流健康度監測 [Sp] + §3.7.4.1 自適應權重淘汰 [Sp] + §9.7 經驗注入上下文預算規則 [Sp] + §9.8 研究經驗物件(REO) [Sp]。方法論來源=Evolver專案分析(arXiv:2604.15097, 綜合評分4.1-4.2/10, 四輪獨立審查跨三個後端)。完整規格見 `_research/框架v1.5.1_新增節草案.md`。v1.5 新增: §6.2 模式8/9 + §9.2 + §9.6。v1.4 新增: §3.7.2.6/§5.3.1/§6.2/§6.5.1/§9.1/§1.5/§9.4/附錄H。v1.3 遺留 OPEN-1~4 狀態不變（OPEN-5 已於 v1.5.1 凍結期關閉 → §8.8））  
+.\zh-Hant\AI协作项目全生命周期框架.md:55:14. [變更記錄（v1.1 → v1.6.4）](#14-變更記錄v11--v164)
+.\zh-Hant\AI协作项目全生命周期框架.md:154:| 可復現性 | 環境/依賴/資料/隨機種子 | `reference_python_versions.md`（部分） |
+.\zh-Hant\AI协作项目全生命周期框架.md:202:| OPEN-2 | 框架級死亡判據缺預登記基線——判據已寫入（§1.5）但無基線無法觸發 | 中 | **部分驗證（v1.5.2 試跑1回寫 + v1.6.4 試跑2回寫）**：預登記載體已建立=配套檔案 `框架級成熟度評估表.{md,json}`；兩條真實基線已記錄（分析型專案+實驗型專案），但死亡判據仍需連續專案資料才可觸發 | §1.5 + 框架級成熟度評估表 |
+.\zh-Hant\AI协作项目全生命周期框架.md:354:| S9 | 可重現性聲明 | 學術/量化須 pip freeze+Python版本+隨機種子+資料快照（標註獲取日期和來源）；工程/探索最低記錄Python版本。不要求Docker | 學術/量化專案必須 | `reference_python_versions.md`（部分）✅ |
+.\zh-Hant\AI协作项目全生命周期框架.md:435:2. `.json` 配套 → 從 `.md` 重新生成（當前手動維護，待自動化）。JSON 須包含 `version_timeline` + 新節的 `execution_contract`
+.\zh-Hant\AI协作项目全生命周期框架.md:2740:跨层: 可复现性  reference_python_versions.md      按项目类型分档要求
+.\zh-Hant\AI协作项目全生命周期框架.md:3242:### 13.2 值得關注的外部工作
+.\zh-Hant\AI协作项目全生命周期框架.md:3249:| **Constraint Decoupling** (Capital One, 2026.01) | 任務描述和約束分離為 checklist 提升合規 82%→91.5%；88% 成功編輯是重新措辭 | 已驗證——我們的 Prompt 範本已經將"否決條件"獨立為一欄 |
+.\zh-Hant\AI协作项目全生命周期框架.md:3265:| Agent 版本管理 | AWS Atlas | Agent 本身的 versioning/canary/rollback——目前我們只版本化管理程式碼和 Spec |
+.\zh-Hant\AI协作项目全生命周期框架.md:3270:## 14. 變更記錄（v1.1 → v1.6.4）
+.\zh-Hant\AI协作项目全生命周期框架.md:3286:| 2026-06-19 | v1.5.4 | prompt-tdd A2 Tier 1 實驗寫回——§4.1.1 執行合約 [E-]（prep/exec/post 未證實優於一體式） | 今日操作；三件套全量同步 + Codex 交叉驗證透過 | ✅ 確認 |
+.\zh-Hant\AI协作项目全生命周期框架.md:3287:| 2026-06-20 | v1.5.5 | prompt-tdd A3 Action Routing 實驗寫回——§6.3.1 路由宣告格式對照證據 [E-]（宣告式未證實優於 NL） | 今日操作；A3 閉合報告寫回（活動期自記） | 🟡 較可信 |
+.\zh-Hant\AI协作项目全生命周期框架.md:3288:| 2026-06-20 | v1.6 | Minor 升級：P0 證據體系升級（§9.6.1/§9.10/§4.1.1.1）+ P1 維護性增強（§2.6/§1.8/§9.9路徑D/附錄H反向引用） | 今日操作；經 Codex GPT-5.5 初審(FAIL_WITH_MAJOR)→修正→重審(FAIL_WITH_CAVEATS)→修正閉合；三件套同步 | 🟡 較可信（本日操作，.md+JSON 經 Codex 審查閉合，.docx 待目視確認） |
+.\zh-Hant\AI协作项目全生命周期框架.md:3289:| 2026-06-20 | v1.6.1 | Patch 升級：A2 Qwen qwen3.7-max 跨模型重現寫回——§4.1.1 新增復現段落 + §1.8 侷限宣告更新 + §6.3.1 交叉引用更新 + §9.6.1 A2 證據二維 M0→M2；伴隨改進：§2.6 三件套同步協定新增 VERSION 檔案檢查（教訓：VERSION 自 v1.5.4 起未更新）+ JSON root changelog 清理（→ metadata.changelog_legacy） | 今日操作；Qwen 復現全流程資料可復現（raw_outputs_qwen/ + scores_qwen/ + qwen_replication_report.md/.json）；Codex GPT-5.5 交叉驗證報告透過 | 🟡 較可信（本日操作，復現資料完整，報告經 Codex 審查修正） |
+.\zh-Hant\AI协作项目全生命周期框架.md:3290:| 2026-06-21 | v1.6.2 | Patch 升級：新增 §7.7「被動觀測：意外發現的發現機制」——基於使用者記憶系統三次被動觀測事件跨案例分析 + Codex GPT-5.5 魔鬼代言人獨立審查（總體判斷：有條件支援）。新增內容包括：定義與概念邊界（§7.7.1）、三次經驗種子（§7.7.2）、擴充套件分類框架待實證（§7.7.3）、Failure Space 10 種失效模式+硬約束（§7.7.4）、深度版 Retrospect 範本增強（§7.7.5）。伴隨更新：目錄、metadata header、§9 跨層交叉引用、附錄 C 深度版範本。 | 今日操作；概念經 Codex GPT-5.5 異後端魔鬼代言人審查；審查意見已系統性納入（定義收緊/模式降級/補Failure Space/範本增強） | 🟡 較可信（本日操作，Codex 審查報告完整，跨後端驗證透過） |
+.\zh-Hant\AI协作项目全生命周期框架.md:3291:| 2026-06-21 | v1.6.3 | Patch 升級（維護流程補全+誠實聲明擴充套件）：經兩路異後端獨立審查（Codex GPT-5.5 魔鬼代言人 + Qwen qwen3.7-max 完備性檢查）後執行——(1) §1.8 新增侷限 #9（作者-讀者同構）和 #10（外部依賴漂移）；(2) §2.6 新增"規則退役判定"子節；(3) 配套新增外部依賴登記表（.md+.json）+可調引數索引（.md）；(4) OPEN-4 試讀計時協議修訂。 | 今日操作（同日第二條 Patch）；兩後端在"外部依賴缺失""基本不變層過度聲稱""不需要通俗化是最弱結論"上零分歧收斂 | 🟡 較可信（本日操作，兩路審查報告完整，跨後端驗證透過） |
+.\zh-Hant\AI协作项目全生命周期框架.md:3292:| 2026-06-22 | v1.6.4 | Minor 升級：prompt-tdd A1 Flow-as-Node Tier 0 實驗寫回——新增 §6.3.2 Flow-as-Node 巢狀工作流對照證據 [E-] ceiling-limited（Tier 0 負證據；3/5 類別天花板，ΔF1=0.000，7 輪雙後端審查鏈，0 未閉合發現）。Header 後設資料新增 A1 寫回宣告。 | 今日操作；§6.3.2 內容經 Codex V2 終態驗證(4M+2m 全修正)+Qwen 輕量框架文字檢查(一致確認)；VERSION 同步更新 | 🟡 較可信（本日操作，寫回內容經雙後端終態驗證） |
+.\zh-Hant\AI协作项目全生命周期框架.md:3441:- `../PocketFlow-analysis/Methodology_Asset_Conversion.md` §8.5 彙總表
+.\zh-Hant\AI协作项目全生命周期框架.md:3625:| headroom 三元件條目（標註為"可借鑑的架構原則"） | §13.2 | v1.3 草案（2026-06-13 早前） | 正式化 |
+.\zh-Hant\AI协作项目全生命周期框架.md:3702:- `methodological-review-sop.md`：v1.0.1→v1.0.2，§5 新增 C10 版本繫結 + §10 新增 A9 版本繫結審計 + §11.2 JSON schema 新增 version_binding 和 evidence_level 欄位（T9, T10）
+.\zh-Hant\AI协作项目全生命周期框架.md:3752:> **本檔案狀態**: v1.6.4，v1.6.4 prompt-tdd A1 實驗寫回 §6.3.2 Flow-as-Node 巢狀工作流對照證據 [E-] ceiling-limited（經7輪雙後端審查鏈：Codex GPT-5.5 ×4 + Qwen qwen3.7-max ×3，0未閉合發現），仍待多專案驗證。v1.6.3 維護流程補全+誠實聲明擴充套件（經Codex GPT-5.5 + Qwen qwen3.7-max 雙後端獨立審查寫入）——新增 §1.8 侷限#9/#10 + §2.6 規則退役判定 + 配套外部依賴登記表+可調引數索引。v1.6.2 新增 §7.7 被動觀測+§9.11 跨層可觀測性設計。v1.6.1 A2 Qwen 跨模型重現寫回（首次跨模型方向一致弱復現，證據二維 M0→M2；v1.6.4 發布前訂正 M2→M1*，經 Codex+Qwen 雙後端獨立審查）。v1.6 新增 §9.6.1（二維證據等級）+ §9.10（三層MF範本）+ §4.1.1.1（對照實驗設計強制檢查清單）+ §2.6（維護流程）+ §1.8（誠實聲明）+ §9.9 路徑D（方法論遷移者）+ 附錄H反向交叉引用。v1.5.5 新增 §6.3.1 路由宣告格式對照證據 [E-]（A3: 宣告式 vs NL 路由描述對照實驗，陰性結論，GPT-5.5 temp=0 中文路由任務）。v1.5.4 新增 §4.1.1 執行合約 [E-]（A2: prep/exec/post vs 一體式編號列表對照實驗，H1 不被支援）。v1.5.3 新增 §1.7（最小核心+示例外掛）+ §9.9（閱讀導航與難度分層）+ 附錄 H（反模式清單）。v1.5.2 寫回 Protocol 3 試跑1的 6 項改進。v1.5→v1.5.1 變更新增 §3.7.0/§3.7.4.1/§9.7/§9.8（四個[Sp]節）。方法論來源：prompt-tdd A1+A2+A3 三實驗鏈(7+6+10輪獨立審查) + PocketFlow 三輪獨立分析 + Protocol 3 試跑1 + 被動觀測三事件跨案例分析 + Evolver專案分析(arXiv:2604.15097, 綜合評分4.1-4.2/10)。v1.5.1草案經Codex ChatGPT-5.5 R3→R4審查(R3駁回4.3→R4修改後透過7.2)。v1.5新增§6.2模式8/9+§9.2+§9.6，經ChatGPT-5.5審查C+(5.43/10)。審查獨立性：[SEMI]——後端不同但提示詞由作者撰寫。**仍待驗證**：v1.6 新增節的行為有效性（二維體系/三層範本/檢查清單待試跑）；四個[Sp]節的行為有效性；§9.7 A/B測試(30因子×3重複×雙臂)；REO Phase 0-3實施；S-tier Protocol 3 降級閾值；A3 跨模型重現 + 更多工域驗證。
+.\_workflows\codex_crosscheck_prompt.txt:16:- 读 .json metadata.version 和 metadata.date，确认 = "1.5.3" 和 "2026-06-18"
+.\_workflows\count_chars_v163.py:175:        "version": "v1.6.3",
+.\_workflows\codex_v16_json_crosscheck_prompt.md:14:- `version`: 应为 "1.6"
+.\_workflows\codex_v16_json_crosscheck_prompt.md:24:- `version_timeline[-1]` 应为 v1.6 行，日期/版本/事件/证据/置信度与实际一致
+.\_workflows\codex_v16_json_crosscheck_prompt.md:40:- key_rules 应包含 versioning/changelog/writeback_review_gate/three_piece_sync/freeze_rules
+.\_archive\元审查合规清单.json:4:    "version": "1.0",
+.\_archive\元审查合规清单.json:11:      "version_release": { "scope": "full", "priority": "P0" },
+.\_archive\元审查合规清单.json:186:            { "id": "4.6.2", "check": "version-bump脚本/流程", "pass_criteria": "版本号更新有自动化流程", "fail_criteria": "手工修改→遗漏风险" },
+.\_archive\provenance_erratum_20260617.md:47:1. **`meta-audit-checklist.json`** — P-004/I-001 的条件和通过标准；reflexivity_note；version_note
+.\_workflows\count_chars_v164.py:4:AI协作项目全生命周期框架.md — v1.6.4 字符精确统计
+.\_workflows\count_chars_v164.py:84:print('  AI协作项目全生命周期框架.md — v1.6.4 字符级统计')
+.\_workflows\count_chars_v164.py:120:    "version": "v1.6.4",
+.\_archive\独立审查标准操作程序_SOP.md:411:    "sop_version": "v1.0"
+.\_archive\独立审查标准操作程序_SOP.md:458:### 13.2 审查衰减
+.\_archive\元审查合规清单.md:233:| 4.6.2 | version-bump脚本/流程 | 版本号从v1.1→v1.2时有无脚本自动更新所有文件中的版本号 | 手工修改→遗漏风险 | 当前v1.2的版本号在md头部和json meta中手动维护 |
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.md:9:**Relationship to R1–R4**: I read R4's review report and structured data as context. R1–R4 found issues ranging from factual errors (R1–R2) to process gaps (R3) to JSON staleness and metadata contradictions (R4). All 5 R4 issues have been addressed in the current version. My role is to verify those fixes and bring a fresh Qwen-backend perspective.
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.md:35:- `metadata.version` is `"1.5"` (was `"1.4"` in the stale version R4 reviewed)
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.md:43:No residual v1.4-only content found in version-critical fields.
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.md:52:- JSON metadata: `version: "1.5"` ✅
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.md:55:**Caveat**: The companion SOP remains `v1.0.2 — v1.4框架配套更新` and the meta-audit checklist remains `v1.0.2 — v1.4 框架配套更新`. Both explicitly scope themselves to v1.4, not v1.5. This is acknowledged rather than contradictory — neither document claims to be v1.5-synchronized — but it means the companion ecosystem still lags the main framework by one version. R4 flagged this class of issue; the fix addressed the critical JSON but did not propagate to SOP/meta-audit. This is a residual maintenance burden, not a regression.
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.md:113:- The JSON is internally consistent — version numbers, section references, and changelog entries align.
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.md:114:- The MD header, footer, and body version references are now consistent (all say v1.5).
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.md:164:In Chinese academic/professional culture, labeling something as "草案" (draft) for an extended period can serve as a face-saving mechanism — it lowers expectations and deflects criticism while the work continues to evolve. The framework has been "草案" through 5 versions in 4 days (June 10–14, 2026). This velocity is impressive, but the persistent "draft" label may be functioning more as a cultural shield than an honest assessment of readiness.
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.md:264:The framework labels itself "草案，待试跑验证" (draft, awaiting trial-run validation). This is technically accurate: the framework has never been used to run a complete project from L0 Spec through L5 Closure. Every version has been a self-referential iteration — the framework reviewing itself reviewing itself.
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.md:266:However, after 5 versions (v1.1–v1.5) in 4 days (June 10–14, 2026) and 5 independent reviews, the "draft" label is starting to function as:
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.md:289:| 形态匹配ETF策略 | Quantitative strategy (17 versions) | Dev Log, Loop convergence, Prompt templates |
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.md:388:framework_version_reviewed: v1.5 (post-R4-fixes)
+.\_archive\独立审查标准操作程序_SOP.json:5:    "version": "v1.0",
+.\_archive\独立审查标准操作程序_SOP.json:318:      "version": "v1.0",
+.\_reviews\AI协作项目全生命周期框架_ChatGPT-5.5对再审查意见的回应.json:4:    "schema_version": "1.0",
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.json:40:      "evidence": "metadata.version='1.5', metadata.revision='v1.5 (2026-06-14)', evidence_classification section exists with full S/E/I/J/Sp taxonomy, provenance_notes section exists, changelog.v1_5 section exists, metadata.independent_reviews includes R4 entry"
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.json:44:      "evidence": "MD header says v1.5, MD footer says v1.5 草案, JSON metadata.version=1.5. Caveat: SOP and meta-audit still scoped to v1.4 (acknowledged, not contradictory).",
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.json:106:        "detail": "In Chinese academic/professional culture, '草案' label for extended periods can lower expectations and deflect criticism while work evolves. 5 versions in 4 days with persistent 'draft' label may function more as cultural shield than honest readiness assessment."
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.json:164:    "draft_label_assessment": "Technically accurate — framework has never been used to run a complete project from L0 through L5. However, after 5 versions in 4 days, the label is starting to function as a permanent identity and review attractor rather than a temporary status.",
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.json:240:    "Update companion SOP and meta-audit to v1.5 scope or explicitly mark version lag",
+.\_reviews\AI协作项目全生命周期框架_ChatGPT-5.5审查报告.json:4:    "schema_version": "1.0",
+.\_reviews\AI协作项目全生命周期框架_ChatGPT-5.5审查报告.json:7:      "version": "v1.1"
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告.md:38:This is the weakest dimension. The Markdown header says v1.5, but the JSON companion still says `metadata.version = 1.4`, `revision = v1.4-post-Kimi-review`, and contains no v1.5 terms. Its L3 workflow pattern library lists only six patterns, omitting Pipeline DAG and Structured Multi-Role Review entirely. This is a primary artifact failure because the user explicitly identified the JSON as a structured machine-readable companion.
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告.md:50:The framework is usable by an already invested practitioner who understands the ecosystem and can selectively apply the minimum tier. It is not yet easy for a new user to adopt. The document is about 160KB, plus companion SOP/checklist files; the practical core is buried among accumulated case-derived rules, governance notes, and version history.
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告.md:121:1. The JSON companion is stale and should block a v1.5 release. It is not a minor metadata issue; it omits the v1.5 changes entirely and preserves older versions of prior issues.
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告.md:135:The older `AI协作项目全生命周期框架_ChatGPT-5.5审查报告.md` reviewed an earlier framework version and criticized lack of self-death criteria, overclaiming originality, excessive workflow complexity, weak Dev Log evidence, and poor direct usability. v1.5 has clearly improved on several of those points: usage tiers exist, framework death criteria exist, external positioning is more honest, and the draft status is explicit.
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告.md:177:- Framework version reviewed: v1.5 Markdown with stale v1.4 JSON companion
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告.json:7:    "framework_version_reviewed": "v1.5",
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告.json:8:    "version_caveat": "The Markdown presents itself as v1.5, but the JSON companion metadata still reports v1.4 and omits v1.5 additions.",
+.\_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告.json:47:        "The JSON companion still reports version 1.4 and contains no v1.5 additions.",
+.\_archive\docx_legacy_scripts\README.md:22:- `sync_v161_docx.py` — 元数据修补（非 full conversion），仍有独立用途
+.\_reviews\独立审查_ChatGPT-5.5_审查报告.json:5:    "model": "Codex / GPT-5 (internal build/version not exposed)",
+.\_archive\docx_legacy_scripts\sync_v16_json.py:5:Targeted update: metadata + changelog + version_timeline + structural nodes for 7 new sections.
+.\_archive\docx_legacy_scripts\sync_v16_json.py:33:    md['version'] = "1.6"
+.\_archive\docx_legacy_scripts\sync_v16_json.py:69:        "version": "v1.6",
+.\_archive\docx_legacy_scripts\sync_v16_json.py:105:    if 'version_timeline' not in md:
+.\_archive\docx_legacy_scripts\sync_v16_json.py:106:        md['version_timeline'] = []
+.\_archive\docx_legacy_scripts\sync_v16_json.py:107:    md['version_timeline'].append({
+.\_archive\docx_legacy_scripts\sync_v16_json.py:109:        "version": "v1.6",
+.\_archive\docx_legacy_scripts\sync_v16_json.py:111:        "evidence": "今日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正",
+.\_archive\docx_legacy_scripts\sync_v16_json.py:119:        "version": "v1.6",
+.\_archive\docx_legacy_scripts\sync_v16_json.py:158:            "versioning": "语义化版本(Major.Minor.Patch), Major需≥3后端审查+试跑, Minor需≥2后端审查, Patch可单后端",
+.\_reviews\框架v1.3.2_Codex审查报告.md:59:   手动 REO 与自动 REO 要兼容，至少需要 `schema_version`、`created_by`、`source_artifact`、`pre_registration_id`、`validation_status`、`compact_view` 等字段或派生规则。当前 schema 不足以支撑 Phase 2/3。
+.\_workflows\p1-fixes-and-framework-update-wf_cb35565b-a13.js:171:在§13.2"值得关注的外部工作"表格中(或在表格后适当位置)，新增:
+.\_pipeline_output\work\preprocessed.md:3:> **版本**: v1.6.4（**v1.6.4：prompt-tdd A1 实验写回 §6.3.2——Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited**）  
+.\_pipeline_output\work\preprocessed.md:6:> **发布前订正（2026-06-23，Claude Opus 4.8 via Claude Code CLI）**: 不升版本号的措辞订正与可理解性补充（过期时效声明更新 + 新增 §13.1.2 项目代号说明 + 面向公开读者的口吻中性化）。无机制/证据等级变更。详见 §14「v1.6.4 发布前订正批次」。
+.\_pipeline_output\work\preprocessed.md:7:> **v1.6.4 新增（2026-06-22，DeepSeek-V4-Pro via Claude Code CLI）**: prompt-tdd A1 Flow-as-Node Tier 0 对照实验写回——新增 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited（Tier 0 负证据；3/5 类别天花板，ΔF1=0.000）。经 7 轮双后端审查链（Codex GPT-5.5 ×4 + Qwen qwen3.7-max ×3），0 未闭合发现。同时更新 header 元数据新增 A1 写回声明。详见 §14。  
+.\_pipeline_output\work\preprocessed.md:20:> **状态**: **草案，两次真实试跑已回写（分析型+实验型），仍待多项目验证**（v1.6.4: prompt-tdd A1 实验写回 §6.3.2 [E-] ceiling-limited / v1.6.3: 维护流程补全+诚实声明扩展 / v1.6.2: 被动观测机制 / v1.6: 证据体系升级+维护性增强 / v1.5.5: prompt-tdd A3 实验写回 §6.3.1 [E-] / v1.5.4: prompt-tdd A2 实验写回 §4.1.1 [E-] / v1.5.2 写回 Protocol 3 试跑1反馈；v1.5.1 新增: §3.7.0 事件流健康度监测 [Sp] + §3.7.4.1 自适应权重淘汰 [Sp] + §9.7 经验注入上下文预算规则 [Sp] + §9.8 研究经验对象(REO) [Sp]。方法论来源=Evolver项目分析(arXiv:2604.15097, 综合评分4.1-4.2/10, 四轮独立审查跨三个后端)。完整规格见 `_research/框架v1.5.1_新增节草案.md`。v1.5 新增: §6.2 模式8/9 + §9.2 + §9.6。v1.4 新增: §3.7.2.6/§5.3.1/§6.2/§6.5.1/§9.1/§1.5/§9.4/附录H。v1.3 遗留 OPEN-1~4 状态不变（OPEN-5 已于 v1.5.1 冻结期关闭 → §8.8））  
+.\_pipeline_output\work\preprocessed.md:56:14. [变更记录（v1.1 → v1.6.4）](#14-变更记录v11--v164)
+.\_pipeline_output\work\preprocessed.md:98:| 可复现性 | 环境/依赖/数据/随机种子 | `reference_python_versions.md`（部分） |
+.\_pipeline_output\work\preprocessed.md:146:| OPEN-2 | 框架级死亡判据缺预登记基线——判据已写入（§1.5）但无基线无法触发 | 中 | **部分验证（v1.5.2 试跑1回写 + v1.6.4 试跑2回写）**：预登记载体已建立=配套文件 `框架级成熟度评估表.{md,json}`；两条真实基线已记录（分析型项目+实验型项目），但死亡判据仍需连续项目数据才可触发 | §1.5 + 框架级成熟度评估表 |
+.\_pipeline_output\work\preprocessed.md:298:| S9 | 可复现性声明 | 学术/量化须 pip freeze+Python版本+随机种子+数据快照（标注获取日期和来源）；工程/探索最低记录Python版本。不要求Docker | 学术/量化项目必须 | `reference_python_versions.md`（部分）✅ |
+.\_pipeline_output\work\preprocessed.md:301:注：形态匹配=已封存的金融形态识别个人项目，详见 §13.1.2 项目代号说明。
+.\_pipeline_output\work\preprocessed.md:381:2. `.json` 配套 → 从 `.md` 重新生成（通过 `_workflows/` 下的逐版本同步脚本，半自动化，尚无统一 CLI/CI 集成）。JSON 须包含 `version_timeline` + 新节的 `execution_contract`
+.\_pipeline_output\work\preprocessed.md:946:> **代号说明**: prompt-tdd=作者的 prompt 工程对照实验个人项目（详见 §13.1.2 项目代号说明）  
+.\_pipeline_output\work\preprocessed.md:966:**交叉引用**：本结论与 §6.3（模式选择决策树）的"不做过度工程化"原则一致——不应为所有场景默认套用三阶段分段格式。**v1.5.5 更新**：与 §6.3.1（路由声明格式对照证据 [E-]）的 A3 发现共同构成 GPT-5.5 temp=0 中文结构化判别任务内的方向一致阴性观察。**v1.6.1 更新**：A2 经 Qwen 跨模型方向一致的弱复现——非严格条件复现（§1.8 / §9.6.1），A3 尚未跨模型复现。**v1.6.4 发布前订正**：证据标注从 [B+/M2] 修正为 [B+/M1*]（Codex+Qwen 双后端独立审查裁决，2026-06-24）。方法论片段 PT-M1（天花板效应检测）、PT-M8（工程门/科学门分离）见 `../prompt-tdd/methodology_extraction/evidence_card_a2.md`。
+.\_pipeline_output\work\preprocessed.md:2120:6. **阴性/零效应结果的 M 等级降级**（v1.6.4 发布前订正，2026-06-24）：当跨模型验证的结果为阴性（H1 不被支持）或零效应（Δ≈0），M 等级仅表示"结论方向跨模型一致（均未检测到假设效应）"，不表示目标干预的有效性被跨模型验证。阴性方向一致的信息增益低于阳性方向一致——共同天花板/地板效应可使漏检概率不独立（如两模型均因任务区分度不足而得出 null，而非独立确认了 null）。此类条目应降一级标注（如 M2→M1*），`*` 注明"阴性方向一致"。本条经 Codex GPT-5.5 + Qwen qwen3.7-max 双后端独立审查后新增（审查报告见 `_reviews/m8m10_review_*_20260624.md`）
+.\_pipeline_output\work\preprocessed.md:2608:跨层: 可复现性  reference_python_versions.md      按项目类型分档要求
+.\_pipeline_output\work\preprocessed.md:3110:#### 13.1.2 项目代号说明
+.\_pipeline_output\work\preprocessed.md:3126:### 13.2 值得关注的外部工作
+.\_pipeline_output\work\preprocessed.md:3133:| **Constraint Decoupling** (Capital One, 2026.01) | 任务描述和约束分离为 checklist 提升合规 82%→91.5%；88% 成功编辑是重新措辞 | 已采纳——本框架的 Prompt 模板已将"否决条件"独立为一栏 |
+.\_pipeline_output\work\preprocessed.md:3149:| Agent 版本管理 | AWS Atlas | Agent 本身的 versioning/canary/rollback——目前本框架只版本化管理代码和 Spec |
+.\_pipeline_output\work\preprocessed.md:3154:## 14. 变更记录（v1.1 → v1.6.4）
+.\_pipeline_output\work\preprocessed.md:3170:| 2026-06-19 | v1.5.4 | prompt-tdd A2 Tier 1 实验写回——§4.1.1 执行合约 [E-]（prep/exec/post 未证实优于一体式） | 当日操作；三件套全量同步 + Codex 交叉验证通过 | ✅ 确认 |
+.\_pipeline_output\work\preprocessed.md:3171:| 2026-06-20 | v1.5.5 | prompt-tdd A3 Action Routing 实验写回——§6.3.1 路由声明格式对照证据 [E-]（声明式未证实优于 NL） | 当日操作；A3 闭合报告写回（活动期自记） | 🟡 较可信 |
+.\_pipeline_output\work\preprocessed.md:3172:| 2026-06-20 | v1.6 | Minor 升级：P0 证据体系升级（§9.6.1/§9.10/§4.1.1.1）+ P1 维护性增强（§2.6/§1.8/§9.9路径D/附录H反向引用） | 当日操作；经 Codex GPT-5.5 初审(FAIL_WITH_MAJOR)→修正→重审(FAIL_WITH_CAVEATS)→修正闭合；三件套同步 | 🟡 较可信（当日操作，.md+JSON 经 Codex 审查闭合，.docx 待目视确认） |
+.\_pipeline_output\work\preprocessed.md:3173:| 2026-06-20 | v1.6.1 | Patch 升级：A2 Qwen qwen3.7-max 跨模型复现写回——§4.1.1 新增复现段落 + §1.8 局限声明更新 + §6.3.1 交叉引用更新 + §9.6.1 A2 证据二维 M0→M2；伴随改进：§2.6 三件套同步协议新增 VERSION 文件检查（教训：VERSION 自 v1.5.4 起未更新）+ JSON root changelog 清理（→ metadata.changelog_legacy） | 当日操作；Qwen 复现全流程数据可复现（raw_outputs_qwen/ + scores_qwen/ + qwen_replication_report.md/.json）；Codex GPT-5.5 交叉验证报告通过 | 🟡 较可信（当日操作，复现数据完整，报告经 Codex 审查修正） |
+.\_pipeline_output\work\preprocessed.md:3174:| 2026-06-21 | v1.6.2 | Patch 升级：新增 §7.7「被动观测：意外发现的发现机制」——基于用户记忆系统三次被动观测事件跨案例分析 + Codex GPT-5.5 魔鬼代言人独立审查（总体判断：有条件支持）。新增内容包括：定义与概念边界（§7.7.1）、三次经验种子（§7.7.2）、扩展分类框架待实证（§7.7.3）、Failure Space 10 种失效模式+硬约束（§7.7.4）、深度版 Retrospect 模板增强（§7.7.5）。伴随更新：目录、metadata header、§9 跨层交叉引用、附录 C 深度版模板。 | 当日操作；概念经 Codex GPT-5.5 异后端魔鬼代言人审查；审查意见已系统性纳入（定义收紧/模式降级/补Failure Space/模板增强） | 🟡 较可信（当日操作，Codex 审查报告完整，跨后端验证通过） |
+.\_pipeline_output\work\preprocessed.md:3175:| 2026-06-21 | v1.6.3 | Patch 升级（维护流程补全+诚实声明扩展）：经两路异后端独立审查（Codex GPT-5.5 魔鬼代言人 + Qwen qwen3.7-max 完备性检查）后执行——(1) §1.8 新增局限 #9（作者-读者同构）和 #10（外部依赖漂移）；(2) §2.6 新增"规则退役判定"子节；(3) 配套新增外部依赖登记表（.md+.json）+可调参数索引（.md）；(4) OPEN-4 试读计时协议修订。 | 当日操作（同日第二条 Patch）；两后端在"外部依赖缺失""基本不变层过度声称""不需要通俗化是最弱结论"上零分歧收敛 | 🟡 较可信（当日操作，两路审查报告完整，跨后端验证通过） |
+.\_pipeline_output\work\preprocessed.md:3176:| 2026-06-22 | v1.6.4 | Minor 升级：prompt-tdd A1 Flow-as-Node Tier 0 实验写回——新增 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited（Tier 0 负证据；3/5 类别天花板，ΔF1=0.000，7 轮双后端审查链，0 未闭合发现）。Header 元数据新增 A1 写回声明。 | 当日操作；§6.3.2 内容经 Codex V2 终态验证(4M+2m 全修正)+Qwen 轻量框架文本检查(一致确认)；VERSION 同步更新 | 🟡 较可信（当日操作，写回内容经双后端终态验证） |
+.\_pipeline_output\work\preprocessed.md:3180:### v1.6.4 发布前订正批次（2026-06-23，Claude Opus 4.8 via Claude Code CLI）
+.\_pipeline_output\work\preprocessed.md:3182:**性质**：不升版本号的发布前措辞订正与可理解性补充（无机制变更、无证据等级改动），统一挂在 v1.6.4 名下。触发自 GitHub 公开发布准备——经 4 角度文档审查（口吻一致性/代号可理解性/证据标注诚实性/时效与占位符，Claude Opus 4.8 主导，Codex GPT-5.5 独立清点交叉验证发布包结构）。
+.\_pipeline_output\work\preprocessed.md:3185:1. **过期时效订正**：(a) header v1.6 "待 Codex 异后端交叉验证 / pre-release draft" → 更新为"已经 Codex GPT-5.5 初审→重审→修正闭合"（与 §14 v1.6 交叉验证记录一致）；(b) §2.6 三件套同步协议 ".json/.docx 当前手动待自动化/待脚本化" → 更新为"通过 `_workflows/` 下同步脚本生成（半自动化）"，反映已有同步脚本实际；(c) §14 版本时间线表 7 处"今日操作/本日操作"相对时间词 → "当日操作"。
+.\_pipeline_output\work\preprocessed.md:3186:2. **个人项目代号可理解性**：新增 §13.1.2「项目代号说明」一览表（9 个代号 + 一句话定性 + 案例库是否公开）；§2.2 形态匹配首次出现处、§4.1.1 prompt-tdd 首个来源块补代号定性。
+.\_pipeline_output\work\preprocessed.md:3187:3. **面向公开读者的口吻**：(a) §10.2 "你们在 ETF 项目 V3.6……" 私人称呼 → 中性第三人称"作者在某 ETF 量化项目"；(b) §13.2 外部对标表第一人称复数"我们的……"→"本框架……"，"已验证"（实为采纳关系）→"已采纳"。
+.\_pipeline_output\work\preprocessed.md:3338:- `../PocketFlow-analysis/Methodology_Asset_Conversion.md` §8.5 汇总表
+.\_pipeline_output\work\preprocessed.md:3522:| headroom 三组件条目（标注为"可借鉴的架构原则"） | §13.2 | v1.3 草案（2026-06-13 早前） | 正式化 |
+.\_pipeline_output\work\preprocessed.md:3599:- `methodological-review-sop.md`：v1.0.1→v1.0.2，§5 新增 C10 版本绑定 + §10 新增 A9 版本绑定审计 + §11.2 JSON schema 新增 version_binding 和 evidence_level 字段（T9, T10）
+.\_pipeline_output\work\preprocessed.md:3649:> **本文档状态**: v1.6.4，v1.6.4 prompt-tdd A1 实验写回 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited（经7轮双后端审查链：Codex GPT-5.5 ×4 + Qwen qwen3.7-max ×3，0未闭合发现），仍待多项目验证。v1.6.3 维护流程补全+诚实声明扩展（经Codex GPT-5.5 + Qwen qwen3.7-max 双后端独立审查写入）——新增 §1.8 局限#9/#10 + §2.6 规则退役判定 + 配套外部依赖登记表+可调参数索引。v1.6.2 新增 §7.7 被动观测+§9.11 跨层可观测性设计。v1.6.1 A2 Qwen 跨模型复现写回（首次跨模型方向一致复现，证据二维 M0→M2；v1.6.4 发布前订正 M2→M1*，经 Codex+Qwen 双后端独立审查）。v1.6 新增 §9.6.1（二维证据等级）+ §9.10（三层MF模板）+ §4.1.1.1（对照实验设计强制检查清单）+ §2.6（维护流程）+ §1.8（诚实声明）+ §9.9 路径D（方法论迁移者）+ 附录H反向交叉引用。v1.5.5 新增 §6.3.1 路由声明格式对照证据 [E-]（A3: 声明式 vs NL 路由描述对照实验，阴性结论，GPT-5.5 temp=0 中文路由任务）。v1.5.4 新增 §4.1.1 执行合约 [E-]（A2: prep/exec/post vs 一体式编号列表对照实验，H1 不被支持）。v1.5.3 新增 §1.7（最小核心+示例外挂）+ §9.9（阅读导航与难度分层）+ 附录 H（反模式清单）。v1.5.2 写回 Protocol 3 试跑1的 6 项改进。v1.5→v1.5.1 变更新增 §3.7.0/§3.7.4.1/§9.7/§9.8（四个[Sp]节）。方法论来源：prompt-tdd A1+A2+A3 三实验链(7+6+10轮独立审查) + PocketFlow 三轮独立分析 + Protocol 3 试跑1 + 被动观测三事件跨案例分析 + Evolver项目分析(arXiv:2604.15097, 综合评分4.1-4.2/10)。v1.5.1草案经Codex ChatGPT-5.5 R3→R4审查(R3驳回4.3→R4修改后通过7.2)。v1.5新增§6.2模式8/9+§9.2+§9.6，经ChatGPT-5.5审查C+(5.43/10)。审查独立性：[SEMI]——后端不同但提示词由作者撰写。**仍待验证**：v1.6 新增节的行为有效性（二维体系/三层模板/检查清单待试跑）；四个[Sp]节的行为有效性；§9.7 A/B测试(30因子×3重复×双臂)；REO Phase 0-3实施；S-tier Protocol 3 降级阈值；A3 跨模型复现 + 更多任务域验证。
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:34:    md['version'] = "1.5.3"
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:43:    # Update name to reflect current version
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:130:            "relevant_version": "v1.2"
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:135:            "relevant_version": "v1.5.1"
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:140:            "relevant_version": "v1.5.1"
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:145:            "relevant_version": "v1.5.1"
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:167:            "R4审查指出的'json停v1.4'问题在v1.5.1时已同步修复(version/revision/description/模式8/模式9均已对齐v1.5.1). "
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:332:    # === 5. Update mermaid_conversion (already mostly correct, minor update) ===
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:333:    if 'mermaid_conversion' not in md:
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:334:        md['mermaid_conversion'] = {
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:671:        "source_document": "<POCKETFLOW_PROJECT>/Methodology_Asset_Conversion.md §8.5汇总表",
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:721:        "PocketFlow分析报告和Methodology_Asset_Conversion.md存在于PocketFlow-analysis目录下."
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:745:    version = md['version']
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:747:        f.write(version + '\n')
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:748:    print(f"VERSION updated: {version}")
+.\_archive\docx_legacy_scripts\sync_trio_v153.py:753:    print(f"  version: {data2['metadata']['version']}")
+.\_archive\docx_legacy_scripts\sync_v16_docx.py:5:Does NOT regenerate the full document (requires pandoc or manual conversion).
+.\_archive\docx_legacy_scripts\sync_v16_docx.py:27:    cp.version = "v1.6"
+.\_archive\docx_legacy_scripts\sync_v16_docx.py:51:    print("Note: full content regeneration requires pandoc or manual Word conversion.")
+.\_workflows\qwen_r2_sync_verify_prompt.txt:25:- [ ] MD §14 版本时间线的最后一条 vs JSON `metadata.version_timeline` 最后一条 vs DOCX 状态尾段——三者描述的 v1.6.1 事件是否一致？
+.\_research\两次试跑对比_2026-06-22.md:20:| **写回方式** | 一次性全部写回 | **迭代写回**（A2→v1.5.4, A3→v1.5.5, A1→v1.6.4） |
+.\_research\两次试跑对比_2026-06-22.md:22:| **框架版本跨度** | v1.5.2 | v1.5.4 → v1.6.4（跨多个版本迭代） |
+.\_research\ChatGPT-5.5独立审查_headroom对标三文档.json:29:    "version": "v1.0"
+.\_research\_codex_trial_comparison_review.txt:9:   `v1.5.4 → v1.6.4` 按语义版本通常是跨 1 个 minor、多个 patch/内部修订。除非你的框架把 `1.5.4, 1.5.5...1.6.4` 都叫 Minor，否则建议改成“跨多个版本迭代”或“从 v1.5.4 演进至 v1.6.4”。
+.\_archive\docx_legacy_scripts\sync_v154_json.py:34:    md['version'] = "1.5.4"
+.\_archive\docx_legacy_scripts\sync_v154_json.py:245:        "version": "v1.5.4",
+.\_archive\docx_legacy_scripts\sync_v154_json.py:278:        "relevant_version": "v1.5.4",
+.\_archive\docx_legacy_scripts\sync_v154_json.py:285:    print("Done. Changes: version, date, revision, status, status_note, description,")
+.\_workflows\sync_v161_docx.py:3:"""Update AI协作项目全生命周期框架.docx to v1.6.1 — metadata + status footer + version header.
+.\_workflows\sync_v161_docx.py:6:MD remains the authoritative version.
+.\_workflows\sync_v161_docx.py:28:    cp.version = "v1.6.1"
+.\_workflows\sync_v161_docx.py:32:    # === 2. Update version header in early paragraphs ===
+.\_workflows\sync_v161_docx.py:33:    # Search first 10 paragraphs for "v1.6" version header pattern
+.\_workflows\sync_v161_docx.py:45:                    print(f"  Updated version in paragraph {i}: '{text[:60]}...'")
+.\_workflows\sync_v161_docx.py:48:        print("  NOTE: Could not find version header paragraph to update")
+.\_research\CCR作为逃生口案例研究.json:6:    "version": "1.0",
+.\_workflows\i18n\审查报告_术语表_Qwen_qwen3.7-max_20260623.md:6:> **配套框架版本**：v1.6.4
+.\_workflows\i18n\审查报告_术语表_Qwen_qwen3.7-max_20260623.md:255:  "metadata": { "version", "date", "model", "description", "total_terms", "type_counts" },
+.\_workflows\i18n\审查报告_术语表_Qwen_qwen3.7-max_20260623.md:281:| 6 | **metadata中缺少`framework_version`字段** | 建议增加`framework_version: "v1.6.4"`，便于校验术语表与框架版本的匹配性 |
+.\_workflows\i18n\审查报告_术语表_Qwen_qwen3.7-max_20260623.md:311:10. JSON增加`do_not_translate`和`framework_version`字段
+.\_research\CacheAligner与AI框架OPEN-1对标分析.md:242:建议在框架 §13.2 "值得关注的外部工作"表格中新增一行：
+.\_research\CacheAligner与AI框架OPEN-1对标分析.md:279:| §13.2 值得关注的外部工作 | 本文 §6 建议增补的目标位置 |
+.\_workflows\i18n\translate_zh-Hant.py:17:# Terms where OpenCC s2twp is unreliable (inconsistent conversion in context).
+.\_workflows\i18n\translate_zh-Hant.py:115:        # Step 2: Apply OpenCC conversion (simplified→traditional Taiwan idiom)
+.\_research\headroom对标分析_封存说明.json:8:    "version": "v1.0"
+.\_research\headroom对标分析_封存说明.json:27:  "framework_version": {
+.\_workflows\sync_v162_docx.py:3:"""Update AI协作项目全生命周期框架.docx to v1.6.2 — metadata + status footer + version header.
+.\_workflows\sync_v162_docx.py:6:MD remains the authoritative version.
+.\_workflows\sync_v162_docx.py:27:    cp.version = "v1.6.2"
+.\_workflows\sync_v162_docx.py:31:    # === 2. Update version header in early paragraphs ===
+.\_workflows\sync_v162_docx.py:50:        print("  NOTE: Could not find version header paragraph to update")
+.\_research\SmartCrusher方法论提取.json:6:    "version": "v1.1",
+.\_research\CacheAligner与AI框架OPEN-1对标分析.json:6:    "version": "v1.2",
+.\_research\CacheAligner与AI框架OPEN-1对标分析.json:110:      "summary": "建议在框架§13.2和§13.3中新增CacheAligner相关条目，将detector-only哲学作为OPEN-1修正方案的外部方法论来源。",
+.\_research\CacheAligner与AI框架OPEN-1对标分析.json:112:        "§13.2新增CacheAligner行：detector-only哲学 + 确定性结构化检测 + hash-based变化追踪",
+.\_research\CacheAligner与AI框架OPEN-1对标分析.json:117:          "caption": "§13.2建议新增行",
+.\_research\CacheAligner与AI框架OPEN-1对标分析.json:141:        "框架内§1.6/§3.6/§1.5/§10.8/§13.2均有直接引用关系",
+.\_research\CacheAligner与AI框架OPEN-1对标分析.json:195:    "§13.2 值得关注的外部工作",
+.\_workflows\qwen_r2_sync_verify_output.txt:21:      --telemetry                       Enable telemetry? This flag specifically controls if telemetry is sent. Other --telemetry-* flags set specific values but do not enable telemetry on their own.  [deprecated: Use the "telemetry.enabled" setting in settings.json instead. This flag will be removed in a future version.] [boolean]
+.\_workflows\qwen_r2_sync_verify_output.txt:22:      --telemetry-target                Set the telemetry target (local or gcp). Overrides settings files.  [deprecated: Use the "telemetry.target" setting in settings.json instead. This flag will be removed in a future version.] [string] [choices: "local", "gcp"]
+.\_workflows\qwen_r2_sync_verify_output.txt:23:      --telemetry-otlp-endpoint         Set the OTLP endpoint for telemetry. Overrides environment variables and settings files.  [deprecated: Use the "telemetry.otlpEndpoint" setting in settings.json instead. This flag will be removed in a future version.] [string]
+.\_workflows\qwen_r2_sync_verify_output.txt:24:      --telemetry-otlp-protocol         Set the OTLP protocol for telemetry (grpc or http). Overrides settings files.  [deprecated: Use the "telemetry.otlpProtocol" setting in settings.json instead. This flag will be removed in a future version.] [string] [choices: "grpc", "http"]
+.\_workflows\qwen_r2_sync_verify_output.txt:25:      --telemetry-log-prompts           Enable or disable logging of user prompts for telemetry. Overrides settings files.  [deprecated: Use the "telemetry.logPrompts" setting in settings.json instead. This flag will be removed in a future version.] [boolean]
+.\_workflows\qwen_r2_sync_verify_output.txt:26:      --telemetry-outfile               Redirect all telemetry output to the specified file.  [deprecated: Use the "telemetry.outfile" setting in settings.json instead. This flag will be removed in a future version.] [string]
+.\_workflows\qwen_r2_sync_verify_output.txt:29:      --proxy                           Proxy for Qwen Code, like schema://user:password@host:port  [deprecated: Use the "proxy" setting in settings.json instead. This flag will be removed in a future version.] [string]
+.\_workflows\qwen_r2_sync_verify_output.txt:32:  -p, --prompt                          Prompt. Appended to input on stdin (if any).  [deprecated: Use the positional prompt instead. This flag will be removed in a future version.] [string]
+.\_workflows\qwen_r2_sync_verify_output.txt:37:      --sandbox-image                   Sandbox image URI.  [deprecated: Use the "tools.sandboxImage" setting in settings.json instead. This flag will be removed in a future version.] [string]
+.\_workflows\qwen_r2_sync_verify_output.txt:73:  -v, --version                         Show version number  [boolean]
+.\_workflows\sync_v161_json.py:5:Targeted update: metadata + status + changelog + version_timeline + reviews + known_limitations.
+.\_workflows\sync_v161_json.py:33:    md['version'] = "1.6.1"
+.\_workflows\sync_v161_json.py:93:        "version": "v1.6.1",
+.\_workflows\sync_v161_json.py:125:    if md['changelog'][1]['version'] == 'v1.6':
+.\_workflows\sync_v161_json.py:131:    if 'version_timeline' not in md:
+.\_workflows\sync_v161_json.py:132:        md['version_timeline'] = []
+.\_workflows\sync_v161_json.py:133:    md['version_timeline'].append({
+.\_workflows\sync_v161_json.py:135:        "version": "v1.6.1",
+.\_workflows\sync_v161_json.py:137:        "evidence": "今日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)",
+.\_workflows\sync_v161_json.py:145:        "version": "v1.6.1",
+.\_workflows\sync_v161_json.py:170:            "version": "v1.6.1",
+.\_workflows\i18n\glossary.md:3:> **版本**：v1.1 | **日期**：2026-06-23 | **源框架版本**：v1.6.4
+.\_workflows\i18n\glossary.json:3:    "version": "v1.1",
+.\_workflows\i18n\glossary.json:15:    "framework_version": "v1.6.4",
+.\_workflows\i18n\glossary.json:20:    "changelog": "综合Codex(魔鬼代言人)+Qwen(完备性)双后端审查修复：修正翻译错误~25处，新增术语~45条，删除A/D重复6条+E类重复1条，D类内部拆分为4子类，JSON增加framework_version/do_not_translate字段；補「模板」→「範本」(B-189)+「实现」→「實作」(D-190)獨立條目（Qwen審校發現）"
+.\_workflows\sync_v164_docx.py:4:AI协作项目全生命周期框架 — v1.6.4 DOCX 全量重生成
+.\_workflows\sync_v164_docx.py:8:4. 更新 core properties → v1.6.4
+.\_workflows\sync_v164_docx.py:35:step("1. 备份当前根目录 DOCX (v1.6.3 → v1.6.4)")
+.\_workflows\sync_v164_docx.py:47:print(f"  Source .md: v1.6.4 (含 §6.3.2 A1 写回)")
+.\_workflows\sync_v164_docx.py:103:# ====== 4. Update version to v1.6.4 ======
+.\_workflows\sync_v164_docx.py:104:step("4. 更新版本元数据 → v1.6.4")
+.\_workflows\sync_v164_docx.py:106:cp.version = "v1.6.4"
+.\_workflows\sync_v164_docx.py:109:print(f"  version={cp.version}, revision={cp.revision}, modified={cp.modified}")
+.\_workflows\sync_v164_docx.py:111:# Update version header in early paragraphs
+.\_workflows\sync_v164_docx.py:120:                run.text = run.text.replace('v1.6.3', 'v1.6.4')
+.\_workflows\sync_v164_docx.py:122:                print(f"  Updated v1.6.3→v1.6.4 in paragraph {i}")
+.\_workflows\sync_v164_docx.py:125:                run.text = run.text.replace('v1.6.2', 'v1.6.4')
+.\_workflows\sync_v164_docx.py:127:                print(f"  Updated v1.6.2→v1.6.4 in paragraph {i}")
+.\_workflows\sync_v164_docx.py:130:    print("  NOTE: Could not find version header to update (may use pandoc-generated heading)")
+.\_workflows\sync_v164_docx.py:137:            "本文档状态: v1.6.4 草案 (2026-06-22)。"
+.\_workflows\sync_v164_docx.py:138:            "v1.6.4新增: §6.3.2 Flow-as-Node嵌套工作流对照证据[E-] ceiling-limited"
+.\_workflows\sync_v164_docx.py:144:            "三件套: .md✅ v1.6.4 / .json✅ v1.6.4 / .docx✅ v1.6.4 (边距1.8cm, 本次重生成)"
+.\_workflows\sync_v164_docx.py:159:        "本文档状态: v1.6.4 草案 (2026-06-22)。"
+.\_workflows\sync_v164_docx.py:160:        "v1.6.4新增: §6.3.2 Flow-as-Node嵌套工作流对照证据[E-] ceiling-limited。"
+.\_workflows\sync_v164_docx.py:161:        "⚠️ 以.md为权威版本。三件套: .md✅ v1.6.4 / .json✅ v1.6.4 / .docx✅ v1.6.4 (边距1.8cm)"
+.\_workflows\sync_v164_docx.py:180:print(f"  v1.6.4 DOCX 同步完成")
+.\_workflows\sync_v164_docx.py:185:print(f"  版本: v1.6.4")
+.\_workflows\sync_v164_docx.py:187:print(f"  三件套: .md✅ v1.6.4 / .json✅ v1.6.4 / .docx✅ v1.6.4")
+.\_workflows\i18n\fix_glossary.py:220:g['metadata']['version'] = 'v1.1'
+.\_workflows\i18n\fix_glossary.py:222:g['metadata']['framework_version'] = 'v1.6.4'
+.\_workflows\i18n\fix_glossary.py:224:g['metadata']['changelog'] = '综合Codex(魔鬼代言人)+Qwen(完备性)双后端审查修复：修正翻译错误~25处，新增术语~45条，删除A/D重复6条+E类重复1条，D类内部拆分为4子类，JSON增加framework_version/do_not_translate字段'
+.\_workflows\i18n\fix_glossary.py:293:lines.append(f"> **版本**：v1.1 | **日期**：2026-06-23 | **源框架版本**：v1.6.4")
+.\_workflows\sync_v163_docx.py:102:# ====== 4. Update version to v1.6.3 ======
+.\_workflows\sync_v163_docx.py:105:cp.version = "v1.6.3"
+.\_workflows\sync_v163_docx.py:108:print(f"  version={cp.version}, revision={cp.revision}, modified={cp.modified}")
+.\_workflows\sync_v163_docx.py:110:# Also update version header in early paragraphs
+.\_workflows\sync_v163_docx.py:129:    print("  NOTE: Could not find version header to update (may use pandoc-generated heading)")
+.\_reviews\codex_v164_json_sync_review_output.txt:24:1. **§13.1.2 项目代号说明**：`.md` 的 §13.1.2 有一张 9 行的项目代号表（代号 / 一句话定性 / 案例库是否公开）。请确认 `.json` 里是否新增了对应的结构化内容，且 9 个代号、定性、公开状态与 `.md` 表格**逐行一致**（特别注意 prompt-tdd / 形态匹配 / BDC2026 / 并购重组 / ETF 项目 V3.6 / PocketFlow / GitNexus / Evolver / Small_Scale 这 9 个，公开状态"否/是"是否对得上）。
+.\_reviews\codex_v164_json_sync_review_output.txt:26:2. **§13.2 Constraint Decoupling 措辞**：`.md` 的 §13.2 表格里 Constraint Decoupling 一行，"本框架可借鉴的"列写的是"已采纳"（不是"已验证"）。请确认 `.json` 里对应的 Constraint_Decoupling 条目 status 是否也是"已采纳"。同时确认 `.json` 里**其他**用到"已验证"的地方**没有被误改**（应只改这一处）。
+.\_reviews\codex_v164_json_sync_review_output.txt:28:3. **"今日操作"→"当日操作"**：`.md` 的 §14 changelog/版本时间线里，旧的"今日操作"措辞已改为"当日操作"。请确认 `.json` 的 version_timeline 里相应字段也已改为"当日操作"，且没有过期的"今日操作"残留（注意：metadata.release_prep_errata_20260623 这个订正说明字段里出现的"今日操作→当日操作"是描述文字，属正常，不算残留）。
+.\_reviews\codex_v164_json_sync_review_output.txt:33:5. `.json` 的版本号是否仍为 v1.6.4（本次订正不升版本号）。
+.\_reviews\codex_v164_json_sync_review_output.txt:45:"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "rg -n \"13\\.1\\.2|13\\.2|Constraint Decoupling|Constraint_Decoupling|今日操作|当日操作|release_prep_errata|version|v1\\.6\\.4\" ." in 
+.\_reviews\independent_review_v1.4_codex_20260613.json:29:  "version_binding": {
+.\_reviews\independent_review_v1.4_codex_20260613.json:134:        "AI协作项目全生命周期框架.json metadata version=1.4，但正文仍以 v1.3 漂移层和旧 OPEN-1 状态为主。"
+.\_reviews\independent_review_v1.4_codex_20260613.json:191:    "同步三个 JSON：主 JSON 必须包含 v1.4 新增结构，OPEN-1 状态与 Markdown 一致；meta/SOP JSON 的 scope、version_note、schema 示例与 Markdown 一致。",
+.\_reviews\codex_review_v1.5.1_三件套同步审查.md:13:md 与 JSON 的 v1.5.1 同步主体是成功的：头部版本、目录、§14 变更记录、文末状态行、JSON `metadata.version`、四个新增结构节点、`changelog.v1_5_1`、`provenance_notes` 均已落地。未发现 P0 阻断问题，也未发现把应为 v1.5.1 的核心版本行误留为 v1.5 的情况。
+.\_reviews\codex_review_v1.5.1_三件套同步审查.md:22:| D2 v1.5→v1.5.1 同步完整性 | 25% | 9.3 | 核心版本、目录、§14、文末状态、JSON version 已同步；剩余 v1.5 多为合法历史引用 |
+.\_reviews\codex_review_v1.5.1_三件套同步审查.md:30:- JSON `metadata.version = "1.5.1"`，`metadata.revision = "v1.5.1 (2026-06-14)"`。
+.\_reviews\codex_review_v1.5.1_三件套同步审查.md:90:md 头部版本行、目录、§14 标题、文末状态行都已更新到 v1.5.1；JSON `metadata.version` 也是 `"1.5.1"`。剩余 `v1.5` 出现位置主要是历史版本说明、v1.5 新增内容、v1.5→v1.5.1 变更描述，未发现应改未改的核心版本残留。
+.\_research\drafts\框架v1.5.1_新增节草案.md:248:  "required": ["reo_id", "type", "hypothesis", "validation_rule", "performance_track", "created_at", "model", "schema_version"],
+.\_research\drafts\框架v1.5.1_新增节草案.md:273:    "schema_version": { "type": "string", "const": "1.0.0" },
+.\_research\drafts\框架v1.5.1_新增节草案.md:299:  "required": ["reo_id", "type", "hypothesis", "result_summary", "created_at", "model", "schema_version"],
+.\_research\drafts\框架v1.5.1_新增节草案.md:328:    "schema_version": { "type": "string", "const": "1.0.0" },
+.\_research\drafts\框架v1.5.1_新增节草案.md:342:  "required": ["reo_id", "type", "event_type", "outcome", "intent", "blast_radius", "hypothesis", "created_at", "model", "schema_version"],
+.\_research\drafts\框架v1.5.1_新增节草案.md:355:    "schema_version": { "type": "string", "const": "1.0.0" },
+.\_research\drafts\框架v1.5.1_新增节草案.json:4:    "framework_version_target": "1.5.1",
+.\_research\drafts\框架v1.5.1_新增节草案.json:5:    "draft_version": "2.0",
+.\_research\drafts\框架v1.5.1_新增节草案.json:14:    "previous_version": {
+.\_research\drafts\框架v1.5.1_新增节草案.json:15:      "version": "1.3.2_draft_v1",
+.\_research\drafts\框架v1.5.1_新增节草案.json:75:    "version": "v2.0"
+.\_reviews\codex_review_v1.5.1_三件套同步审查.json:23:      "summary": "md 头部、目录、§14、文末状态和 JSON metadata.version 均已同步到 v1.5.1；剩余 v1.5 多为合法历史引用。"
+.\_reviews\codex_review_v1.5.1_三件套同步审查.json:53:    "json_metadata_version": "1.5.1",
+.\_reviews\codex_review_v1.5.1_三件套同步审查.json:55:    "md_header_version": "v1.5.1",
+.\_reviews\codex_review_v1.5.1_三件套同步审查.json:56:    "md_changelog_version": "v1.5.1 (2026-06-14)",
+.\_reviews\codex_review_v1.5.1_三件套同步审查.json:57:    "md_footer_status_version": "v1.5.1",
+.\_reviews\codex_v16_json_crosscheck_20260620.txt:13:JSON 已基本同步 v1.6 的核心结构: metadata 版本/日期/模型字段正确, changelog[0] 为 v1.6 且包含 7 项 changes, version_timeline 和 independent_reviews 已记录 v1.6, 5 个新增结构节点均存在。P0 节点中未发现“整节缺失”或“方向性反写”。
+.\_reviews\codex_v16_json_crosscheck_20260620.txt:19:[MEDIUM] metadata.version_timeline[-1] / metadata.independent_reviews[-1] 与 .md 当前状态不一致
+.\_reviews\codex_v16_json_crosscheck_20260620.txt:22:- metadata.version_timeline[-1] (json 行 699-702)
+.\_reviews\codex_v16_json_crosscheck_20260620.txt:26:- version_timeline[-1].evidence 记录“经Codex GPT-5.5初审→修正→重审→修正”
+.\_reviews\codex_v16_json_crosscheck_20260620.txt:27:- version_timeline[-1].confidence 记录“Codex重审FAIL_WITH_CAVEATS已修正”
+.\_reviews\codex_v16_json_crosscheck_20260620.txt:40:2. 将 JSON 中 version_timeline[-1] 与 independent_reviews[-1] 降回与 .md 一致的“待重审/待异后端交叉验证”状态。
+.\_reviews\codex_v16_json_crosscheck_20260620.txt:103:- metadata.version = "1.6" (json 行 5), 对应 md 行 3
+.\_reviews\codex_v16_json_crosscheck_20260620.txt:120:4. version_timeline
+.\_reviews\codex_v16_json_crosscheck_20260620.txt:121:- metadata.version_timeline[-1] 为 v1.6 行 (json 行 698-703)
+.\_reviews\codex_v16_json_crosscheck_20260620.txt:139:- key_rules 包含 versioning / changelog / writeback_review_gate / three_piece_sync / freeze_rules (json 行 3306-3312)
+.\_workflows\regenerate_docx.py:11:            subprocess.run([candidate, "--version"], capture_output=True, timeout=10)
+.\_workflows\regenerate_docx.py:97:# Step 3: pandoc conversion
+.\_workflows\regenerate_docx.py:155:                # Add version if missing
+.\_workflows\regenerate_docx.py:156:                if b'<cp:version>' not in data:
+.\_workflows\regenerate_docx.py:158:                        b'<cp:version>v1.6.4</cp:version></cp:coreProperties>')
+.\_workflows\sync_v164_json.py:5:背景：.json 是手工维护的结构化镜像（无 md→json 全量生成器）。v1.6.4 的结构化内容
+.\_workflows\sync_v164_json.py:9:1. §13.1.2 项目代号说明（9 代号表）—— .json external_references 缺此结构化内容
+.\_workflows\sync_v164_json.py:10:2. §13.2 Constraint Decoupling "已验证"→"已采纳"—— external_references.inspirations
+.\_workflows\sync_v164_json.py:11:3. version_timeline 中 3 处 "今日操作"→"当日操作"（v1.5.5/v1.6/v1.6.1）
+.\_workflows\sync_v164_json.py:13:不改版本号（挂 v1.6.4，与 .md/.docx 一致）。
+.\_workflows\sync_v164_json.py:36:    # === 1. 新增 §13.1.2 项目代号说明 ===
+.\_workflows\sync_v164_json.py:40:            "_comment": "v1.6.4 发布前订正（2026-06-23）新增。对应 md §13.1.2 项目代号说明。"
+.\_workflows\sync_v164_json.py:55:        report.append("新增 external_references.project_codenames（§13.1.2，9 代号）")
+.\_workflows\sync_v164_json.py:59:    # === 2. §13.2 Constraint Decoupling "已验证"→"已采纳" ===
+.\_workflows\sync_v164_json.py:60:    cd = er["inspirations"]["Constraint_Decoupling"]
+.\_workflows\sync_v164_json.py:64:        report.append(f"修正 Constraint_Decoupling.status: '{old}' → '{cd['status']}'")
+.\_workflows\sync_v164_json.py:66:        report.append(f"跳过：Constraint_Decoupling.status 已非'已验证'（当前：{old}）")
+.\_workflows\sync_v164_json.py:68:    # === 3. version_timeline 中 "今日操作"→"当日操作" ===
+.\_workflows\sync_v164_json.py:70:    for vt in data["metadata"].get("version_timeline", []):
+.\_workflows\sync_v164_json.py:72:            if k in vt and "今日操作" in vt[k]:
+.\_workflows\sync_v164_json.py:73:                vt[k] = vt[k].replace("今日操作", "当日操作")
+.\_workflows\sync_v164_json.py:75:    report.append(f"version_timeline '今日操作'→'当日操作'：{n_fixed} 字段")
+.\_workflows\sync_v164_json.py:78:    data["metadata"]["release_prep_errata_20260623"] = (
+.\_workflows\sync_v164_json.py:79:        "2026-06-23 发布前订正（不升版本号，挂 v1.6.4）补入 .json："
+.\_workflows\sync_v164_json.py:80:        "新增 §13.1.2 项目代号说明（project_codenames）+ §13.2 Constraint Decoupling 已验证→已采纳 "
+.\_workflows\sync_v164_json.py:81:        "+ version_timeline 今日操作→当日操作。对应 .md 的 §14「v1.6.4 发布前订正批次」。"
+.\_protocols-and-tools\框架级成熟度评估表.md:3:> **版本**: v0.4（v1.6.4 框架配套更新——新增 §6.3.2 Flow-as-Node 评估行 + 刷新分布，2026-06-22）
+.\_protocols-and-tools\框架级成熟度评估表.md:5:> **创建者角色**: v0.1-v0.2: GLM-5.2 编辑者评估（非独立审查）；v0.3: DeepSeek-V4-Pro 编辑者更新——基于 v1.5.3→v1.6.3 的主文档变更记录和两路异后端审查报告；v0.4: DeepSeek-V4-Pro 编辑者更新——v1.6.4 配套，新增 §6.3.2 行
+.\_protocols-and-tools\框架级成熟度评估表.md:7:> **状态**: **Protocol 3 首次试跑完成**（2026-06-16）+ **prompt-tdd A1+A2+A3 三实验链完成**（2026-06-19~22）+ **PocketFlow 方法论转化完成**（2026-06-18）+ **被动观测机制写入**（v1.6.2）+ **维护流程补全**（v1.6.3）+ **A1 实验写回**（v1.6.4）。框架已从"零试跑"更新为"1 次试跑 + 3 次对照实验 + 多轮方法论提取"。本表 v0.4 纳入上述新证据。
+.\_protocols-and-tools\框架级成熟度评估表.md:22:| v0.4 | 2026-06-22 | DeepSeek-V4-Pro (via Claude Code CLI shell) | **v1.6.4 框架配套更新**。新增 1 个评估行（§6.3.2 Flow-as-Node [E-] ceiling-limited）；refresh 状态行（试跑次数 1→2：A1 Flow-as-Node 的 Tier 0 实验完成）；重算成熟度分布。配合 v1.6.4 全项目版本同步。
+.\_protocols-and-tools\框架级成熟度评估表.md:59:| **L3 Workflow** | §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited（v1.6.4 新增） | **部分验证 [E-] ceiling-limited** | prompt-tdd A1 Tier 0 对照实验写回——层级化 vs 扁平工作流描述，GPT-5.5 temp=0, n=20/臂, ΔF1=0.000, 3/5 类别天花板。经 7 轮双后端审查链闭合（Codex GPT-5.5 ×4 + Qwen qwen3.7-max ×3），0 未闭合发现。证据二维：内部强度 C+（Tier 0 实验设计，3/5 天花板），跨模型推广性 M0（仅 GPT-5.5）。**局限**：Tier 0 实验，任务难度不足以检测格式效应；仅 GPT-5.5 单模型；C4/C5 有区分空间但 n=4/类过小；跨模型复现未执行 | Tier 1 实验（复杂多条件工作流）；跨模型复现；与 §6.3.1 A3 和 §4.1.1 A2 共同构成 GPT-5.5 中文结构化任务内方向一致阴性观察 |
+.\_protocols-and-tools\框架级成熟度评估表.md:72:| **可复现性** | 按项目类型分档要求（§9.1） | **部分验证** | 与现有 `reference_python_versions.md` 融合，相对最稳；训练-评估配置对齐（v1.4）来自 Small_Scale 单案例 |
+.\_protocols-and-tools\框架级成熟度评估表.md:116:| `methodological-review-sop.md` v1.0.4 | **部分验证** | GitNexus 三轮审查 + Protocol 3 11 轮审查按此 SOP 执行；rubric 纯净度问题已标 [SEMI]。v1.0.4 已于 2026-06-22 对齐框架 v1.6.4（二维证据/被动观测/Flow-as-Node 不影响核心流程）。SOP 自身未经独立于框架作者的零卷入审查 |
+.\_protocols-and-tools\框架级成熟度评估表.md:160:- v0.4（v1.6.4配套，2026-06-22）：~45% 部分验证 / 26% 待实证 / 29% 零数据+设计级（新增 §6.3.2 为部分验证——26/58 部分验证+已验证、15/58 待实证、17/58 零数据+设计级；不含已弃用1行）
+.\_protocols-and-tools\框架级成熟度评估表.md:170:6. **v1.6.4 A1 实验写回**：§6.3.2 Flow-as-Node 对照证据获得 Tier 0 实验数据（[E-] ceiling-limited），7 轮双后端审查链闭合
+.\_protocols-and-tools\框架级成熟度评估表.md:240:- v0.4（2026-06-22，v1.6.4 配套更新）：DeepSeek-V4-Pro 编辑者更新。新增 1 个评估行（§6.3.2 [E-] ceiling-limited），分布 ~45/26/29。
+.\_protocols-and-tools\框架级成熟度评估表.json:4:    "version": "v0.4",
+.\_protocols-and-tools\框架级成熟度评估表.json:20:      "version": "v0.1",
+.\_protocols-and-tools\框架级成熟度评估表.json:28:      "version": "v0.2",
+.\_protocols-and-tools\框架级成熟度评估表.json:144:      "evidence": "与 reference_python_versions.md 融合；训练-评估对齐来自 Small_Scale 单案例"
+.\_protocols-and-tools\框架级成熟度评估表.json:277:    "framework_version_upgrade_post_unfreeze": "本表版本号同步；新增组件追加新行",
+.\_protocols-and-tools\框架级成熟度评估表.json:280:  "version_history": [
+.\_protocols-and-tools\框架级成熟度评估表.json:282:      "version": "v0.1",
+.\_protocols-and-tools\框架级成熟度评估表.json:287:      "version": "v0.2",
+.\_protocols-and-tools\外部依赖登记表.md:53:| R1 | Spec-Driven Development (DeepLearning.AI) | §13.2 外部参考 | SDD 方法论本身发生范式转移 | 2026-06-21 | ✅ 正常 |
+.\_protocols-and-tools\外部依赖登记表.md:54:| R2 | AWS Generative AI Atlas 五模式 | §13.2 / §6 L3 Workflow 模式 | AWS 更新模式定义 | 2026-06-21 | ✅ 正常 |
+.\_reviews\independent_review_v1.4_kimi_20260613.md:51:- **更精确的部分**：`version_binding`、`evidence_level`、`reproducibility_precheck`、`训练-评估配置对齐`——这些是从真实失败中提炼出的可验证术语。
+.\_reviews\independent_review_v1.4_kimi_20260613.md:119:**核心判断**：v1.4 在**姿态上**很诚实，但在**元审查执行**上严重失分——一个强调 version binding、evidence_level、自反审查的框架，自己的 Markdown/JSON/SOP/清单却没有同步。这是核心承诺未兑现。
+.\_reviews\independent_review_v1.4_kimi_20260613.md:138:#### 3. 框架自身是否遵守了 version binding / evidence_level 要求？
+.\_reviews\independent_review_v1.4_kimi_20260613.md:142:  - **主 JSON**：`metadata.version` 是 1.4，但 `framework_self_governance.open_items.OPEN-1.status` 仍为“已覆盖 → §3.7”，落后于 Markdown 的“已操作化，待试跑验证”；JSON 中未同步 §3.7.2.6 难度分层 drift profile。
+.\_reviews\independent_review_v1.4_kimi_20260613.md:144:  - **meta-audit-checklist.json**：`metadata.scope` 仍是“v1.3”，`version_note` 仍是 ChatGPT-5.5 对 v1.3 的修订说明（M8/M9），未反映 v1.4 新增 I-012 / B-019 / B-020。
+.\_reviews\independent_review_v1.4_kimi_20260613.md:146:  - **methodological-review-sop.json**：`metadata.version_note` 仍是旧版 M6/M7/L10 说明；JSON schema 示例中的 `sop_version` 仍为 `v1.0`。
+.\_reviews\independent_review_v1.4_kimi_20260613.md:147:- **元审查结论**：若用框架自己的 `meta-audit-checklist.md` 审框架自身，至少 P-018（MD/JSON 一致性）、I-010（独立性标注透明度）、B-018（生成文件规范同步）等项会 FAIL。一个高喊 version binding 的框架，自己却未做到 version binding——这是核心信誉损伤。
+.\_reviews\independent_review_v1.4_kimi_20260613.md:176:| C. 安全/治理审计官 | **4.0 / 10** | 框架未遵守自身的 version binding / 元审查要求；ChatGPT-5.5 审查的 rubric 不独立，应按框架自身标准降级为 [SEMI]；OPEN-1 缺口未缩小。 |
+.\_reviews\independent_review_v1.4_kimi_20260613.md:193:v1.4 的核心增量（训练-评估配置对齐、可复现性预检、version binding、evidence_level）具有真实工程价值，不应退回重写。但作为一个强调 provenance、版本绑定和自反审查的方法论资产，它**不能**在当前 Markdown/JSON/SOP/清单多处于不同步的状态下发布。若下列条件未满足，应**退回重写**。
+.\_reviews\independent_review_v1.4_kimi_20260613.md:201:| 1 | **High** | 框架自身未通过 version binding / 同步要求：MD/JSON/SOP/清单多处版本、计数、范围元数据不一致；主 JSON 未同步 §3.7.2.6 与 OPEN-1 状态。 | §14 标题仍为“v1.1 → v1.3”；主 JSON `open_items.OPEN-1.status` 仍为“已覆盖 → §3.7”；meta-audit md/json scope 仍为 v1.3；SOP §9.2 仍写 A1-A8。 | 全面同步所有元数据与 JSON 结构；将同步本身作为 P0 阻断项。 |
+.\_reviews\independent_review_v1.4_kimi_20260613.md:217:   - `meta-audit-checklist.json` 的 `metadata.scope` 和 `version_note` 同步 v1.4 新增项（I-012 / B-019 / B-020）。
+.\_reviews\independent_review_v1.4_kimi_20260613.md:219:   - `methodological-review-sop.json` 的 `version_note` 与 schema 示例中的 `sop_version` 同步为 v1.0.2。
+.\_reviews\independent_review_v1.4_kimi_20260613.md:263:> **最终一句话**：v1.4 的增量内容值得保留，但它现在更像一份“修订中的补丁集”，而不是一个已经 version-bound、自反审查就绪的发布包。先把同步和披露做干净，再称 v1.4。
+.\_protocols-and-tools\外部依赖登记表.json:4:    "version": "v1.0",
+.\_protocols-and-tools\外部依赖登记表.json:175:          "§13.2 外部参考"
+.\_protocols-and-tools\外部依赖登记表.json:185:          "§13.2",
+.\_protocols-and-tools\外部依赖登记表.json:208:    "quarterly_or_5_versions": "全量检查 external_methodology_references",
+.\_research\drafts\框架v1.3.2_新增节草案.json:4:    "framework_version_target": "1.3.2",
+.\_research\drafts\框架v1.3.2_新增节草案.json:10:    "version": "v1.3.2"
+.\_reviews\m8m10_evidence_labeling_review_prompt.md:7:**来源**：v1.6.4 发布前订正批次"未处理（留待后续）"项，经 Claude Opus 4.8 识别、DeepSeek-V4-Pro 拟定提示词
+.\_reviews\m8m10_evidence_labeling_review_prompt.md:17:这是一个名为"AI协作项目全生命周期框架"的个人方法论文档（v1.6.4），即将公开发布到 GitHub。框架使用二维证据标注系统：[内部证据强度 / 跨模型推广性]，例如 [B+/M2]。
+.\_research\drafts\框架v1.3.2_修正路线图.md:105:4. 补充字段：`schema_version`、`created_by`、`source_artifact`、`pre_registration_id`、`validation_status`、`compact_view`
+.\_reviews\independent_review_v1.4_codex_20260613.md:83:- `AI协作项目全生命周期框架.json` 的 metadata 写 version 1.4，但结构化正文未同步新增的难度分层、训练-评估对齐、附录 H 等内容；OPEN-1 JSON 状态仍是“已覆盖 → §3.7”，落后于 Markdown 的“已操作化，待试跑验证”。
+.\_reviews\independent_review_v1.4_codex_20260613.md:84:- SOP Markdown 已新增 C10/A9，但 JSON 示例里的 `sop_version` 仍为 `v1.0`，附录修订历史只有 v1.0，主文档 §9.2 仍描述后置审计 A1-A8。
+.\_reviews\independent_review_v1.4_codex_20260613.md:154:2. 同步三个 JSON：主 JSON 必须包含 v1.4 新增结构，OPEN-1 状态与 Markdown 一致；meta/SOP JSON 的 scope、version_note、schema 示例要与 Markdown 一致。
+.\_protocols-and-tools\methodological-review-sop.md:8:| **版本** | v1.0.4 — v1.6.4框架配套更新：框架 §9.6.1 新增二维证据等级（内部强度 A-D × 跨模型推广性 M0-M3）；本SOP的 §6.2 声明分类已补充二维映射说明。v1.0.3 的 v1.5 对齐保留。 |
+.\_protocols-and-tools\methodological-review-sop.md:12:| **状态** | 活跃——配套框架 v1.6.4。核心14章方法论经Protocol 3试跑间接验证（11轮审查按本SOP执行），但SOP自身未经独立于框架作者的零卷入审查 |
+.\_protocols-and-tools\methodological-review-sop.md:15:| **v1.6.x 对齐注记** | 框架 v1.6 新增的 §9.6.1 二维证据等级（内部强度 × 跨模型推广性）不影响本 SOP 的核心审查流程——审查维度（D1-D7）和评分 rubric 仍基于一维证据分类（§9.6 的 S/E/I/J/Sp）执行。二维证据等级用于**审查产出后的元分析**（如比较两个 MF 的证据强度），而非审查流程本身。审查者在 §6.2 声明分类中可选择性地标注二维等级，但不强制。框架 v1.6.2 的 §7.7 被动观测、v1.6.3 的 §2.6 规则退役判定和 v1.6.4 的 §6.3.2 Flow-as-Node 不影响本 SOP。 |
+.\_protocols-and-tools\methodological-review-sop.md:319:    "version": "1.0",
+.\_protocols-and-tools\methodological-review-sop.md:322:    "sop_version": "v1.0"
+.\_protocols-and-tools\methodological-review-sop.md:332:    "version_binding": {
+.\_protocols-and-tools\methodological-review-sop.md:333:      "version_id": "arXiv v2 / OpenReview camera-ready / git hash",
+.\_protocols-and-tools\methodological-review-sop.md:418:### 13.2 审查衰减 (Review Decay)
+.\_protocols-and-tools\methodological-review-sop.json:4:    "version": "v1.0.4",
+.\_protocols-and-tools\methodological-review-sop.json:5:    "version_note": "v1.4配套+C10/A9+Kimi审查修订",
+.\_protocols-and-tools\methodological-review-sop.json:11:    "revision": "v1.4配套更新：C10/A9/version_binding/evidence_level"
+.\_protocols-and-tools\methodological-review-sop.json:547:        "version": "v1.0",
+.\_protocols-and-tools\meta-audit-checklist.md:8:| **版本** | v1.0.4+ — v1.6.4 框架配套更新：v1.0.3 的 67 items 保留；新增 B-021~B-028（v1.6-v1.6.3 新增节对应检查项）；B-020 evidence_level 已更新为 §9.6.1 二维格式；检查项总数 67→~75 |
+.\_protocols-and-tools\meta-audit-checklist.md:11:| **适用范围** | AI协作项目全生命周期框架 v1.6.4 及其衍生项目 |
+.\_protocols-and-tools\meta-audit-checklist.json:5:    "version": "1.0.4+",
+.\_protocols-and-tools\meta-audit-checklist.json:6:    "version_note": "GPT-5.5 (via Codex CLI) 独立审查修订（M8: 拆分个人/通用项 + M9: 去预判化）",
+.\_protocols-and-tools\meta-audit-checklist.json:12:    "framework_version": "v1.6.4",
+.\_protocols-and-tools\meta-audit-checklist.json:811:      "version_independence": "本清单有独立版本号，不随框架版本自动更新",
+.\_reviews\independent_review_v1.4_kimi_20260613.json:62:          "finding": "v1.4 术语体系有精确新增（version_binding / evidence_level），但也被层级错位和过早抽象抵消，整体略变模糊。",
+.\_reviews\independent_review_v1.4_kimi_20260613.json:114:          "finding": "框架自身未遵守 version binding / 同步要求：MD/JSON/SOP/清单多处版本、计数、范围元数据不一致。",
+.\_reviews\independent_review_v1.4_kimi_20260613.json:148:    "verdict_rationale": "v1.4 核心增量具有真实工程价值，不应退回重写；但框架自身未做到 version binding 与元审查同步，且独立性披露不完整。若修改条件未满足，应退回重写。"
+.\_reviews\independent_review_v1.4_kimi_20260613.json:154:      "finding": "框架自身未通过 version binding / 同步要求：MD/JSON/SOP/清单多处版本、计数、范围元数据不一致；主 JSON 未同步 §3.7.2.6 与 OPEN-1 状态。",
+.\_reviews\independent_review_v1.4_kimi_20260613.json:186:    "meta-audit-checklist.json 的 scope 与 version_note 同步 v1.4 新增项（I-012 / B-019 / B-020）。",
+.\_reviews\independent_review_v1.4_kimi_20260613.json:188:    "methodological-review-sop.json 的 version_note 与 schema 示例中的 sop_version 同步为 v1.0.2。",
+.\_protocols-and-tools\AI协作项目全生命周期框架_人类专家verify包.md:8:> **为什么找你**：这套"用 AI 协作跑项目"的方法论框架，至今所有审查**全由 AI 完成**（截至 v1.6.4，经 5 个后端 × 4 个 CLI house 的多轮审查，详见框架 §14 审查链谱系）。其中"框架作者"和"再审查者"是**同一个 AI 栈**（Claude CLI / DeepSeek-v4-pro）。在 HG 频率争议上，多个独立后端中**唯一给出相反结论的是 GPT-5.5（via Codex CLI）**——Qwen 和 Kimi 的独立审查未在此问题上挑战作者立场。AI 圈子内部在此问题上缺乏有效张力，需要一个圈外的人裁一个方向。**请不要客气、不要给好话。**
+.\_reviews\codex_review_audience_stability_20260621.txt:110:I’m considering whether it could be heuristic instead of ontology. I wonder if "Human Gate" might function as a crosscutting concept rather than a layer. If the framework operates at a meta-level, it should be tested across various project types. I'm noting that frequent updates to maturity tables and version headers can lead to unnecessary clutter. Perhaps separating "append-only project evidence" from the main framework content will help streamline processes and avoid confusion about updates.
+.\_reviews\codex_review_audience_stability_20260621.txt:113:I'm noticing that active methodology could involve significant methodological churn, where "green" maybe should be seen as 20 or 30 rather than 40. I need to account for an empirical version history. There are various omitted dimensions to consider, such as context drift that affects stability—this includes everything from legal to team dynamics. 
+.\_protocols-and-tools\AI协作项目全生命周期框架_人类专家verify包.json:4:    "schema_version": "1.1",
+.\_protocols-and-tools\AI协作项目全生命周期框架_人类专家verify包.json:12:    "framework_version_at_revision": "v1.6.4",
+.\_protocols-and-tools\AI协作项目全生命周期框架_人类专家verify包.json:13:    "purpose": "整条审查链全为 AI（截至v1.6.4：5 backend × 4 CLI house）。框架作者=再审查者同栈（Claude CLI / DeepSeek-V4-Pro）。在HG频率争议上，多个独立后端中仅GPT-5.5(via Codex CLI)给出相反结论——Qwen和Kimi的独立审查未在此问题上挑战作者立场。AI圈子内部在此问题上缺乏有效张力→需要house外的人裁一个方向。",
+.\_protocols-and-tools\AI协作项目全生命周期框架_人类专家verify包.json:14:    "version": "v1.1"
+.\_protocols-and-tools\AI协作项目全生命周期框架_OPEN4试读计时协议.json:4:    "schema_version": "1.0",
+.\_protocols-and-tools\AI协作项目全生命周期框架_OPEN4试读计时协议.json:10:    "version": "v1.6.3"
+.\_reviews\AI协作项目全生命周期框架_对ChatGPT-5.5回应的再再审查.json:4:    "schema_version": "1.0",
+.\_reviews\AI协作项目全生命周期框架_审查报告再审查.json:4:    "schema_version": "1.0",
+.\_reviews\prompts\codex_review_glm52_edits_prompt.md:74:  "next_version_title": "..."
+.\_reviews\prompts\codex_review_prompt_v1.5.md:24:The framework evolved through multiple versions:
+.\_reviews\prompts\codex_review_prompt_v1.5.md:42:- Does the framework's overall structure remain coherent after 5 versions of accretion, or is it showing signs of bloat?
+.\_reviews\prompts\codex_review_prompt_v1.5.md:44:- Does the version header accurately describe the v1.5 changes?
+.\_reviews\prompts\codex_review_prompt_v1.5.md:83:    "framework_version_reviewed": "v1.5",
+.\_reviews\prompts\codex_v164_json_sync_review_prompt.txt:11:1. **§13.1.2 项目代号说明**：`.md` 的 §13.1.2 有一张 9 行的项目代号表（代号 / 一句话定性 / 案例库是否公开）。请确认 `.json` 里是否新增了对应的结构化内容，且 9 个代号、定性、公开状态与 `.md` 表格**逐行一致**（特别注意 prompt-tdd / 形态匹配 / BDC2026 / 并购重组 / ETF 项目 V3.6 / PocketFlow / GitNexus / Evolver / Small_Scale 这 9 个，公开状态"否/是"是否对得上）。
+.\_reviews\prompts\codex_v164_json_sync_review_prompt.txt:13:2. **§13.2 Constraint Decoupling 措辞**：`.md` 的 §13.2 表格里 Constraint Decoupling 一行，"本框架可借鉴的"列写的是"已采纳"（不是"已验证"）。请确认 `.json` 里对应的 Constraint_Decoupling 条目 status 是否也是"已采纳"。同时确认 `.json` 里**其他**用到"已验证"的地方**没有被误改**（应只改这一处）。
+.\_reviews\prompts\codex_v164_json_sync_review_prompt.txt:15:3. **"今日操作"→"当日操作"**：`.md` 的 §14 changelog/版本时间线里，旧的"今日操作"措辞已改为"当日操作"。请确认 `.json` 的 version_timeline 里相应字段也已改为"当日操作"，且没有过期的"今日操作"残留（注意：metadata.release_prep_errata_20260623 这个订正说明字段里出现的"今日操作→当日操作"是描述文字，属正常，不算残留）。
+.\_reviews\prompts\codex_v164_json_sync_review_prompt.txt:20:5. `.json` 的版本号是否仍为 v1.6.4（本次订正不升版本号）。
+.\_reviews\prompts\codex_review_v1.5.1_sync.md:34:- JSON 的 `metadata.version` 是否为 "1.5.1"？
+.\_reviews\prompts\mechanical_consistency_check_20260621.txt:12:- `AI协作项目全生命周期框架.json` metadata.version
+.\_reviews\prompts\qwen_review_prompt_v1.5.json:52:      {"round": "R1", "reviewer": "ChatGPT-5.5", "version": "v1.3", "focus": "factual accuracy, analytical rigor, independence, methodology quality, completeness"},
+.\_reviews\prompts\qwen_review_prompt_v1.5.json:53:      {"round": "R2", "reviewer": "ChatGPT-5.5", "version": "v1.4", "focus": "process soundness, domain depth, utility/actionability, epistemological hygiene"},
+.\_reviews\prompts\qwen_review_prompt_v1.5.json:54:      {"round": "R3", "reviewer": "Kimi-K2.7-Code", "version": "v1.4", "focus": "decision relevance, competitive grounding, narrative framing, meta-analysis"},
+.\_reviews\prompts\qwen_review_prompt_v1.5.json:55:      {"round": "R4", "reviewer": "ChatGPT-5.5", "version": "v1.5", "focus": "new content quality, integration/coherence, methodological soundness, actionability"}
+.\_reviews\prompts\qwen_review_prompt_v1.5.json:75:        "Is the JSON truly synced to v1.5 (version field, evidence_classification section, provenance_notes)?",
+.\_reviews\prompts\qwen_review_prompt_v1.5.json:95:      "description": "After 5 versions and all fixes, is the framework actually usable by a new practitioner?",
+.\_reviews\prompts\qwen_review_prompt_v1.5.json:105:      "description": "The framework labels itself '草案，待试跑验证' — evaluate whether this is still honest after 5 versions",
+.\_reviews\prompts\qwen_review_prompt_v1.5.json:182:    "The framework is a draft — don't penalize honesty. DO evaluate whether 'draft' is still fair after 5 versions.",
+.\_reviews\prompts\qwen_review_prompt_v1.5.md:14:- R4 (ChatGPT-5.5, v1.5): Found CRITICAL JSON staleness, metadata contradictions, 5 issues — **all 5 have been fixed in the current version you are reviewing**
+.\_reviews\prompts\qwen_review_prompt_v1.5.md:43:- Is the JSON truly synced to v1.5 (check version field, check for v1.5-specific sections like evidence_classification)?
+.\_reviews\prompts\qwen_review_prompt_v1.5.md:63:- The framework has grown from v1.0 to v1.5 across 5 versions. Is the accumulated content still navigable, or has it become a methodology encyclopedia that needs a "quick start" extraction?
+.\_reviews\prompts\qwen_review_prompt_v1.5.md:67:The framework labels itself "草案，待试跑验证" (draft, awaiting trial-run validation). After 5 versions and 5 reviews:
+.\_reviews\prompts\qwen_review_prompt_v1.5.md:140:- The framework is a draft — don't penalize it for being honest about that. DO evaluate whether "draft" is still a fair label after 5 versions.
+.\_reviews\prompts\外部审查_ChatGPT-5.5_config.json:3:  "version": "v1.0",
+.\_reviews\prompts\外部审查_ChatGPT-5.5_config.json:11:    "version": "v1.1",
+.\_reviews\prompts\外部审查_ChatGPT-5.5_提示词.json:6:      "version": "v1.1",
+.\_reviews\prompts\外部审查_ChatGPT-5.5_提示词.md:58:- 背景：框架引用了 SDD（Spec-Driven Development）、AWS GenAI Atlas、Conversation Routines、Constraint Decoupling、VIDE Framework、Visual Para-Thinker 等外部工作，并标注了 L4 Retrospect + L5 Closure + Dev Log 为"公开资料中未找到形式化对应物"的独特贡献
+
+ succeeded in 207ms:
+
+
+    目录: 
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d-----         2026/6/24      1:37                zh-Hant                                                              
+d-----         2026/6/21     21:59                _archive                                                             
+d-----         2026/6/23     20:35                _mermaid_png                                                         
+d-----         2026/6/24      0:51                _pipeline_output                                                     
+d-----         2026/6/23      1:13                _protocols-and-tools                                                 
+d-----         2026/6/23      1:22                _research                                                            
+d-----         2026/6/24     13:04                _reviews                                                             
+d-----         2026/6/24     13:01                _workflows                                                           
+-a----         2026/6/24      1:54            712 .gitignore                                                           
+-a----         2026/6/24      1:51        6849320 AI协作项目全生命周期框架.docx                                                   
+-a----         2026/6/24     13:03         204014 AI协作项目全生命周期框架.json                                                   
+-a----         2026/6/24     13:01         201616 AI协作项目全生命周期框架.json.pre_v164_sync.backup                              
+-a----         2026/6/24      0:47         326020 AI协作项目全生命周期框架.md                                                     
+-a----         2026/6/24      1:55          13194 CLAUDE.md                                                            
+-a----         2026/6/24      0:58          15007 inventory.csv                                                        
+-a----         2026/6/23      0:43          18652 LICENSE                                                              
+-a----         2026/6/24      0:50           2215 project.yaml                                                         
+-a----         2026/6/24      1:52           5919 project_status.md                                                    
+-a----         2026/6/23     17:29           3964 PUBLISHING.md                                                        
+-a----         2026/6/23     21:59           8695 README.md                                                            
+-a----         2026/6/24      2:17           6714 reference_files.md                                                   
+-a----         2026/6/23      1:42          13753 verify_version_consistency.py                                        
+-a----         2026/6/22     20:38              6 VERSION                                                              
+
+
+
+codex
+初步定位到当前 JSON、备份 JSON 和主 Markdown 都在根目录；接下来我会抽出相关章节的原文表格和 JSON 对应结构，避免只靠全文关键词命中判断。
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'rg -n "''^(#{1,6}) .*(13'"\\.1\\.2|13\\.2|14\\.|项目代号|外部|版本时间线|版本历史)|项目代号说明|Constraint Decoupling|今日操作|当日操作\" \"AI协作项目全生命周期框架.md\"" in 
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "rg -n \"project|code|Constraint_Decoupling|Constraint Decoupling|release_prep_errata|今日操作|当日操作|version_timeline|v1\\.6\\.4\" \"AI协作项目全生命周期框架.json\"" in 
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'rg -n "Constraint_Decoupling|Constraint Decoupling|已验证|已采纳|今日操作|当日操作|version_timeline|release_prep_errata|project_codes|项目代号" "AI协作项目全生命周期框架.json.pre_v164_sync.backup" "AI协作项目全生命周期框架.json"' in 
+ succeeded in 154ms:
+5:    "version": "v1.6.4",
+7:    "status": "草案, v1.6.4 (§6.3.2 Flow-as-Node嵌套工作流对照证据[E-] ceiling-limited, 经7轮双后端审查链闭合). v1.6.4新增: §6.3.2(Flow-as-Node对照实验: Tier 0负证据, 3/5类别天花板, ΔF1=0.000, 7轮审查链Codex GPT-5.5×4+Qwen qwen3.7-max×3, 0未闭合发现). v1.6.3新增: §1.8局限#9(作者-读者同构)+#10(外部依赖漂移)+§2.6规则退役判定+配套外部依赖登记表+可调参数索引+OPEN-4协议修订, 经Codex GPT-5.5+Qwen qwen3.7-max双后端审查零分歧收敛. v1.6.2新增: §7.7(被动观测: 定义与概念边界+三次经验种子+扩展分类框架待实证+Failure Space 10种失效模式+硬约束+深度版模板增强) + §9.11(跨层可观测性设计: L0-L5各层可观测性关切+三原则). v1.6.1新增: §4.1.1 Qwen复现段落(A_flat=0.806/B_structured=0.792/Δ=−0.014, 方向一致, GPT-5.5+Qwen双模型点证据, 证据二维M0→M2→M1*(v1.6.4订正)) + §1.8局限声明更新 + §6.3.1交叉引用更新 + §9.6.1 A2行M0→M2. v1.6 P0新增: §9.6.1(二维证据等级: 内部强度A-D × 跨模型推广性M0-M3/N/A) + §9.10(MF三层模板: 问题识别+解决方案适用条件+已知反例/失效模式) + §4.1.1.1(对照实验设计强制检查清单CK1-CK6, Tier 1硬门+条件触发). v1.6 P1新增: §2.6(框架维护流程: 版本号规则/审查门/三件套同步/冻结期) + §1.8(已知局限与诚实声明: 8条系统性局限) + §9.9路径D(方法论迁移者30-45min) + 附录H反向交叉引用. v1.5.5新增: §6.3.1路由声明格式对照证据[E-](A3实验写回). v1.5.4新增: §4.1.1执行合约[E-](A2实验写回). v1.5.3新增: §1.7(最小核心+示例外挂)+§9.9(阅读导航)+附录H(反模式清单). v1.5.2写回: Protocol 3试跑1的6项改进. v1.5.1新增: §3.7.0+§3.7.4.1+§9.7+§9.8(四个[Sp]节). 方法论来源: prompt-tdd A1+A2+A3三实验链+被动观测三事件跨案例分析+Evolver项目(4.1-4.2/10)+PocketFlow(DeepSeek/ChatGPT-5.5/GLM-5.2)+GitNexus+Small_Scale. v1.6.4经Codex GPT-5.5×4+Qwen qwen3.7-max×3审查链闭合. v1.6.3经Codex+Qwen双后端审查零分歧收敛. v1.6.2经Codex GPT-5.5魔鬼代言人审查(有条件支持, 意见已系统性纳入). v1.6经Codex GPT-5.5初审(FAIL_WITH_MAJOR_ISSUES)→修正→重审(FAIL_WITH_CAVEATS)→修正. v1.6.1经Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR + 5 MEDIUM/MINOR)→修正. 审查独立性: [SEMI]——后端不同但提示词由作者撰写.",
+8:    "status_note": "草案冻结已解除(Protocol 3试跑1 Retrospect完成, 条件满足). v1.6.4写回prompt-tdd A1 Flow-as-Node Tier 0实验(PF-A1-001: Flow-as-Node [E-] ceiling-limited→§6.3.2, 7轮双后端审查链闭合). v1.6.3维护流程补全+诚实声明扩展(Codex+Qwen双后端审查零分歧收敛). v1.6.2写回被动观测+跨层可观测性设计(Codex+Qwen双后端审查). v1.6.1写回prompt-tdd A2 Qwen跨模型复现(PF-8扩展: Qwen复现[E-]→§4.1.1, 证据二维M0→M2→M1*(v1.6.4订正)). v1.6写回A2+A3深度复盘(P0证据体系升级+P1维护性增强). v1.5.5写回prompt-tdd A3实验(PF-9: Action Routing [E-]→§6.3.1). v1.5.4写回prompt-tdd A2实验(PF-8: prep/exec/post [E-]→§4.1.1). v1.5.3写回PocketFlow A类资产(3项: §1.7+§9.9+附录H). v1.5.2写回Protocol 3试跑1反馈(6项改进). 仍待多项目验证. v1.5.1新增: §3.7.0事件流健康度监测[Sp]+§3.7.4.1自适应权重淘汰[Sp]+§9.7经验注入上下文预算规则[Sp]+§9.8研究经验对象(REO)[Sp]. 方法论来源=Evolver项目分析(arXiv:2604.15097,综合评分4.1-4.2/10,四轮独立审查跨三个后端). 完整规格见_research/框架v1.5.1_新增节草案.md. v1.5新增: §6.2模式8/9+§9.2+§9.6. v1.4新增: §3.7.2.6/§5.3.1/§6.2/§6.5.1/§9.1/§1.5/§9.4/附录H. v1.3遗留OPEN-1~4状态不变(OPEN-5已于v1.5.1冻结期关闭→§8.8). v1.3新增§3.7漂移检测层(五类信号+告警聚合+规则退役+宪法审计+闭环策展+监测模板)——将OPEN-1从候选草案升级为正式操作化方案. 经ChatGPT-5.5独立审查全件(加权6.1/10,修改后通过), 10项修订已执行. 21个决策点已拍板, 但Dev Log 7/10组件待实证、框架整体已经2次真实试跑(Protocol 3+prompt-tdd A1/A2/A3).",
+9:    "description": "AI协作项目的完整操作化框架——从Spec到Closure的七层+四跨层关切+开发手册产物. v1.6.4新增: §6.3.2 Flow-as-Node嵌套工作流对照证据[E-] ceiling-limited(prompt-tdd A1 Tier 0实验, GPT-5.5 temp=0, n=20/臂, 7轮双后端审查链闭合). v1.6.3新增: §1.8局限#9(作者-读者同构)+#10(外部依赖漂移)+§2.6规则退役判定+配套外部依赖登记表+可调参数索引+OPEN-4协议修订(Codex+Qwen双后端审查零分歧收敛). v1.6.2新增: §7.7被动观测+§9.11跨层可观测性设计(Codex GPT-5.5魔鬼代言人审查). v1.6.1新增: A2 Qwen跨模型复现写回(首次跨模型方向一致弱复现, 证据二维M0→M2→M1*(v1.6.4订正)). v1.6新增: §9.6.1二维证据等级+§9.10 MF三层模板+§4.1.1.1对照实验设计强制检查清单+§2.6框架维护流程+§1.8诚实声明+§9.9路径D+附录H反向交叉引用. v1.5.5新增§6.3.1路由声明格式对照证据[E-](A3实验写回). v1.5.4新增§4.1.1执行合约[E-](A2实验写回). v1.5.3新增§1.7(最小核心+示例外挂)+§9.9(阅读导航)+附录H(反模式清单). v1.1新增Dev Log(开发手册). v1.2经三模型独立审查链校准. v1.3新增§3.7漂移检测层(五类信号+四级告警+规则退役+宪法审计+闭环策展+监测模板). v1.4新增§3.7.2.6难度分层监测+§5.3.1能力获取vs行为塑造+§6.5.1文件系统IPC反面模式+§9.1训练-评估对齐/Import完整性/配置验证/接口退化. v1.5新增§6.2模式8(Pipeline DAG)+模式9(Structured Multi-Role Review)+§9.2多轮多后端独立审查编排+§9.6证据分类(S/E/I/J/Sp). v1.5.1新增§3.7.0事件流健康度监测+§3.7.4.1自适应权重淘汰+§9.7经验注入上下文预算规则+§9.8研究经验对象(REO). v1.5.2写回Protocol 3试跑1的6项改进(C1/C5测量方法/HG-0双检查点/审查频率适应性上调/HG交互留存/C8≥2轮异后端建议/S-tier降级阈值). v1.5.3新增§1.7(最小核心+示例外挂)+§9.9(阅读导航与难度分层)+附录H(反模式清单). 方法论来源=prompt-tdd A1+A2+A3三实验链+PocketFlow三轮独立分析+Evolver项目分析(GitNexus→Small_Scale→PilotDeck→Evolver四项目链). 基于ETF项目V3.6代码头部注释实践提炼. v1.6.4发布前订正(M8/M10): §4.1.1[B+/M2]→[B+/M1*](阴性方向一致+条件偏差, Codex+Qwen双后端审查)+§9.6.1新增规则#6(阴性结果的M等级降级).",
+23:        "file": "_reviews/codex_review_v1.5.1_sync.md",
+28:        "file": "_reviews/codex_review_v1.5.1_三件套同步审查.md",
+48:      "Evolver项目分析(2026-06-14: arXiv:2604.15097, 综合评分4.1-4.2/10, 四轮独立审查跨三个后端, 方法论提取5项:4项→框架v1.5.1四节+1项→memory/methodology_obfuscated_code_evaluation.md)",
+52:      "prompt-tdd A1 Flow-as-Node对照实验(2026-06-22: 层级化vs扁平工作流描述, GPT-5.5 temp=0, n=20/臂, 7轮双后端审查链, PF-A1-001→框架v1.6.4 §6.3.2 [E-] ceiling-limited)"
+54:    "revision": "v1.6.4 (2026-06-22)",
+55:    "revision_source": "v1.6 Minor升级(A2+A3深度复盘 + Codex v1.5.5交叉验证 + prompt-tdd A2+A3实验写回 + 跨版本维护实践规范化 + PocketFlow三轮独立分析 + Evolver/GitNexus/Small_Scale项目分析) + v1.6.1 Patch升级(A2 Qwen qwen3.7-max跨模型复现写回) + v1.6.2 Patch升级(§7.7被动观测+§9.11跨层可观测性设计) + v1.6.3 Patch升级(维护流程补全+诚实声明扩展) + v1.6.4 Minor升级(prompt-tdd A1 Flow-as-Node Tier 0实验写回——§6.3.2 [E-] ceiling-limited, 7轮双后端审查链闭合)",
+522:        "report": "_reviews/codex_v16_crosscheck_20260620.txt",
+523:        "rereview_report": "_reviews/codex_v16_crosscheck_rereview_20260620.txt"
+533:        "report": "_codex_v161_review_output.txt",
+534:        "prompt": "_codex_v161_review_prompt.txt"
+562:        "summary": "v1.6.4 Minor升级——prompt-tdd A1 实验写回 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited。Tier 0负证据(3/5类别天花板, ΔF1=0.000)。",
+565:            "id": "v1.6.4-1",
+571:            "id": "v1.6.4-2",
+573:            "desc": "Header元数据新增A1写回声明(v1.6.4描述段+状态行更新)",
+577:            "id": "v1.6.4-3",
+579:            "desc": "§14版本时间线新增v1.6.4行+本变更节",
+583:            "id": "v1.6.4-4",
+585:            "desc": "VERSION(1.6.3→1.6.4) + JSON metadata全量更新(date/status/changelog/version_label/revision) + README/CLAUDE/project_status/project.yaml/reference_files同步至v1.6.4",
+653:          "config": "project.yaml (report模板, 微软雅黑, A4)",
+662:        "trigger": "A2 Qwen qwen3.7-max跨模型复现完成——48/48收集成功, Codex GPT-5.5单评分者盲评: A_flat=0.806, B_structured=0.792, Δ=−0.014, 方向与GPT-5.5原实验一致(A ≥ B, H1不被支持), 首次跨模型方向一致弱复现, 证据二维M0→M2→M1*(v1.6.4订正)",
+663:        "summary": "v1.6.1 Patch升级——A2 Qwen跨模型复现写回. §4.1.1新增复现段落(含限制声明) + §1.8局限声明更新 + §6.3.1交叉引用更新 + §9.6.1 A2证据二维M0→M2→M1*(v1.6.4订正). 经Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR + 5 MEDIUM/MINOR)→修正.",
+686:            "desc": "§9.6.1 A2行证据二维M0→M2→M1*(v1.6.4订正)(跨2模型家族验证)",
+715:        "codex_reviews": [
+770:        "codex_reviews": [
+816:    "version_timeline": [
+869:        "evidence": "当日操作；三件套全量同步+Codex交叉验证通过",
+877:        "evidence": "当日操作；A3闭合报告写回",
+884:        "evidence": "当日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正",
+890:        "event": "Patch升级: A2 Qwen qwen3.7-max跨模型复现写回——§4.1.1新增复现段落+§1.8局限声明更新+§6.3.1交叉引用更新+§9.6.1 A2证据二维M0→M2→M1*(v1.6.4订正); 伴随改进: §2.6三件套同步协议新增VERSION文件检查(教训: VERSION自v1.5.4起未更新) + JSON root changelog清理(→metadata.changelog_legacy)",
+891:        "evidence": "当日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)",
+895:    "version_timeline_note": "时间线基于独立文件证据（旧版docx/md快照的版本头与footer）交叉核实。06-13存疑——仅changelog文本证据且已知同源错误。教训：changelog文本≠文件快照；未来版本应保留每版独立快照。详见.md §14版本时间线。",
+1203:    "version_label": "v1.6.4——prompt-tdd A1 实验写回 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited，经7轮双后端审查链闭合",
+1205:    "release_prep_errata_20260623": "2026-06-23 发布前订正（不升版本号，挂 v1.6.4）补入 .json：新增 §13.1.2 项目代号说明（project_codenames）+ §13.2 Constraint Decoupling 已验证→已采纳 + version_timeline 今日操作→当日操作。对应 .md 的 §14「v1.6.4 发布前订正批次」。同步执行：Claude Opus 4.8 (via Claude Code CLI)，2026-06-24。"
+1469:        "S1_project_status": {
+1723:          "rubric": "9维评分量规（prep_file_purpose/prep_key_functions/prep_data_flow/exec_line_number/exec_type_label/exec_severity/post_fix_code/post_rationale/post_regression_check）"
+1983:        "project_spec_updates": "→本项目Spec文件",
+1984:        "cross_project_methodology": "→memory/（全局lessons learned）",
+1994:        "project_status.md CLOSED标记",
+2034:        "code_dir": "../<项目名>/code/ → 最终版代码",
+2155:        "读本项目project_status.md",
+2161:        "更新project_status.md",
+2223:      "code_header_role": "继续保留简要变更记录作为快速参考，但不再是权威记录。简化为'变更历史详见: DEV_LOG.md'"
+2237:        "code_comments_unreliable": {
+2267:        "cross_project_type_generalization": {
+2669:          "project",
+2801:    "claude_code_primitives": {
+2939:      "Constraint_Decoupling": {
+2972:    "project_codenames": {
+2973:      "_comment": "v1.6.4 发布前订正（2026-06-23）新增。对应 md §13.1.2 项目代号说明。代号是框架方法论的证据来源，个人项目案例库不随框架公开发布，此处仅作可理解性锚点。",
+2975:      "codenames": [
+2977:          "code": "prompt-tdd",
+2982:          "code": "形态匹配",
+2987:          "code": "BDC2026",
+2992:          "code": "并购重组",
+2997:          "code": "ETF 项目 V3.6",
+3002:          "code": "PocketFlow",
+3007:          "code": "GitNexus",
+3012:          "code": "Evolver",
+3017:          "code": "Small_Scale",
+3040:      "13_归档路径": "三级分层——archive/+code/+data/raw/",
+3635:      "单模型证据主导——A2/A3最初均基于GPT-5.5 temp=0单模型。2026-06-20更新: A2经Qwen qwen3.7-max跨模型复现(48/48收集, Codex盲评, Δ=−0.014方向一致), 首次跨模型方向一致弱复现, 证据二维M0→M2→M1*(v1.6.4订正)。A3尚未经跨模型复现。A2+A3的跨任务方向一致观察仍限GPT-5.5。以上结论严格限定于temp=0/CLI默认中文结构化判别任务内。",
+3670:        ".json配套——包含version_timeline+新节execution_contract",
+3677:        "version": "v1.6.4",
+3679:        "md": "v1.6.4 ✅",
+3680:        "json": "v1.6.4 ✅ (本次同步, metadata全量更新+§6.3.2新增)",
+3681:        "docx": "v1.6.4 ✅ (2026-06-22 pandoc全量重生成, Mermaid 6图PNG, 边距1.8cm)",
+
+ succeeded in 155ms:
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:816:    "version_timeline": [
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:869:        "evidence": "当日操作；三件套全量同步+Codex交叉验证通过",
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:877:        "evidence": "今日操作；A3闭合报告写回",
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:884:        "evidence": "今日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正",
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:891:        "evidence": "今日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)",
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:895:    "version_timeline_note": "时间线基于独立文件证据（旧版docx/md快照的版本头与footer）交叉核实。06-13存疑——仅changelog文本证据且已知同源错误。教训：changelog文本≠文件快照；未来版本应保留每版独立快照。详见.md §14版本时间线。",
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:2230:      "overall": "地基扎实的概念，还不是成熟体系——3/10已验证，7/10待实证或零数据",
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:2233:          "level": "已验证",
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:2237:          "level": "已验证",
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:2241:          "level": "已验证",
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:2278:      "distribution": "已验证3/10, 待实证6/10, 零数据1/10"
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:2890:        "Drift_Detection": "v1.3新增——headroom CacheAligner detector-only哲学 → 适配为语义治理层的连续漂移监测层(§3.7)。标注为'可借鉴的架构原则'，未经跨域验证，不等同于已验证的通用方法论。"
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:2938:      "Constraint_Decoupling": {
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:2941:        "status": "已验证——Prompt模板已独立'否决条件'栏"
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:2961:        "status": "v1.3已内化——三项均标注为'可借鉴的架构原则'，未经跨域验证，不等同于已验证的通用方法论。详见配套对标文档。经ChatGPT-5.5独立裁决(Codex CLI, 710K token)条件采纳。"
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:3090:        "description": "从已验证证据推理得出",
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:3252:      "description": "配套目录提供场景化的应用模板、参考实现和治理记录。不是强制规则——'这里有已验证的做法，你可以直接用、改、或参考后自己设计'",
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:3336:        "evidence_level": "[Sp]——此证据仅为N=2两次试读的对照，未达方法论意义的'已验证'，待更多试读确认"
+AI协作项目全生命周期框架.json.pre_v164_sync.backup:3618:        ".json配套——包含version_timeline+新节execution_contract",
+AI协作项目全生命周期框架.json:816:    "version_timeline": [
+AI协作项目全生命周期框架.json:869:        "evidence": "当日操作；三件套全量同步+Codex交叉验证通过",
+AI协作项目全生命周期框架.json:877:        "evidence": "当日操作；A3闭合报告写回",
+AI协作项目全生命周期框架.json:884:        "evidence": "当日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正",
+AI协作项目全生命周期框架.json:891:        "evidence": "当日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)",
+AI协作项目全生命周期框架.json:895:    "version_timeline_note": "时间线基于独立文件证据（旧版docx/md快照的版本头与footer）交叉核实。06-13存疑——仅changelog文本证据且已知同源错误。教训：changelog文本≠文件快照；未来版本应保留每版独立快照。详见.md §14版本时间线。",
+AI协作项目全生命周期框架.json:1205:    "release_prep_errata_20260623": "2026-06-23 发布前订正（不升版本号，挂 v1.6.4）补入 .json：新增 §13.1.2 项目代号说明（project_codenames）+ §13.2 Constraint Decoupling 已验证→已采纳 + version_timeline 今日操作→当日操作。对应 .md 的 §14「v1.6.4 发布前订正批次」。同步执行：Claude Opus 4.8 (via Claude Code CLI)，2026-06-24。"
+AI协作项目全生命周期框架.json:2231:      "overall": "地基扎实的概念，还不是成熟体系——3/10已验证，7/10待实证或零数据",
+AI协作项目全生命周期框架.json:2234:          "level": "已验证",
+AI协作项目全生命周期框架.json:2238:          "level": "已验证",
+AI协作项目全生命周期框架.json:2242:          "level": "已验证",
+AI协作项目全生命周期框架.json:2279:      "distribution": "已验证3/10, 待实证6/10, 零数据1/10"
+AI协作项目全生命周期框架.json:2891:        "Drift_Detection": "v1.3新增——headroom CacheAligner detector-only哲学 → 适配为语义治理层的连续漂移监测层(§3.7)。标注为'可借鉴的架构原则'，未经跨域验证，不等同于已验证的通用方法论。"
+AI协作项目全生命周期框架.json:2939:      "Constraint_Decoupling": {
+AI协作项目全生命周期框架.json:2942:        "status": "已采纳——Prompt模板已独立'否决条件'栏"
+AI协作项目全生命周期框架.json:2962:        "status": "v1.3已内化——三项均标注为'可借鉴的架构原则'，未经跨域验证，不等同于已验证的通用方法论。详见配套对标文档。经ChatGPT-5.5独立裁决(Codex CLI, 710K token)条件采纳。"
+AI协作项目全生命周期框架.json:2973:      "_comment": "v1.6.4 发布前订正（2026-06-23）新增。对应 md §13.1.2 项目代号说明。代号是框架方法论的证据来源，个人项目案例库不随框架公开发布，此处仅作可理解性锚点。",
+AI协作项目全生命周期框架.json:3142:        "description": "从已验证证据推理得出",
+AI协作项目全生命周期框架.json:3304:      "description": "配套目录提供场景化的应用模板、参考实现和治理记录。不是强制规则——'这里有已验证的做法，你可以直接用、改、或参考后自己设计'",
+AI协作项目全生命周期框架.json:3388:        "evidence_level": "[Sp]——此证据仅为N=2两次试读的对照，未达方法论意义的'已验证'，待更多试读确认"
+AI协作项目全生命周期框架.json:3670:        ".json配套——包含version_timeline+新节execution_contract",
+
+ succeeded in 184ms:
+6:> **发布前订正（2026-06-23，Claude Opus 4.8 via Claude Code CLI）**: 不升版本号的措辞订正与可理解性补充（过期时效声明更新 + 新增 §13.1.2 项目代号说明 + 面向公开读者的口吻中性化）。无机制/证据等级变更。详见 §14「v1.6.4 发布前订正批次」。
+358:注：形态匹配=已封存的金融形态识别个人项目，详见 §13.1.2 项目代号说明。
+1050:> **代号说明**: prompt-tdd=作者的 prompt 工程对照实验个人项目（详见 §13.1.2 项目代号说明）  
+2909:#### 轻量版（常规里程碑、外部审查后）
+3212:## 13. 外部参考与定位
+3247:#### 13.1.2 项目代号说明
+3263:### 13.2 值得关注的外部工作
+3270:| **Constraint Decoupling** (Capital One, 2026.01) | 任务描述和约束分离为 checklist 提升合规 82%→91.5%；88% 成功编辑是重新措辞 | 已采纳——本框架的 Prompt 模板已将"否决条件"独立为一栏 |
+3291:## 14. 变更记录（v1.1 → v1.6.4）
+3295:### 版本时间线（经独立文件证据核实）
+3307:| 2026-06-19 | v1.5.4 | prompt-tdd A2 Tier 1 实验写回——§4.1.1 执行合约 [E-]（prep/exec/post 未证实优于一体式） | 当日操作；三件套全量同步 + Codex 交叉验证通过 | ✅ 确认 |
+3308:| 2026-06-20 | v1.5.5 | prompt-tdd A3 Action Routing 实验写回——§6.3.1 路由声明格式对照证据 [E-]（声明式未证实优于 NL） | 当日操作；A3 闭合报告写回（活动期自记） | 🟡 较可信 |
+3309:| 2026-06-20 | v1.6 | Minor 升级：P0 证据体系升级（§9.6.1/§9.10/§4.1.1.1）+ P1 维护性增强（§2.6/§1.8/§9.9路径D/附录H反向引用） | 当日操作；经 Codex GPT-5.5 初审(FAIL_WITH_MAJOR)→修正→重审(FAIL_WITH_CAVEATS)→修正闭合；三件套同步 | 🟡 较可信（当日操作，.md+JSON 经 Codex 审查闭合，.docx 待目视确认） |
+3310:| 2026-06-20 | v1.6.1 | Patch 升级：A2 Qwen qwen3.7-max 跨模型复现写回——§4.1.1 新增复现段落 + §1.8 局限声明更新 + §6.3.1 交叉引用更新 + §9.6.1 A2 证据二维 M0→M2；伴随改进：§2.6 三件套同步协议新增 VERSION 文件检查（教训：VERSION 自 v1.5.4 起未更新）+ JSON root changelog 清理（→ metadata.changelog_legacy） | 当日操作；Qwen 复现全流程数据可复现（raw_outputs_qwen/ + scores_qwen/ + qwen_replication_report.md/.json）；Codex GPT-5.5 交叉验证报告通过 | 🟡 较可信（当日操作，复现数据完整，报告经 Codex 审查修正） |
+3311:| 2026-06-21 | v1.6.2 | Patch 升级：新增 §7.7「被动观测：意外发现的发现机制」——基于用户记忆系统三次被动观测事件跨案例分析 + Codex GPT-5.5 魔鬼代言人独立审查（总体判断：有条件支持）。新增内容包括：定义与概念边界（§7.7.1）、三次经验种子（§7.7.2）、扩展分类框架待实证（§7.7.3）、Failure Space 10 种失效模式+硬约束（§7.7.4）、深度版 Retrospect 模板增强（§7.7.5）。伴随更新：目录、metadata header、§9 跨层交叉引用、附录 C 深度版模板。 | 当日操作；概念经 Codex GPT-5.5 异后端魔鬼代言人审查；审查意见已系统性纳入（定义收紧/模式降级/补Failure Space/模板增强） | 🟡 较可信（当日操作，Codex 审查报告完整，跨后端验证通过） |
+3312:| 2026-06-21 | v1.6.3 | Patch 升级（维护流程补全+诚实声明扩展）：经两路异后端独立审查（Codex GPT-5.5 魔鬼代言人 + Qwen qwen3.7-max 完备性检查）后执行——(1) §1.8 新增局限 #9（作者-读者同构）和 #10（外部依赖漂移）；(2) §2.6 新增"规则退役判定"子节；(3) 配套新增外部依赖登记表（.md+.json）+可调参数索引（.md）；(4) OPEN-4 试读计时协议修订。 | 当日操作（同日第二条 Patch）；两后端在"外部依赖缺失""基本不变层过度声称""不需要通俗化是最弱结论"上零分歧收敛 | 🟡 较可信（当日操作，两路审查报告完整，跨后端验证通过） |
+3313:| 2026-06-22 | v1.6.4 | Minor 升级：prompt-tdd A1 Flow-as-Node Tier 0 实验写回——新增 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited（Tier 0 负证据；3/5 类别天花板，ΔF1=0.000，7 轮双后端审查链，0 未闭合发现）。Header 元数据新增 A1 写回声明。 | 当日操作；§6.3.2 内容经 Codex V2 终态验证(4M+2m 全修正)+Qwen 轻量框架文本检查(一致确认)；VERSION 同步更新 | 🟡 较可信（当日操作，写回内容经双后端终态验证） |
+3322:1. **过期时效订正**：(a) header v1.6 "待 Codex 异后端交叉验证 / pre-release draft" → 更新为"已经 Codex GPT-5.5 初审→重审→修正闭合"（与 §14 v1.6 交叉验证记录一致）；(b) §2.6 三件套同步协议 ".json/.docx 当前手动待自动化/待脚本化" → 更新为"通过 `_workflows/` 下同步脚本生成（半自动化）"，反映已有同步脚本实际；(c) §14 版本时间线表 7 处"今日操作/本日操作"相对时间词 → "当日操作"。
+3323:2. **个人项目代号可理解性**：新增 §13.1.2「项目代号说明」一览表（9 个代号 + 一句话定性 + 案例库是否公开）；§2.2 形态匹配首次出现处、§4.1.1 prompt-tdd 首个来源块补代号定性。
+
+codex
+已确认 Markdown 中三处订正都落在预期章节：§13.1.2、§13.2、§14。现在我会用 JSON 解析直接取字段值，并同时抽取备份差异，看这次改动是否只覆盖目标面。
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$path='"'AI协作项目全生命周期框架.md'; "'$i=0; Get-Content -Encoding UTF8 $path | ForEach-Object { $i++; if ($i -ge 3247 -and $i -le 3271) { "${i}: $_" } }' in 
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$path='"'AI协作项目全生命周期框架.md'; "'$i=0; Get-Content -Encoding UTF8 $path | ForEach-Object { $i++; if ($i -ge 3295 -and $i -le 3314) { "${i}: $_" } }' in 
+ succeeded in 188ms:
+3247: #### 13.1.2 项目代号说明
+3248: 
+3249: 这些代号是框架方法论的证据来源，个人项目的案例库不随本框架公开发布，此处仅作可理解性锚点。
+3250: 
+3251: | 代号 | 一句话定性 | 案例库是否公开 |
+3252: |------|-----------|---------------|
+3253: | prompt-tdd | 作者的 prompt 工程对照实验个人项目 | 否（仅写回结论） |
+3254: | 形态匹配 | 已封存的金融形态识别个人项目 | 否 |
+3255: | BDC2026 | 某数据竞赛项目 | 否 |
+3256: | 并购重组 | 并购重组案例研究个人项目（8 阶段流水线） | 否 |
+3257: | ETF 项目 V3.6 | 某 ETF 量化项目的结构化变更日志实践来源 | 否 |
+3258: | PocketFlow | 外部开源项目（100 行核心 + 分难度 cookbook） | 是（外部） |
+3259: | GitNexus | 外部开源项目（代码知识图谱工具） | 是（外部） |
+3260: | Evolver | 外部论文项目（arXiv:2604.15097） | 是（外部） |
+3261: | Small_Scale | 外部论文项目（ICLR 2026） | 是（外部） |
+3262: 
+3263: ### 13.2 值得关注的外部工作
+3264: 
+3265: | 来源 | 核心贡献 | 本框架可借鉴的 |
+3266: |------|---------|-------------|
+3267: | **Spec-Driven Development** (DeepLearning.AI, 2025) | 三件套（Constitution/Feature Spec/Steering），spec 和代码一起版本化，human gate between phases | 已内化——L0 Spec 结构与之高度一致 |
+3268: | **AWS Generative AI Atlas** (2025.10) | 三类别（workflow/autonomous/hybrid），S5 种编排模式，HITL 三阶段 | 已内化——L3 模式库 + L-H 闸门 |
+3269: | **Conversation Routines** (Robino, arXiv 2025) | 结构化 system prompt 嵌入业务逻辑，IF/THEN 控制流，用户确认协议 | 可深化——Prompt 模板中的条件逻辑和确认协议 |
+3270: | **Constraint Decoupling** (Capital One, 2026.01) | 任务描述和约束分离为 checklist 提升合规 82%→91.5%；88% 成功编辑是重新措辞 | 已采纳——本框架的 Prompt 模板已将"否决条件"独立为一栏 |
+3271: | **VIDE Framework** (Politecnico di Milano, 2025) | Architect→Builder→Inspector 三 Agent，SUS 84.4/100 | L3 adversarial verify 模式与之类似，VIDE 更侧重代码生成 |
+
+ succeeded in 184ms:
+3295: ### 版本时间线（经独立文件证据核实）
+3296: 
+3297: > 以下时间线基于独立文件证据（旧版 docx/md 快照的版本头与 footer）交叉核实。未核实条目标注置信度和证据来源，不单信 §14 changelog（v1.5.1 冻结期由 GLM-5.2 整理，已知将 v1.1→v1.2 日期 06-11 错标为 06-13）。
+3298: 
+3299: | 日期 | 版本 | 关键事件 | 证据 | 置信度 |
+3300: |------|------|---------|------|--------|
+3301: | 2026-06-10 | v1.0 → v1.1 | 21 个决策点拍板，七层框架从 `13.txt`（已删除）讨论凝结为文档；v1.1 新增第 10 章 Dev Log | v1.2 docx footer 回溯："21 个决策点已于 2026-06-10 拍板" | ✅ 确认 |
+3302: | 2026-06-11 | v1.2 | 三模型审查链（ChatGPT-5.5 → DeepSeek → ChatGPT-5.5 → Opus 4.8）校准；状态从"已定稿"改为"草案冻结"；新增 §1.4 强度分档/§1.5 死亡判据/§1.6 待决项(含 OPEN-1) | v1.2 docx 版本头 `日期: 2026-06-11` + footer（历史快照，已归档） | ✅ 确认 |
+3303: | 2026-06-13 | v1.3 → v1.4 | v1.3 新增 §3.7 漂移检测层（五类信号+监管聚合+规则退役+宪法审计）；v1.4 新增 §3.7.2.6/§5.3.1/§6.5.1/§9.1 等，经 ChatGPT-5.5(5.50+5.37)+Kimi(5.00) 三轮审查 | 仅 §14 changelog（GLM-5.2 事后整理；已知同日整理的 v1.1→v1.2 日期有误）；无旧版文件快照 | ⚠️ 存疑 |
+3304: | 2026-06-14 | v1.5 → v1.5.1 | v1.5 新增 §6.2 模式8(Pipeline DAG)+模式9(Multi-Role Review)+§9.2 多轮多后端审查+§9.6 五级证据分类；v1.5.1 新增四个 [Sp] 节（§3.7.0/§3.7.4.1/§9.7/§9.8），进入冻结期 | v1.5.1 md 版本头 `日期: 2026-06-14` + 文件时间戳 `Jun 14 18:47`（v1.5 同日无独立快照；历史快照已归档） | ✅ 确认 |
+3305: | 2026-06-16 | v1.5.2 | Protocol 3 首次真实试跑完成（方法论提取方法论，M-tier），冻结解除；6 项改进写回（C1/C5 测量/HG-0 双检查/审查频率/C8 异后端/S-tier 阈值） | 版本头操作记录（活动期自记，非事后归档） | 🟡 较可信 |
+3306: | 2026-06-18 | v1.5.3 | PocketFlow A 类资产写回——§1.7 最小核心+示例外挂、§9.9 阅读导航、附录 H 反模式清单 | 版本头操作记录（活动期自记） | 🟡 较可信 |
+3307: | 2026-06-19 | v1.5.4 | prompt-tdd A2 Tier 1 实验写回——§4.1.1 执行合约 [E-]（prep/exec/post 未证实优于一体式） | 当日操作；三件套全量同步 + Codex 交叉验证通过 | ✅ 确认 |
+3308: | 2026-06-20 | v1.5.5 | prompt-tdd A3 Action Routing 实验写回——§6.3.1 路由声明格式对照证据 [E-]（声明式未证实优于 NL） | 当日操作；A3 闭合报告写回（活动期自记） | 🟡 较可信 |
+3309: | 2026-06-20 | v1.6 | Minor 升级：P0 证据体系升级（§9.6.1/§9.10/§4.1.1.1）+ P1 维护性增强（§2.6/§1.8/§9.9路径D/附录H反向引用） | 当日操作；经 Codex GPT-5.5 初审(FAIL_WITH_MAJOR)→修正→重审(FAIL_WITH_CAVEATS)→修正闭合；三件套同步 | 🟡 较可信（当日操作，.md+JSON 经 Codex 审查闭合，.docx 待目视确认） |
+3310: | 2026-06-20 | v1.6.1 | Patch 升级：A2 Qwen qwen3.7-max 跨模型复现写回——§4.1.1 新增复现段落 + §1.8 局限声明更新 + §6.3.1 交叉引用更新 + §9.6.1 A2 证据二维 M0→M2；伴随改进：§2.6 三件套同步协议新增 VERSION 文件检查（教训：VERSION 自 v1.5.4 起未更新）+ JSON root changelog 清理（→ metadata.changelog_legacy） | 当日操作；Qwen 复现全流程数据可复现（raw_outputs_qwen/ + scores_qwen/ + qwen_replication_report.md/.json）；Codex GPT-5.5 交叉验证报告通过 | 🟡 较可信（当日操作，复现数据完整，报告经 Codex 审查修正） |
+3311: | 2026-06-21 | v1.6.2 | Patch 升级：新增 §7.7「被动观测：意外发现的发现机制」——基于用户记忆系统三次被动观测事件跨案例分析 + Codex GPT-5.5 魔鬼代言人独立审查（总体判断：有条件支持）。新增内容包括：定义与概念边界（§7.7.1）、三次经验种子（§7.7.2）、扩展分类框架待实证（§7.7.3）、Failure Space 10 种失效模式+硬约束（§7.7.4）、深度版 Retrospect 模板增强（§7.7.5）。伴随更新：目录、metadata header、§9 跨层交叉引用、附录 C 深度版模板。 | 当日操作；概念经 Codex GPT-5.5 异后端魔鬼代言人审查；审查意见已系统性纳入（定义收紧/模式降级/补Failure Space/模板增强） | 🟡 较可信（当日操作，Codex 审查报告完整，跨后端验证通过） |
+3312: | 2026-06-21 | v1.6.3 | Patch 升级（维护流程补全+诚实声明扩展）：经两路异后端独立审查（Codex GPT-5.5 魔鬼代言人 + Qwen qwen3.7-max 完备性检查）后执行——(1) §1.8 新增局限 #9（作者-读者同构）和 #10（外部依赖漂移）；(2) §2.6 新增"规则退役判定"子节；(3) 配套新增外部依赖登记表（.md+.json）+可调参数索引（.md）；(4) OPEN-4 试读计时协议修订。 | 当日操作（同日第二条 Patch）；两后端在"外部依赖缺失""基本不变层过度声称""不需要通俗化是最弱结论"上零分歧收敛 | 🟡 较可信（当日操作，两路审查报告完整，跨后端验证通过） |
+3313: | 2026-06-22 | v1.6.4 | Minor 升级：prompt-tdd A1 Flow-as-Node Tier 0 实验写回——新增 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited（Tier 0 负证据；3/5 类别天花板，ΔF1=0.000，7 轮双后端审查链，0 未闭合发现）。Header 元数据新增 A1 写回声明。 | 当日操作；§6.3.2 内容经 Codex V2 终态验证(4M+2m 全修正)+Qwen 轻量框架文本检查(一致确认)；VERSION 同步更新 | 🟡 较可信（当日操作，写回内容经双后端终态验证） |
+3314: 
+
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$path='"'AI协作项目全生命周期框架.json'; "'$i=0; Get-Content -Encoding UTF8 $path | ForEach-Object { $i++; if (($i -ge 2937 -and $i -le 3022) -or ($i -ge 816 -and $i -le 895) -or ($i -ge 1198 -and $i -le 1206)) { "${i}: $_" } }' in 
+ succeeded in 183ms:
+816:     "version_timeline": [
+817:       {
+818:         "date": "2026-06-10",
+819:         "version": "v1.0 → v1.1",
+820:         "event": "21个决策点拍板，七层框架从13.txt（已删除）讨论凝结为文档；v1.1新增第10章Dev Log",
+821:         "evidence": "v1.2 docx footer回溯：\"21个决策点已于2026-06-10拍板\"",
+822:         "confidence": "confirmed",
+823:         "source_file": "./_archive/AI协作项目全生命周期框架v1.2.docx"
+824:       },
+825:       {
+826:         "date": "2026-06-11",
+827:         "version": "v1.2",
+828:         "event": "三模型审查链校准；状态从\"已定稿\"改为\"草案冻结\"；新增§1.4/§1.5/§1.6(含OPEN-1)",
+829:         "evidence": "v1.2 docx版本头日期+footer",
+830:         "confidence": "confirmed",
+831:         "source_file": "./_archive/AI协作项目全生命周期框架v1.2.docx"
+832:       },
+833:       {
+834:         "date": "2026-06-13",
+835:         "version": "v1.3 → v1.4",
+836:         "event": "v1.3新增§3.7漂移检测层；v1.4新增§3.7.2.6/§5.3.1/§6.5.1/§9.1等，经ChatGPT-5.5(5.50+5.37)+Kimi(5.00)三轮审查",
+837:         "evidence": "仅§14 changelog（GLM-5.2事后整理；已知同一整理过程将v1.2日期06-11错标为06-13）；无旧版文件快照",
+838:         "confidence": "uncertain",
+839:         "source_file": null
+840:       },
+841:       {
+842:         "date": "2026-06-14",
+843:         "version": "v1.5 → v1.5.1",
+844:         "event": "v1.5新增§6.2模式8/9+§9.2+§9.6（GitNexus）；v1.5.1新增四个[Sp]节（Evolver），进入冻结期",
+845:         "evidence": "v1.5.1 md版本头日期+文件时间戳Jun 14 18:47（v1.5同日无独立快照）",
+846:         "confidence": "confirmed",
+847:         "source_file": "./AI协作项目全生命周期框架v1.5.1.md"
+848:       },
+849:       {
+850:         "date": "2026-06-16",
+851:         "version": "v1.5.2",
+852:         "event": "Protocol 3首次真实试跑完成（方法论提取方法论，M-tier），冻结解除；6项改进写回",
+853:         "evidence": "版本头操作记录（活动期自记，非事后归档）",
+854:         "confidence": "likely",
+855:         "source_file": null
+856:       },
+857:       {
+858:         "date": "2026-06-18",
+859:         "version": "v1.5.3",
+860:         "event": "PocketFlow A类资产写回——§1.7最小核心+示例外挂、§9.9阅读导航、附录H反模式清单",
+861:         "evidence": "版本头操作记录（活动期自记）",
+862:         "confidence": "likely",
+863:         "source_file": null
+864:       },
+865:       {
+866:         "date": "2026-06-19",
+867:         "version": "v1.5.4",
+868:         "event": "prompt-tdd A2 Tier 1实验写回——§4.1.1执行合约[E-]（prep/exec/post未证实优于一体式）",
+869:         "evidence": "当日操作；三件套全量同步+Codex交叉验证通过",
+870:         "confidence": "confirmed",
+871:         "source_file": null
+872:       },
+873:       {
+874:         "date": "2026-06-20",
+875:         "version": "v1.5.5",
+876:         "change": "prompt-tdd A3 Action Routing实验写回——§6.3.1路由声明格式对照证据[E-](声明式未证实优于NL)",
+877:         "evidence": "当日操作；A3闭合报告写回",
+878:         "confidence": "confirmed"
+879:       },
+880:       {
+881:         "date": "2026-06-20",
+882:         "version": "v1.6",
+883:         "event": "Minor升级: P0证据体系升级(§9.6.1/§9.10/§4.1.1.1)+P1维护性增强(§2.6/§1.8/§9.9路径D/附录H反向引用)",
+884:         "evidence": "当日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正",
+885:         "confidence": "🟡 较可信(本日操作, .md+JSON经Codex审查闭合, .docx待目视确认)"
+886:       },
+887:       {
+888:         "date": "2026-06-20",
+889:         "version": "v1.6.1",
+890:         "event": "Patch升级: A2 Qwen qwen3.7-max跨模型复现写回——§4.1.1新增复现段落+§1.8局限声明更新+§6.3.1交叉引用更新+§9.6.1 A2证据二维M0→M2→M1*(v1.6.4订正); 伴随改进: §2.6三件套同步协议新增VERSION文件检查(教训: VERSION自v1.5.4起未更新) + JSON root changelog清理(→metadata.changelog_legacy)",
+891:         "evidence": "当日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)",
+892:         "confidence": "🟡 较可信(本日操作, 复现数据完整, 报告经Codex审查修正)"
+893:       }
+894:     ],
+895:     "version_timeline_note": "时间线基于独立文件证据（旧版docx/md快照的版本头与footer）交叉核实。06-13存疑——仅changelog文本证据且已知同源错误。教训：changelog文本≠文件快照；未来版本应保留每版独立快照。详见.md §14版本时间线。",
+1198:         "methodology_source": "Small_Scale项目全量分析(../small-scale-analysis/)",
+1199:         "evidence_confidence": "⚠️ 存疑(仅changelog,无旧版文件快照)"
+1200:       }
+1201:     },
+1202:     "changelog_legacy_note": "Legacy changelog entries (v1.2 through v1_5_3) in original per-version dict format. Current changelog (v1.5.4+) is in metadata.changelog as a list. Moved from root level to metadata on 2026-06-20 during v1.6.1 sync cleanup.",
+1203:     "version_label": "v1.6.4——prompt-tdd A1 实验写回 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited，经7轮双后端审查链闭合",
+1204:     "last_updated": "2026-06-22",
+1205:     "release_prep_errata_20260623": "2026-06-23 发布前订正（不升版本号，挂 v1.6.4）补入 .json：新增 §13.1.2 项目代号说明（project_codenames）+ §13.2 Constraint Decoupling 已验证→已采纳 + version_timeline 今日操作→当日操作。对应 .md 的 §14「v1.6.4 发布前订正批次」。同步执行：Claude Opus 4.8 (via Claude Code CLI)，2026-06-24。"
+1206:   },
+2937:         "status": "可深化——Prompt模板中的条件逻辑"
+2938:       },
+2939:       "Constraint_Decoupling": {
+2940:         "source": "Capital One, arXiv (2026.01)",
+2941:         "concept": "任务描述和约束分离为checklist提升合规82%→91.5%",
+2942:         "status": "已采纳——Prompt模板已独立'否决条件'栏"
+2943:       },
+2944:       "VIDE_Framework": {
+2945:         "source": "Politecnico di Milano (2025)",
+2946:         "concept": "Architect→Builder→Inspector三Agent, SUS 84.4/100",
+2947:         "status": "L3 adversarial verify与之类似"
+2948:       },
+2949:       "Production_Guardrails": {
+2950:         "source": "n8n/Dataciders (2026.04)",
+2951:         "concept": "四层guardrail(Input→Tool→Output→Process), ≤15 tools per agent",
+2952:         "status": "尚未覆盖——可作为未来跨层关切"
+2953:       },
+2954:       "Visual_Para_Thinker": {
+2955:         "source": "Xu et al., arXiv 2602.13310 (2026.02)",
+2956:         "concept": "首个MLLM并行推理框架——Pa-Attention路径隔离+LPRoPE，证实纯纵向推理遇探索高原+路径隔离不足致伪多样性",
+2957:         "status": "已内化——为L2 Loop无效循环退出和L3 adversarial verify路径隔离提供独立理论验证"
+2958:       },
+2959:       "headroom_trio": {
+2960:         "source": "headroom三组件 (CacheAligner/SmartCrusher/CCR), MCP工具, 2026-06-13对标分析",
+2961:         "concept": "(1) detector-only哲学(检测与处置解耦→§3.7漂移检测层架构原则来源) (2) 多信号优先级排序(→Workflow模式选择参照) (3) 可逆压缩与分级恢复(→§4.3分级逃生口方法论启发)",
+2962:         "status": "v1.3已内化——三项均标注为'可借鉴的架构原则'，未经跨域验证，不等同于已验证的通用方法论。详见配套对标文档。经ChatGPT-5.5独立裁决(Codex CLI, 710K token)条件采纳。"
+2963:       }
+2964:     },
+2965:     "future_directions": [
+2966:       "Guardrail层（四层防护）",
+2967:       "权限分级 Never/Always/Ask",
+2968:       "Durable execution（跨会话断点续跑）",
+2969:       "Agent版本管理（versioning/canary/rollback）",
+2970:       "Golden set回归测试"
+2971:     ],
+2972:     "project_codenames": {
+2973:       "_comment": "v1.6.4 发布前订正（2026-06-23）新增。对应 md §13.1.2 项目代号说明。代号是框架方法论的证据来源，个人项目案例库不随框架公开发布，此处仅作可理解性锚点。",
+2974:       "note": "这些代号是框架方法论的证据来源，个人项目的案例库不随本框架公开发布，此处仅作可理解性锚点。",
+2975:       "codenames": [
+2976:         {
+2977:           "code": "prompt-tdd",
+2978:           "desc": "作者的 prompt 工程对照实验个人项目",
+2979:           "case_library_public": "否（仅写回结论）"
+2980:         },
+2981:         {
+2982:           "code": "形态匹配",
+2983:           "desc": "已封存的金融形态识别个人项目",
+2984:           "case_library_public": "否"
+2985:         },
+2986:         {
+2987:           "code": "BDC2026",
+2988:           "desc": "某数据竞赛项目",
+2989:           "case_library_public": "否"
+2990:         },
+2991:         {
+2992:           "code": "并购重组",
+2993:           "desc": "并购重组案例研究个人项目（8 阶段流水线）",
+2994:           "case_library_public": "否"
+2995:         },
+2996:         {
+2997:           "code": "ETF 项目 V3.6",
+2998:           "desc": "某 ETF 量化项目的结构化变更日志实践来源",
+2999:           "case_library_public": "否"
+3000:         },
+3001:         {
+3002:           "code": "PocketFlow",
+3003:           "desc": "外部开源项目（100 行核心 + 分难度 cookbook）",
+3004:           "case_library_public": "是（外部）"
+3005:         },
+3006:         {
+3007:           "code": "GitNexus",
+3008:           "desc": "外部开源项目（代码知识图谱工具）",
+3009:           "case_library_public": "是（外部）"
+3010:         },
+3011:         {
+3012:           "code": "Evolver",
+3013:           "desc": "外部论文项目（arXiv:2604.15097）",
+3014:           "case_library_public": "是（外部）"
+3015:         },
+3016:         {
+3017:           "code": "Small_Scale",
+3018:           "desc": "外部论文项目（ICLR 2026）",
+3019:           "case_library_public": "是（外部）"
+3020:         }
+3021:       ]
+3022:     }
+
+codex
+表格内容本身目前看起来匹配，但 §14 的 JSON 里我看到一个需要单独判断的边界情况：`evidence` 字段已改成“当日操作”，但两个 `confidence` 字段仍含“本日操作”。我会把它和 Markdown 逐项对照后在裁决中区分说明。
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$ErrorActionPreference='"'Stop'; "'$j = Get-Content -Raw -Encoding UTF8 '"'AI协作项目全生命周期框架.json' | ConvertFrom-Json; \"PARSE_OK\"; \"metadata.version="'$($j.metadata.version)"; "release_prep_errata_present=$($null -ne $j.metadata.release_prep_errata_20260623)"; "timeline_count=$($j.version_timeline.Count)"; "project_codenames_count=$($j.external_references.project_codenames.codenames.Count)"; "constraint_status=$($j.external_references.external_methodologies.Constraint_Decoupling.status)"' in 
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'rg -n "今日操作|本日操作|当日操作" "AI协作项目全生命周期框架.json" "AI协作项目全生命周期框架.md"' in 
+ succeeded in 141ms:
+AI协作项目全生命周期框架.md:3307:| 2026-06-19 | v1.5.4 | prompt-tdd A2 Tier 1 实验写回——§4.1.1 执行合约 [E-]（prep/exec/post 未证实优于一体式） | 当日操作；三件套全量同步 + Codex 交叉验证通过 | ✅ 确认 |
+AI协作项目全生命周期框架.md:3308:| 2026-06-20 | v1.5.5 | prompt-tdd A3 Action Routing 实验写回——§6.3.1 路由声明格式对照证据 [E-]（声明式未证实优于 NL） | 当日操作；A3 闭合报告写回（活动期自记） | 🟡 较可信 |
+AI协作项目全生命周期框架.md:3309:| 2026-06-20 | v1.6 | Minor 升级：P0 证据体系升级（§9.6.1/§9.10/§4.1.1.1）+ P1 维护性增强（§2.6/§1.8/§9.9路径D/附录H反向引用） | 当日操作；经 Codex GPT-5.5 初审(FAIL_WITH_MAJOR)→修正→重审(FAIL_WITH_CAVEATS)→修正闭合；三件套同步 | 🟡 较可信（当日操作，.md+JSON 经 Codex 审查闭合，.docx 待目视确认） |
+AI协作项目全生命周期框架.md:3310:| 2026-06-20 | v1.6.1 | Patch 升级：A2 Qwen qwen3.7-max 跨模型复现写回——§4.1.1 新增复现段落 + §1.8 局限声明更新 + §6.3.1 交叉引用更新 + §9.6.1 A2 证据二维 M0→M2；伴随改进：§2.6 三件套同步协议新增 VERSION 文件检查（教训：VERSION 自 v1.5.4 起未更新）+ JSON root changelog 清理（→ metadata.changelog_legacy） | 当日操作；Qwen 复现全流程数据可复现（raw_outputs_qwen/ + scores_qwen/ + qwen_replication_report.md/.json）；Codex GPT-5.5 交叉验证报告通过 | 🟡 较可信（当日操作，复现数据完整，报告经 Codex 审查修正） |
+AI协作项目全生命周期框架.md:3311:| 2026-06-21 | v1.6.2 | Patch 升级：新增 §7.7「被动观测：意外发现的发现机制」——基于用户记忆系统三次被动观测事件跨案例分析 + Codex GPT-5.5 魔鬼代言人独立审查（总体判断：有条件支持）。新增内容包括：定义与概念边界（§7.7.1）、三次经验种子（§7.7.2）、扩展分类框架待实证（§7.7.3）、Failure Space 10 种失效模式+硬约束（§7.7.4）、深度版 Retrospect 模板增强（§7.7.5）。伴随更新：目录、metadata header、§9 跨层交叉引用、附录 C 深度版模板。 | 当日操作；概念经 Codex GPT-5.5 异后端魔鬼代言人审查；审查意见已系统性纳入（定义收紧/模式降级/补Failure Space/模板增强） | 🟡 较可信（当日操作，Codex 审查报告完整，跨后端验证通过） |
+AI协作项目全生命周期框架.md:3312:| 2026-06-21 | v1.6.3 | Patch 升级（维护流程补全+诚实声明扩展）：经两路异后端独立审查（Codex GPT-5.5 魔鬼代言人 + Qwen qwen3.7-max 完备性检查）后执行——(1) §1.8 新增局限 #9（作者-读者同构）和 #10（外部依赖漂移）；(2) §2.6 新增"规则退役判定"子节；(3) 配套新增外部依赖登记表（.md+.json）+可调参数索引（.md）；(4) OPEN-4 试读计时协议修订。 | 当日操作（同日第二条 Patch）；两后端在"外部依赖缺失""基本不变层过度声称""不需要通俗化是最弱结论"上零分歧收敛 | 🟡 较可信（当日操作，两路审查报告完整，跨后端验证通过） |
+AI协作项目全生命周期框架.md:3313:| 2026-06-22 | v1.6.4 | Minor 升级：prompt-tdd A1 Flow-as-Node Tier 0 实验写回——新增 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited（Tier 0 负证据；3/5 类别天花板，ΔF1=0.000，7 轮双后端审查链，0 未闭合发现）。Header 元数据新增 A1 写回声明。 | 当日操作；§6.3.2 内容经 Codex V2 终态验证(4M+2m 全修正)+Qwen 轻量框架文本检查(一致确认)；VERSION 同步更新 | 🟡 较可信（当日操作，写回内容经双后端终态验证） |
+AI协作项目全生命周期框架.md:3322:1. **过期时效订正**：(a) header v1.6 "待 Codex 异后端交叉验证 / pre-release draft" → 更新为"已经 Codex GPT-5.5 初审→重审→修正闭合"（与 §14 v1.6 交叉验证记录一致）；(b) §2.6 三件套同步协议 ".json/.docx 当前手动待自动化/待脚本化" → 更新为"通过 `_workflows/` 下同步脚本生成（半自动化）"，反映已有同步脚本实际；(c) §14 版本时间线表 7 处"今日操作/本日操作"相对时间词 → "当日操作"。
+AI协作项目全生命周期框架.json:869:        "evidence": "当日操作；三件套全量同步+Codex交叉验证通过",
+AI协作项目全生命周期框架.json:877:        "evidence": "当日操作；A3闭合报告写回",
+AI协作项目全生命周期框架.json:884:        "evidence": "当日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正",
+AI协作项目全生命周期框架.json:885:        "confidence": "🟡 较可信(本日操作, .md+JSON经Codex审查闭合, .docx待目视确认)"
+AI协作项目全生命周期框架.json:891:        "evidence": "当日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)",
+AI协作项目全生命周期框架.json:892:        "confidence": "🟡 较可信(本日操作, 复现数据完整, 报告经Codex审查修正)"
+AI协作项目全生命周期框架.json:1205:    "release_prep_errata_20260623": "2026-06-23 发布前订正（不升版本号，挂 v1.6.4）补入 .json：新增 §13.1.2 项目代号说明（project_codenames）+ §13.2 Constraint Decoupling 已验证→已采纳 + version_timeline 今日操作→当日操作。对应 .md 的 §14「v1.6.4 发布前订正批次」。同步执行：Claude Opus 4.8 (via Claude Code CLI)，2026-06-24。"
+
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'git diff --no-index --stat -- "AI协作项目全生命周期框架.json.pre_v164_sync.backup" "AI协作项目全生命周期框架.json"' in 
+ succeeded in 243ms:
+PARSE_OK
+metadata.version=v1.6.4
+release_prep_errata_present=True
+timeline_count=0
+project_codenames_count=9
+constraint_status=
+
+2026-06-24T05:08:29.536977Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.1 seconds
+Output:
+ ...1\250\346\234\237\346\241\206\346\236\266.json" | 64 ++++++++++++++++++++--
+ 1 file changed, 58 insertions(+), 6 deletions(-)
+
+ exited 1 in 138ms:
+ ...1\250\346\234\237\346\241\206\346\236\266.json" | 64 ++++++++++++++++++++--
+ 1 file changed, 58 insertions(+), 6 deletions(-)
+
+codex
+PowerShell 解析已确认 JSON 可读、版本号正确；刚才路径探测说明相关字段都在嵌套对象内，不在根层。我会用一次递归 key 定位把准确 JSON 路径列出来。
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "@'
+const fs = require('fs');
+const file = 'AI协作项目全生命周期框架.json';
+const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+function findKey(obj, key, path = []) {
+  const out = [];
+  if (obj && typeof obj === 'object') {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) out.push(path.concat(key));
+    for (const [k, v] of Object.entries(obj)) out.push(...findKey(v, key, path.concat(k)));
+  }
+  return out;
+}
+for (const key of ['version_timeline', 'external_methodologies', 'Constraint_Decoupling', 'project_codenames', 'release_prep_errata_20260623']) {
+  console.log("'`${key}:`);
+  for (const p of findKey(data, key)) console.log('"'  ' + p.join('.'));
+}
+console.log('metadata.version=' + data.metadata.version);
+'@ | node" in 
+2026-06-24T05:09:13.276641Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+node:fs:441
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: ENOENT: no such file or directory, open 'AI???????????.json'
+    at Object.readFileSync (node:fs:441:20)
+    at [stdin]:3:28
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:451:12
+    at [stdin]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:449:60)
+    at evalFunction (node:internal/process/execution:283:30)
+    at evalTypeScript (node:internal/process/execution:295:3)
+    at node:internal/main/eval_stdin:51:5
+    at Socket.<anonymous> (node:internal/process/execution:205:5) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '<PROJECT_ROOT>\\AI???????????.json'
+}
+
+Node.js v24.15.0
+
+ exited 1 in 179ms:
+node:fs:441
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: ENOENT: no such file or directory, open 'AI???????????.json'
+    at Object.readFileSync (node:fs:441:20)
+    at [stdin]:3:28
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:451:12
+    at [stdin]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:449:60)
+    at evalFunction (node:internal/process/execution:283:30)
+    at evalTypeScript (node:internal/process/execution:295:3)
+    at node:internal/main/eval_stdin:51:5
+    at Socket.<anonymous> (node:internal/process/execution:205:5) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '<PROJECT_ROOT>\\AI???????????.json'
+}
+
+Node.js v24.15.0
+
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'git diff --no-index --unified=4 -- "AI协作项目全生命周期框架.json.pre_v164_sync.backup" "AI协作项目全生命周期框架.json"' in 
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "@'
+const fs = require('fs');
+const file = 'AI协作项目全生命周期框架.json';
+const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+const ext = data.methodology_foundation?.external_references;
+console.log('Constraint status:', ext?.external_methodologies?.Constraint_Decoupling?.status);
+console.log('Project codenames count:', ext?.project_codenames?.codenames?.length);
+console.log(JSON.stringify(ext?.project_codenames?.codenames, null, 2));
+console.log('timeline count:', data.metadata?.version_timeline?.length);
+console.log(JSON.stringify(data.metadata?.version_timeline?.slice(-5), null, 2));
+'@ | node" in 
+2026-06-24T05:09:15.106353Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+diff --git "a/AI\345\215\217\344\275\234\351\241\271\347\233\256\345\205\250\347\224\237\345\221\275\345\221\250\346\234\237\346\241\206\346\236\266.json.pre_v164_sync.backup" "b/AI\345\215\217\344\275\234\351\241\271\347\233\256\345\205\250\347\224\237\345\221\275\345\221\250\346\234\237\346\241\206\346\236\266.json"
+index 182e69f..7104c10 100644
+--- "a/AI\345\215\217\344\275\234\351\241\271\347\233\256\345\205\250\347\224\237\345\221\275\345\221\250\346\234\237\346\241\206\346\236\266.json.pre_v164_sync.backup"
++++ "b/AI\345\215\217\344\275\234\351\241\271\347\233\256\345\205\250\347\224\237\345\221\275\345\221\250\346\234\237\346\241\206\346\236\266.json"
+@@ -873,23 +873,23 @@
+       {
+         "date": "2026-06-20",
+         "version": "v1.5.5",
+         "change": "prompt-tdd A3 Action Routing实验写回——§6.3.1路由声明格式对照证据[E-](声明式未证实优于NL)",
+-        "evidence": "今日操作；A3闭合报告写回",
++        "evidence": "当日操作；A3闭合报告写回",
+         "confidence": "confirmed"
+       },
+       {
+         "date": "2026-06-20",
+         "version": "v1.6",
+         "event": "Minor升级: P0证据体系升级(§9.6.1/§9.10/§4.1.1.1)+P1维护性增强(§2.6/§1.8/§9.9路径D/附录H反向引用)",
+-        "evidence": "今日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正",
++        "evidence": "当日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正",
+         "confidence": "🟡 较可信(本日操作, .md+JSON经Codex审查闭合, .docx待目视确认)"
+       },
+       {
+         "date": "2026-06-20",
+         "version": "v1.6.1",
+         "event": "Patch升级: A2 Qwen qwen3.7-max跨模型复现写回——§4.1.1新增复现段落+§1.8局限声明更新+§6.3.1交叉引用更新+§9.6.1 A2证据二维M0→M2→M1*(v1.6.4订正); 伴随改进: §2.6三件套同步协议新增VERSION文件检查(教训: VERSION自v1.5.4起未更新) + JSON root changelog清理(→metadata.changelog_legacy)",
+-        "evidence": "今日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)",
++        "evidence": "当日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)",
+         "confidence": "🟡 较可信(本日操作, 复现数据完整, 报告经Codex审查修正)"
+       }
+     ],
+     "version_timeline_note": "时间线基于独立文件证据（旧版docx/md快照的版本头与footer）交叉核实。06-13存疑——仅changelog文本证据且已知同源错误。教训：changelog文本≠文件快照；未来版本应保留每版独立快照。详见.md §14版本时间线。",
+@@ -1200,9 +1200,10 @@
+       }
+     },
+     "changelog_legacy_note": "Legacy changelog entries (v1.2 through v1_5_3) in original per-version dict format. Current changelog (v1.5.4+) is in metadata.changelog as a list. Moved from root level to metadata on 2026-06-20 during v1.6.1 sync cleanup.",
+     "version_label": "v1.6.4——prompt-tdd A1 实验写回 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited，经7轮双后端审查链闭合",
+-    "last_updated": "2026-06-22"
++    "last_updated": "2026-06-22",
++    "release_prep_errata_20260623": "2026-06-23 发布前订正（不升版本号，挂 v1.6.4）补入 .json：新增 §13.1.2 项目代号说明（project_codenames）+ §13.2 Constraint Decoupling 已验证→已采纳 + version_timeline 今日操作→当日操作。对应 .md 的 §14「v1.6.4 发布前订正批次」。同步执行：Claude Opus 4.8 (via Claude Code CLI)，2026-06-24。"
+   },
+   "framework_self_governance": {
+     "_comment": "v1.2新增，v1.3更新——框架对自身的治理（使用强度分档/死亡判据/待决项），对应md §1.4-1.6 + §3.6-3.7",
+     "usage_tiers": {
+@@ -2937,9 +2938,9 @@
+       },
+       "Constraint_Decoupling": {
+         "source": "Capital One, arXiv (2026.01)",
+         "concept": "任务描述和约束分离为checklist提升合规82%→91.5%",
+-        "status": "已验证——Prompt模板已独立'否决条件'栏"
++        "status": "已采纳——Prompt模板已独立'否决条件'栏"
+       },
+       "VIDE_Framework": {
+         "source": "Politecnico di Milano (2025)",
+         "concept": "Architect→Builder→Inspector三Agent, SUS 84.4/100",
+@@ -2966,9 +2967,60 @@
+       "权限分级 Never/Always/Ask",
+       "Durable execution（跨会话断点续跑）",
+       "Agent版本管理（versioning/canary/rollback）",
+       "Golden set回归测试"
+-    ]
++    ],
++    "project_codenames": {
++      "_comment": "v1.6.4 发布前订正（2026-06-23）新增。对应 md §13.1.2 项目代号说明。代号是框架方法论的证据来源，个人项目案例库不随框架公开发布，此处仅作可理解性锚点。",
++      "note": "这些代号是框架方法论的证据来源，个人项目的案例库不随本框架公开发布，此处仅作可理解性锚点。",
++      "codenames": [
++        {
++          "code": "prompt-tdd",
++          "desc": "作者的 prompt 工程对照实验个人项目",
++          "case_library_public": "否（仅写回结论）"
++        },
++        {
++          "code": "形态匹配",
++          "desc": "已封存的金融形态识别个人项目",
++          "case_library_public": "否"
++        },
++        {
++          "code": "BDC2026",
++          "desc": "某数据竞赛项目",
++          "case_library_public": "否"
++        },
++        {
++          "code": "并购重组",
++          "desc": "并购重组案例研究个人项目（8 阶段流水线）",
++          "case_library_public": "否"
++        },
++        {
++          "code": "ETF 项目 V3.6",
++          "desc": "某 ETF 量化项目的结构化变更日志实践来源",
++          "case_library_public": "否"
++        },
++        {
++          "code": "PocketFlow",
++          "desc": "外部开源项目（100 行核心 + 分难度 cookbook）",
++          "case_library_public": "是（外部）"
++        },
++        {
++          "code": "GitNexus",
++          "desc": "外部开源项目（代码知识图谱工具）",
++          "case_library_public": "是（外部）"
++        },
++        {
++          "code": "Evolver",
++          "desc": "外部论文项目（arXiv:2604.15097）",
++          "case_library_public": "是（外部）"
++        },
++        {
++          "code": "Small_Scale",
++          "desc": "外部论文项目（ICLR 2026）",
++          "case_library_public": "是（外部）"
++        }
++      ]
++    }
+   },
+   "decisions_log": {
+     "date": "2026-06-10",
+     "total_decisions": 21,
+
+ exited 1 in 152ms:
+diff --git "a/AI\345\215\217\344\275\234\351\241\271\347\233\256\345\205\250\347\224\237\345\221\275\345\221\250\346\234\237\346\241\206\346\236\266.json.pre_v164_sync.backup" "b/AI\345\215\217\344\275\234\351\241\271\347\233\256\345\205\250\347\224\237\345\221\275\345\221\250\346\234\237\346\241\206\346\236\266.json"
+index 182e69f..7104c10 100644
+--- "a/AI\345\215\217\344\275\234\351\241\271\347\233\256\345\205\250\347\224\237\345\221\275\345\221\250\346\234\237\346\241\206\346\236\266.json.pre_v164_sync.backup"
++++ "b/AI\345\215\217\344\275\234\351\241\271\347\233\256\345\205\250\347\224\237\345\221\275\345\221\250\346\234\237\346\241\206\346\236\266.json"
+@@ -873,23 +873,23 @@
+       {
+         "date": "2026-06-20",
+         "version": "v1.5.5",
+         "change": "prompt-tdd A3 Action Routing实验写回——§6.3.1路由声明格式对照证据[E-](声明式未证实优于NL)",
+-        "evidence": "今日操作；A3闭合报告写回",
++        "evidence": "当日操作；A3闭合报告写回",
+         "confidence": "confirmed"
+       },
+       {
+         "date": "2026-06-20",
+         "version": "v1.6",
+         "event": "Minor升级: P0证据体系升级(§9.6.1/§9.10/§4.1.1.1)+P1维护性增强(§2.6/§1.8/§9.9路径D/附录H反向引用)",
+-        "evidence": "今日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正",
++        "evidence": "当日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正",
+         "confidence": "🟡 较可信(本日操作, .md+JSON经Codex审查闭合, .docx待目视确认)"
+       },
+       {
+         "date": "2026-06-20",
+         "version": "v1.6.1",
+         "event": "Patch升级: A2 Qwen qwen3.7-max跨模型复现写回——§4.1.1新增复现段落+§1.8局限声明更新+§6.3.1交叉引用更新+§9.6.1 A2证据二维M0→M2→M1*(v1.6.4订正); 伴随改进: §2.6三件套同步协议新增VERSION文件检查(教训: VERSION自v1.5.4起未更新) + JSON root changelog清理(→metadata.changelog_legacy)",
+-        "evidence": "今日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)",
++        "evidence": "当日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)",
+         "confidence": "🟡 较可信(本日操作, 复现数据完整, 报告经Codex审查修正)"
+       }
+     ],
+     "version_timeline_note": "时间线基于独立文件证据（旧版docx/md快照的版本头与footer）交叉核实。06-13存疑——仅changelog文本证据且已知同源错误。教训：changelog文本≠文件快照；未来版本应保留每版独立快照。详见.md §14版本时间线。",
+@@ -1200,9 +1200,10 @@
+       }
+     },
+     "changelog_legacy_note": "Legacy changelog entries (v1.2 through v1_5_3) in original per-version dict format. Current changelog (v1.5.4+) is in metadata.changelog as a list. Moved from root level to metadata on 2026-06-20 during v1.6.1 sync cleanup.",
+     "version_label": "v1.6.4——prompt-tdd A1 实验写回 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited，经7轮双后端审查链闭合",
+-    "last_updated": "2026-06-22"
++    "last_updated": "2026-06-22",
++    "release_prep_errata_20260623": "2026-06-23 发布前订正（不升版本号，挂 v1.6.4）补入 .json：新增 §13.1.2 项目代号说明（project_codenames）+ §13.2 Constraint Decoupling 已验证→已采纳 + version_timeline 今日操作→当日操作。对应 .md 的 §14「v1.6.4 发布前订正批次」。同步执行：Claude Opus 4.8 (via Claude Code CLI)，2026-06-24。"
+   },
+   "framework_self_governance": {
+     "_comment": "v1.2新增，v1.3更新——框架对自身的治理（使用强度分档/死亡判据/待决项），对应md §1.4-1.6 + §3.6-3.7",
+     "usage_tiers": {
+@@ -2937,9 +2938,9 @@
+       },
+       "Constraint_Decoupling": {
+         "source": "Capital One, arXiv (2026.01)",
+         "concept": "任务描述和约束分离为checklist提升合规82%→91.5%",
+-        "status": "已验证——Prompt模板已独立'否决条件'栏"
++        "status": "已采纳——Prompt模板已独立'否决条件'栏"
+       },
+       "VIDE_Framework": {
+         "source": "Politecnico di Milano (2025)",
+         "concept": "Architect→Builder→Inspector三Agent, SUS 84.4/100",
+@@ -2966,9 +2967,60 @@
+       "权限分级 Never/Always/Ask",
+       "Durable execution（跨会话断点续跑）",
+       "Agent版本管理（versioning/canary/rollback）",
+       "Golden set回归测试"
+-    ]
++    ],
++    "project_codenames": {
++      "_comment": "v1.6.4 发布前订正（2026-06-23）新增。对应 md §13.1.2 项目代号说明。代号是框架方法论的证据来源，个人项目案例库不随框架公开发布，此处仅作可理解性锚点。",
++      "note": "这些代号是框架方法论的证据来源，个人项目的案例库不随本框架公开发布，此处仅作可理解性锚点。",
++      "codenames": [
++        {
++          "code": "prompt-tdd",
++          "desc": "作者的 prompt 工程对照实验个人项目",
++          "case_library_public": "否（仅写回结论）"
++        },
++        {
++          "code": "形态匹配",
++          "desc": "已封存的金融形态识别个人项目",
++          "case_library_public": "否"
++        },
++        {
++          "code": "BDC2026",
++          "desc": "某数据竞赛项目",
++          "case_library_public": "否"
++        },
++        {
++          "code": "并购重组",
++          "desc": "并购重组案例研究个人项目（8 阶段流水线）",
++          "case_library_public": "否"
++        },
++        {
++          "code": "ETF 项目 V3.6",
++          "desc": "某 ETF 量化项目的结构化变更日志实践来源",
++          "case_library_public": "否"
++        },
++        {
++          "code": "PocketFlow",
++          "desc": "外部开源项目（100 行核心 + 分难度 cookbook）",
++          "case_library_public": "是（外部）"
++        },
++        {
++          "code": "GitNexus",
++          "desc": "外部开源项目（代码知识图谱工具）",
++          "case_library_public": "是（外部）"
++        },
++        {
++          "code": "Evolver",
++          "desc": "外部论文项目（arXiv:2604.15097）",
++          "case_library_public": "是（外部）"
++        },
++        {
++          "code": "Small_Scale",
++          "desc": "外部论文项目（ICLR 2026）",
++          "case_library_public": "是（外部）"
++        }
++      ]
++    }
+   },
+   "decisions_log": {
+     "date": "2026-06-10",
+     "total_decisions": 21,
+
+2026-06-24T05:09:15.135496Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+node:fs:441
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: ENOENT: no such file or directory, open 'AI???????????.json'
+    at Object.readFileSync (node:fs:441:20)
+    at [stdin]:3:28
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:451:12
+    at [stdin]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:449:60)
+    at evalFunction (node:internal/process/execution:283:30)
+    at evalTypeScript (node:internal/process/execution:295:3)
+    at node:internal/main/eval_stdin:51:5
+    at Socket.<anonymous> (node:internal/process/execution:205:5) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '<PROJECT_ROOT>\\AI???????????.json'
+}
+
+Node.js v24.15.0
+
+ exited 1 in 177ms:
+node:fs:441
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: ENOENT: no such file or directory, open 'AI???????????.json'
+    at Object.readFileSync (node:fs:441:20)
+    at [stdin]:3:28
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:451:12
+    at [stdin]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:449:60)
+    at evalFunction (node:internal/process/execution:283:30)
+    at evalTypeScript (node:internal/process/execution:295:3)
+    at node:internal/main/eval_stdin:51:5
+    at Socket.<anonymous> (node:internal/process/execution:205:5) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '<PROJECT_ROOT>\\AI???????????.json'
+}
+
+Node.js v24.15.0
+
+ERROR: Reconnecting... 1/5
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "@'
+const fs = require('fs');
+const file = fs.readdirSync('.').find(f => f.startsWith('AI') && f.endsWith('.json') && "'!f.includes('"'backup'));
+const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+function findKey(obj, key, path = []) {
+  const out = [];
+  if (obj && typeof obj === 'object') {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) out.push(path.concat(key));
+    for (const [k, v] of Object.entries(obj)) out.push(...findKey(v, key, path.concat(k)));
+  }
+  return out;
+}
+console.log('file=' + file);
+for (const key of ['version_timeline', 'external_methodologies', 'Constraint_Decoupling', 'project_codenames', 'release_prep_errata_20260623']) {
+  console.log("'`${key}:`);
+  for (const p of findKey(data, key)) console.log('"'  ' + p.join('.'));
+}
+console.log('metadata.version=' + data.metadata.version);
+'@ | node" in 
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "@'
+const fs = require('fs');
+const file = fs.readdirSync('.').find(f => f.startsWith('AI') && f.endsWith('.json') && "'!f.includes('"'backup'));
+const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+const ext = data.methodology_foundation.external_references;
+console.log('Constraint status: ' + ext.external_methodologies.Constraint_Decoupling.status);
+console.log('Project codenames count: ' + ext.project_codenames.codenames.length);
+console.log('Project codenames:');
+for (const row of ext.project_codenames.codenames) console.log("'`${row.code}'"\\t"'${row.desc}'"\\t"'${row.case_library_public}`);
+console.log('"'Timeline count: ' + data.metadata.version_timeline.length);
+console.log('Timeline tail:');
+for (const row of data.metadata.version_timeline.slice(-5)) console.log("'`${row.version}'"\\t"'${row.evidence || '"''}\\t"'${row.confidence || '"''}"'`);
+'"'@ | node" in 
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "@'
+const fs = require('fs');
+const md = fs.readdirSync('.').find(f => f.startsWith('AI') && f.endsWith('.md'));
+const json = fs.readdirSync('.').find(f => f.startsWith('AI') && f.endsWith('.json') && "'!f.includes('"'backup'));
+const text = fs.readFileSync(md, 'utf8').split(/\\r?\\n/);
+const rows = [];
+for (const line of text) {
+  const m = line.match(/"'^'"\\|\\s*(["'^|]+?)'"\\s*\\|\\s*(["'^|]+?)'"\\s*\\|\\s*(["'^|]+?)'"\\s*\\|\\s*"'$/);
+  if (m && !m[1].includes('"'代号') && "'!m[1].includes('"'---')) {
+    if (['prompt-tdd','形态匹配','BDC2026','并购重组','ETF 项目 V3.6','PocketFlow','GitNexus','Evolver','Small_Scale'].includes(m[1].trim())) rows.push({code:m[1].trim(), desc:m[2].trim(), case_library_public:m[3].trim()});
+  }
+}
+const data = JSON.parse(fs.readFileSync(json, 'utf8'));
+const jrows = data.methodology_foundation.external_references.project_codenames.codenames;
+const same = JSON.stringify(rows) === JSON.stringify(jrows);
+console.log('md_rows=' + rows.length + ', json_rows=' + jrows.length + ', exact_ordered_match=' + same);
+for (let i=0; i<Math.max(rows.length, jrows.length); i++) {
+  const a = rows[i], b = jrows[i];
+  console.log("'`${i+1}'"\\tMD="'${a ? `${a.code} | ${a.desc} | ${a.case_library_public}` : '"'<missing>'}\\tJSON="'${b ? `${b.code} | ${b.desc} | ${b.case_library_public}` : '"'<missing>'}\\t"'${JSON.stringify(a)===JSON.stringify(b) ? '"'OK' : 'DIFF'}"'`);
+}
+'"'@ | node" in 
+ succeeded in 217ms:
+file=AI协作项目全生命周期框架.json
+version_timeline:
+  metadata.version_timeline
+external_methodologies:
+Constraint_Decoupling:
+  external_references.inspirations.Constraint_Decoupling
+project_codenames:
+  external_references.project_codenames
+release_prep_errata_20260623:
+  metadata.release_prep_errata_20260623
+metadata.version=v1.6.4
+
+2026-06-24T05:11:43.581815Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+[stdin]:4
+const ext = data.methodology_foundation.external_references;
+                                        ^
+
+TypeError: Cannot read properties of undefined (reading 'external_references')
+    at [stdin]:4:41
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:451:12
+    at [stdin]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:449:60)
+    at evalFunction (node:internal/process/execution:283:30)
+    at evalTypeScript (node:internal/process/execution:295:3)
+    at node:internal/main/eval_stdin:51:5
+    at Socket.<anonymous> (node:internal/process/execution:205:5)
+    at Socket.emit (node:events:521:24)
+
+Node.js v24.15.0
+
+ exited 1 in 214ms:
+[stdin]:4
+const ext = data.methodology_foundation.external_references;
+                                        ^
+
+TypeError: Cannot read properties of undefined (reading 'external_references')
+    at [stdin]:4:41
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:451:12
+    at [stdin]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:449:60)
+    at evalFunction (node:internal/process/execution:283:30)
+    at evalTypeScript (node:internal/process/execution:295:3)
+    at node:internal/main/eval_stdin:51:5
+    at Socket.<anonymous> (node:internal/process/execution:205:5)
+    at Socket.emit (node:events:521:24)
+
+Node.js v24.15.0
+
+2026-06-24T05:11:43.588791Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+[stdin]:13
+const jrows = data.methodology_foundation.external_references.project_codenames.codenames;
+                                          ^
+
+TypeError: Cannot read properties of undefined (reading 'external_references')
+    at [stdin]:13:43
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:451:12
+    at [stdin]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:449:60)
+    at evalFunction (node:internal/process/execution:283:30)
+    at evalTypeScript (node:internal/process/execution:295:3)
+    at node:internal/main/eval_stdin:51:5
+    at Socket.<anonymous> (node:internal/process/execution:205:5)
+    at Socket.emit (node:events:521:24)
+
+Node.js v24.15.0
+
+ exited 1 in 222ms:
+[stdin]:13
+const jrows = data.methodology_foundation.external_references.project_codenames.codenames;
+                                          ^
+
+TypeError: Cannot read properties of undefined (reading 'external_references')
+    at [stdin]:13:43
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:451:12
+    at [stdin]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:449:60)
+    at evalFunction (node:internal/process/execution:283:30)
+    at evalTypeScript (node:internal/process/execution:295:3)
+    at node:internal/main/eval_stdin:51:5
+    at Socket.<anonymous> (node:internal/process/execution:205:5)
+    at Socket.emit (node:events:521:24)
+
+Node.js v24.15.0
+
+codex
+递归定位给出准确路径：`metadata.version_timeline`、`external_references.inspirations.Constraint_Decoupling`、`external_references.project_codenames`。我会按这些路径重新做结构化比对。
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "@'
+const fs = require('fs');
+const file = fs.readdirSync('.').find(f => f.startsWith('AI') && f.endsWith('.json') && "'!f.includes('"'backup'));
+const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+const ext = data.external_references;
+console.log('Constraint status: ' + ext.inspirations.Constraint_Decoupling.status);
+console.log('Project codenames count: ' + ext.project_codenames.codenames.length);
+console.log('Project codenames:');
+for (const row of ext.project_codenames.codenames) console.log("'`${row.code}'"\\t"'${row.desc}'"\\t"'${row.case_library_public}`);
+console.log('"'Timeline count: ' + data.metadata.version_timeline.length);
+console.log('Timeline tail:');
+for (const row of data.metadata.version_timeline.slice(-5)) console.log("'`${row.version}'"\\t"'${row.evidence || '"''}\\t"'${row.confidence || '"''}"'`);
+'"'@ | node" in 
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "@'
+const fs = require('fs');
+const md = fs.readdirSync('.').find(f => f.startsWith('AI') && f.endsWith('.md'));
+const json = fs.readdirSync('.').find(f => f.startsWith('AI') && f.endsWith('.json') && "'!f.includes('"'backup'));
+const text = fs.readFileSync(md, 'utf8').split(/\\r?\\n/);
+const wanted = ['prompt-tdd','形态匹配','BDC2026','并购重组','ETF 项目 V3.6','PocketFlow','GitNexus','Evolver','Small_Scale'];
+const rows = [];
+for (const line of text) {
+  const m = line.match(/"'^'"\\|\\s*(["'^|]+?)'"\\s*\\|\\s*(["'^|]+?)'"\\s*\\|\\s*(["'^|]+?)'"\\s*\\|\\s*"'$/);
+  if (m && wanted.includes(m[1].trim())) rows.push({code:m[1].trim(), desc:m[2].trim(), case_library_public:m[3].trim()});
+}
+const data = JSON.parse(fs.readFileSync(json, '"'utf8'));
+const jrows = data.external_references.project_codenames.codenames;
+const same = JSON.stringify(rows) === JSON.stringify(jrows);
+console.log('md_rows=' + rows.length + ', json_rows=' + jrows.length + ', exact_ordered_match=' + same);
+for (let i=0; i<Math.max(rows.length, jrows.length); i++) {
+  const a = rows[i], b = jrows[i];
+  console.log("'`${i+1}'"\\tMD="'${a ? `${a.code} | ${a.desc} | ${a.case_library_public}` : '"'<missing>'}\\tJSON="'${b ? `${b.code} | ${b.desc} | ${b.case_library_public}` : '"'<missing>'}\\t"'${JSON.stringify(a)===JSON.stringify(b) ? '"'OK' : 'DIFF'}"'`);
+}
+'"'@ | node" in 
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "@'
+const fs = require('fs');
+const current = fs.readdirSync('.').find(f => f.startsWith('AI') && f.endsWith('.json') && "'!f.includes('"'backup'));
+const backup = fs.readdirSync('.').find(f => f.endsWith('.backup'));
+const c = JSON.parse(fs.readFileSync(current, 'utf8'));
+const b = JSON.parse(fs.readFileSync(backup, 'utf8'));
+function collect(obj, needle, path=[], out=[]) {
+  if (typeof obj === 'string') {
+    if (obj.includes(needle)) out.push({path:path.join('.'), value:obj});
+  } else if (Array.isArray(obj)) {
+    obj.forEach((v,i)=>collect(v, needle, path.concat("'`[${i}]`), out));
+  } else if (obj && typeof obj === '"'object') {
+    for (const [k,v] of Object.entries(obj)) collect(v, needle, path.concat(k), out);
+  }
+  return out;
+}
+for (const needle of ['今日操作','本日操作','当日操作','已验证','已采纳']) {
+  console.log('CURRENT ' + needle + ':');
+  for (const hit of collect(c, needle)) console.log('  ' + hit.path + ' = ' + hit.value);
+}
+console.log('BACKUP Constraint status: ' + b.external_references.inspirations.Constraint_Decoupling.status);
+console.log('CURRENT Constraint status: ' + c.external_references.inspirations.Constraint_Decoupling.status);
+'@ | node" in 
+ succeeded in 194ms:
+Constraint status: 已采纳——Prompt模板已独立'否决条件'栏
+Project codenames count: 9
+Project codenames:
+prompt-tdd	作者的 prompt 工程对照实验个人项目	否（仅写回结论）
+形态匹配	已封存的金融形态识别个人项目	否
+BDC2026	某数据竞赛项目	否
+并购重组	并购重组案例研究个人项目（8 阶段流水线）	否
+ETF 项目 V3.6	某 ETF 量化项目的结构化变更日志实践来源	否
+PocketFlow	外部开源项目（100 行核心 + 分难度 cookbook）	是（外部）
+GitNexus	外部开源项目（代码知识图谱工具）	是（外部）
+Evolver	外部论文项目（arXiv:2604.15097）	是（外部）
+Small_Scale	外部论文项目（ICLR 2026）	是（外部）
+Timeline count: 10
+Timeline tail:
+v1.5.3	版本头操作记录（活动期自记）	likely
+v1.5.4	当日操作；三件套全量同步+Codex交叉验证通过	confirmed
+v1.5.5	当日操作；A3闭合报告写回	confirmed
+v1.6	当日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正	🟡 较可信(本日操作, .md+JSON经Codex审查闭合, .docx待目视确认)
+v1.6.1	当日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)	🟡 较可信(本日操作, 复现数据完整, 报告经Codex审查修正)
+
+ succeeded in 201ms:
+md_rows=6, json_rows=9, exact_ordered_match=false
+1	MD=prompt-tdd | 作者的 prompt 工程对照实验个人项目 | 否（仅写回结论）	JSON=prompt-tdd | 作者的 prompt 工程对照实验个人项目 | 否（仅写回结论）	OK
+2	MD=BDC2026 | 某数据竞赛项目 | 否	JSON=形态匹配 | 已封存的金融形态识别个人项目 | 否	DIFF
+3	MD=PocketFlow | 外部开源项目（100 行核心 + 分难度 cookbook） | 是（外部）	JSON=BDC2026 | 某数据竞赛项目 | 否	DIFF
+4	MD=GitNexus | 外部开源项目（代码知识图谱工具） | 是（外部）	JSON=并购重组 | 并购重组案例研究个人项目（8 阶段流水线） | 否	DIFF
+5	MD=Evolver | 外部论文项目（arXiv:2604.15097） | 是（外部）	JSON=ETF 项目 V3.6 | 某 ETF 量化项目的结构化变更日志实践来源 | 否	DIFF
+6	MD=Small_Scale | 外部论文项目（ICLR 2026） | 是（外部）	JSON=PocketFlow | 外部开源项目（100 行核心 + 分难度 cookbook） | 是（外部）	DIFF
+7	MD=<missing>	JSON=GitNexus | 外部开源项目（代码知识图谱工具） | 是（外部）	DIFF
+8	MD=<missing>	JSON=Evolver | 外部论文项目（arXiv:2604.15097） | 是（外部）	DIFF
+9	MD=<missing>	JSON=Small_Scale | 外部论文项目（ICLR 2026） | 是（外部）	DIFF
+
+ succeeded in 204ms:
+CURRENT ????:
+CURRENT ????:
+CURRENT ????:
+CURRENT ???:
+CURRENT ???:
+BACKUP Constraint status: 已验证——Prompt模板已独立'否决条件'栏
+CURRENT Constraint status: 已采纳——Prompt模板已独立'否决条件'栏
+
+codex
+刚才一个 Node 小脚本因控制台编码只识别了 ASCII 代号，中文代号过滤结果不可靠；我会用 PowerShell 从固定章节行号解析表格，重新做一次 9 行逐行比较。
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$mdFile='"'AI协作项目全生命周期框架.md'; "'$jsonFile='"'AI协作项目全生命周期框架.json';
+"'$mdRows = @(); $i=0;
+Get-Content -Encoding UTF8 $mdFile | ForEach-Object {
+  $i++;
+  if ($i -ge 3253 -and $i -le 3261) {
+    $parts = $_.Trim().Trim('"'|').Split('|') | ForEach-Object { "'$_.Trim() };
+    $mdRows += [pscustomobject]@{ code=$parts[0]; desc=$parts[1]; case_library_public=$parts[2]; line=$i };
+  }
+}
+$j = Get-Content -Raw -Encoding UTF8 $jsonFile | ConvertFrom-Json;
+$jsonRows = @($j.external_references.project_codenames.codenames);
+"md_rows=$($mdRows.Count), json_rows=$($jsonRows.Count)";
+for ($idx=0; $idx -lt [Math]::Max($mdRows.Count, $jsonRows.Count); $idx++) {
+  $m=$mdRows[$idx]; $r=$jsonRows[$idx];
+  $ok = ($null -ne $m -and $null -ne $r -and $m.code -eq $r.code -and $m.desc -eq $r.desc -and $m.case_library_public -eq $r.case_library_public);
+  "$($idx+1)`t$($m.line)`t$($m.code) | $($m.desc) | $($m.case_library_public)`tJSON=$($r.code) | $($r.desc) | $($r.case_library_public)`t$($ok ? '"'OK' : 'DIFF')\";
+}" in 
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Select-String -Path 'AI协作项目全生命周期框架.json' -Pattern '今日操作','本日操作','当日操作','已验证','已采纳' | ForEach-Object { \""'$($_.LineNumber): $($_.Line.Trim())" }' in 
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$j = Get-Content -Raw -Encoding UTF8 '"'AI协作项目全生命周期框架.json' | ConvertFrom-Json;
+\"metadata.version="'$($j.metadata.version)";
+"metadata.version_timeline.count=$(@($j.metadata.version_timeline).Count)";
+"external_references.project_codenames.count=$(@($j.external_references.project_codenames.codenames).Count)";
+"external_references.inspirations.Constraint_Decoupling.status=$($j.external_references.inspirations.Constraint_Decoupling.status)";
+"metadata.release_prep_errata_20260623=$($j.metadata.release_prep_errata_20260623)";' in 
+2026-06-24T05:13:21.245494Z ERROR codex_core::tools::router: error=Exit code: 1
+Wall time: 0.2 seconds
+Output:
+At line:17 char:144
++ ... =$($r.code) | $($r.desc) | $($r.case_library_public)`t$($ok ? 'OK' :  ...
++                                                                 ~
+Unexpected token '?' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : UnexpectedToken
+ 
+
+ exited 1 in 161ms:
+At line:17 char:144
++ ... =$($r.code) | $($r.desc) | $($r.case_library_public)`t$($ok ? 'OK' :  ...
++                                                                 ~
+Unexpected token '?' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : UnexpectedToken
+ 
+
+ succeeded in 198ms:
+869: "evidence": "当日操作；三件套全量同步+Codex交叉验证通过",
+877: "evidence": "当日操作；A3闭合报告写回",
+884: "evidence": "当日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正",
+885: "confidence": "🟡 较可信(本日操作, .md+JSON经Codex审查闭合, .docx待目视确认)"
+891: "evidence": "当日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)",
+892: "confidence": "🟡 较可信(本日操作, 复现数据完整, 报告经Codex审查修正)"
+1205: "release_prep_errata_20260623": "2026-06-23 发布前订正（不升版本号，挂 v1.6.4）补入 .json：新增 §13.1.2 项目代号说明（project_codenames）+ §13.2 Constraint Decoupling 已验证→已采纳 + version_timeline 今日操作→当日操作。对应 .md 的 §14「v1.6.4 发布前订正批次」。同步执行：Claude Opus 4.8 (via Claude Code CLI)，2026-06-24。"
+2231: "overall": "地基扎实的概念，还不是成熟体系——3/10已验证，7/10待实证或零数据",
+2234: "level": "已验证",
+2238: "level": "已验证",
+2242: "level": "已验证",
+2279: "distribution": "已验证3/10, 待实证6/10, 零数据1/10"
+2891: "Drift_Detection": "v1.3新增——headroom CacheAligner detector-only哲学 → 适配为语义治理层的连续漂移监测层(§3.7)。标注为'可借鉴的架构原则'，未经跨域验证，不等同于已验证的通用方法论。"
+2942: "status": "已采纳——Prompt模板已独立'否决条件'栏"
+2962: "status": "v1.3已内化——三项均标注为'可借鉴的架构原则'，未经跨域验证，不等同于已验证的通用方法论。详见配套对标文档。经ChatGPT-5.5独立裁决(Codex CLI, 710K token)条件采纳。"
+3142: "description": "从已验证证据推理得出",
+3304: "description": "配套目录提供场景化的应用模板、参考实现和治理记录。不是强制规则——'这里有已验证的做法，你可以直接用、改、或参考后自己设计'",
+3388: "evidence_level": "[Sp]——此证据仅为N=2两次试读的对照，未达方法论意义的'已验证'，待更多试读确认"
+
+ succeeded in 265ms:
+metadata.version=v1.6.4
+metadata.version_timeline.count=10
+external_references.project_codenames.count=9
+external_references.inspirations.Constraint_Decoupling.status=已采纳——Prompt模板已独立'否决条件'栏
+metadata.release_prep_errata_20260623=2026-06-23 发布前订正（不升版本号，挂 v1.6.4）补入 .json：新增 §13.1.2 项目代号说明（project_codenames）+ §13.2 Constraint Decoupling 已验证→已采纳 + version_timeline 今日操作→当日操作。对应 .md 的 §14「v1.6.4 发布前订正批次」。同步执行：Claude Opus 4.8 (via Claude Code CLI)，2026-06-24。
+
+codex
+结构化字段路径和状态已确认。表格比较脚本只因为 PowerShell 版本不支持三元表达式报错，我会修正语法后重跑，不改变文件。
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$mdFile='"'AI协作项目全生命周期框架.md'; "'$jsonFile='"'AI协作项目全生命周期框架.json';
+"'$mdRows = @(); $i=0;
+Get-Content -Encoding UTF8 $mdFile | ForEach-Object {
+  $i++;
+  if ($i -ge 3253 -and $i -le 3261) {
+    $parts = $_.Trim().Trim('"'|').Split('|') | ForEach-Object { "'$_.Trim() };
+    $mdRows += [pscustomobject]@{ code=$parts[0]; desc=$parts[1]; case_library_public=$parts[2]; line=$i };
+  }
+}
+$j = Get-Content -Raw -Encoding UTF8 $jsonFile | ConvertFrom-Json;
+$jsonRows = @($j.external_references.project_codenames.codenames);
+"md_rows=$($mdRows.Count), json_rows=$($jsonRows.Count)";
+for ($idx=0; $idx -lt [Math]::Max($mdRows.Count, $jsonRows.Count); $idx++) {
+  $m=$mdRows[$idx]; $r=$jsonRows[$idx];
+  $ok = ($null -ne $m -and $null -ne $r -and $m.code -eq $r.code -and $m.desc -eq $r.desc -and $m.case_library_public -eq $r.case_library_public);
+  if ($ok) { $status='"'OK' } else { "'$status='"'DIFF' }
+  \""'$($idx+1)`tMD line $($m.line): $($m.code) | $($m.desc) | $($m.case_library_public)`tJSON: $($r.code) | $($r.desc) | $($r.case_library_public)`t$status";
+}' in 
+ succeeded in 237ms:
+md_rows=9, json_rows=9
+1	MD line 3253: prompt-tdd | 作者的 prompt 工程对照实验个人项目 | 否（仅写回结论）	JSON: prompt-tdd | 作者的 prompt 工程对照实验个人项目 | 否（仅写回结论）	OK
+2	MD line 3254: 形态匹配 | 已封存的金融形态识别个人项目 | 否	JSON: 形态匹配 | 已封存的金融形态识别个人项目 | 否	OK
+3	MD line 3255: BDC2026 | 某数据竞赛项目 | 否	JSON: BDC2026 | 某数据竞赛项目 | 否	OK
+4	MD line 3256: 并购重组 | 并购重组案例研究个人项目（8 阶段流水线） | 否	JSON: 并购重组 | 并购重组案例研究个人项目（8 阶段流水线） | 否	OK
+5	MD line 3257: ETF 项目 V3.6 | 某 ETF 量化项目的结构化变更日志实践来源 | 否	JSON: ETF 项目 V3.6 | 某 ETF 量化项目的结构化变更日志实践来源 | 否	OK
+6	MD line 3258: PocketFlow | 外部开源项目（100 行核心 + 分难度 cookbook） | 是（外部）	JSON: PocketFlow | 外部开源项目（100 行核心 + 分难度 cookbook） | 是（外部）	OK
+7	MD line 3259: GitNexus | 外部开源项目（代码知识图谱工具） | 是（外部）	JSON: GitNexus | 外部开源项目（代码知识图谱工具） | 是（外部）	OK
+8	MD line 3260: Evolver | 外部论文项目（arXiv:2604.15097） | 是（外部）	JSON: Evolver | 外部论文项目（arXiv:2604.15097） | 是（外部）	OK
+9	MD line 3261: Small_Scale | 外部论文项目（ICLR 2026） | 是（外部）	JSON: Small_Scale | 外部论文项目（ICLR 2026） | 是（外部）	OK
+
+codex
+**核对结果**
+
+1. **PASS**：§13.1.2 项目代号说明已同步。  
+   证据：Markdown 9 行在 [AI协作项目全生命周期框架.md](AI协作项目全生命周期框架.md:3253)，JSON 对应 `external_references.project_codenames.codenames` 在 [AI协作项目全生命周期框架.json](AI协作项目全生命周期框架.json:2972)。  
+   我解析后逐行比对结果为 `md_rows=9, json_rows=9`，9 行全部 `OK`；代号、定性、公开状态均一致。
+
+2. **PASS**：Constraint Decoupling 已改为“已采纳”。  
+   证据：Markdown §13.2 行为“已采纳”：[AI协作项目全生命周期框架.md](AI协作项目全生命周期框架.md:3270)。JSON `external_references.inspirations.Constraint_Decoupling.status` 为 `已采纳——Prompt模板已独立'否决条件'栏`：[AI协作项目全生命周期框架.json](AI协作项目全生命周期框架.json:2939)。  
+   与备份 diff 显示这一处从“已验证”改为“已采纳”；其他“已验证”命中未被 diff 改动。
+
+3. **部分通过**：“今日操作”已处理，但仍有“本日操作”残留。  
+   PASS 部分：JSON `metadata.version_timeline` 的 `evidence` 字段已改为“当日操作”，见 [AI协作项目全生命周期框架.json](AI协作项目全生命周期框架.json:877)、[884](AI协作项目全生命周期框架.json:884)、[891](AI协作项目全生命周期框架.json:891)。除允许的 `metadata.release_prep_errata_20260623` 描述字段外，没有发现字面“今日操作”残留。  
+   FAIL 部分：JSON 仍有两个 `confidence` 字段写“本日操作”：[AI协作项目全生命周期框架.json](AI协作项目全生命周期框架.json:885)、[892](AI协作项目全生命周期框架.json:892)。Markdown 对应位置已是“当日操作”：[AI协作项目全生命周期框架.md](AI协作项目全生命周期框架.md:3309)、[3310](AI协作项目全生命周期框架.md:3310)。
+
+4. **PASS**：JSON 合法。  
+   `ConvertFrom-Json` 可解析，未报错。
+
+5. **PASS**：版本号仍为 `v1.6.4`。  
+   证据：`metadata.version=v1.6.4`，文件行见 [AI协作项目全生命周期框架.json](AI协作项目全生命周期框架.json:5)。
+
+6. **PASS**：未发现意料外 diff 副作用。  
+   与 `AI协作项目全生命周期框架.json.pre_v164_sync.backup` 对比，diff 仅包含：3 个 `version_timeline.evidence` 文案替换、1 个 metadata 订正说明字段新增、1 个 Constraint Decoupling status 替换、1 个 `project_codenames` 块新增。diff stat 为 `58 insertions(+), 6 deletions(-)`。
+
+**总体裁决：部分通过。**  
+三处中的项目代号表和 Constraint Decoupling 同步正确；JSON 合法、版本号正确、diff 无额外破坏。但 §14 时间线同步不完整：仍有两个 `本日操作` 未改成 Markdown 中的 `当日操作`。
+tokens used
+144,980
+**核对结果**
+
+1. **PASS**：§13.1.2 项目代号说明已同步。  
+   证据：Markdown 9 行在 [AI协作项目全生命周期框架.md](AI协作项目全生命周期框架.md:3253)，JSON 对应 `external_references.project_codenames.codenames` 在 [AI协作项目全生命周期框架.json](AI协作项目全生命周期框架.json:2972)。  
+   我解析后逐行比对结果为 `md_rows=9, json_rows=9`，9 行全部 `OK`；代号、定性、公开状态均一致。
+
+2. **PASS**：Constraint Decoupling 已改为“已采纳”。  
+   证据：Markdown §13.2 行为“已采纳”：[AI协作项目全生命周期框架.md](AI协作项目全生命周期框架.md:3270)。JSON `external_references.inspirations.Constraint_Decoupling.status` 为 `已采纳——Prompt模板已独立'否决条件'栏`：[AI协作项目全生命周期框架.json](AI协作项目全生命周期框架.json:2939)。  
+   与备份 diff 显示这一处从“已验证”改为“已采纳”；其他“已验证”命中未被 diff 改动。
+
+3. **部分通过**：“今日操作”已处理，但仍有“本日操作”残留。  
+   PASS 部分：JSON `metadata.version_timeline` 的 `evidence` 字段已改为“当日操作”，见 [AI协作项目全生命周期框架.json](AI协作项目全生命周期框架.json:877)、[884](AI协作项目全生命周期框架.json:884)、[891](AI协作项目全生命周期框架.json:891)。除允许的 `metadata.release_prep_errata_20260623` 描述字段外，没有发现字面“今日操作”残留。  
+   FAIL 部分：JSON 仍有两个 `confidence` 字段写“本日操作”：[AI协作项目全生命周期框架.json](AI协作项目全生命周期框架.json:885)、[892](AI协作项目全生命周期框架.json:892)。Markdown 对应位置已是“当日操作”：[AI协作项目全生命周期框架.md](AI协作项目全生命周期框架.md:3309)、[3310](AI协作项目全生命周期框架.md:3310)。
+
+4. **PASS**：JSON 合法。  
+   `ConvertFrom-Json` 可解析，未报错。
+
+5. **PASS**：版本号仍为 `v1.6.4`。  
+   证据：`metadata.version=v1.6.4`，文件行见 [AI协作项目全生命周期框架.json](AI协作项目全生命周期框架.json:5)。
+
+6. **PASS**：未发现意料外 diff 副作用。  
+   与 `AI协作项目全生命周期框架.json.pre_v164_sync.backup` 对比，diff 仅包含：3 个 `version_timeline.evidence` 文案替换、1 个 metadata 订正说明字段新增、1 个 Constraint Decoupling status 替换、1 个 `project_codenames` 块新增。diff stat 为 `58 insertions(+), 6 deletions(-)`。
+
+**总体裁决：部分通过。**  
+三处中的项目代号表和 Constraint Decoupling 同步正确；JSON 合法、版本号正确、diff 无额外破坏。但 §14 时间线同步不完整：仍有两个 `本日操作` 未改成 Markdown 中的 `当日操作`。

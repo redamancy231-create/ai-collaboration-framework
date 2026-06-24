@@ -1,0 +1,168 @@
+Codex v1.6 JSON 配套忠实度审查报告
+日期: 2026-06-20
+审查者: Codex GPT-5.5 (via Codex CLI)
+
+审查对象:
+- 主文档: <PROJECT_ROOT>/AI协作项目全生命周期框架.md
+- JSON 配套: <PROJECT_ROOT>/AI协作项目全生命周期框架.json
+- 审查提示词: <PROJECT_ROOT>/_workflows/codex_v16_json_crosscheck_prompt.md
+
+判词: FAIL_WITH_CAVEATS
+
+总体结论:
+JSON 已基本同步 v1.6 的核心结构: metadata 版本/日期/模型字段正确, changelog[0] 为 v1.6 且包含 7 项 changes, version_timeline 和 independent_reviews 已记录 v1.6, 5 个新增结构节点均存在。P0 节点中未发现“整节缺失”或“方向性反写”。
+
+主要 caveat 是: JSON 在 Codex v1.6 重审状态上比 .md 更新, 与主文档当前文本不一致; CK6 及条件豁免规则的关键限定被压缩, 影响方法学忠实度。建议修正后可视为通过。
+
+发现:
+
+[MEDIUM] metadata.version_timeline[-1] / metadata.independent_reviews[-1] 与 .md 当前状态不一致
+
+JSON 路径:
+- metadata.version_timeline[-1] (json 行 699-702)
+- metadata.independent_reviews[-1] (json 行 507-514)
+
+JSON 内容:
+- version_timeline[-1].evidence 记录“经Codex GPT-5.5初审→修正→重审→修正”
+- version_timeline[-1].confidence 记录“Codex重审FAIL_WITH_CAVEATS已修正”
+- independent_reviews[-1] 记录 verdict_initial=FAIL_WITH_MAJOR_ISSUES, verdict_rereview=FAIL_WITH_CAVEATS, rereview_report=_reviews/codex_v16_crosscheck_rereview_20260620.txt
+
+.md 对照:
+- md 行 3077: v1.6 时间线仍为“待异后端交叉验证”
+- md 行 3126: Codex v1.6 交叉验证段落仍写“修正后待 Codex 重审确认”
+
+问题:
+JSON 记录了重审结果和修正状态, 但主文档对应位置仍停留在重审前/待确认状态。若 .md 是规范来源, JSON 不能先行声明 .md 未记录的状态; 若重审确已完成, 应同步更新 .md §14。
+
+修正建议:
+二选一:
+1. 更新 .md §14 时间线与“Codex v1.6 交叉验证修正”段, 补充 _reviews/codex_v16_crosscheck_rereview_20260620.txt、FAIL_WITH_CAVEATS 和后续修正状态; 或
+2. 将 JSON 中 version_timeline[-1] 与 independent_reviews[-1] 降回与 .md 一致的“待重审/待异后端交叉验证”状态。
+
+[MEDIUM] experiment_design_checklist.conditional_items.CK6 遗漏 37.5% 关键限定
+
+JSON 路径:
+- experiment_design_checklist.conditional_items.CK6 (json 行 3329)
+
+JSON 内容:
+- “修复-回归循环审查门——条件触发(组件级以上结构性变更), 可豁免”
+
+.md 对照:
+- md 行 1093-1102, 尤其行 1102:
+  “v2 设计经 Codex+Qwen 双后端审查发现 37.5% 新缺陷（DV 退化 + 格式×数量混淆）。37.5% 来自单一未执行设计的审查预期——不作为参数估计推广，仅作为保守提醒。”
+
+问题:
+提示词明确要求检查 §4.1.1.1 的 CK6 “37.5% 来自单一未执行设计的审查预期——不作为参数估计推广”是否在 JSON 中保留。当前 JSON 全文未出现 “37.5% / 单一未执行 / 参数估计 / 审查预期” 等限定, 该关键诚实限定缺失。
+
+修正建议:
+在 CK6 字段或新增 notes/evidence 字段中补充:
+“A3 v2 审查发现 37.5% 新缺陷; 该 37.5% 来自单一未执行设计的审查预期, 不作为参数估计推广, 仅作为保守提醒。”
+
+[MEDIUM] experiment_design_checklist.usage 对 CK4-CK6 豁免规则压缩过度
+
+JSON 路径:
+- experiment_design_checklist.usage (json 行 3331)
+
+JSON 内容:
+- “Tier 1硬门(CK1-CK3)任一项FAIL→禁止进入Tier 1; 条件触发项(CK4-CK6)FAIL时记录豁免理由后可进入”
+
+.md 对照:
+- md 行 1116: “CK4-CK6，FAIL 时记录豁免理由、风险声明和缓解措施后可进入 Tier 1”
+- md 行 1124: “所有 6 项均须在预注册文件中记录核对结果（PASS/FAIL/EXEMPT+理由）。EXEMPT 项的理由将由异后端审查者在 Tier 1 启动前审核——审查者可升级 EXEMPT→FAIL。”
+
+问题:
+JSON 只保留“记录豁免理由”, 遗漏两个实质约束:
+1. 豁免时还须记录风险声明和缓解措施;
+2. EXEMPT 需由异后端审查者复核, 且可升级为 FAIL。
+
+修正建议:
+将 usage 改为:
+“Tier 1硬门(CK1-CK3)任一项FAIL→禁止进入Tier 1; 条件触发项(CK4-CK6)可 EXEMPT, 但须在预注册中记录理由、风险声明、缓解措施; EXEMPT 由异后端审查者在 Tier 1 启动前审核, 可升级为 FAIL。”
+
+[MINOR] known_limitations.source 未完整保留 .md 来源描述
+
+JSON 路径:
+- known_limitations.source (json 行 3288)
+
+JSON 内容:
+- “Codex v1.5.5 MAJOR #1精神 + 复盘§9已知局限(PM-1~PM-6 + §9.3/§9.4)”
+
+.md 对照:
+- md 行 297: “具体局限条目来自复盘报告 §9 和 Codex/Qwen 多轮审查的累积反馈。”
+
+问题:
+JSON source 保留了 Codex v1.5.5 MAJOR #1 和复盘 §9, 但遗漏 Codex/Qwen 多轮审查累积反馈这一来源。
+
+修正建议:
+将 source 补为:
+“Codex v1.5.5 MAJOR #1精神 + 复盘§9已知局限(PM-1~PM-6 + §9.3/§9.4) + Codex/Qwen多轮审查累积反馈”
+
+通过项摘要:
+
+1. 元数据核心字段
+- metadata.version = "1.6" (json 行 5), 对应 md 行 3
+- metadata.date = "2026-06-20" (json 行 6), 对应 md 行 4
+- metadata.model = "DeepSeek-V4-Pro (via Claude Code CLI shell)" (json 行 3), 对应 md 行 5
+- metadata.revision = "v1.6 (2026-06-20)" (json 行 53)
+- metadata.revision_source 覆盖 A2+A3 深度复盘、Codex v1.5.5、跨版本维护实践规范化, 并保留既有来源链 (json 行 54)
+
+2. metadata.status
+- 已包含 v1.6 P0 新增: §9.6.1 / §9.10 / §4.1.1.1
+- 已包含 v1.6 P1 新增: §2.6 / §1.8 / §9.9 路径D / 附录H
+- 对应 md 行 6、16、3466
+
+3. metadata.changelog[0]
+- 为 v1.6 条目 (json 行 538-598)
+- changes 为 7 项 v1.6-1 至 v1.6-7 (json 行 542-584)
+- 包含 evidence_level、codex_reviews、three_piece_sync、unadopted_downgraded (json 行 586-597)
+- 对应 md 行 3081-3126
+
+4. version_timeline
+- metadata.version_timeline[-1] 为 v1.6 行 (json 行 698-703)
+- 日期/版本/事件与 md 行 3077 对应, 但 caveat 如上: evidence/confidence 超前记录了重审状态
+
+5. independent_reviews
+- metadata.independent_reviews[-1] 记录 Codex v1.6 初审+重审 (json 行 507-514)
+- 报告路径存在于 _reviews 目录:
+  - codex_v16_crosscheck_20260620.txt
+  - codex_v16_crosscheck_rereview_20260620.txt
+- caveat 如上: .md 当前仍未同步该重审状态
+
+6. known_limitations -> md §1.8
+- limitations 数组为 8 条 (json 行 3289-3298)
+- 第 6 条“探索性vs确认性框架张力”存在 (json 行 3295), 对应 md 行 311
+- 第 7 条“测试集区分度未分析”存在 (json 行 3296), 对应 md 行 313
+- evidence_level = [C+/N/A] (json 行 3287)
+- source 有轻微遗漏, 见 MINOR
+
+7. framework_maintenance -> md §2.6
+- key_rules 包含 versioning / changelog / writeback_review_gate / three_piece_sync / freeze_rules (json 行 3306-3312)
+- transition_clause 提及“审查门自v1.6审查通过后的下一版起生效” (json 行 3313), 对应 md 行 432
+
+8. experiment_design_checklist -> md §4.1.1.1
+- tier1_hard_gates 包含 CK1/CK2/CK3 (json 行 3321-3325), 对应 md 行 1035-1064、1108-1114
+- conditional_items 包含 CK4/CK5/CK6 (json 行 3326-3330), 对应 md 行 1066-1102、1116-1122
+- usage 区分硬门和条件触发, 但豁免规则压缩过度, 见 MEDIUM
+
+9. two_dimensional_evidence -> md §9.6.1
+- dimension_1_internal 有 A/B+/B/C+/C/D 六级 (json 行 3339-3346), 对应 md 行 2028-2037
+- dimension_2_cross_model 有 M3/M2/M1/M0/N/A 五级 (json 行 3347-3352), 对应 md 行 2039-2047
+- M1 定义为“两实验单模型家族” (json 行 3350), 对应 md 行 2045
+
+10. methodological_fragment_three_layer_template -> md §9.10
+- layers 包含 layer_1 / layer_2 / layer_3 (json 行 3362-3366), 对应 md 行 2186-2207
+- layer_3 包含静默失效信号 (json 行 3365), 对应 md 行 2205、2213
+- pt_m1_example 提及 Hard Mode 和任务可供性 (json 行 3373), 对应 md 行 2233-2235
+
+11. 机械一致性
+- 新增节点中未发现不当 v1.5.5 引用。v1.5.5 主要出现在 metadata 历史/status/changelog 继承语境和 §9.6.1 source 中, 后者对应 md 行 2018 的 Codex v1.5.5 MAJOR #3 来源, 属合理来源引用。
+- changelog[0].changes 为 7 项。
+- unadopted_downgraded 列出 §7.3-§7.6 的降级项并附理由 (json 行 592-597), 对应 md 行 3121-3124。
+
+最终建议:
+优先修正 3 个 MEDIUM:
+1. 统一 .md 与 JSON 的 Codex v1.6 重审状态;
+2. 补 CK6 的 37.5% 非参数估计限定;
+3. 补 CK4-CK6 豁免规则中的风险声明、缓解措施和异后端复核。
+
+修正后可重审为 PASS 或 PASS_WITH_MINOR_CAVEATS。

@@ -1,0 +1,3791 @@
+{
+  "metadata": {
+    "model": "DeepSeek-V4-Pro (via Claude Code CLI shell)",
+    "name": "AI协作项目全生命周期框架",
+    "version": "v1.6.4",
+    "date": "2026-06-24",
+    "status": "草案, v1.6.4 (§6.3.2 Flow-as-Node嵌套工作流对照证据[E-] ceiling-limited, 经7轮双后端审查链闭合). v1.6.4新增: §6.3.2(Flow-as-Node对照实验: Tier 0负证据, 3/5类别天花板, ΔF1=0.000, 7轮审查链Codex GPT-5.5×4+Qwen qwen3.7-max×3, 0未闭合发现). v1.6.3新增: §1.8局限#9(作者-读者同构)+#10(外部依赖漂移)+§2.6规则退役判定+配套外部依赖登记表+可调参数索引+OPEN-4协议修订, 经Codex GPT-5.5+Qwen qwen3.7-max双后端审查零分歧收敛. v1.6.2新增: §7.7(被动观测: 定义与概念边界+三次经验种子+扩展分类框架待实证+Failure Space 10种失效模式+硬约束+深度版模板增强) + §9.11(跨层可观测性设计: L0-L5各层可观测性关切+三原则). v1.6.1新增: §4.1.1 Qwen复现段落(A_flat=0.806/B_structured=0.792/Δ=−0.014, 方向一致, GPT-5.5+Qwen双模型点证据, 证据二维M0→M2→M1*(v1.6.4订正)) + §1.8局限声明更新 + §6.3.1交叉引用更新 + §9.6.1 A2行M0→M2. v1.6 P0新增: §9.6.1(二维证据等级: 内部强度A-D × 跨模型推广性M0-M3/N/A) + §9.10(MF三层模板: 问题识别+解决方案适用条件+已知反例/失效模式) + §4.1.1.1(对照实验设计强制检查清单CK1-CK6, Tier 1硬门+条件触发). v1.6 P1新增: §2.6(框架维护流程: 版本号规则/审查门/三件套同步/冻结期) + §1.8(已知局限与诚实声明: 8条系统性局限) + §9.9路径D(方法论迁移者30-45min) + 附录H反向交叉引用. v1.5.5新增: §6.3.1路由声明格式对照证据[E-](A3实验写回). v1.5.4新增: §4.1.1执行合约[E-](A2实验写回). v1.5.3新增: §1.7(最小核心+示例外挂)+§9.9(阅读导航)+附录H(反模式清单). v1.5.2写回: Protocol 3试跑1的6项改进. v1.5.1新增: §3.7.0+§3.7.4.1+§9.7+§9.8(四个[Sp]节). 方法论来源: prompt-tdd A1+A2+A3三实验链+被动观测三事件跨案例分析+Evolver项目(4.1-4.2/10)+PocketFlow(DeepSeek/ChatGPT-5.5/GLM-5.2)+GitNexus+Small_Scale. v1.6.4经Codex GPT-5.5×4+Qwen qwen3.7-max×3审查链闭合. v1.6.3经Codex+Qwen双后端审查零分歧收敛. v1.6.2经Codex GPT-5.5魔鬼代言人审查(有条件支持, 意见已系统性纳入). v1.6经Codex GPT-5.5初审(FAIL_WITH_MAJOR_ISSUES)→修正→重审(FAIL_WITH_CAVEATS)→修正. v1.6.1经Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR + 5 MEDIUM/MINOR)→修正. 审查独立性: [SEMI]——后端不同但提示词由作者撰写.",
+    "status_note": "草案冻结已解除(Protocol 3试跑1 Retrospect完成, 条件满足). v1.6.4写回prompt-tdd A1 Flow-as-Node Tier 0实验(PF-A1-001: Flow-as-Node [E-] ceiling-limited→§6.3.2, 7轮双后端审查链闭合). v1.6.3维护流程补全+诚实声明扩展(Codex+Qwen双后端审查零分歧收敛). v1.6.2写回被动观测+跨层可观测性设计(Codex+Qwen双后端审查). v1.6.1写回prompt-tdd A2 Qwen跨模型复现(PF-8扩展: Qwen复现[E-]→§4.1.1, 证据二维M0→M2→M1*(v1.6.4订正)). v1.6写回A2+A3深度复盘(P0证据体系升级+P1维护性增强). v1.5.5写回prompt-tdd A3实验(PF-9: Action Routing [E-]→§6.3.1). v1.5.4写回prompt-tdd A2实验(PF-8: prep/exec/post [E-]→§4.1.1). v1.5.3写回PocketFlow A类资产(3项: §1.7+§9.9+附录H). v1.5.2写回Protocol 3试跑1反馈(6项改进). 仍待多项目验证. v1.5.1新增: §3.7.0事件流健康度监测[Sp]+§3.7.4.1自适应权重淘汰[Sp]+§9.7经验注入上下文预算规则[Sp]+§9.8研究经验对象(REO)[Sp]. 方法论来源=Evolver项目分析(arXiv:2604.15097,综合评分4.1-4.2/10,四轮独立审查跨三个后端). 完整规格见_research/框架v1.5.1_新增节草案.md. v1.5新增: §6.2模式8/9+§9.2+§9.6. v1.4新增: §3.7.2.6/§5.3.1/§6.2/§6.5.1/§9.1/§1.5/§9.4/附录H. v1.3遗留OPEN-1~4状态不变(OPEN-5已于v1.5.1冻结期关闭→§8.8). v1.3新增§3.7漂移检测层(五类信号+告警聚合+规则退役+宪法审计+闭环策展+监测模板)——将OPEN-1从候选草案升级为正式操作化方案. 经ChatGPT-5.5独立审查全件(加权6.1/10,修改后通过), 10项修订已执行. 21个决策点已拍板, 但Dev Log 7/10组件待实证、框架整体已经2次真实试跑(Protocol 3+prompt-tdd A1/A2/A3).",
+    "description": "AI协作项目的完整操作化框架——从Spec到Closure的七层+四跨层关切+开发手册产物. v1.6.4新增: §6.3.2 Flow-as-Node嵌套工作流对照证据[E-] ceiling-limited(prompt-tdd A1 Tier 0实验, GPT-5.5 temp=0, n=20/臂, 7轮双后端审查链闭合). v1.6.3新增: §1.8局限#9(作者-读者同构)+#10(外部依赖漂移)+§2.6规则退役判定+配套外部依赖登记表+可调参数索引+OPEN-4协议修订(Codex+Qwen双后端审查零分歧收敛). v1.6.2新增: §7.7被动观测+§9.11跨层可观测性设计(Codex GPT-5.5魔鬼代言人审查). v1.6.1新增: A2 Qwen跨模型复现写回(首次跨模型方向一致弱复现, 证据二维M0→M2→M1*(v1.6.4订正)). v1.6新增: §9.6.1二维证据等级+§9.10 MF三层模板+§4.1.1.1对照实验设计强制检查清单+§2.6框架维护流程+§1.8诚实声明+§9.9路径D+附录H反向交叉引用. v1.5.5新增§6.3.1路由声明格式对照证据[E-](A3实验写回). v1.5.4新增§4.1.1执行合约[E-](A2实验写回). v1.5.3新增§1.7(最小核心+示例外挂)+§9.9(阅读导航)+附录H(反模式清单). v1.1新增Dev Log(开发手册). v1.2经三模型独立审查链校准. v1.3新增§3.7漂移检测层(五类信号+四级告警+规则退役+宪法审计+闭环策展+监测模板). v1.4新增§3.7.2.6难度分层监测+§5.3.1能力获取vs行为塑造+§6.5.1文件系统IPC反面模式+§9.1训练-评估对齐/Import完整性/配置验证/接口退化. v1.5新增§6.2模式8(Pipeline DAG)+模式9(Structured Multi-Role Review)+§9.2多轮多后端独立审查编排+§9.6证据分类(S/E/I/J/Sp). v1.5.1新增§3.7.0事件流健康度监测+§3.7.4.1自适应权重淘汰+§9.7经验注入上下文预算规则+§9.8研究经验对象(REO). v1.5.2写回Protocol 3试跑1的6项改进(C1/C5测量方法/HG-0双检查点/审查频率适应性上调/HG交互留存/C8≥2轮异后端建议/S-tier降级阈值). v1.5.3新增§1.7(最小核心+示例外挂)+§9.9(阅读导航与难度分层)+附录H(反模式清单). 方法论来源=prompt-tdd A1+A2+A3三实验链+PocketFlow三轮独立分析+Evolver项目分析(GitNexus→Small_Scale→PilotDeck→Evolver四项目链). 基于ETF项目V3.6代码头部注释实践提炼. v1.6.4发布前订正(M8/M10): §4.1.1[B+/M2]→[B+/M1*](阴性方向一致+条件偏差, Codex+Qwen双后端审查)+§9.6.1新增规则#6(阴性结果的M等级降级).",
+    "companion_md": "AI协作项目全生命周期框架.md",
+    "companion_reviews": [
+      {
+        "file": "_reviews/AI协作项目全生命周期框架_对ChatGPT-5.5回应的再再审查.json",
+        "status": "legacy",
+        "relevant_version": "v1.2"
+      },
+      {
+        "file": "_reviews/框架v1.5.1_Codex审查报告.md",
+        "status": "current",
+        "relevant_version": "v1.5.1"
+      },
+      {
+        "file": "_reviews/codex_review_v1.5.1_sync.md",
+        "status": "current",
+        "relevant_version": "v1.5.1"
+      },
+      {
+        "file": "_reviews/codex_review_v1.5.1_三件套同步审查.md",
+        "status": "current",
+        "relevant_version": "v1.5.1"
+      },
+      {
+        "file": "../prompt-tdd/reviews/",
+        "status": "external",
+        "relevant_version": "v1.5.4",
+        "note": "prompt-tdd A2实验的6轮独立审查（R1 Codex+ZCode / R2 Codex / R3 Qwen / R4 Codex / R5 Codex / R6 Qwen），非框架自身的审查"
+      }
+    ],
+    "derived_from": [
+      "13.txt (Prompt/Loop/Workflow/Spec四层讨论，已删除)",
+      "kill-test-first skill (事前否决+预登记+先验对标+魔鬼代言人)",
+      "形态匹配ETF策略17版本实践经验",
+      "并购重组案例研究八阶段流水线经验",
+      "LIT项目四轮AI评估教训",
+      "BDC2026提交失败教训",
+      "多模型对照实验治理审计经验",
+      "GitNexus分析项目(2026-06-14: 9-agent workflow+三轮独立审查+证据分类实战)",
+      "Evolver项目分析(2026-06-14: arXiv:2604.15097, 综合评分4.1-4.2/10, 四轮独立审查跨三个后端, 方法论提取5项:4项→框架v1.5.1四节+1项→memory/methodology_obfuscated_code_evaluation.md)",
+      "PocketFlow三轮独立分析(2026-06-16~18: DeepSeek-V4-Pro/ChatGPT-5.5/GLM-5.2, 方法论提取A类资产3项→框架v1.5.3三节)",
+      "prompt-tdd A2 Tier 1对照实验(2026-06-19: prep/exec/post vs 一体式编号列表, GPT-5.5 temp=0, n=24/臂, 6轮独立审查, PF-8→框架v1.5.4 §4.1.1 [E-])",
+      "prompt-tdd A3 Action Routing对照实验(2026-06-20: 声明式vs NL路由描述, GPT-5.5 temp=0, v1 n=20+Pilot n=15, 10轮审查链, PF-9→框架v1.5.5 §6.3.1 [E-])",
+      "prompt-tdd A1 Flow-as-Node对照实验(2026-06-22: 层级化vs扁平工作流描述, GPT-5.5 temp=0, n=20/臂, 7轮双后端审查链, PF-A1-001→框架v1.6.4 §6.3.2 [E-] ceiling-limited)"
+    ],
+    "revision": "v1.6.4 (2026-06-22)",
+    "revision_source": "v1.6 Minor升级(A2+A3深度复盘 + Codex v1.5.5交叉验证 + prompt-tdd A2+A3实验写回 + 跨版本维护实践规范化 + PocketFlow三轮独立分析 + Evolver/GitNexus/Small_Scale项目分析) + v1.6.1 Patch升级(A2 Qwen qwen3.7-max跨模型复现写回) + v1.6.2 Patch升级(§7.7被动观测+§9.11跨层可观测性设计) + v1.6.3 Patch升级(维护流程补全+诚实声明扩展) + v1.6.4 Minor升级(prompt-tdd A1 Flow-as-Node Tier 0实验写回——§6.3.2 [E-] ceiling-limited, 7轮双后端审查链闭合)",
+    "freeze_status": {
+      "frozen": false,
+      "was_frozen": true,
+      "frozen_since": "2026-06-14",
+      "unfrozen_date": "2026-06-16",
+      "unfreeze_reason": "Protocol 3试跑1 Retrospect完成, 满足解除条件. v1.5.2为试跑回写版, v1.5.3为PocketFlow A类资产写回版, v1.5.4为prompt-tdd A2实验写回版, v1.5.5为prompt-tdd A3实验写回版.",
+      "original_reason": "框架5版本0试跑；加复杂度倾向已被自身记录但未变成执行约束. 冻结把教训文字变成纪律.",
+      "allowed_during_freeze": [
+        "修确凿bug(版本漂移/引用失效/编辑错乱)",
+        "执行已设计未跑协议(OPEN-4试读/OPEN-1 verify降级替代)",
+        "补零试跑即可做的诚实性产物(框架级成熟度表)"
+      ],
+      "forbidden_during_freeze": [
+        "新增[Sp]节",
+        "新增机制节"
+      ],
+      "unfreeze_condition": "首次真实试跑(A类半天或B类一周)完成+Retrospect回写至框架级成熟度表——已满足",
+      "note": "v1.5.2和v1.5.3均基于试跑反馈或独立分析产出, 非'加新机制'. 冻结已解除."
+    },
+    "edit_history": [
+      {
+        "date": "2026-06-15",
+        "editor_model": "GLM-5.2",
+        "editor_cli": "ZCode CLI shell",
+        "editor_house": "ZCode house（审查链谱系外第五后端、第五 CLI house，不共享 Claude/Codex/Kimi/Qwen house memory；介入时已有 DeepSeek-v4-pro/Opus 4.8/ChatGPT-5.5/Kimi-K2.7-Code/Qwen3.7-Max 五个后端跨四个 CLI house）",
+        "editor_role": "编辑者（非审查者）",
+        "independence_level": "[SEMI-ED]",
+        "independence_note": "编辑独立于内容创作（GLM-5.2 未参与框架设计/审查链），但修订指令由用户提供、修订对象由用户选定。本次编辑引入了已标注的编辑者判断（F9 成熟度评估的逐行分级与分布估计、F10 协议2 冷读 prompt 与判读规则），待独立复核。其余修订基于框架自身已记录证据",
+        "scope": "仅冻结期白名单项（修确凿bug+补零试跑诚实性产物），无新增[Sp]/机制节",
+        "changes": [
+          {
+            "id": "F1",
+            "type": "修bug",
+            "desc": "版本头加冻结期声明+编辑者provenance",
+            "location": "版本头"
+          },
+          {
+            "id": "F2",
+            "type": "修bug",
+            "desc": "文件去重：E2中文v1.0旧版归档_archive/，删__pycache__，补headroom json配套",
+            "location": "目录"
+          },
+          {
+            "id": "F3",
+            "type": "修bug",
+            "desc": "§14治理声明补R5（Qwen3.7-Max第三后端），两house→三house",
+            "location": "§14治理声明"
+          },
+          {
+            "id": "F4",
+            "type": "修bug",
+            "desc": "§14结构错乱修复：v1.5节混入v1.2表剥离，新建独立v1.1→v1.2节",
+            "location": "§14"
+          },
+          {
+            "id": "F5",
+            "type": "修bug",
+            "desc": "本json加freeze_status字段（版本漂移v1.5.1已修复，此为冻结期元数据）",
+            "location": "metadata.freeze_status"
+          },
+          {
+            "id": "F6",
+            "type": "修bug",
+            "desc": "§9.1 import工具从自写脚本换pyflakes/pydeps/ruff（原脚本被Codex审查认定不可靠）",
+            "location": "§9.1/§14"
+          },
+          {
+            "id": "F7",
+            "type": "修bug",
+            "desc": "§3.7.2.4对齐信号三项改为可选Spec字段降级（避免加S11-13机制+修推断链断裂）",
+            "location": "§3.7.2.4"
+          },
+          {
+            "id": "F8",
+            "type": "修bug",
+            "desc": "§3.6头注确立OPEN-1单一事实源=§1.6",
+            "location": "§3.6头注"
+          },
+          {
+            "id": "F9",
+            "type": "诚实性产物",
+            "desc": "新增框架级成熟度评估表{md,json}（§10.8模式全框架推广+OPEN-2基线载体）",
+            "location": "新文件+§10.8交叉引用+§1.6 OPEN-2"
+          },
+          {
+            "id": "F10",
+            "type": "诚实性产物",
+            "desc": "新增v1.5.1冻结期_待执行协议清单.md（OPEN-4/verify降级/首次试跑三协议执行指令）",
+            "location": "新文件（后移入_protocols-and-tools/）"
+          },
+          {
+            "id": "F11",
+            "type": "修bug",
+            "desc": "provenance补全（本edit_history+§14编辑记录小节+版本头声明）",
+            "location": "§14+版本头"
+          }
+        ],
+        "reviewer_guidance": "后续独立审查者复核本批次时，应：(a)验证每条修订是否真属'修bug'而非'加机制'；(b)验证GLM-5.2是否引入未声明的实质判断；(c)注意F9的'框架对Dev Log应用成熟度评估对自己没有'属结构观察，可被复核",
+        "companion_md_section": "§14「v1.5.1冻结期编辑记录（GLM-5.2，2026-06-15）」"
+      },
+      {
+        "date": "2026-06-16",
+        "editor_model": "DeepSeek-v4-pro",
+        "editor_cli": "Claude Code CLI shell",
+        "editor_house": "Claude house",
+        "editor_role": "编辑者（框架作者，自编辑）",
+        "independence_level": "[SELF]",
+        "independence_note": "作者自编辑。转换方案经 ChatGPT-5.5 (Codex CLI, GPT-5.5) 独立审阅——先方案审阅(两后端4/5优先图共识)，后产物级复核(mermaid-cli渲染6图+忠实性抽查+结构完整性检查)。复核发现2处问题(图4英文双引号语法错+图5guard串行链误导)，均已修复。属零卷入独立审查覆盖的自我编辑",
+        "scope": "冻结期白名单内修确凿bug——ASCII框线图在不同渲染环境易错位/难维护，Mermaid不改任何机制内容仅改展示格式",
+        "changes": [
+          {
+            "id": "F12",
+            "type": "修bug",
+            "desc": "6处ASCII/缩进文本图→Mermaid(§1.2/§3.2/§3.7.4/§3.7.6/§5.2/§6.3)；经ChatGPT-5.5产物级复核修复1语法错(图4)+1表达问题(图5)",
+            "location": "版本头+§1.2/§3.2/§3.7.4/§3.7.6/§5.2/§6.3+§14 F12"
+          }
+        ],
+        "reviewer_guidance": "Mermaid代码块改用```mermaid标记，与普通```代码块语义区分。",
+        "companion_md_section": "版本头「Mermaid可视化转换（2026-06-16）」+§14 F12"
+      },
+      {
+        "date": "2026-06-16",
+        "editor_model": "DeepSeek-v4-pro",
+        "editor_cli": "Claude Code CLI shell",
+        "editor_house": "Claude house",
+        "editor_role": "编辑者（框架作者，自编辑）",
+        "independence_level": "[SELF]",
+        "independence_note": "作者自编辑，基于Protocol 3首次试跑(方法论提取方法论项目)Retrospect+Phase 7系列审查反馈。C1-C8指标裁决经Codex ChatGPT-5.5独立审查验证(Phase 7.5)。属试跑回写，所有变更来源标注为'[Protocol 3试跑1反馈，2026-06-16]'",
+        "scope": "Protocol 3试跑1回写——非冻结期新增机制，而是试跑后对已有框架的测量方法/频率/留存要求的操作性强化",
+        "changes": [
+          {
+            "id": "P3-0",
+            "type": "状态更新",
+            "desc": "版本头与文档状态更新为v1.5.2 'Protocol 3试跑1回写'，记录本次回写范围",
+            "location": "版本头"
+          },
+          {
+            "id": "P3-1",
+            "type": "修正",
+            "desc": "C1/C5增加可操作测量方法：C1以DEV_LOG HH:MM时间戳计loop耗时；C5维护'框架操作耗时'计数器；首次试跑未完整计时标注为预期内基线问题",
+            "location": "§5.2/C1, §9.1/DEV_LOG"
+          },
+          {
+            "id": "P3-2",
+            "type": "新增",
+            "desc": "HG-0双检查点：Plan阶段(审查项目计划) + Spec阶段(审查Spec)，不是只审写完的Spec",
+            "location": "§3.2 HG-0"
+          },
+          {
+            "id": "P3-3",
+            "type": "新增",
+            "desc": "独立审查频率适应性上调：若项目含≥3概念判断Phase或方法论/概念归类或前期MAJOR密度>3/Phase，可从闭合前一次上调为每Phase后一次",
+            "location": "§9.2"
+          },
+          {
+            "id": "P3-4",
+            "type": "新增",
+            "desc": "HG交互留存要求：每次HG触发时DEV_LOG须记录三项证据——人工响应时间戳/响应内容摘要/AI是否如实传达选项",
+            "location": "§3.2"
+          },
+          {
+            "id": "P3-5",
+            "type": "新增",
+            "desc": "C8≥2轮异后端审查建议写入审查编排规则",
+            "location": "§9.2 C8"
+          },
+          {
+            "id": "P3-6",
+            "type": "备注",
+            "desc": "S档Protocol 3适配备注：C6降为'≥1失效或≥1意外'，C8降为'1轮异后端审查≥6.0/10'，并标注为待S档试跑验证",
+            "location": "§5.2/§7/§8.8"
+          },
+          {
+            "id": "P3-7",
+            "type": "强化",
+            "desc": "深度版Retrospect模板新增'Protocol 3/框架层反馈'项，用于显式记录C1-C8裁决、证据缺口、HG/审查频率教训",
+            "location": "§7"
+          }
+        ],
+        "reviewer_guidance": "所有变更均基于首次真实试跑数据(闭合时14/20 loops, 58项发现, 0 CRITICAL/MAJOR遗留)。后续独立审查者应验证：(a)测量方法是否可操作；(b)频率上调条件是否合理；(c)降级阈值是否在试跑中验证。",
+        "companion_md_section": "§14「v1.5.2 Protocol 3试跑1回写（2026-06-16）」"
+      },
+      {
+        "date": "2026-06-18",
+        "editor_model": "DeepSeek-v4-pro",
+        "editor_cli": "Claude Code CLI shell",
+        "editor_house": "Claude house",
+        "editor_role": "编辑者（框架作者，自编辑）",
+        "independence_level": "[SELF]",
+        "independence_note": "作者自编辑，基于PocketFlow三轮独立分析(DeepSeek-V4-Pro/ChatGPT-5.5/GLM-5.2, 2026-06-16~18)产出的A类资产——可直接写回框架的方法论改进，无需额外验证实验。共3项A类资产(B2/B1/C1-C3)，经三个并行agent独立规划后统一执行写回。A类满足条件：(a)方法论来源可追溯；(b)≥2后端独立确认可迁移性；(c)不依赖PocketFlow特有实现。写回后经ChatGPT-5.5交叉验证确认一致性",
+        "scope": "PocketFlow A类资产写回——新增3节(§1.7+§9.9+附录H)，均为[Sp]推测级，待试跑验证",
+        "changes": [
+          {
+            "id": "PF-1",
+            "type": "新增",
+            "desc": "新增§9.9「阅读导航与难度分层」[Sp]——按☆☆☆/★☆☆/★★☆/★★★标注15个章节/条目难度+3条推荐阅读路径(A:最小启动15-20min/B:标准实践45-60min/C:完整方法论2-3h)。含使用说明5条+与§1.4/§1.7的交叉引用+证据等级声明",
+            "location": "§9.9 + §1.4末尾交叉引用",
+            "source": "PocketFlow B2资产——'渐进式难度分层'"
+          },
+          {
+            "id": "PF-2",
+            "type": "新增",
+            "desc": "新增§1.7「框架自身的架构原则：最小核心+示例外挂」[Sp]——定义核心(主文档7类强制规则，有合规牙齿)vs外挂(4配套目录，无合规牙齿)的区分标准(普遍性/强制性/稳定性3条判定规则)+边界案例默认外挂原则+4种反模式警示+与§1.4/§9.9关系说明+N=2演示证据",
+            "location": "§1.7 + §1.4/§1.6/§9.9末尾交叉引用",
+            "source": "PocketFlow B1资产——'最小核心+示例外挂架构'"
+          },
+          {
+            "id": "PF-3",
+            "type": "新增+重组",
+            "desc": "新增「附录H:反模式清单」——集中收纳4条反模式(H.1文件系统作IPC/H.2极简主义隐性成本/H.3继承层次膨胀/H.4重试-状态耦合)，含案例、后果、规则、来源、适用层、严重性。收录标准:具体案例+≥2独立后端审查+可操作替代规则。扩展预留1条候选(静态规则腐化)",
+            "location": "附录H + §6.5.1重组为简短交叉引用段",
+            "source": "PocketFlow PF-反模式资产组(极简隐性成本/继承层次膨胀/重试-状态耦合) + Small_Scale H.1(原§6.5.1迁移)"
+          },
+          {
+            "id": "PF-4",
+            "type": "重组",
+            "desc": "§6.5.1重组——原'文件系统作IPC'条目完整迁移至附录H.1，§6.5.1替换为简短交叉引用段指向附录H",
+            "location": "§6.5.1",
+            "source": "PocketFlow PF-反模式资产组"
+          },
+          {
+            "id": "PF-5",
+            "type": "交叉引用",
+            "desc": "§1.4末尾交叉引用更新——在现有'与§8.8项目规模分档的区别'之后，新增两条引用块:'与§9.9阅读导航的关系'(B2)+'与§1.7核心vs外挂的关系'(B1)",
+            "location": "§1.4末尾",
+            "source": "B2 + B1"
+          },
+          {
+            "id": "PF-6",
+            "type": "交叉引用",
+            "desc": "§1.6末尾交叉引用更新——新增引用块标注OPEN-4与缺少核心/外挂导航之间的关联",
+            "location": "§1.6末尾",
+            "source": "B1"
+          },
+          {
+            "id": "PF-7",
+            "type": "版本",
+            "desc": "版本头更新——v1.5.2→v1.5.3；日期→2026-06-18；新增「PocketFlow方法论转化A类资产写回」标注段落",
+            "location": "版本头",
+            "source": "ALL"
+          }
+        ],
+        "reviewer_guidance": "所有新增节均为[Sp]推测级——方法论来源可追溯(PocketFlow三轮独立分析)，但应用于本框架的有效性待试跑验证。B1 §1.7的N=2证据仅为方向性指示；B2 §9.9的难度分级基于框架设计者单一视角；PF-反模式附录H的4条反模式满足收录标准(≥2独立后端审查确认可迁移性)，但在本框架场景中的实际触发频率待观察。",
+        "companion_md_section": "§14「v1.5.3 PocketFlow方法论转化A类资产写回（2026-06-18）」"
+      },
+      {
+        "date": "2026-06-19",
+        "editor_model": "DeepSeek-v4-pro",
+        "editor_cli": "Claude Code CLI shell",
+        "editor_house": "Claude house",
+        "editor_role": "编辑者（框架作者，自编辑）",
+        "independence_level": "[SELF]",
+        "independence_note": "作者自编辑，基于prompt-tdd A2 Tier 1对照实验完成（prep/exec/post vs 一体式编号列表，GPT-5.5 temp=0, n=24/臂，6轮异后端独立审查通过）。实验结果为阴性——H1不被支持，科学门全部FAIL。PF-8资产状态从留白[Sp]更新为[E-]（单域实验不支持），写入§4.1.1执行合约。待A3/A1实验积累多域证据后重新评估。",
+        "scope": "prompt-tdd A2实验写回——非新增机制，而是对§4.1的实证补充：记录prep/exec/post分段prompt在特定条件下未证实优于一体式编号列表的具体证据",
+        "changes": [
+          {
+            "id": "PF-8",
+            "type": "实证记录",
+            "desc": "A2资产状态更新——prep/exec/post三阶段分段prompt，在代码审查域、GPT-5.5条件下未被证实优于一体式编号列表。在框架中诚实记录为[E-]（单域实验不支持），替代此前留白的[Sp]",
+            "location": "§4.1.1"
+          }
+        ]
+      },
+      {
+        "date": "2026-06-20",
+        "version": "v1.5.5",
+        "editor": "DeepSeek-V4-Pro (via Claude Code CLI)",
+        "changes": [
+          "新增§6.3.1「路由声明格式对照证据[E-]」(PF-9: A3 Action Routing实验写回)",
+          "§4.1.1交叉引用更新——新增对§6.3.1的回引及同等限定措辞",
+          "§4.1.1局限性新增「单语言(中文)/单温度(temp=0)」",
+          "§14新增v1.5.5 changelog",
+          "版本时间线新增v1.5.5行",
+          "措辞修正: '三角验证'→'方向一致的阴性观察(限GPT-5.5 temp=0)'; '10轮异后端独立审查'→'10轮审查链'",
+          "经Codex GPT-5.5交叉验证(判词FAIL_WITH_CAVEATS, 3M+2m全部修正闭合)"
+        ]
+      },
+      {
+        "date": "2026-06-21",
+        "version": "v1.6.2",
+        "editor": "DeepSeek-V4-Pro (via Claude Code CLI)",
+        "changes": [
+          "DOCX被动观测写入: keep_with_next大图反效果(标题+大图同页约束导致空白页), 选择性约束方案(检测<w:drawing>取消keep_with_next), 适用边界标注"
+        ]
+      }
+    ],
+    "independent_reviews": [
+      {
+        "reviewer": "ChatGPT-5.5",
+        "backend": "GPT-5",
+        "object": "转化建议",
+        "score": 5.5,
+        "independence_level": "IND",
+        "scored": true,
+        "verdict": "passed"
+      },
+      {
+        "reviewer": "ChatGPT-5.5",
+        "backend": "GPT-5",
+        "object": "v1.4产物",
+        "score": 5.37,
+        "independence_level": "SEMI",
+        "scored": true,
+        "verdict": "passed_with_revisions",
+        "note": "审查提示词由作者撰写→rubric不纯净"
+      },
+      {
+        "reviewer": "Kimi-K2.7-Code",
+        "backend": "Kimi",
+        "object": "v1.4产物",
+        "score": 5.0,
+        "independence_level": "SEMI",
+        "scored": true,
+        "verdict": "passed_with_revisions",
+        "note": "审查提示词由作者撰写→rubric不纯净"
+      },
+      {
+        "reviewer": "ChatGPT-5.5",
+        "backend": "GPT-5",
+        "object": "v1.5框架全件",
+        "score": 5.43,
+        "date": "2026-06-14",
+        "independence_level": "IND",
+        "scored": true,
+        "verdict": "passed_with_revisions",
+        "key_findings": [
+          "JSON仍为v1.4需同步",
+          "元数据矛盾",
+          "GitNexus来源不可验证",
+          "证据分类未自应用",
+          "模式8/9未集成"
+        ]
+      },
+      {
+        "reviewer": "DeepSeek-V4-Pro",
+        "backend": "DeepSeek",
+        "object": "v1.5.1草案(Evolver方法论提取)",
+        "role": "R1初始审查(作者侧)",
+        "independence_level": "AUTHOR_SIDE",
+        "scored": false,
+        "verdict": "not_applicable",
+        "date": "2026-06-14",
+        "note": "作者侧审查，非独立——仅供后续独立审查参照"
+      },
+      {
+        "reviewer": "Qwen-qwen3.7-max",
+        "backend": "Qwen",
+        "object": "v1.5.1草案(Evolver方法论提取)",
+        "role": "R2跨后端审查",
+        "independence_level": "IND",
+        "scored": false,
+        "verdict": "convergent_with_r1",
+        "date": "2026-06-14",
+        "note": "跨后端独立审查，与DeepSeek在7/7核心事实上完全收敛(Δ0.1)"
+      },
+      {
+        "reviewer": "ChatGPT-5.5",
+        "backend": "GPT-5",
+        "object": "v1.5.1草案(Codex CLI)",
+        "role": "R3独立审查",
+        "independence_level": "IND",
+        "scored": true,
+        "score": 4.3,
+        "date": "2026-06-14",
+        "verdict": "rejected",
+        "key_findings": [
+          "版本错位(基于过期v1.3结构)",
+          "自动干预违反§3.7.1只观测不阻断约束",
+          "boost -= (-0.15)符号错误",
+          "假去隐喻化",
+          "二次确认偏误",
+          "来源证据校准不足"
+        ]
+      },
+      {
+        "reviewer": "ChatGPT-5.5",
+        "backend": "GPT-5",
+        "object": "v1.5.1草案v2.0修正版(Codex CLI)",
+        "role": "R4独立审查(修正后重审)",
+        "independence_level": "IND",
+        "scored": true,
+        "score": 7.2,
+        "date": "2026-06-14",
+        "verdict": "passed_with_revisions",
+        "delta_from_r3": 2.9,
+        "corrections_applied": [
+          "P0",
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5",
+          "P6",
+          "P7",
+          "P8",
+          "P9"
+        ],
+        "note": "P0-P9全部落地修正后重新提交，评分从4.3升至7.2"
+      },
+      {
+        "reviewer": "DeepSeek-V4-Pro",
+        "backend": "DeepSeek",
+        "object": "PocketFlow R1审查",
+        "role": "R1初始审查(作者侧)",
+        "independence_level": "AUTHOR_SIDE",
+        "scored": false,
+        "verdict": "not_applicable",
+        "date": "2026-06-16",
+        "note": "作者侧审查，非独立——仅供后续独立审查参照。产出包括源码结构分析和方法论转化建议初稿"
+      },
+      {
+        "reviewer": "ChatGPT-5.5",
+        "backend": "GPT-5.5",
+        "object": "PocketFlow R2审查",
+        "role": "R2独立审查(Codex CLI)",
+        "independence_level": "IND",
+        "scored": true,
+        "score": 5.5,
+        "date": "2026-06-17",
+        "verdict": "passed_with_revisions",
+        "note": "独立后端+隔离上下文审查。确认B1/B2/C1-C3资产的可迁移性，指出需补充§1.7判定规则的具体性"
+      },
+      {
+        "reviewer": "GLM-5.2",
+        "backend": "GLM-5",
+        "object": "PocketFlow R3审查",
+        "role": "R3独立审查(ZCode CLI)",
+        "independence_level": "SEMI",
+        "scored": true,
+        "score": 5.0,
+        "date": "2026-06-18",
+        "verdict": "passed_with_revisions",
+        "note": "GLM-5.2自报但待确认(见memory/todo_verify_glm5_identity.md)。确认反模式H.2-H.4的可迁移性，建议补充正向替代规则——已执行"
+      },
+      {
+        "reviewer": "Qwen-qwen3.7-max",
+        "backend": "Qwen",
+        "object": "v1.5.3三件套同步 json→md忠实度",
+        "role": "R2独立交叉验证(Qwen Code CLI)",
+        "independence_level": "IND",
+        "scored": false,
+        "date": "2026-06-18",
+        "verdict": "passed_after_fixes",
+        "key_findings": [
+          "§9.9→reading_navigation: PASS全部6项，无偏差",
+          "附录H→anti_patterns_catalog: PASS+2×CAVEAT(H.3/H.4具体示例简化，已修复)",
+          "§1.7→framework_architecture_principle: FAIL——json反模式list为另一套(架构设计风险)，已替换为md原文A1-A4(用户行为反模式)"
+        ],
+        "fixes_applied": [
+          "FIX-1: framework_architecture_principle.anti_patterns.list从4条架构风险替换为md原文A1-A4(含manifestation/consequence/correction三层)",
+          "FIX-2: 补充A4特别警示(self-referential warning)",
+          "FIX-3: 补充demo_evidence字段(N=2试读证据)",
+          "FIX-4: H.3 case补充12个类名完整列举+asyncio.gather()类比",
+          "FIX-5: H.3 consequences补充具体类名和'投入产出比低'细节",
+          "FIX-6: H.4 consequences补充'某些任务被错误地多重重试，另一些任务的重试被跳过'+'定位根因成本极高'"
+        ],
+        "review_report": "_reviews/qwen_r2_md_to_json_faithfulness_review.md",
+        "note": "第二轮审查(第一轮GPT-5.5只做了抽查)——仅审§1.7/§9.9/附录H三个新节的结构化忠实度。发现1处结构性不一致(反模式内容被替换)+2处措辞简化。全部已修复。"
+      },
+      {
+        "version": "v1.6",
+        "reviewer": "Codex GPT-5.5 (Codex CLI)",
+        "date": "2026-06-20",
+        "type": "异后端交叉验证(初审+重审)",
+        "verdict_initial": "FAIL_WITH_MAJOR_ISSUES",
+        "verdict_rereview": "FAIL_WITH_CAVEATS",
+        "report": "_reviews/codex_v16_crosscheck_20260620.txt",
+        "rereview_report": "_reviews/codex_v16_crosscheck_rereview_20260620.txt"
+      },
+      {
+        "version": "v1.6.1",
+        "reviewer": "Codex GPT-5.5 (Codex CLI)",
+        "date": "2026-06-20",
+        "type": "异后端交叉验证(Patch升级审查)",
+        "verdict": "FAIL_WITH_CAVEATS",
+        "findings": "0 MAJOR + 3 Moderate + 2 Minor",
+        "status": "全部修正",
+        "report": "_codex_v161_review_output.txt",
+        "prompt": "_codex_v161_review_prompt.txt"
+      }
+    ],
+    "mermaid_conversion": {
+      "date": "2026-06-16",
+      "blocks_count": 6,
+      "sections": [
+        "§1.2 完整生命周期视图 (flowchart TD)",
+        "§3.2 闸门位置与触发条件 (flowchart TD)",
+        "§3.7.4 规则退役流程 (stateDiagram-v2)",
+        "§3.7.6 闭环策展决策树 (flowchart TD)",
+        "§5.2 Loop工作模式 (flowchart TD)",
+        "§6.3 模式选择决策树 (flowchart TD)"
+      ],
+      "reviewed_by": "ChatGPT-5.5 (Codex CLI, GPT-5.5)",
+      "review_method": "方案审阅 + mermaid-cli实际渲染6图SVG + 忠实性抽查(图1+图5) + 结构完整性检查(14章+84围栏配对)",
+      "issues_fixed": [
+        "图4: LowFreq标签内英文双引号导致解析失败 → 改用「低频」",
+        "图5: Guard1→Guard2→Guard3串行链暗示固定顺序 → GuardCheck单节点四分支并行分派"
+      ],
+      "principle": "选择性转换: 流程/决策/状态→Mermaid; 伪代码/表格/目录树→保留原样。此为展示格式变更，不改机制内容。"
+    },
+    "changelog": [
+      {
+        "version": "1.6.4",
+        "date": "2026-06-22",
+        "type": "Minor",
+        "trigger": "prompt-tdd A1 Flow-as-Node Tier 0对照实验完成——层级化工作流描述vs内容等价的扁平描述, 编码Agent工作流理解域, GPT-5.5 temp=0, n=20/臂。经7轮双后端审查链闭合(Codex GPT-5.5×4 + Qwen qwen3.7-max×3), 0未闭合发现。",
+        "summary": "v1.6.4 Minor升级——prompt-tdd A1 实验写回 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited。Tier 0负证据(3/5类别天花板, ΔF1=0.000)。",
+        "changes": [
+          {
+            "id": "v1.6.4-1",
+            "type": "新增",
+            "desc": "§6.3.2 Flow-as-Node嵌套工作流对照证据[E-] ceiling-limited——Tier 0实验写回, 含实验设计/结果/限制/方法论片段交叉引用",
+            "location": "§6.3.2"
+          },
+          {
+            "id": "v1.6.4-2",
+            "type": "修改",
+            "desc": "Header元数据新增A1写回声明(v1.6.4描述段+状态行更新)",
+            "location": "metadata header"
+          },
+          {
+            "id": "v1.6.4-3",
+            "type": "修改",
+            "desc": "§14版本时间线新增v1.6.4行+本变更节",
+            "location": "§14"
+          },
+          {
+            "id": "v1.6.4-4",
+            "type": "伴随",
+            "desc": "VERSION(1.6.3→1.6.4) + JSON metadata全量更新(date/status/changelog/version_label/revision) + README/CLAUDE/project_status/project.yaml/reference_files同步至v1.6.4",
+            "location": "VERSION + JSON + 配套文件"
+          }
+        ],
+        "review_backends": [
+          "Codex GPT-5.5 (×4轮: V1初审→V2修正→V2终态验证→文本检查)",
+          "Qwen qwen3.7-max (×3轮: 轻量框架文本检查/完备性检查/终态确认)"
+        ],
+        "independence_level": "SEMI"
+      },
+      {
+        "version": "1.6.3",
+        "date": "2026-06-21",
+        "type": "Patch",
+        "description": "维护流程补全+诚实声明扩展——经两路异后端独立审查（Codex GPT-5.5魔鬼代言人+Qwen qwen3.7-max完备性检查）后执行：§1.8新增局限#9（作者-读者同构）和#10（外部依赖漂移）；§2.6新增规则退役判定子节；配套新增外部依赖登记表（.md+.json双件）和可调参数索引（.md）；OPEN-4试读计时协议修订",
+        "review_backends": [
+          "Codex GPT-5.5",
+          "Qwen qwen3.7-max"
+        ],
+        "independence_level": "SEMI"
+      },
+      {
+        "version": "v1.6.2",
+        "date": "2026-06-21",
+        "type": "Patch",
+        "trigger": "用户记忆系统三次被动观测事件跨案例分析——三者共享'知识获取不作为活动直接目标'的底层模式。写入前经Codex GPT-5.5魔鬼代言人审查(有条件支持)，写入后经Qwen qwen3.7-max完备性检查(1处轻微错误已修正)。首次满足§2.6 Minor升级审查门(≥2后端)。",
+        "summary": "v1.6.2 Patch升级——§7.7被动观测+§9.11跨层可观测性设计, DOCX首次泛化管道全量重生成.",
+        "changes": [
+          {
+            "id": "v1.6.2-1",
+            "type": "新增",
+            "desc": "§7.7被动观测——定义与概念边界+三次经验种子+8渠道扩展分类框架(待实证)+Failure Space 10种失效模式+硬约束+深度版Retrospect模板增强3可选字段",
+            "location": "§7.7"
+          },
+          {
+            "id": "v1.6.2-2",
+            "type": "新增",
+            "desc": "§9.11跨层可观测性设计——L0-L5各层可观测性关切+3原则, 与§7.7互补(记录vs设计)",
+            "location": "§9.11"
+          },
+          {
+            "id": "v1.6.2-3",
+            "type": "修改",
+            "desc": "附录C深度版Retrospect模板'意外发现'增强——新增发现方式/复核状态/适用边界3个可选子字段",
+            "location": "附录C"
+          },
+          {
+            "id": "v1.6.2-4",
+            "type": "重生成",
+            "desc": "DOCX首次使用docx_pipeline Phase 2泛化工具全量重生成(pandoc 3.10 + Mermaid渲染器), md ~297KB→docx 799KB, 7 Mermaid图全部渲染, v1.6.2为v1.6以来首次完整docx全量重生成(非仅元数据修补)",
+            "location": ".docx"
+          },
+          {
+            "id": "v1.6.2-5",
+            "type": "伴随",
+            "desc": "VERSION(1.6.1→1.6.2) + README.md(版本号/统计数字) + CLAUDE.md(12处: 状态/日期/版本脉络/核心资产/转化路径图/统计/审查纪律)同步至v1.6.2",
+            "location": "VERSION + README.md + CLAUDE.md"
+          }
+        ],
+        "evidence_level": "§7.7[C+/N/A](跨案例模式识别, N=3), §9.11[Sp](概念推导非经验实证)",
+        "reviews": [
+          "Codex GPT-5.5魔鬼代言人审查(2026-06-21, 写前, 总体判断: 有条件支持, 6条反馈已系统性纳入)",
+          "Qwen qwen3.7-max完备性检查(2026-06-21, 写后, 发现1处轻微错误'四个可选子字段'→已修正为'三个可选子字段')"
+        ],
+        "three_piece_sync": "2026-06-21: .md✅ v1.6.2 / .json✅ v1.6.2 / .docx✅ v1.6.2(全量重生成, docx_pipeline Phase 2首次生产运行)",
+        "docx_pipeline": {
+          "tool": "docx_pipeline Phase 2 (../_tools/docx_pipeline/)",
+          "backend": "pandoc 3.10 + Mermaid渲染器(mmdc)",
+          "config": "project.yaml (report模板, 微软雅黑, A4)",
+          "output": "799KB, 939段落, 100表格, 7 Mermaid图全部渲染",
+          "note": "泛化管道首次真实项目生产运行——此前仅在Phase 2测试中验证"
+        }
+      },
+      {
+        "version": "v1.6.1",
+        "date": "2026-06-20",
+        "type": "Patch",
+        "trigger": "A2 Qwen qwen3.7-max跨模型复现完成——48/48收集成功, Codex GPT-5.5单评分者盲评: A_flat=0.806, B_structured=0.792, Δ=−0.014, 方向与GPT-5.5原实验一致(A ≥ B, H1不被支持), 首次跨模型方向一致弱复现, 证据二维M0→M2→M1*(v1.6.4订正)",
+        "summary": "v1.6.1 Patch升级——A2 Qwen跨模型复现写回. §4.1.1新增复现段落(含限制声明) + §1.8局限声明更新 + §6.3.1交叉引用更新 + §9.6.1 A2证据二维M0→M2→M1*(v1.6.4订正). 经Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR + 5 MEDIUM/MINOR)→修正.",
+        "changes": [
+          {
+            "id": "v1.6.1-1",
+            "type": "扩展",
+            "desc": "§4.1.1新增Qwen跨模型复现段落——A_flat=0.806/B_structured=0.792/Δ=−0.014, 首次跨模型方向一致弱复现, 含完整限制声明",
+            "location": "§4.1.1"
+          },
+          {
+            "id": "v1.6.1-2",
+            "type": "修订",
+            "desc": "§1.8局限声明更新——A2跨模型复现反映, A2+A3跨任务一致性范围澄清",
+            "location": "§1.8"
+          },
+          {
+            "id": "v1.6.1-3",
+            "type": "修订",
+            "desc": "§6.3.1交叉引用更新——A2 Qwen复现状态反映",
+            "location": "§6.3.1"
+          },
+          {
+            "id": "v1.6.1-4",
+            "type": "修订",
+            "desc": "§9.6.1 A2行证据二维M0→M2→M1*(v1.6.4订正)(跨2模型家族验证)",
+            "location": "§9.6.1"
+          },
+          {
+            "id": "v1.6.1-5",
+            "type": "修订",
+            "desc": "§14标题与版本时间线更新至v1.6.1",
+            "location": "§14"
+          },
+          {
+            "id": "v1.6.1-6",
+            "type": "修订",
+            "desc": "版本头v1.6→v1.6.1 + 文末状态行更新",
+            "location": "版本头/文末"
+          },
+          {
+            "id": "v1.6.1-7",
+            "type": "改进",
+            "desc": "§2.6三件套同步协议新增VERSION文件检查(第5项)——教训: VERSION自v1.5.4起未更新",
+            "location": "§2.6"
+          },
+          {
+            "id": "v1.6.1-8",
+            "type": "清理",
+            "desc": "JSON root changelog→metadata.changelog_legacy, 消除双changelog结构歧义",
+            "location": "JSON metadata"
+          }
+        ],
+        "evidence_level": "[B+/M1*]——Qwen复现48/48收集+Codex盲评, GPT-5.5+Qwen双模型家族",
+        "codex_reviews": [
+          "Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR + 3 Moderate + 2 Minor)→全量修正"
+        ],
+        "three_piece_sync": "2026-06-20: .md✅ v1.6.1 / .json✅ v1.6.1 / .docx✅ v1.6.1(pandoc 3.10全量重新生成) / VERSION✅ 1.6.1"
+      },
+      {
+        "version": "v1.6",
+        "date": "2026-06-20",
+        "trigger": "A2+A3深度复盘§7 + Codex v1.5.5交叉验证MAJOR #1/#3 + 跨版本维护实践规范化(P1维护性增强来自Codex/Qwen审查中反复出现的组织/导航/可维护性关切)",
+        "summary": "v1.6 Minor升级——7项新增/增强写回. P0(证据体系升级): §9.6.1二维证据等级 + §9.10 MF三层模板 + §4.1.1.1对照实验设计强制检查清单. P1(维护性/导航增强): §2.6框架维护流程 + §1.8诚实声明(8条局限) + §9.9路径D + 附录H反向交叉引用.",
+        "changes": [
+          {
+            "id": "v1.6-1",
+            "type": "新增",
+            "desc": "§9.6.1证据等级二维表示——内部强度A-D × 跨模型推广性M0-M3/N/A",
+            "location": "§9.6.1"
+          },
+          {
+            "id": "v1.6-2",
+            "type": "新增",
+            "desc": "§9.10 MF三层模板——问题识别+解决方案适用条件+已知反例/失效模式, 含PT-M1完整示例",
+            "location": "§9.10"
+          },
+          {
+            "id": "v1.6-3",
+            "type": "新增",
+            "desc": "§4.1.1.1对照实验设计强制检查清单CK1-CK6 (Tier 1硬门CK1-CK3 + 条件触发CK4-CK6)",
+            "location": "§4.1.1.1"
+          },
+          {
+            "id": "v1.6-4",
+            "type": "新增",
+            "desc": "§2.6框架维护流程——版本号规则/审查门/三件套同步/冻结期+过渡条款",
+            "location": "§2.6"
+          },
+          {
+            "id": "v1.6-5",
+            "type": "新增",
+            "desc": "§1.8已知局限与诚实声明——8条系统性局限集中声明",
+            "location": "§1.8"
+          },
+          {
+            "id": "v1.6-6",
+            "type": "扩展",
+            "desc": "§9.9新增路径D(方法论迁移者30-45min)",
+            "location": "§9.9"
+          },
+          {
+            "id": "v1.6-7",
+            "type": "扩展",
+            "desc": "附录H 4条反模式各添加反向交叉引用",
+            "location": "附录H"
+          }
+        ],
+        "evidence_level": "[C+/N/A]——跨项目模式识别, 非LLM实验来源",
+        "codex_reviews": [
+          "Codex GPT-5.5初审(FAIL_WITH_MAJOR_ISSUES, 2 MAJOR + 7 MEDIUM)→全量修正",
+          "Codex GPT-5.5重审(FAIL_WITH_CAVEATS, 0 MAJOR + 5 MEDIUM)→全量修正"
+        ],
+        "three_piece_sync": "2026-06-20: .md已更新(v1.6→v1.6.1); .json已同步至v1.6后更新至v1.6.1; .docx已生成v1.6待更新至v1.6.1",
+        "unadopted_downgraded": [
+          "复盘§7.3 多轮异后端审查收益管理 → v1.7+ (N=2实验数据不足)",
+          "复盘§7.4 阴性实验价值评估与归档标准 → v1.7+ (体量大, 独立成章)",
+          "复盘§7.5 实验间方法论传递审计 → v1.7+ (PT-M1单一断裂案例不足)",
+          "复盘§7.6 Tier 0/Tier 1升级标准 → v1.7+ (已部分吸收至CK1)"
+        ]
+      },
+      {
+        "version": "v1.5.5",
+        "date": "2026-06-20",
+        "title": "prompt-tdd A3 Action Routing实验写回",
+        "changes": [
+          "PF-9: §6.3.1路由声明格式对照证据[E-]——声明式vs NL路由描述, A3 v1(n=20)+Pilot(n=15), GPT-5.5 temp=0中文路由任务, 0% discordant, 10轮审查链",
+          "§4.1.1更新: 局限性新增单语言/单温度限定, 交叉引用新增对§6.3.1的回引",
+          "A2+A3方向一致的阴性观察(限GPT-5.5 temp=0中文结构化判别任务内), 非跨模型三角验证"
+        ]
+      },
+      {
+        "version": "v1.5.4",
+        "date": "2026-06-19",
+        "trigger": "prompt-tdd A2 Tier 1对照实验完成（DeepSeek-V4-Pro via Claude Code CLI）",
+        "summary": "PF-8资产写回——prep/exec/post三阶段分段prompt在代码审查域、GPT-5.5(temp=0)、n=24/臂条件下，未证实优于内容等价的一体式编号列表prompt。H1不被支持（A_flat 0.954 ≥ B_structured 0.935）。4道科学门全部FAIL。6轮异后端独立审查通过，0未闭合发现。",
+        "changes": [
+          {
+            "id": "PF-8",
+            "type": "实证记录",
+            "desc": "A2资产状态更新——prep/exec/post [Sp]→[E-]（单域实验不支持）",
+            "location": "§4.1.1"
+          }
+        ],
+        "evidence_level": "[E-]（单域实验不支持）",
+        "three_piece_sync": "2026-06-19: .md已更新, .json已同步, .docx待重新生成",
+        "limitations": [
+          "单域（代码审查）",
+          "单模型（GPT-5.5 temp=0）",
+          "双LLM评分者无人类ground truth",
+          "n=24仅满足sign test最小功效",
+          "残余混淆（A组编号列表本身已是轻量结构化）"
+        ]
+      }
+    ],
+    "version_timeline": [
+      {
+        "date": "2026-06-10",
+        "version": "v1.0 → v1.1",
+        "event": "21个决策点拍板，七层框架从13.txt（已删除）讨论凝结为文档；v1.1新增第10章Dev Log",
+        "evidence": "v1.2 docx footer回溯：\"21个决策点已于2026-06-10拍板\"",
+        "confidence": "confirmed",
+        "source_file": "./_archive/AI协作项目全生命周期框架v1.2.docx"
+      },
+      {
+        "date": "2026-06-11",
+        "version": "v1.2",
+        "event": "三模型审查链校准；状态从\"已定稿\"改为\"草案冻结\"；新增§1.4/§1.5/§1.6(含OPEN-1)",
+        "evidence": "v1.2 docx版本头日期+footer",
+        "confidence": "confirmed",
+        "source_file": "./_archive/AI协作项目全生命周期框架v1.2.docx"
+      },
+      {
+        "date": "2026-06-13",
+        "version": "v1.3 → v1.4",
+        "event": "v1.3新增§3.7漂移检测层；v1.4新增§3.7.2.6/§5.3.1/§6.5.1/§9.1等，经ChatGPT-5.5(5.50+5.37)+Kimi(5.00)三轮审查",
+        "evidence": "仅§14 changelog（GLM-5.2事后整理；已知同一整理过程将v1.2日期06-11错标为06-13）；无旧版文件快照",
+        "confidence": "uncertain",
+        "source_file": null
+      },
+      {
+        "date": "2026-06-14",
+        "version": "v1.5 → v1.5.1",
+        "event": "v1.5新增§6.2模式8/9+§9.2+§9.6（GitNexus）；v1.5.1新增四个[Sp]节（Evolver），进入冻结期",
+        "evidence": "v1.5.1 md版本头日期+文件时间戳Jun 14 18:47（v1.5同日无独立快照）",
+        "confidence": "confirmed",
+        "source_file": "./AI协作项目全生命周期框架v1.5.1.md"
+      },
+      {
+        "date": "2026-06-16",
+        "version": "v1.5.2",
+        "event": "Protocol 3首次真实试跑完成（方法论提取方法论，M-tier），冻结解除；6项改进写回",
+        "evidence": "版本头操作记录（活动期自记，非事后归档）",
+        "confidence": "likely",
+        "source_file": null
+      },
+      {
+        "date": "2026-06-18",
+        "version": "v1.5.3",
+        "event": "PocketFlow A类资产写回——§1.7最小核心+示例外挂、§9.9阅读导航、附录H反模式清单",
+        "evidence": "版本头操作记录（活动期自记）",
+        "confidence": "likely",
+        "source_file": null
+      },
+      {
+        "date": "2026-06-19",
+        "version": "v1.5.4",
+        "event": "prompt-tdd A2 Tier 1实验写回——§4.1.1执行合约[E-]（prep/exec/post未证实优于一体式）",
+        "evidence": "当日操作；三件套全量同步+Codex交叉验证通过",
+        "confidence": "confirmed",
+        "source_file": null
+      },
+      {
+        "date": "2026-06-20",
+        "version": "v1.5.5",
+        "change": "prompt-tdd A3 Action Routing实验写回——§6.3.1路由声明格式对照证据[E-](声明式未证实优于NL)",
+        "evidence": "当日操作；A3闭合报告写回",
+        "confidence": "confirmed"
+      },
+      {
+        "date": "2026-06-20",
+        "version": "v1.6",
+        "event": "Minor升级: P0证据体系升级(§9.6.1/§9.10/§4.1.1.1)+P1维护性增强(§2.6/§1.8/§9.9路径D/附录H反向引用)",
+        "evidence": "当日操作; 7项新增/增强写回; 经Codex GPT-5.5初审→修正→重审→修正",
+        "confidence": "🟡 较可信(当日操作, .md+JSON经Codex审查闭合, .docx待目视确认)"
+      },
+      {
+        "date": "2026-06-20",
+        "version": "v1.6.1",
+        "event": "Patch升级: A2 Qwen qwen3.7-max跨模型复现写回——§4.1.1新增复现段落+§1.8局限声明更新+§6.3.1交叉引用更新+§9.6.1 A2证据二维M0→M2→M1*(v1.6.4订正); 伴随改进: §2.6三件套同步协议新增VERSION文件检查(教训: VERSION自v1.5.4起未更新) + JSON root changelog清理(→metadata.changelog_legacy)",
+        "evidence": "当日操作; Qwen复现全流程数据可复现(raw_outputs_qwen/+scores_qwen/+qwen_replication_report.md/.json); Codex GPT-5.5交叉验证(FAIL_WITH_CAVEATS, 0 MAJOR, 已修正)",
+        "confidence": "🟡 较可信(当日操作, 复现数据完整, 报告经Codex审查修正)"
+      }
+    ],
+    "version_timeline_note": "时间线基于独立文件证据（旧版docx/md快照的版本头与footer）交叉核实。06-13存疑——仅changelog文本证据且已知同源错误。教训：changelog文本≠文件快照；未来版本应保留每版独立快照。详见.md §14版本时间线。",
+    "changelog_legacy": {
+      "v1.2": {
+        "date": "2026-06-11",
+        "trigger": "三模型独立审查链",
+        "changes": [
+          {
+            "id": 1,
+            "change": "状态'已定稿'→'草案冻结，等待试跑验证'",
+            "source": "ChatGPT-5.5内部矛盾#1+再审查发现1（三方共识）",
+            "type": "修正"
+          },
+          {
+            "id": 2,
+            "change": "新增使用强度分档(§1.4)",
+            "source": "再审查P0+ChatGPT-5.5回应Top1",
+            "type": "新增"
+          },
+          {
+            "id": 3,
+            "change": "新增框架自身死亡判据(§1.5)",
+            "source": "ChatGPT-5.5判断7+再审查发现2（三方共识）",
+            "type": "新增"
+          },
+          {
+            "id": 4,
+            "change": "新增待决项登记(§1.6)+连续漂移缺口(§3.6 OPEN-1)",
+            "source": "再审查盲点3+问题1（ChatGPT-5.5回应回避，Opus 4.8判定最高杀伤，单列防稀释）",
+            "type": "新增"
+          },
+          {
+            "id": 5,
+            "change": "修正外部对标'独特贡献'表述+补个人级/组织级对照表(§13.1)",
+            "source": "ChatGPT-5.5判断5+再审查异议1（三方共识）",
+            "type": "修正"
+          },
+          {
+            "id": 6,
+            "change": "§9.2新增'什么才算独立审查'定义(后端×上下文,非CLI牌子)+强制记后端provenance+cross-link裸环境checklist",
+            "source": "ETF provenance教训:'Claude'=CLI壳非后端,过去多模型审阅独立性不可考",
+            "type": "新增",
+            "sub_version": "v1.2追加(同日,ETF复盘驱动)"
+          },
+          {
+            "id": 7,
+            "change": "§4.3+附录B逃生口新增'工具/数据不可用→停止报告,绝不用替代数据'",
+            "source": "ETF R5消融事故:工具失效用错数据→虚假结论(2026-05-18作废重写)",
+            "type": "新增",
+            "sub_version": "v1.2追加(同日,ETF复盘驱动)"
+          }
+        ],
+        "still_open": [
+          "OPEN-1连续漂移(候选机制待验证)",
+          "OPEN-2死亡判据缺预登记基线",
+          "OPEN-3提炼准确度未评估",
+          "OPEN-4最低上手时间未测",
+          "OPEN-5 Closure缺规模分档"
+        ]
+      },
+      "v1.2_to_v1.3": {
+        "date": "2026-06-13",
+        "trigger": "headroom对标分析 + ChatGPT-5.5独立裁决(Codex CLI, 710K token) + OPEN-1从候选草案到操作化方案的演进",
+        "note": "v1.3草案中的Loop Drift Ledger(§3.6三层架构)和分级逃生口(§4.3 L1/L2/L3)已于此前写入。本版正式化核心是新增§3.7漂移检测层——将'只观测不阻断'的连续监测方案完整落地。",
+        "formal_changes": [
+          {
+            "id": 8,
+            "change": "新增§3.7漂移检测层(v1.3草案→正式化)——五类漂移信号(句法/语义/程序/对齐/绩效)+四级告警聚合(绿/黄/橙/红)+规则退役自动化(生命周期字段+退役流程)+宪法审计(HG-1议程子项,审计规则-行为一致性)+闭环策展(决策树+策展节奏)+完整监测模板(DriftDetectionReport schema)+已知限制+退出条件+跨框架关联表。设计受headroom CacheAligner detector-only哲学启发(只检测不阻断)，经ChatGPT-5.5独立裁决确认边界。与§3.6 Loop Drift Ledger互补:§3.6定义账本记录什么,§3.7定义用什么信号触发警觉/如何响应/度量——两节共同构成OPEN-1完整应对。",
+            "source": "headroom CacheAligner对标分析 + ChatGPT-5.5条件采纳裁决(2026-06-13)+ DeepSeek/ChatGPT分歧调和(交集=新增观测不新增阻断)",
+            "type": "新增"
+          },
+          {
+            "id": 9,
+            "change": "§1.6 OPEN-1状态更新:从'待决——候选机制已起草'→'已覆盖→§3.7'。保留完整处置轨迹(v1.2提出→v1.3草案Loop Drift Ledger→v1.3正式化§3.7)。严重性从'高(结构性)'→'中(已有操作化方案,待实证验证)'。同步更新处置方案行标注'已执行→待验证'。",
+            "source": "§3.7正式化(本版核心改动)",
+            "type": "修正"
+          },
+          {
+            "id": 10,
+            "change": "§14结构更新:标题从'v1.1→v1.2'→'v1.1→v1.3'；v1.3草案条目重组为正式v1.2→v1.3条目；原草案激活条件/配套文件/治理声明保留以供追溯。",
+            "source": "本版交付",
+            "type": "结构"
+          },
+          {
+            "id": 11,
+            "change": "版本号升级:v1.2→v1.3(md header+状态行+配套JSON)",
+            "source": "本版交付",
+            "type": "版本"
+          },
+          {
+            "id": 12,
+            "change": "跨引用更新:§3目录新增§3.6+§3.7子项;§1.6 OPEN-1 ref新增§3.7;各地§14引用更新为v1.3",
+            "source": "本版交付",
+            "type": "维护"
+          }
+        ],
+        "inherited_from_v1.3_draft": [
+          {
+            "change": "Loop Drift Ledger三层架构(事实层/解释层/裁决层)+预登记6项验证指标+盲区声明",
+            "location": "§3.6",
+            "written_in": "v1.3草案(2026-06-13早前)",
+            "status": "正式化"
+          },
+          {
+            "change": "分级逃生口L1/L2/L3+升级规则+ETF R5 kill-test",
+            "location": "§4.3",
+            "written_in": "v1.3草案(2026-06-13早前)",
+            "status": "正式化"
+          },
+          {
+            "change": "headroom三组件条目(标注为'可借鉴的架构原则')",
+            "location": "§13.2",
+            "written_in": "v1.3草案(2026-06-13早前)",
+            "status": "正式化"
+          },
+          {
+            "change": "§1.6 OPEN-1处置方案·ChatGPT-5.5独立裁决记录+分歧调和",
+            "location": "§1.6",
+            "written_in": "v1.3草案(2026-06-13早前)",
+            "status": "正式化"
+          }
+        ],
+        "companion_files": [
+          "CacheAligner与AI框架OPEN-1对标分析.{md,json} — P0+P1修正完成",
+          "SmartCrusher方法论提取.{md,json} — P0+P1修正完成",
+          "CCR作为逃生口案例研究.{md,json} — P0+P1修正完成",
+          "_research/ChatGPT-5.5独立审查_headroom对标三文档.md — 独立裁决(Codex CLI, 710K token)",
+          "headroom对标分析_封存说明.{md,json} — 封存基线+激活条件"
+        ],
+        "still_open_after_v1.3": [
+          "OPEN-1操作化方案(§3.6+§3.7)整体有效性——6项预登记指标+§3.7.8退出条件是否在真实项目中触发/生效/误报",
+          "OPEN-2(死亡判据缺预登记基线)",
+          "OPEN-3(提炼准确度未评估)",
+          "OPEN-4(最低上手时间未测)",
+          "OPEN-5(Closure缺规模分档)"
+        ],
+        "governance_note_v1.3_retained": "整条审查链全为AI+用户(人类,方向把控)。框架作者=审查提示词作者=再审查者=DeepSeek-v4-pro。真正独立于框架创作的只有Codex house的ChatGPT-5.5。v1.3的§3.7正式化基于ChatGPT-5.5的独立裁决(条件采纳)和方向性分歧调和——但仍未达独立交叉确认(监测层实际有效性/噪音率/维护成本均未经验证)。最需要的下一步是零卷入人类专家verify。"
+      },
+      "v1_5": {
+        "date": "2026-06-14",
+        "added": [
+          "§6.2模式8 Pipeline DAG",
+          "§6.2模式9 Structured Multi-Role Review",
+          "§9.2多轮多后端独立审查编排",
+          "§9.6证据分类与声称校准"
+        ],
+        "methodology_source": "GitNexus分析项目",
+        "review": "ChatGPT-5.5 C+(5.43/10), 5项问题待修复"
+      },
+      "v1_5_1": {
+        "date": "2026-06-14",
+        "trigger": "Evolver项目分析(arXiv:2604.15097, 综合评分4.1-4.2/10, 四轮独立审查跨三个后端: DeepSeek R1 + Qwen R2 + Codex ChatGPT-5.5 R3→R4) + 方法论提取5项(4项落地为框架四节+1项独立存入memory)",
+        "note": "DeepSeek+Qwen两轮审查在7/7核心事实上完全收敛(0证伪)，证明多后端独立审查可作为混淆阻挡时的补偿验证手段。Codex R3驳回(4.3)后P0-P9全量修正→R4通过(7.2, Δ+2.9)。",
+        "added": [
+          "§3.7.0 事件流健康度监测 [Sp] — 漂移检测层前置输入源，三条监测规则(重复信号/修复循环/空周期)，仅dry-run不自动干预",
+          "§3.7.4.1 自适应权重淘汰 [Sp] — 对§3.7.4静态退役的补充替代，动态权重(成功+0.05/失败-0.15/无影响0.0)，context-aware",
+          "§9.7 经验注入上下文预算规则 [Sp] — 3条子规则(注入≤500字符/JSON优先/历史压缩N=20)，只约束注入层不约束存储层",
+          "§9.8 研究经验对象(REO) [Sp] — 3类对象(Validation Rule/Success Snapshot/Audit Record)，分存储层+注入层，闭合晋升管道(Audit→Snapshot→Rule)"
+        ],
+        "methodology_source": "Evolver项目分析(arXiv:2604.15097)",
+        "evidence_level": "[Sp] 四个新增节均为推测级——思想源于Evolver但受限于: retained analyses非RCT、无统计推断、单模型家族、单任务域、核心代码混淆。升级到[J]需完成试跑验证。",
+        "companion_files": [
+          "_research/框架v1.5.1_新增节草案.md — 四节的完整规格",
+          "_research/框架v1.5.1_新增节草案.json",
+          "_reviews/框架v1.5.1_Codex审查报告.md — Codex R3→R4审查全记录"
+        ],
+        "review_chain": "DeepSeek R1(作者侧)→Qwen R2(跨后端,Δ0.1高度收敛)→Codex ChatGPT-5.5 R3(驳回,4.3)→P0-P9全量修正→Codex ChatGPT-5.5 R4(修改后通过,7.2)",
+        "still_open_after_v1_5_1": [
+          "四个[Sp]节的行为有效性待试跑验证",
+          "§9.7子规则4的量化场景A/B测试(30因子×3重复×双臂)待执行以升级证据等级",
+          "REO Phase 0-3实施待启动",
+          "OPEN-1~5状态不变"
+        ]
+      },
+      "v1_5_2": {
+        "date": "2026-06-16",
+        "title": "Protocol 3试跑1回写",
+        "trigger": "首次真实试跑'方法论提取方法论'项目闭合(M-tier, 闭合时14/20 loops, Phase 8 Kimi核查后修正为闭合后15/20, 累计58项发现, 0 CRITICAL/MAJOR遗留). 试跑Retrospect与Phase 7系列审查提出6项Protocol 3改进",
+        "changes": [
+          {
+            "id": "P3-0",
+            "change": "版本头与文档状态更新为v1.5.2 'Protocol 3试跑1回写'",
+            "source": "Protocol 3试跑1反馈(2026-06-16)",
+            "type": "状态更新"
+          },
+          {
+            "id": "P3-1",
+            "change": "C1/C5增加可操作测量方法：C1以DEV_LOG HH:MM时间戳计loop耗时；C5维护'框架操作耗时'计数器；首次试跑未完整计时标注为预期内基线问题",
+            "source": "同上",
+            "type": "修正"
+          },
+          {
+            "id": "P3-2",
+            "change": "HG-0双检查点——Plan阶段(审查项目计划)+Spec阶段(审查Spec)，不是只审写完的Spec",
+            "source": "同上",
+            "type": "新增"
+          },
+          {
+            "id": "P3-3",
+            "change": "独立审查频率适应性上调——若项目含≥3概念判断Phase或方法论/概念归类或前期MAJOR密度>3/Phase，可从闭合前一次上调为每Phase后一次",
+            "source": "同上",
+            "type": "新增"
+          },
+          {
+            "id": "P3-4",
+            "change": "HG交互留存要求——每次HG触发时DEV_LOG须记录三项证据(人工响应时间戳/响应内容摘要/AI是否如实传达选项)",
+            "source": "同上",
+            "type": "新增"
+          },
+          {
+            "id": "P3-5",
+            "change": "C8≥2轮异后端审查建议写入审查编排规则",
+            "source": "同上",
+            "type": "新增"
+          },
+          {
+            "id": "P3-6",
+            "change": "S档Protocol 3适配备注——C6降为'≥1失效或≥1意外'，C8降为'1轮异后端审查≥6.0/10'，标注为待S档试跑验证",
+            "source": "同上",
+            "type": "备注"
+          },
+          {
+            "id": "P3-7",
+            "change": "深度版Retrospect模板新增'Protocol 3/框架层反馈'项，显式记录C1-C8裁决、证据缺口、HG/审查频率教训",
+            "source": "同上",
+            "type": "强化"
+          }
+        ],
+        "sync_note": "本次仅修改主文档.md。.json与.docx尚未同步。",
+        "methodology_source": "方法论提取方法论项目(Protocol 3首次试跑)"
+      },
+      "v1_5_3": {
+        "date": "2026-06-18",
+        "title": "PocketFlow方法论转化A类资产写回",
+        "trigger": "PocketFlow三轮独立分析(DeepSeek-V4-Pro R1 + ChatGPT-5.5 R2 + GLM-5.2 R3, 2026-06-16~18)产出的A类资产——可直接写回框架的方法论改进，无需额外验证实验. 共3项A类资产(B2/B1/C1-C3)，经三个并行agent独立规划后统一执行写回",
+        "source_document": "../PocketFlow-analysis/Methodology_Asset_Conversion.md §8.5汇总表",
+        "changes": [
+          {
+            "id": "PF-1",
+            "change": "新增§9.9「阅读导航与难度分层」[Sp]——按☆☆☆/★☆☆/★★☆/★★★标注15个章节/条目难度+3条推荐阅读路径(A:最小启动15-20min/B:标准实践45-60min/C:完整方法论2-3h)。含使用说明5条+与§1.4/§1.7的交叉引用+证据等级声明",
+            "source": "PocketFlow B2资产——'渐进式难度分层'",
+            "type": "新增",
+            "evidence": "[Sp]"
+          },
+          {
+            "id": "PF-2",
+            "change": "新增§1.7「框架自身的架构原则：最小核心+示例外挂」[Sp]——定义核心(主文档7类强制规则，有合规牙齿)vs外挂(4配套目录，无合规牙齿)的区分标准(普遍性/强制性/稳定性3条判定规则)+边界案例默认外挂原则+4种反模式警示+与§1.4/§9.9关系说明+N=2演示证据",
+            "source": "PocketFlow B1资产——'最小核心+示例外挂架构'",
+            "type": "新增",
+            "evidence": "[Sp]"
+          },
+          {
+            "id": "PF-3",
+            "change": "新增「附录H:反模式清单」——集中收纳4条反模式(H.1文件系统作IPC已从§6.5.1迁移+H.2极简主义的隐性成本+H.3继承层次膨胀+H.4重试-状态耦合)，含案例、后果、规则、来源、适用层、严重性。收录标准:具体案例+≥2独立后端审查+可操作替代规则。扩展预留1条候选(静态规则腐化)",
+            "source": "PocketFlow PF-反模式资产组(极简隐性成本/继承层次膨胀/重试-状态耦合) + Small_Scale H.1(原§6.5.1迁移)",
+            "type": "新增+重组",
+            "evidence": "[S]+[J]"
+          },
+          {
+            "id": "PF-4",
+            "change": "§6.5.1重组——原'文件系统作IPC'条目完整迁移至附录H.1，§6.5.1替换为简短交叉引用段指向附录H",
+            "source": "PocketFlow PF-反模式资产组",
+            "type": "重组"
+          },
+          {
+            "id": "PF-5",
+            "change": "§1.4末尾交叉引用更新——在现有'与§8.8项目规模分档的区别'之后，新增两条引用块:'与§9.9阅读导航的关系'(B2)+'与§1.7核心vs外挂的关系'(B1)",
+            "source": "B2 + B1",
+            "type": "交叉引用"
+          },
+          {
+            "id": "PF-6",
+            "change": "§1.6末尾交叉引用更新——新增引用块标注OPEN-4与缺少核心/外挂导航之间的关联",
+            "source": "B1",
+            "type": "交叉引用"
+          },
+          {
+            "id": "PF-7",
+            "change": "版本头更新：v1.5.2→v1.5.3；日期→2026-06-18；新增「PocketFlow方法论转化A类资产写回」标注段落",
+            "source": "ALL",
+            "type": "版本"
+          }
+        ],
+        "evidence_note": "所有新增节均为[Sp]推测级——方法论来源可追溯(PocketFlow三轮独立分析)，但应用于本框架的有效性待试跑验证. B1 §1.7的N=2证据仅为方向性指示; B2 §9.9的难度分级基于框架设计者单一视角; PF-反模式附录H的4条反模式满足收录标准(≥2独立后端审查确认可迁移性)，但在本框架场景中的实际触发频率待观察",
+        "sync_note": "2026-06-18三件套全量同步完成。.json与.docx已从v1.5.1同步至v1.5.3，与.md版本一致。",
+        "methodology_source": "PocketFlow三轮独立分析(DeepSeek/ChatGPT-5.5/GLM-5.2)"
+      },
+      "v1.4": {
+        "date": "2026-06-13",
+        "trigger": "Small_Scale项目(ICLR 2026论文)全量分析——5-agent workflow完成22 findings(3C+14M+5m), 提取15条方法论转化建议→ChatGPT-5.5独立审查(5.50/10,修改后通过)→Kimi-K2.7-Code二次审查(5.00/10)",
+        "note": "v1.4新增: §3.7.2.6难度分层监测(ML项目可选profile)+§5.3.1能力获取vs行为塑造+§6.5.1文件系统IPC反面模式+§9.1训练-评估对齐/Import完整性/配置验证/接口退化+§1.5死亡判据+§9.4反面案例+附录H候选模式库(后被Kimi审查否决取消). 经ChatGPT-5.5(5.37)+Kimi(5.00)两轮独立审查. v1.4后修订(ChatGPT-5.5审查执行): §3.7.2.6从第六类信号→ML可选profile,统一五类+一可选profile表述. v1.4二次后修订(Kimi审查执行): 全量元数据/JSON同步,审查独立性[IND]→[SEMI],OPEN-1新增人类专家verify Action.",
+        "additions": [
+          "§3.7.2.6 难度分层漂移(ML项目可选profile)",
+          "§5.3.1 能力获取vs行为塑造",
+          "§6.5.1 文件系统IPC反面模式",
+          "§9.1 训练-评估对齐+Import完整性+配置验证+接口退化",
+          "§1.5 框架自身死亡判据",
+          "§9.4 反面案例嵌入式依赖维护陷阱",
+          "附录H 候选模式库(后被取消)"
+        ],
+        "reviews": [
+          "ChatGPT-5.5 (Codex CLI): 5.50/10(转化建议审查)→5.37/10(v1.4产物审查)",
+          "Kimi-K2.7-Code: 5.00/10(v1.4产物三角色审查)"
+        ],
+        "methodology_source": "Small_Scale项目全量分析(../small-scale-analysis/)",
+        "evidence_confidence": "⚠️ 存疑(仅changelog,无旧版文件快照)"
+      }
+    },
+    "changelog_legacy_note": "Legacy changelog entries (v1.2 through v1_5_3) in original per-version dict format. Current changelog (v1.5.4+) is in metadata.changelog as a list. Moved from root level to metadata on 2026-06-20 during v1.6.1 sync cleanup.",
+    "version_label": "v1.6.4——prompt-tdd A1 实验写回 §6.3.2 Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited，经7轮双后端审查链闭合",
+    "last_updated": "2026-06-24",
+    "release_prep_errata_20260623": "2026-06-23 发布前订正（不升版本号，挂 v1.6.4）补入 .json：新增 §13.1.2 项目代号说明（project_codenames）+ §13.2 Constraint Decoupling 已验证→已采纳 + version_timeline 今日操作→当日操作。对应 .md 的 §14「v1.6.4 发布前订正批次」。同步执行：Claude Opus 4.8 (via Claude Code CLI)，2026-06-24。",
+    "last_edited_by": "Claude Opus 4.8 (via Claude Code CLI) — 2026-06-24 补齐 06-23 发布前订正同步（§13.1.2/§13.2/version_timeline），经 Codex GPT-5.5 异后端验证"
+  },
+  "framework_self_governance": {
+    "_comment": "v1.2新增，v1.3更新——框架对自身的治理（使用强度分档/死亡判据/待决项），对应md §1.4-1.6 + §3.6-3.7",
+    "usage_tiers": {
+      "_comment": "框架是模式库非必做清单。先用最低强制版跑，默认版升级须满足复扩条件，不默认全开。对应md §1.4",
+      "最低强制版": {
+        "适用": "任何项目、首次试跑",
+        "强制启用": [
+          "S1-S4",
+          "HG-0/HG-1/HG-3",
+          "Workflow三模式(pipeline/adversarial_verify/discovery)",
+          "Dev Log单时间轴(仅主文档)"
+        ]
+      },
+      "默认版": {
+        "适用": "进入稳定迭代后",
+        "增加启用": [
+          "S5/S6(成功标准/评估计划)",
+          "HG-2 Spec变更闸门",
+          "Retrospect轻量版",
+          "风险登记"
+        ]
+      },
+      "完整版": {
+        "适用": "正式研究/交付级，且复扩条件达标",
+        "升级项": [
+          "Dev Log双视图+FK",
+          "Judge Panel",
+          "Loop-Until-Dry",
+          "Completeness Critic",
+          "HG-2全量分级",
+          "深度Closure清单",
+          "§3.7漂移检测层全量(包括宪法审计+闭环策展)",
+          "Pipeline DAG (模式8) — 分支依赖/隐藏耦合风险时启用",
+          "Structured Multi-Role Review (模式9) — 正式交付物多维度审查时启用",
+          "§3.7.0事件流健康度监测 — 仅dry-run模式(默认不启用)",
+          "§3.7.4.1自适应权重淘汰 — 积累≥20条事件后考虑启用",
+          "§9.7经验注入上下文预算规则 — 密集经验注入场景时启用",
+          "§9.8研究经验对象(REO) — Phase 2+半自动以上时启用"
+        ]
+      },
+      "key_discipline": "'30%复杂度就能跑'——但必须说清是哪30%，否则模式库被误当必做清单，沦为事实上的过度工程。"
+    },
+    "self_death_criteria": {
+      "_comment": "对称性要求：框架要求项目/Prompt有死亡判据，框架自己也必须有。任一触发即动作。评估依赖下个项目预登记基线(见open_items.OPEN-2)。对应md §1.5",
+      "criteria": [
+        {
+          "name": "无改善",
+          "threshold": "连续3个真实项目，交接恢复/返工率/漏记率/Bug追溯相对历史基线改善<20%",
+          "action": "大修"
+        },
+        {
+          "name": "维护成本",
+          "threshold": "维护+填表耗时>项目总工时15%且无可量化收益",
+          "action": "降级为最低强制版"
+        },
+        {
+          "name": "绕过率",
+          "threshold": "连续2个项目实际绕过>50%模板/闸门",
+          "action": "重构"
+        },
+        {
+          "name": "Dev Log失败",
+          "threshold": "10次变更漏记>2次或链接错误>10%，自动化无法降到5%以下",
+          "action": "取消双视图+FK，退回单一时间轴"
+        },
+        {
+          "name": "HG过载",
+          "threshold": "HG-2变更确认>70%被直接批准且无实质讨论",
+          "action": "闸门分级"
+        },
+        {
+          "name": "外部审查无增益",
+          "threshold": "连续3次独立模型审查未发现有价值问题",
+          "action": "降频或换审查方式"
+        },
+        {
+          "name": "漂移检测层噪音过高",
+          "threshold": "连续3个HG-1黄及以上告警采纳率<30%",
+          "action": "调高触发阈值或暂停语义信号;见§3.7.8"
+        },
+        {
+          "name": "漂移检测层审查耗时超标",
+          "threshold": "连续2个HG-1 drift ledger审查耗时>HG-1总耗时25%",
+          "action": "降级为仅红级上报;见§3.7.8"
+        }
+      ],
+      "prerequisite_metrics": [
+        "交接恢复时间",
+        "Dev Log漏记率",
+        "返工次数",
+        "HG等待次数",
+        "审查发现率",
+        "框架维护耗时",
+        "漂移告警采纳率",
+        "drift ledger审查耗时"
+      ]
+    },
+    "open_items": {
+      "_comment": "已知未解决问题，单列不并入复扩表（防严重性夷平）。对应md §1.6。v1.3更新：OPEN-1已覆盖→§3.7",
+      "OPEN-1": {
+        "topic": "连续漂移 / Human Gate 频率-覆盖缺口",
+        "detail": "人审离散(按里程碑)、AI执行连续(每轮Loop)，离散审查测不出连续方向漂移；HG抽查频率天然低于AI犯错频率。",
+        "severity": "高（结构性）→ 中（已有操作化方案，待实证验证）",
+        "status": "已覆盖 → §3.7",
+        "resolution_trail": "v1.2提出→v1.3草案Loop Drift Ledger(§3.6三层架构,ChatGPT-5.5条件采纳:只观测不阻断)→v1.3正式化§3.7漂移检测层(五类信号+告警聚合+规则退役+宪法审计+闭环策展+监测模板)。§3.6+§3.7共同构成OPEN-1完整应对。预登记6项验证指标+退出条件仍待真实项目试跑。",
+        "provenance": "由DeepSeek-v4-pro(=框架作者)在再审查中提出(实为作者自我批评,与§10.8同源)，Opus 4.8再再审查背书；二者同在Claude-CLI谱系内",
+        "corroboration": "v1.3增强——ChatGPT-5.5独立裁决(2026-06-13)条件采纳，关键约束为'只覆盖留下可观察痕迹的漂移'+'不新增阻断只新增观测'。DeepSeek/ChatGPT方向性分歧已调和(交集=新增观测不新增阻断)。但仍未达独立交叉确认——待人类裁决方向之争+真实项目试跑。",
+        "ref": "md §3.6 + §3.7",
+        "drift_detection_layer_components": {
+          "_comment": "§3.7漂移检测层的结构化记录",
+          "design_principles": [
+            "只观测不阻断",
+            "事实优先解释在后",
+            "覆盖留下痕迹的漂移",
+            "退化路径内置"
+          ],
+          "five_signal_types": {
+            "syntactic": {
+              "检测对象": "格式/结构/schema偏离",
+              "信任级别": "高(纯计算零误判)",
+              "覆盖": "窄(仅形式偏离)"
+            },
+            "semantic": {
+              "检测对象": "内容不一致/矛盾/provenance缺失",
+              "信任级别": "低(AI辅助,必须标注)",
+              "覆盖": "中(内容层面)"
+            },
+            "procedural": {
+              "检测对象": "步骤跳过/闸门绕过/checklist遗漏",
+              "信任级别": "高(二值检测)",
+              "覆盖": "中(只检测跳没跳过)"
+            },
+            "alignment": {
+              "检测对象": "产出与注册规则的偏离",
+              "信任级别": "中(需要对比实际vs注册)",
+              "覆盖": "宽(constitutional audit)"
+            },
+            "performance": {
+              "检测对象": "质量指标趋势性下降",
+              "信任级别": "中(滞后指标)",
+              "覆盖": "宽(最终裁判)"
+            }
+          },
+          "alert_levels": {
+            "绿": "所有未触发或仅句法≤1孤立触发→无需动作",
+            "黄": "任意2类信号各≥1触发或单类≥3触发→汇总到HG-1 drift ledger",
+            "橙": "任意3类信号各≥1触发或程序/对齐≥2触发→提前通知人类(非阻断)",
+            "红": "4-5类同时触发或绩效+任意1类或闸门绕过→例外升级HG-1提前"
+          },
+          "rule_retirement": {
+            "lifecycle_fields": [
+              "last_triggered",
+              "dormancy_threshold",
+              "auto_sunset",
+              "sunset_action",
+              "owner_item"
+            ],
+            "retirement_flow": "规则登记→每HG-1更新last_triggered→dormancy_threshold周期未触发→休眠审查→auto_sunset周期→建议废弃→人确认"
+          },
+          "constitutional_audit": {
+            "frequency": "每次HG-1",
+            "question": "最近N个会话的实际行为偏离了框架/项目Spec中注册的规则吗？",
+            "audit_content": [
+              "规则违反统计",
+              "行为-注册偏差抽查",
+              "漂移累积度量",
+              "新增模式登记"
+            ],
+            "output": "宪法审计摘要(≤1页): Top3违规+建议修订/废弃+新候选模式+漂移趋势+上次建议执行情况"
+          },
+          "closed_loop_curation": {
+            "decision_tree": [
+              "规则被违反→审查规则(合理但未遵守/不切实际)→修订或加固",
+              "规则休眠→审查(风险已不存在/检测失效/低频)→废弃或修复或保留",
+              "新模式出现→审查(良性/建设性/破坏性)→记录或注册新规则+检测"
+            ],
+            "cadence": {
+              "轻量": "每轮HG-1随宪法审计",
+              "深度": "每3-5个里程碑或项目闭合时"
+            },
+            "record": [
+              "触发信号",
+              "策展决策",
+              "预期效果"
+            ]
+          },
+          "monitoring_template": "DriftDetectionReport schema (metadata/signal_summary/aggregated_alert/rule_lifecycle/constitutional_audit/curation_log/known_blind_spots)",
+          "known_limitations": [
+            "语义漂移不可完全检测",
+            "信号噪音比未知(先验设定,未经验证)",
+            "检测层自身维护成本(如>30min/HG-1则成为问题一部分)",
+            "AI辅助判断的偏差(语义信号依赖AI判断)",
+            "聚合规则未经校准(理论构造,未经实证)"
+          ],
+          "exit_conditions": {
+            "噪音过高": {
+              "threshold": "连续3个HG-1黄及以上采纳率<30%",
+              "action": "调高阈值或暂停语义信号"
+            },
+            "审查耗时超标": {
+              "threshold": "连续2个HG-1 drift ledger耗时>HG-1总耗时25%",
+              "action": "降级为仅红级上报"
+            },
+            "无增量价值": {
+              "threshold": "连续5个HG-1宪法审计无新规则建议且无规则退役",
+              "action": "宪法审计降频为每3个HG-1"
+            },
+            "AI语义信号质量差": {
+              "threshold": "语义信号与人类判断一致率<60%(连续3次)",
+              "action": "禁用语义信号,退回句法+程序+对齐"
+            }
+          },
+          "framework_cross_refs": {
+            "§3.6 OPEN-1": "父问题——§3.6定义账本记录什么,§3.7定义用什么信号触发警觉/如何响应/度量",
+            "§1.6 OPEN-1": "状态同步——退出条件触发或验证指标达标时同步更新",
+            "§1.5 死亡判据": "共享基线——绩效信号与死亡判据使用同一套预登记指标",
+            "§3.2 HG-1": "挂载点——所有人类接触点挂在HG-1议程上",
+            "§3.4 闸门类型": "新增职责——HG-1审查型闸门基础上新增宪法审计子议程",
+            "§10 Dev Log": "数据源——漏记率/格式完整性是句法信号和程序信号的输入",
+            "§9.2 独立审查": "审查方式——AI语义信号的校准应定期由独立模型隔离复审"
+          }
+        },
+        "homologous_with": "md §10.8待实证项'人在HG-1抽查的频率是否够'(范围更广，不限Dev Log；同为DeepSeek作者所写)"
+      },
+      "OPEN-2": {
+        "topic": "框架级死亡判据缺预登记基线",
+        "severity": "中",
+        "status": "待下个项目预登记",
+        "ref": "md §1.5"
+      },
+      "OPEN-3": {
+        "topic": "框架对用户已有实践的提炼准确度未评估（80分实践→60分模板风险，与'有无外部对标'是两个问题）",
+        "severity": "中",
+        "status": "待评估（审查链未接战）"
+      },
+      "OPEN-4": {
+        "topic": "最低上手时间未测（需非设计者试读计理解时间/误解点）",
+        "severity": "中",
+        "status": "待实测",
+        "ref": "md §1.4"
+      },
+      "OPEN-5": {
+        "topic": "Closure缺项目规模分档（半天/一周/正式），现仅按项目类型分档",
+        "severity": "低-中",
+        "status": "已覆盖 → §8.8（v1.5.1冻结期，DeepSeek-v4-pro执行）",
+        "ref": "md §8.8"
+      }
+    },
+    "open_items_update_v1_5_2": "v1.5.2: OPEN-2状态更新为'部分验证'——预登记载体已建立(框架级成熟度评估表), Protocol 3首次试跑已回写为第一条真实基线, 但死亡判据仍需连续项目数据才可触发"
+  },
+  "layers": {
+    "L0_spec": {
+      "name": "Spec（项目宪法）",
+      "scope": "跨任务不变的东西",
+      "granularity": "项目级",
+      "change_frequency": "低频（发现新约束时修订）",
+      "change_rule": "所有Spec变更走HG-2，不区分大小改——AI建议，人批准",
+      "existing_artifacts": [
+        "CLAUDE.md",
+        "memory/ 目录"
+      ],
+      "components": {
+        "S1_project_status": {
+          "necessity": "必须",
+          "coverage_current": "80%",
+          "action": "保持，补S5/S6/S8"
+        },
+        "S2_file_paths": {
+          "necessity": "必须",
+          "coverage_current": "90%",
+          "action": "保持，补版本间迁移记录"
+        },
+        "S3_technical_conventions": {
+          "necessity": "必须",
+          "coverage_current": "70%",
+          "action": "补环境冻结、随机种子"
+        },
+        "S4_veto_conditions": {
+          "necessity": "必须",
+          "coverage_current": "90%",
+          "action": "保持（kill-test-first 门1）"
+        },
+        "S5_success_criteria": {
+          "necessity": "必须",
+          "coverage_current": "30%",
+          "action": "需要新建——设主指标+目标值+最低可接受值+辅指标",
+          "note": "目前多数项目以'用户判定'为隐式标准"
+        },
+        "S6_evaluation_plan": {
+          "necessity": "强烈建议",
+          "coverage_current": "5%",
+          "action": "需要新建——三层分工(AI自评每轮+独立模型里程碑+人类关键决策)",
+          "default_metrics_by_type": {
+            "量化策略": {
+              "primary": [
+                "夏普比率",
+                "Calmar比率",
+                "ICIR",
+                "最大回撤"
+              ],
+              "secondary": [
+                "盈亏比",
+                "年化收益",
+                "Beta"
+              ]
+            },
+            "学术写作": {
+              "primary": [
+                "创新性",
+                "严谨性",
+                "表达清晰度",
+                "文献覆盖度"
+              ],
+              "secondary": [
+                "方法论适当性",
+                "可复现性"
+              ]
+            },
+            "工程开发": {
+              "primary": [
+                "功能完整性",
+                "性能",
+                "可维护性",
+                "测试覆盖率"
+              ],
+              "secondary": [
+                "安全性",
+                "文档质量"
+              ]
+            }
+          },
+          "note": "LIT项目教训：四轮AI self-review后人类评估给43/100，须有多层校验"
+        },
+        "S7_restart_thresholds": {
+          "necessity": "封存项目必须",
+          "coverage_current": "形态匹配项目有"
+        },
+        "S8_risk_register": {
+          "necessity": "建议",
+          "coverage_current": "20%",
+          "action": "需要统一模板",
+          "hg_trigger": "H影响 + M及以上概率 → 触发Human Gate"
+        },
+        "S9_reproducibility": {
+          "necessity": "学术/量化项目必须",
+          "requirements_by_type": {
+            "学术_量化": [
+              "完整Python版本+来源",
+              "pip freeze完整冻结",
+              "数据快照存data/raw/(标注获取日期和来源)",
+              "显式随机种子(写在配置文件)",
+              "OS+关键硬件",
+              "Git tag标记关键版本"
+            ],
+            "工程_探索": [
+              "Python主版本号",
+              "requirements.txt",
+              "记录数据来源和获取日期",
+              "显式随机种子",
+              "OS",
+              "Git commit hash"
+            ]
+          },
+          "docker_not_required": "Windows兼容性差，量化项目依赖多。仅跨平台协作时可选。"
+        },
+        "S10_naming_conventions": {
+          "necessity": "多版本项目建议",
+          "coverage_current": "40%",
+          "action": "各项目按需成文"
+        }
+      },
+      "maintenance": {
+        "initial_creation": "项目启动时只写确定的东西，不确定的留空",
+        "reverse_precipitation": "每次Retrospect后，AI草稿→人确认(HG)→写回Spec",
+        "final_archive": "项目闭合时提取跨项目方法论→写回memory/。项目memory永久保留，更新时效标注(>30天提醒需验证)。不删除。"
+      }
+    },
+    "LH_human_gate": {
+      "name": "Human Gate（人类闸门）",
+      "scope": "AI不能替人做的决策",
+      "nature": "跨层闸门，非独立层",
+      "existing_artifacts": [
+        "feedback_independent_review_reminder.md"
+      ],
+      "gates": {
+        "HG0_startup": {
+          "trigger": "新项目立项",
+          "content": "初始Spec人确认（红线、成功标准、不做什么）",
+          "decision": "GO / REDESIGN / STOP"
+        },
+        "HG1_milestone": {
+          "trigger": "按项目类型区分",
+          "frequency": {
+            "量化策略": "每轮回测后 + 重要Bug修复后",
+            "学术写作": "每章完成后 + 收到外部审阅后",
+            "工程开发": "每功能模块完成后 + 重大重构后"
+          },
+          "content": "本阶段产出人审查 + 下阶段方向人确认 + v1.3新增:宪法审计子议程(审计规则-行为一致性)+漂移检测信号汇总",
+          "decision": "继续 / 转向 / 暂停 / 闭合"
+        },
+        "HG2_spec_change": {
+          "trigger": "任何对L0 Spec的修改请求",
+          "rule": "不区分大小改——所有变更走HG-2。AI建议，人批准。",
+          "decision": "批准 / 驳回 / 修改后再审"
+        },
+        "HG3_closure": {
+          "trigger": "项目达到闭合条件 或 人主动提出",
+          "content": "终期报告 + 闭合检查清单 + lessons learned",
+          "decision": "正式闭合 / 暂缓闭合 / 重启"
+        }
+      },
+      "gate_types": {
+        "confirm": {
+          "desc": "AI提出建议，人确认或驳回"
+        },
+        "decide": {
+          "desc": "多个可行方案，人选择方向"
+        },
+        "review": {
+          "desc": "AI产出交付物，人审查质量"
+        },
+        "constitutional_audit": {
+          "desc": "v1.3新增——审查行为是否偏离注册规则，挂在HG-1议程上，不新增独立闸门"
+        }
+      },
+      "ai_responsibilities_at_gate": [
+        "明确标注'这里是Human Gate，需要你的判断'",
+        "提供当前状态简明摘要（≤5个要点）",
+        "枚举选项+利弊+推荐（标注理由和信心水平）",
+        "标注不确定部分",
+        "等人回复，不替人做决定"
+      ],
+      "known_gap_OPEN-1": {
+        "_comment": "v1.2提出，v1.3已覆盖→§3.7。4个闸门均离散事件触发但AI执行连续，存在频率-覆盖缺口。处置轨迹见framework_self_governance.open_items.OPEN-1",
+        "gap": "连续漂移：AI在Loop内连续小调整每次都不触发HG-2(未改Spec)，但累积成方向偏转，无任何闸门覆盖",
+        "resolution": "v1.3正式化§3.7漂移检测层——与§3.6 Loop Drift Ledger互补，共同构成OPEN-1完整应对",
+        "drift_detection_layer_section": "§3.7",
+        "not_to_be_merged_into_re_expansion_table": "这是应新增而非应复扩的能力；并入复扩表=重蹈'离散审查漏掉连续漂移'覆辙"
+      }
+    },
+    "L1_prompt": {
+      "name": "Prompt（任务规格）",
+      "scope": "单次任务的可变规格",
+      "granularity": "任务级",
+      "change_frequency": "每轮不同",
+      "existing_artifacts": [
+        "每次会话的具体指令",
+        "kill-test-first 门1"
+      ],
+      "template_types": {
+        "探索型": {
+          "use_when": "方向不确定的调查/研究",
+          "done_criteria": "宽松——允许'证明不可行'算完成",
+          "veto_focus": "强制先验对标（防重复造轮子）",
+          "loop_limit": "8轮 / 连续3轮"
+        },
+        "执行型": {
+          "use_when": "明确知道要什么",
+          "done_criteria": "精确——可验证的具体产出",
+          "veto_focus": "强制死亡判据（明确停止线）",
+          "loop_limit": "5轮 / 连续2轮"
+        },
+        "审查型": {
+          "use_when": "验证/审核/找问题",
+          "done_criteria": "覆盖度——至少覆盖N个维度",
+          "veto_focus": "强制多视角 + 强制标注不确定",
+          "loop_limit": "3轮 / 连续2轮"
+        }
+      },
+      "minimal_viable_elements": [
+        "目标",
+        "输入",
+        "完成标准",
+        "否决条件(kill-test-first门1)",
+        "约束",
+        "逃生口"
+      ],
+      "escape_hatch": {
+        "_comment": "v1.2新增，v1.3草案扩展为分级逃生口L1/L2/L3——对应md §4.3/附录B",
+        "L1_retrieval_recovery": {
+          "trigger": "信息可能不完整但存在已知可用同源的检索/验证路径",
+          "action": "告知不完整程度+提供检索/验证界面+执行者自主判断",
+          "constraint": "检索数据必须与被替代数据同源,不同源直接触发L3。检索上限3轮。"
+        },
+        "L2_homologous_degradation": {
+          "trigger": "信息质量下降但来自同一数据源(仅时效/精度/覆盖度下降,数据源未替换)",
+          "action": "标注不确定性来源/程度/影响范围+仅继续执行不依赖该信息的可逆准备(草稿/候选清单/待验证假设/下一步计划)",
+          "red_line": "不得用于最终判断/外部提交/高风险结论。不同数据源替换=L3。关键结论依赖缺失信息→停止或升级到HG。"
+        },
+        "L3_stop_and_report": {
+          "trigger": "bash失效/读不到建不了文件/数据缺失/异源替换/不确定性不可标注/降级信息已导致错误",
+          "action": "立即停止并报告,绝不用替代/假设/记忆中的数据继续(ETF R5消融教训:工具失效时用错数据→'两版本一致'虚假结论)",
+          "escalation_rule": "L3是最终兜底——L1检索路径不可用且L2降级不安全/不可标注/异源替换时到达此层级"
+        },
+        "escalation_rules": "L1→L2→L3。低层向高层升级需明确理由。L3触发条件:检索路径不可用|数据源被替换(异源)|不确定性不可标注|降级信息已导致错误|工具/数据完全不可用。条件恢复后允许高层降回低层。",
+        "kill_test": "ETF R5事故复现:bash不可用+文件无法创建+回测数据缺失→L1检索路径不可用→AI有上一轮缓存但异源→L2不适用→直接L3停止报告。通过。"
+      },
+      "quality_self_check": [
+        "方向对不对？",
+        "完成标准可验证吗？",
+        "否决条件触发时AI能自己停下来吗？",
+        "有没有Spec已覆盖的约束被重复写了？",
+        "有没有应该沉淀到Spec的新约束？"
+      ],
+      "execution_contract": {
+        "_md_section": "§4.1.1",
+        "evidence_level": "[E-]",
+        "evidence_note": "单域实验不支持——对照实验完成(n=24/臂,6轮异后端独立审查通过)，但结果为阴性且限于单域/单模型",
+        "source": "prompt-tdd A2 Tier 1对照实验（PocketFlow §8.1 A2转化），2026-06-19",
+        "hypothesis": "prep/exec/post三阶段分段prompt优于内容等价的一体式编号列表prompt",
+        "result": "H1不被支持。A_flat correctness_rate=0.954 ≥ B_structured=0.935，方向与假设相反。4道科学门全部FAIL。",
+        "design": {
+          "domain": "代码审查",
+          "model": "GPT-5.5 (temp=0)",
+          "sample": "n=24/臂（12 train + 12 test，按6类别分层随机，seed=42；主分析为12个test配对case）",
+          "raters": "双LLM评分者盲评（DeepSeek Rater A + Codex Rater B）",
+          "rubric": "9维评分量规（prep_file_purpose/prep_key_functions/prep_data_flow/exec_line_number/exec_type_label/exec_severity/post_fix_code/post_rationale/post_regression_check）"
+        },
+        "framework_implications": [
+          "更多结构≠更好效果——在本实验的代码审查域/GPT-5.5条件下，追加prep/exec/post阶段标注未提升correctness_rate",
+          "天花板效应警示——presence_coverage出现天花板效应，correctness_rate仍有方差但未显示B组优势。实验设计应先通过Tier 0验证基线变异度",
+          "反例价值——防止将prep/exec/post作为通用最佳实践写入§4.1"
+        ],
+        "limitations": [
+          "单域（仅代码审查，不声称跨域推广）",
+          "单模型（仅GPT-5.5 temp=0）",
+          "双LLM评分者无人类ground truth，κ因天花板效应退化，仅能报告correctness一致性比率",
+          "样本量n=24/臂，当前n_nonzero=4未达到sign test最小要求",
+          "残余混淆（A组编号列表本身也是轻量结构化，实验测的是显式prep/exec/post标签vs编号列表）",
+          "阴性结果可能领域特异，不排除prep/exec/post在其他任务域中有显著优势"
+        ],
+        "experiment_report": "../prompt-tdd/tests/pocketflow_assets/a2_prep_exec_post/experiment_report_tier1.md + .json"
+      }
+    },
+    "L2_loop": {
+      "name": "Loop（执行迭代）",
+      "scope": "模型在Prompt约束内的自主试错收敛",
+      "granularity": "轮次级",
+      "change_frequency": "毫秒级",
+      "existing_artifacts": [
+        "模型自主迭代（跑→错→修）",
+        "/loop命令（定时特化）"
+      ],
+      "convergence_conditions_by_type": {
+        "探索型": {
+          "iteration_max": 8,
+          "stall_threshold": 3
+        },
+        "执行型": {
+          "iteration_max": 5,
+          "stall_threshold": 2
+        },
+        "修复型": {
+          "iteration_max": 3,
+          "stall_threshold": 2
+        }
+      },
+      "logging_policy": "仅记录关键转折点（否决触发/方向改变/意外发现）。正常迭代不记。",
+      "log_triggers": {
+        "否决条件触发": "哪个条件+当前状态+为什么触发",
+        "方向改变": "原方向→新方向+改变原因",
+        "意外发现": "发现内容+潜在影响"
+      }
+    },
+    "L3_workflow": {
+      "name": "Workflow（多任务编排）",
+      "scope": "多个子任务的并行编排+交叉验证+合成",
+      "granularity": "编排级",
+      "change_frequency": "按任务触发",
+      "existing_artifacts": [
+        "Claude Code Workflow工具",
+        "kill-test-first魔鬼代言人"
+      ],
+      "patterns": {
+        "pipeline": {
+          "description": "无阶段间barrier的流水线",
+          "default": true
+        },
+        "barrier_parallel": {
+          "description": "等所有并行任务完成后做全局操作",
+          "use_sparingly": true
+        },
+        "adversarial_verify": {
+          "description": "多视角独立审查同一产出",
+          "min_verifiers": "按关键性：常规3人/关键5人/快速2人",
+          "survival_thresholds": {
+            "常规审查": "≥2/3",
+            "关键决策": "≥3/5",
+            "快速检查": "≥1/2"
+          }
+        },
+        "judge_panel": {
+          "description": "多方案并行生成+独立评分+选最优",
+          "cost_note": "高成本，仅在单次尝试大概率不够时使用"
+        },
+        "loop_until_dry": {
+          "description": "持续发finders直到连续K轮无新发现",
+          "k": 2
+        },
+        "completeness_critic": {
+          "description": "收尾时检查什么缺失了"
+        }
+      },
+      "upgrade_triggers": [
+        "pipeline产出连续2轮被HG-1驳回",
+        "发现pipeline遗漏了关键维度",
+        "单次尝试失败且根因可能是方案不够多样"
+      ],
+      "pattern_selection_decision_tree": [
+        "需要多个子任务？→否→单Agent",
+        "子任务间有依赖？→无→pipeline（默认）",
+        "需要等所有结果？→确认真的需要→是→barrier parallel",
+        "是验证型任务？→是→adversarial verify 或 loop-until-dry",
+        "是探索型任务？→是→judge panel",
+        "否则→pipeline（默认）"
+      ],
+      "sections": {
+        "6.3.1_routing_format_evidence": {
+          "title": "路由声明格式对照证据 [E-]",
+          "source": "prompt-tdd A3 Action Routing对照实验(PocketFlow §8.1 A3转化)",
+          "date": "2026-06-20",
+          "experiment_model": "GPT-5.5 (via Codex CLI, temp=0)",
+          "review": "10轮审查链(Codex GPT-5.5×4, Qwen qwen3.7-max×3, 合并×1, 双后端咨询×1, 尸检对齐×1; 含非同质独立审查轮), 0未闭合发现",
+          "evidence_level": "[E-] — 阴性结论；格式效应在GPT-5.5 temp=0中文路由任务上不可检测",
+          "experiments": [
+            {
+              "id": "A3 v1",
+              "conditions": "6 actions, 单标签, temp=0",
+              "result": "Δ=0, 天花板",
+              "interpretation": "任务过易——无法区分"
+            },
+            {
+              "id": "A3 Pilot",
+              "conditions": "15 actions, strict DV, 长度控, 关键词去耦, temp=0",
+              "result": "Δ=0, 0% discordant",
+              "interpretation": "任务难度提升后仍无法区分"
+            }
+          ],
+          "limitations": [
+            "限GPT-5.5 + temp=0 + 中文路由任务",
+            "temp>0下格式对路由稳定性的效应未被检验",
+            "声明式路由语法在代码层面的价值不受此实验影响",
+            "A3 v2设计未执行(DV退化+格式×数量混淆)"
+          ],
+          "cross_reference": "与§4.1.1 A2共同构成GPT-5.5 temp=0中文结构化判别任务内的方向一致阴性观察——非跨模型三角验证"
+        },
+        "6.3.2_flownode_evidence": {
+          "title": "Flow-as-Node 嵌套工作流对照证据 [E-] ceiling-limited",
+          "source": "prompt-tdd A1 Flow-as-Node Tier 0对照实验(PocketFlow §8.3 A1转化)",
+          "date": "2026-06-22",
+          "experiment_model": "GPT-5.5 (via Codex CLI, temp=0)",
+          "review": "7轮双后端审查链(Codex GPT-5.5×4: V1初审→V2修正→V2终态验证→文本检查 + Qwen qwen3.7-max×3: 轻量框架文本检查/完备性检查/终态确认), 0未闭合发现",
+          "evidence_level": "[E-] ceiling-limited — Tier 0负证据；3/5类别(overall_structure/agent通信/error_handling)天花板, ΔF1=0.000",
+          "experiment": {
+            "design": "层级化工作流描述(含子workflow定义+agent嵌套调用约定) vs 内容等价的扁平描述",
+            "domain": "编码Agent工作流理解",
+            "conditions": "n=20/臂, GPT-5.5 temp=0, DV=human judge F1(5类别: overall_structure/agent_assignments/trigger_conditions/data_flow/error_handling)",
+            "result": "Δ median F1=0.000, 3/5类别天花板(C1-C3两臂均满分), C4/C5有区分空间但n=4/类过少",
+            "interpretation": "Tier 0无法检测格式效应——任务难度不足以区分两种表示。C4/C5的区分空间提示在更复杂场景下可能有效应，但当前实验设计无法检验。结论限于Tier 0实验条件。"
+          },
+          "limitations": [
+            "Tier 0实验设计——任务难度不足以区分格式效应",
+            "限GPT-5.5 + temp=0 + 编码Agent工作流理解域",
+            "仅5类别×4样本/类(共20个评分点)",
+            "C4/C5有区分空间但样本不足",
+            "Tier 1(复杂多条件工作流)未执行",
+            "跨模型复现未执行"
+          ],
+          "methodology_fragment": "PF-A1-001: 天花板效应检测——Tier 0快速筛查格式效应存在性, ceiling-limited结论诚实记录Tier局限性",
+          "cross_reference": "与§6.3.1 A3、§4.1.1 A2共同构成GPT-5.5 temp=0中文结构化判别任务内的方向一致阴性观察——三次独立实验均未检测到格式效应"
+        }
+      }
+    },
+    "L4_retrospect": {
+      "name": "Retrospect（回顾沉淀）",
+      "scope": "里程碑/阶段/出错后的强制回顾→提炼→写回循环",
+      "granularity": "里程碑级",
+      "existing_artifacts": [
+        "项目复盘归档报告.json（并购重组雏形）"
+      ],
+      "process": "AI草稿 → Human Gate(人确认或修改) → AI执行写回",
+      "passive_observation": {
+        "section": "§7.7",
+        "definition": "被动观测是指某项知识并非当前活动的直接检索目标，而是通过该活动产生的副信号、差异、摩擦、残留物或元数据被暴露",
+        "three_seeds": [
+          {
+            "mechanism": "冗余暴露",
+            "memory": "method_llm_review_coverage_single_run",
+            "finding": "单次LLM审查覆盖率<100%"
+          },
+          {
+            "mechanism": "一致维护暴露",
+            "memory": "methodology_review_prompt_mechanical_checks",
+            "finding": "审查prompt须含机械一致性检查"
+          },
+          {
+            "mechanism": "审查附带暴露",
+            "memory": "todo_verify_glm5_identity",
+            "finding": "CLI telemetry≠模型自报身份"
+          }
+        ],
+        "extended_channels": [
+          "比较型",
+          "维护型",
+          "审查型",
+          "执行型",
+          "失败型",
+          "使用型",
+          "时漂型",
+          "缺失型"
+        ],
+        "hard_constraint": "被动观测只能生成候选洞察，不能直接生成结论；进入方法论资产前必须经过复核、归因和适用边界标注",
+        "failure_modes": [
+          "幸存者偏差",
+          "伪模式化",
+          "噪声误读",
+          "观测污染",
+          "成本失控",
+          "错误归因",
+          "低可复现性",
+          "确认偏误",
+          "副产品崇拜",
+          "安全错觉"
+        ],
+        "evidence_level": "[C+ / N/A]",
+        "review": "Codex GPT-5.5魔鬼代言人审查(2026-06-21): 有条件支持"
+      },
+      "templates": {
+        "轻量版": {
+          "triggers": [
+            "里程碑完成",
+            "外部审查后"
+          ],
+          "sections": [
+            "1生效清单",
+            "2失效清单",
+            "3意外发现",
+            "4Spec更新候选",
+            "5下次改进"
+          ]
+        },
+        "深度版": {
+          "triggers": [
+            "重大错误/Bug",
+            "否决条件触发",
+            "项目闭合前"
+          ],
+          "sections": [
+            "1生效清单",
+            "2失效清单",
+            "3意外发现",
+            "4根因分析",
+            "5系统性影响评估",
+            "6Spec更新候选",
+            "7跨项目方法论候选",
+            "8下次改进"
+          ],
+          "v162_enhancement": {
+            "section": "3意外发现",
+            "optional_fields": [
+              "发现方式: [冗余暴露/一致维护暴露/审查附带暴露/比较型/维护型/审查型/执行型/失败型/使用型/时漂型/缺失型/其他]",
+              "复核状态: [未复核/复核确认(附证据)/复核驳回(附原因)/待异后端确认]",
+              "适用边界: [该洞察在什么条件下可能不成立]"
+            ],
+            "note": "新增字段为可选(§7.7.5)；当发现方式显而易见时可跳过"
+          }
+        }
+      },
+      "minimum_findings": {
+        "required": [
+          "至少1条失效(stop/change)",
+          "至少1条意外(惊喜/惊吓)"
+        ],
+        "if_not_found": "标注'本轮未发现失效/意外'并说明原因（太顺利还是审查不够深）"
+      },
+      "output_routing": {
+        "project_spec_updates": "→本项目Spec文件",
+        "cross_project_methodology": "→memory/（全局lessons learned）",
+        "phase_record": "→项目Retrospect日志（备查）"
+      }
+    },
+    "L5_closure": {
+      "name": "Closure（项目闭合）",
+      "scope": "项目正式结束的标准化流程",
+      "granularity": "项目级",
+      "change_frequency": "一次性",
+      "existing_artifacts": [
+        "project_status.md CLOSED标记",
+        "形态匹配终期总结报告v1.1"
+      ],
+      "closure_conditions": [
+        {
+          "type": "目标达成",
+          "desc": "项目级成功标准全部满足"
+        },
+        {
+          "type": "红线触发",
+          "desc": "否决条件触发且REDESIGN次数用尽(≤2次)"
+        },
+        {
+          "type": "预算耗尽",
+          "desc": "时间/精力/资金预算用完"
+        },
+        {
+          "type": "发现替代",
+          "desc": "另一条路径被证明更优",
+          "evidence_threshold": {
+            "must_satisfy_all": [
+              "可验证的公开记录（论文/代码/报告，非口头传闻）",
+              "在与本项目相同或更严格标准上表现更好",
+              "经独立模型审查确认（至少1个其他模型同意）"
+            ],
+            "if_not_all_met": "不能以'发现替代'闭合"
+          }
+        },
+        {
+          "type": "优先级变更",
+          "desc": "外部原因导致不再优先"
+        },
+        {
+          "type": "人决定",
+          "desc": "用户主动说不做了"
+        }
+      ],
+      "archive_structure": {
+        "scheme": "三级分层",
+        "archive_dir": "../<项目名>/archive/ → 终期报告+评估分析+Retrospect",
+        "code_dir": "../<项目名>/code/ → 最终版代码",
+        "data_raw_dir": "../<项目名>/data/raw/ → 原始数据快照"
+      },
+      "memory_retention": {
+        "policy": "永久保留，不删除",
+        "on_closure": "更新时效性标注('X天前'→'已归档')",
+        "staleness_check": "超过30天未更新的条目在会话启动时自动提醒'需验证'"
+      },
+      "checklist": [
+        "闭合条件确认",
+        "终期总结报告(.md)",
+        "终期总结报告(.docx)[学术必须]",
+        "项目评估分析(.md+.json)",
+        "可复用遗产提取",
+        "跨项目方法论写回memory/(≥3条)",
+        "Retrospect终期回顾(深度版)",
+        "归档(三级分层)",
+        "外部审阅(≥1独立模型)",
+        "项目状态更新(CLOSED+封存基线+重启门槛)",
+        "交付物双件(md+json)",
+        "人最终确认(HG-3)",
+        "临时文件清理+敏感信息检查"
+      ]
+    }
+  },
+  "cross_cutting": {
+    "reproducibility": {
+      "name": "可复现性",
+      "policy": "按项目类型分档",
+      "requirements": {
+        "学术_量化": [
+          "完整Python版本+来源",
+          "pip freeze完整冻结",
+          "数据快照(data/raw/)+溯源",
+          "显式种子(配置文件)",
+          "OS+关键硬件",
+          "Git tag"
+        ],
+        "工程_探索": [
+          "Python主版本号",
+          "requirements.txt",
+          "记录数据来源和日期",
+          "显式种子",
+          "OS",
+          "Git commit hash"
+        ]
+      },
+      "docker": "不要求（Win兼容差）。仅跨平台协作时可选。"
+    },
+    "evaluation": {
+      "name": "评估与度量",
+      "default_metrics": {
+        "量化策略": {
+          "primary": [
+            "夏普比率",
+            "Calmar比率",
+            "ICIR",
+            "最大回撤"
+          ],
+          "secondary": [
+            "盈亏比",
+            "年化收益",
+            "Beta"
+          ]
+        },
+        "学术写作": {
+          "primary": [
+            "创新性",
+            "严谨性",
+            "表达清晰度",
+            "文献覆盖度"
+          ],
+          "secondary": [
+            "方法论适当性",
+            "可复现性"
+          ]
+        },
+        "工程开发": {
+          "primary": [
+            "功能完整性",
+            "性能",
+            "可维护性",
+            "测试覆盖率"
+          ],
+          "secondary": [
+            "安全性",
+            "文档质量"
+          ]
+        }
+      },
+      "division_of_labor": {
+        "AI自评": {
+          "frequency": "每轮Loop后",
+          "role": "快速反馈、纠偏"
+        },
+        "独立模型审查": {
+          "frequency": "每个里程碑",
+          "role": "外部视角、防AI自欺",
+          "independence": "见 independence_definition"
+        },
+        "人类审查": {
+          "frequency": "关键决策点(HG)",
+          "role": "最终拍板、价值判断"
+        }
+      },
+      "independence_definition": {
+        "_comment": "v1.2新增——'独立'按后端×上下文判，不按CLI牌子。对应md §9.2",
+        "axis_1_distinct_backend": "审查者后端模型与作者不同；伪独立=同一后端换壳/标签再审一遍",
+        "axis_2_context_isolation": "新会话/隔离上下文，不共享作者对话历史与会灌入结论的memory；伪独立=读了作者memory/CLAUDE.md结论被预锚定",
+        "mandatory_recording": "每次独立审查当场记 后端模型+CLI壳+是否隔离上下文。'Claude'等CLI标签≠后端模型；只记壳名→事后不可恢复(ETF V3.6 'Claude审阅'文件未记后端,独立性已不可考)",
+        "bare_env_checklist": "复用'多模型对照实验'项目的三套裸环境checklist+治理审计，勿重造",
+        "prompt_bias_warning": "审查提示词若由作者本人写会引入引导性偏差(本框架审查链已踩过,见§14治理声明)"
+      }
+    },
+    "session_handoff": {
+      "name": "会话交接",
+      "method": "做成 /session-end skill 手动调用（不用Stop hook——过度工程）",
+      "session_start": [
+        "读CLAUDE.md（自动）",
+        "读memory/MEMORY.md（自动）",
+        "逐条检查memory时效性（>30天提醒需验证）",
+        "读本项目project_status.md",
+        "检查未完成的Next Steps",
+        "读上次Retrospect（如有）",
+        "确认当前环境"
+      ],
+      "session_end": [
+        "更新project_status.md",
+        "如有新发现→写Retrospect或标记候选",
+        "如有未完成任务→写标准化Next Steps（动词开头+文件/命令+优先级P0/P1/P2+依赖）",
+        "如新增/修改关键文件→更新reference_files.md",
+        "如有跨任务通用教训→写memory/",
+        "标注本会话特殊约束/发现"
+      ],
+      "next_steps_format": "标准化: 操作动词开头 + 具体文件/命令 + 优先级(P0/P1/P2) + 依赖（等什么完成后才能做）"
+    },
+    "risk_dependency": {
+      "name": "风险与依赖追踪",
+      "hg_trigger": "H影响 + M及以上概率 → 触发Human Gate",
+      "register_schema": {
+        "fields": [
+          "风险ID",
+          "风险描述",
+          "影响(H/M/L)",
+          "概率(H/M/L)",
+          "缓解措施",
+          "触发信号",
+          "Plan B",
+          "状态"
+        ],
+        "review_frequency": "每次Retrospect时顺带检查"
+      }
+    }
+  },
+  "dev_log": {
+    "name": "开发手册（Dev Log）",
+    "type": "跨层产物",
+    "scope": "累积式变更日志——时间轴+FK导航+全项目覆盖",
+    "derived_from": "ETF项目V3.6代码头部注释实践 + 网友开发手册经验",
+    "existing_artifacts": [
+      "形态匹配ETF组合策略_V3.6-Decoupled.py 头部80行（代码注释中的结构化变更日志）"
+    ],
+    "key_difference_from_existing": "从代码注释中挪出→独立md文件（防AI删代码丢失），加FK导航，改时间轴为主索引，覆盖全项目非仅.py文件",
+    "artifacts": {
+      "main_index": {
+        "file": "DEV_LOG.md",
+        "content": "文件树地图（横向）+ 变更时间轴（纵向）+ FK导航链接",
+        "rule": "保持精简，只做索引——每条变更一行，详情链接到分支文档"
+      },
+      "branch_documents": {
+        "directory": "dev-logs/",
+        "naming": "YYYY-MM-DD_简短描述.md",
+        "content": "基本信息+症状+根因+变更内容+影响分析+教训",
+        "format": "基于ETF项目V3.6代码头部Bug记录格式（Bug ID/严重级别/问题/根因/修复/影响/关联审阅）"
+      }
+    },
+    "layer_interactions": {
+      "L0_Spec": "Spec管'项目是什么'，Dev Log管'项目经历了什么'",
+      "L2_Loop": "Loop日志（关键转折点）自动灌入Dev Log",
+      "L4_Retrospect": "Retrospect从Dev Log中提取模式——不用翻聊天记录",
+      "L5_Closure": "Dev Log成为终期归档的一部分",
+      "session_handoff": "Session End时把本会话改动追加到Dev Log",
+      "evaluation": "Bug统计（频率/类型/根因分布）可从Dev Log自动提取",
+      "drift_detection": "v1.3新增——Dev Log的漏记率/格式完整性是§3.7句法信号和程序信号的输入"
+    },
+    "maintenance": {
+      "who": "AI自动维护",
+      "when": "Bug修复后立即写 / 功能新增/架构重构后会话结束前写 / 参数调整后轻量记录",
+      "human_role": "HG-1里程碑闸门时抽查Dev Log是否正常更新。漏记在Retrospect时补。v1.3:Dev Log完整性也是§3.7句法信号监测项。",
+      "code_header_role": "继续保留简要变更记录作为快速参考，但不再是权威记录。简化为'变更历史详见: DEV_LOG.md'"
+    },
+    "vs_git": {
+      "git_records": "代码差异（what changed）",
+      "dev_log_records": "变更意图和上下文（why changed）",
+      "complementary": true
+    },
+    "maturity_assessment": {
+      "overall": "地基扎实的概念，还不是成熟体系——3/10已验证，7/10待实证或零数据",
+      "validated": {
+        "bug_record_format": {
+          "level": "已验证",
+          "evidence": "ETF项目V3.6代码头部80行，17版本迭代中追溯了至少5个P0 Bug"
+        },
+        "code_comments_unreliable": {
+          "level": "已验证",
+          "evidence": "两条独立证据——网友经验+ETF项目自身单点故障风险"
+        },
+        "independent_persistence_direction": {
+          "level": "已验证",
+          "evidence": "软件工程基本原则——变更日志和代码分开存储"
+        }
+      },
+      "to_be_verified": {
+        "ai_auto_maintenance": {
+          "level": "待实证",
+          "gap": "AI是否会在每次变更后自动追加？会不会漏记？零数据"
+        },
+        "dual_view_consistency": {
+          "level": "待实证",
+          "gap": "文件树地图和时间轴会不会矛盾？零数据"
+        },
+        "fk_navigation_robustness": {
+          "level": "待实证",
+          "gap": "文件名based链接在重命名/跨会话后会不会断？零数据"
+        },
+        "light_vs_full_record_boundary": {
+          "level": "待实证",
+          "gap": "AI自己判断'参数调整只写一行'vs'架构重构写完整分支文档'的准确率未知"
+        },
+        "hg1_sampling_frequency": {
+          "level": "待实证",
+          "gap": "人三周不做HG-1→Dev Log可能已累积大量遗漏"
+        },
+        "cross_project_type_generalization": {
+          "level": "待实证",
+          "gap": "仅量化策略项目样本，学术/工程项目的变更格式未测试"
+        }
+      },
+      "zero_data": {
+        "ai_tracing_effectiveness": {
+          "level": "零数据",
+          "gap": "核心价值假设——'AI能从Dev Log自行追溯Bug根因'——从未被测试"
+        }
+      },
+      "next_step": "拿一个真实项目试跑→3-5次Bug修复后对照此表逐项检验→深度Retrospect写回成熟度评估",
+      "distribution": "已验证3/10, 待实证6/10, 零数据1/10"
+    }
+  },
+  "drift_detection_layer": {
+    "_comment": "v1.3新增——§3.7漂移检测层的结构化记录。完整的OPEN-1操作化方案，与§3.6 Loop Drift Ledger互补。对应md §3.7",
+    "parent_problem": "OPEN-1 (连续漂移/Human Gate频率-覆盖缺口)",
+    "relationship_with_loop_drift_ledger": "§3.6定义账本记录什么，§3.7定义用什么信号触发警觉、如何响应、如何度量。两节共同构成OPEN-1完整应对。",
+    "philosophy": "detector-only（只检测不阻断）——受headroom CacheAligner启发，经ChatGPT-5.5独立裁决确认边界",
+    "event_stream_health": {
+      "_added": "v1.5.1",
+      "_section": "§3.7.0",
+      "_evidence_level": "[Sp]",
+      "_comment": "事件流健康度监测——§3.7漂移检测层的前置输入源。观测事件流健康度(信号密度/修复频率/变更活性)，输出到§3.7.3作为普通监测项。不新增独立告警等级，不自动改变Loop/Workflow行为。与§3.7.1一致:只观测不阻断。完整规格见_research/框架v1.5.1_新增节草案.md",
+      "monitoring_rules": {
+        "rule1_frequency_monitor": {
+          "description": "重复信号频率监测",
+          "observation": "同一信号类型在最近8个迭代周期的事件日志中出现≥3次",
+          "output": "标记over_processed，附带频率计数和最近出现时间",
+          "suggested_action": "操作者考虑在未来3个周期内手动抑制该信号的重复注入",
+          "no_auto_action": "不自动抑制信号注入，不修改事件日志",
+          "cold_start": "事件总数<10时阈值自动翻倍(≥6次/8周期才标记)"
+        },
+        "rule2_repair_loop_monitor": {
+          "description": "修复循环监测",
+          "observation": "连续≥3个迭代周期的intent=repair",
+          "output": "触发repair_loop_alert，作为HG-1建议提交给操作者",
+          "suggested_action": "建议注入探索性任务以打破循环",
+          "no_auto_action": "不自动注入explore信号",
+          "cold_start": "前5个周期默认阈值翻倍(≥6次连续repair才告警)"
+        },
+        "rule3_empty_cycle_monitor": {
+          "description": "空周期监测",
+          "observation": "连续≥5个迭代周期的blast_radius=0(无实际变更)",
+          "output": "触发steady_state_alert",
+          "action": "仅记录告警(不提交HG，因需人工判断收敛vs失效)"
+        }
+      },
+      "health_indicator": {
+        "formula": "health = clamp(0,1, 0.3×freq_score + 0.5×repair_score + 0.2×empty_score)",
+        "range": "0.0-1.0，越低越健康",
+        "input_to": "§3.7.3四级聚合作为普通监测项"
+      },
+      "switches": {
+        "EVENT_HEALTH_ENABLED": "0(默认禁用)",
+        "EVENT_HEALTH_DRY_RUN": "1(默认只观测模式)"
+      }
+    },
+    "design_principles": {
+      "PRINCIPLE_1": {
+        "principle": "只观测，不阻断",
+        "meaning": "检测层产生信号和告警，但不在Loop内插入新闸门。所有信号汇总到HG-1由人一次性阅览",
+        "anti_pattern": "在每轮Loop后弹出'是否确认方向正确？'对话框"
+      },
+      "PRINCIPLE_2": {
+        "principle": "事实优先，解释在后",
+        "meaning": "检测层的第一层信号必须是可计算、可diff、不依赖AI判断的事实量；AI语义标注是附加层，清楚标记为低信任",
+        "anti_pattern": "让AI直接输出'本轮漂移风险：低'作为唯一信号"
+      },
+      "PRINCIPLE_3": {
+        "principle": "覆盖留下痕迹的漂移",
+        "meaning": "检测层只承诺覆盖在结构化记录中留下可观察痕迹的漂移。语义漂移/注意力偏移/标准下降若不留痕迹，明确声明为盲区",
+        "anti_pattern": "声称'覆盖全部漂移风险'"
+      },
+      "PRINCIPLE_4": {
+        "principle": "退化路径内置",
+        "meaning": "每个检测机制都预登记'何时关闭/降级'的条件。避免检测层本身成为新的不可关闭的复杂度",
+        "anti_pattern": "检测产生噪音但无关闭开关"
+      }
+    },
+    "five_signal_types": {
+      "syntactic": {
+        "label": "句法信号",
+        "detects": "格式/结构/schema的偏离",
+        "monitoring_items": [
+          {
+            "item": "输出schema变更",
+            "method": "每轮Loop输出schema hash比较相邻两轮",
+            "threshold": "任意schema结构变更"
+          },
+          {
+            "item": "Prompt模板偏离",
+            "method": "模板指纹匹配——是否使用了规定模板类型",
+            "threshold": "未使用规定模板或模板要素缺失>=2项"
+          },
+          {
+            "item": "文件命名约定违反",
+            "method": "检查新建文件是否匹配Spec S10命名约定",
+            "threshold": "单轮新增文件>=1个不匹配"
+          },
+          {
+            "item": "Dev Log格式错误",
+            "method": "检查必填字段(日期/变更类型/FK/摘要)",
+            "threshold": "单条目缺失>=1必填字段"
+          },
+          {
+            "item": "引用完整性",
+            "method": "检查文档内交叉引用目标是否存在",
+            "threshold": "断链>=1个"
+          }
+        ],
+        "advantage": "零误判（纯计算，不依赖AI）",
+        "disadvantage": "覆盖窄——只检测形式偏离，不检测内容偏离"
+      },
+      "semantic": {
+        "label": "语义信号",
+        "detects": "内容层面的不一致/矛盾/provenance缺失",
+        "trust_level": "低（AI辅助，必须标注）",
+        "monitoring_items": [
+          {
+            "item": "主张矛盾",
+            "method": "对关键主张与Spec/上一轮Retrospect做语义一致性检查（AI辅助）",
+            "threshold": "发现>=1个矛盾"
+          },
+          {
+            "item": "数据/provenance缺口",
+            "method": "检查关键数字/结论是否标注来源",
+            "threshold": "未标注来源的关键主张>=1个"
+          },
+          {
+            "item": "术语漂移",
+            "method": "检查关键术语定义与Spec S1术语表一致性",
+            "threshold": "术语使用与定义偏离>=1处"
+          },
+          {
+            "item": "范围蠕变",
+            "method": "检查本轮产出是否超出Prompt定义范围",
+            "threshold": "新增未授权探索方向>=1个"
+          },
+          {
+            "item": "逻辑跳跃",
+            "method": "检查结论是否有未经论证的前提跳跃（AI辅助，标注信心）",
+            "threshold": ">=1个跳跃且AI信心<80%"
+          }
+        ],
+        "human_judgment_weight": "100%——语义信号触发时人判断权重100%"
+      },
+      "procedural": {
+        "label": "程序信号",
+        "detects": "流程步骤跳过/闸门绕过/checklist遗漏",
+        "monitoring_items": [
+          {
+            "item": "步骤跳过",
+            "method": "检查Prompt定义的必要步骤是否全部执行",
+            "threshold": "缺失>=1个必要步骤"
+          },
+          {
+            "item": "闸门绕过",
+            "method": "检查是否有Spec变更但未触发HG-2",
+            "threshold": "1次绕过即触发（特权信号）"
+          },
+          {
+            "item": "Checklist遗漏",
+            "method": "检查Retrospect/Closure等模板checklist完成率",
+            "threshold": "完成率<80%"
+          },
+          {
+            "item": "审查跳过",
+            "method": "检查规定的外部审查/自我审查是否执行",
+            "threshold": "1次跳过即触发"
+          },
+          {
+            "item": "kill-test未跑",
+            "method": "检查kill-test-first skill是否在指定节点被调用",
+            "threshold": "规定节点未调用"
+          }
+        ],
+        "advantage": "检测方式明确（步骤执行与否是二值的）",
+        "disadvantage": "只检测跳没跳过，不检测做了但做得好不好"
+      },
+      "alignment": {
+        "label": "对齐信号",
+        "detects": "产出与注册意图/规则的偏离",
+        "closest_to": "constitutional audit（宪法审计）——不问'这对不对'，只问'这符不符合注册规则'",
+        "monitoring_items": [
+          {
+            "item": "成功标准偏离",
+            "method": "检查本轮产出是否仍在Spec S3成功标准范围内",
+            "threshold": "触及或偏离成功标准边界"
+          },
+          {
+            "item": "红线逼近",
+            "method": "检查本轮行为是否接近或触及Spec S4红线",
+            "threshold": "接近(距红线一步)或触及"
+          },
+          {
+            "item": "不做什么违反",
+            "method": "检查是否做了Spec S5'明确不做什么'中的事项",
+            "threshold": "1次违反即触发"
+          },
+          {
+            "item": "优先级偏离",
+            "method": "检查本轮投入时间分配与Spec S6优先级一致性",
+            "threshold": "优先级最低任务占>30%耗时"
+          },
+          {
+            "item": "交付物规格偏离",
+            "method": "检查产出格式/内容是否符合Spec S7交付物规格",
+            "threshold": ">=1项不符合"
+          }
+        ]
+      },
+      "performance": {
+        "label": "绩效信号",
+        "detects": "质量指标的趋势性下降",
+        "nature": "滞后指标——反映已发生漂移的后果，非漂移本身。但也是最终裁判：前四类未触发但绩效持续恶化→存在检测层未覆盖的盲区漂移",
+        "monitoring_items": [
+          {
+            "item": "审查通过率下降",
+            "method": "统计最近N个HG-1审查结果分布",
+            "threshold": "连续2个HG-1为'修改后通过'或1个为'驳回'"
+          },
+          {
+            "item": "返工率上升",
+            "method": "统计最近N轮Loop中因方向错误回退的比例",
+            "threshold": "返工率>20%"
+          },
+          {
+            "item": "发现率衰减",
+            "method": "统计最近N次Retrospect新发现数量趋势",
+            "threshold": "连续2次Retrospect发现数为0"
+          },
+          {
+            "item": "AI信心-准确性偏差",
+            "method": "对比AI标注高信心(>80%)判断与实际正确率",
+            "threshold": "高信心判断错误率>20%"
+          },
+          {
+            "item": "审查耗时趋势",
+            "method": "统计人在HG-1的审查耗时",
+            "threshold": "连续2次较基线增加>30%"
+          }
+        ]
+      }
+    },
+    "alert_aggregation": {
+      "principle": "单类信号单一监测项触发不构成告警——多类信号、多个监测项同时触发才升级",
+      "levels": {
+        "绿_正常": {
+          "condition": "所有未触发，或仅句法信号有<=1个孤立触发",
+          "response": "无需动作，信号记入drift ledger备查"
+        },
+        "黄_关注": {
+          "condition": "任意2类信号各触发>=1个监测项，或单类信号触发>=3个监测项",
+          "response": "信号自动汇总到下一HG-1的drift ledger报告，标注'需要人类扫读'"
+        },
+        "橙_警觉": {
+          "condition": "任意3类信号各触发>=1个监测项，或程序/对齐类信号触发>=2个",
+          "response": "在下一HG-1前提前通知人类（非阻断），建议审阅drift ledger摘要"
+        },
+        "红_干预": {
+          "condition": "4-5类信号同时触发，或绩效信号触发+任意其他1类触发，或闸门绕过信号触发",
+          "response": "例外升级：触发额外的人类审查点（HG-1提前），人类裁决是否需回退"
+        }
+      },
+      "rules": {
+        "syntactic_alone": "句法信号单类触发不足以升级到橙/红——可能是格式疏忽",
+        "gate_bypass_privileged": "程序信号中的闸门绕过是特权信号——单独触发即升级到红（绕过Human Gate=对框架最核心信念的违反）",
+        "performance_requires_combo": "绩效信号需与至少一个其他信号类别组合才触发红——防止噪音"
+      }
+    },
+    "rule_retirement_automation": {
+      "purpose": "防止规则只增不减——每次事故/审查/复盘都加规则，不配套退役→大量已过时规则无人删除→狼来了效应",
+      "lifecycle_fields": {
+        "last_triggered": {
+          "meaning": "最近一次触发该规则的会话日期",
+          "example": "2026-06-13"
+        },
+        "dormancy_threshold": {
+          "meaning": "多少个周期未触发后进入休眠审查",
+          "example": "3"
+        },
+        "auto_sunset": {
+          "meaning": "多少个周期未触发后自动标记为建议废弃",
+          "example": "5"
+        },
+        "sunset_action": {
+          "meaning": "废弃时的动作",
+          "options": [
+            "删除",
+            "降级为可选",
+            "合并到父规则"
+          ]
+        },
+        "owner_item": {
+          "meaning": "该规则关联的OPEN-?或Spec组件",
+          "example": "OPEN-1 或 S4"
+        }
+      },
+      "retirement_flow": [
+        "规则登记→每HG-1更新last_triggered",
+        "连续dormancy_threshold周期未触发→休眠审查(HG-1提示人确认:保留→重置计数 | 废弃→执行sunset_action)",
+        "连续auto_sunset周期未触发→自动建议废弃(HG-1强制确认:确认→删除或降级 | 否决→重置计数+记录否决理由)"
+      ],
+      "vs_death_criteria": "补充关系——规则退役是逐条规则的微观清理，死亡判据(§1.5)是整个框架的宏观生存力评估。退役防止规则腐化→死亡判据更可能触达真实问题。"
+    },
+    "adaptive_weight_retirement": {
+      "_added": "v1.5.1",
+      "_section": "§3.7.4.1",
+      "_evidence_level": "[Sp]",
+      "_comment": "自适应权重淘汰——对§3.7.4(规则退役自动化)的补充替代机制。用基于累积性能的动态权重替代'超时未触发→退役'的静态逻辑。非强制替换——操作者可选仅用静态退役、仅用自适应权重、或两者并行。完整规格见_research/框架v1.5.1_新增节草案.md",
+      "mechanism": {
+        "scoring": {
+          "success": "+0.05",
+          "failure": "-0.15",
+          "no_impact": "0.0",
+          "asymmetry_rationale": "失败信息量>成功(非对称)"
+        },
+        "suppression_conditions": {
+          "weight_based": "weight ≤ -0.3 → suppression_candidate (HG确认，不自动移出)",
+          "inertia_based": "连续8次无影响 → inert_candidate (HG确认，不自动移出)"
+        },
+        "context_awareness": "同一资产在不同项目/市场环境下独立维护权重",
+        "configurability": "所有数值[可配置]，首次试跑需敏感性分析"
+      },
+      "vs_static_retirement": "补充替代——新项目先用静态退役(§3.7.4)，积累≥20条事件后考虑启用自适应权重"
+    },
+    "constitutional_audit": {
+      "nature": "周期性、非阻断审查——不插入Hot Path(Loop执行路径)，挂在HG-1议程上",
+      "core_question": "最近N个会话的实际行为，偏离了框架/项目Spec中注册的规则吗？",
+      "distinction_from_existing_reviews": {
+        "HG-1": "审查产出（质量审查）——'产出够好吗？'",
+        "HG-2": "审查变更（变更审批）——'同意这个变更吗？'",
+        "宪法审计": "审查规则一致性（一致性审计）——'行为偏离规则吗？'"
+      },
+      "audit_content": [
+        {
+          "item": "规则违反统计",
+          "detail": "从drift ledger提取最近N个Loop的规则违反:高频违反→可能过严;从未触发→可能死规则;规则矛盾→需人类裁定"
+        },
+        {
+          "item": "行为-注册偏差",
+          "detail": "随机抽查2-3轮Loop对比Prompt约束vs实际执行/Spec质量标准vs实际产出/注册检查清单vs实际完成项。偏差>20%触发黄级"
+        },
+        {
+          "item": "漂移累积度量",
+          "detail": "计算从项目启动到当前HG-1的累计方向变更次数。单里程碑内>3次→高漂移项目→建议缩短HG-1间隔"
+        },
+        {
+          "item": "新增模式登记",
+          "detail": "未被现有规则覆盖但反复出现的行为模式→登记为候选规则(经人类确认后写入Spec或框架)"
+        }
+      ],
+      "output": "宪法审计摘要(≤1页): 本周期规则违反Top3 + 建议修订/废弃规则 + 新候选模式 + 漂移累积趋势(↑/→/↓) + 上次审计建议执行情况"
+    },
+    "closed_loop_curation": {
+      "purpose": "漂移检测的真正价值不在发现漂移，而在把发现转译为框架/Spec的改进。无闭环策展→漂移检测只是报警器→报警疲劳→人忽略。",
+      "decision_tree": {
+        "rule_violated": {
+          "trigger": "规则被违反（对齐信号/程序信号触发）",
+          "paths": {
+            "rule_reasonable_but_not_followed": {
+              "ai_forgot": "在Prompt模板中加固",
+              "human_skipped": "讨论：是时间压力还是规则无意义？",
+              "env_or_tool_limitation": "放宽规则或升级工具"
+            },
+            "rule_impractical_or_too_strict": "修订规则"
+          }
+        },
+        "rule_dormant": {
+          "trigger": "规则休眠（N个周期未触发）",
+          "paths": {
+            "risk_no_longer_exists": "废弃规则",
+            "rule_important_but_detection_broken": "修复检测",
+            "never_hit_scenario": "保留但标注低频"
+          }
+        },
+        "new_pattern": {
+          "trigger": "新行为模式出现（未被现有规则覆盖但反复出现）",
+          "paths": {
+            "benign": "不需要规则，但记入Dev Log备查",
+            "constructive": "注册为新规则（写入Spec或框架）",
+            "destructive": "注册为新规则+配检测机制"
+          }
+        }
+      },
+      "cadence": {
+        "轻量策展": "每轮HG-1随宪法审计一起做——处理单条规则的触发/休眠",
+        "深度策展": "每3-5个里程碑或项目闭合时做——审查整个规则集的结构性健康（系统性冗余/矛盾/覆盖盲区）"
+      },
+      "record_per_curation": [
+        "触发信号（什么漂移/休眠触发）",
+        "策展决策（改了什么、为什么）",
+        "预期效果（改了之后预期什么信号会变）"
+      ]
+    },
+    "monitoring_template": {
+      "name": "DriftDetectionReport",
+      "sections": {
+        "metadata": [
+          "report_id",
+          "project",
+          "milestone",
+          "hg1_date",
+          "period_covered(from_loop/to_loop)",
+          "generated_by",
+          "model_provenance"
+        ],
+        "signal_summary": "五类信号各一个子块(syntactic/semantic/procedural/alignment/performance)，每块含triggers列表/trigger_count/level",
+        "aggregated_alert": "level(绿/黄/橙/红)+rationale(引用§3.7.3规则)+recommended_action",
+        "rule_lifecycle": "规则退役审查数组(rule_id/rule_desc/last_triggered/cycles_dormant/recommendation/reason)",
+        "constitutional_audit": "top_violations/never_triggered_rules/contradictory_rules/new_pattern_candidates/drift_accumulation",
+        "curation_log": "闭环策展记录数组(trigger_signal/decision/target_rule/rationale/expected_effect)",
+        "known_blind_spots": "本次检测已知未覆盖的漂移类型(固定+项目特定)"
+      },
+      "usage_notes": [
+        "signal_summary是核心——AI或脚本按§3.7.2监测项逐项检查后填入",
+        "aggregated_alert是决策辅助——人类扫读此块即可判断是否需要深入审查",
+        "rule_lifecycle是自维护——确保框架规则保持'被使用'的证据",
+        "constitutional_audit是元审查——不是审查产出，而是审查规则本身是否有效",
+        "curation_log是进化记录——框架的每次修改都应有信号来源",
+        "known_blind_spots是诚实声明——至少包含§3.6三类固定盲区+本项目特有检测覆盖缺口"
+      ]
+    },
+    "known_limitations": [
+      "语义漂移不可完全检测（注意力偏移/证据标准下降/默认假设变化可能在所有五类信号中不触发但项目方向已实质性偏离）",
+      "信号噪音比未知（触发阈值基于先验设定未经验证，真实项目中噪音率可能很高需迭代调整）",
+      "检测层自身的维护成本（如每次HG-1需额外>30分钟人类时间→成为它试图解决的问题的一部分）",
+      "AI辅助判断的偏差（语义信号依赖AI判断，AI可能系统性漏报或误报，人与AI的判断标准可能不一致）",
+      "聚合规则未经校准（基于理论构造未经验证，低估或高估多类信号的相关性是已知风险）"
+    ],
+    "exit_conditions": {
+      "noise_too_high": {
+        "threshold": "连续3个HG-1黄及以上采纳率<30%",
+        "action": "调高触发阈值或暂停语义信号（只保留句法+程序+对齐）"
+      },
+      "review_cost_excessive": {
+        "threshold": "连续2个HG-1 drift ledger审查耗时>HG-1总耗时25%",
+        "action": "降级为仅红级上报（黄/橙信号自动归档不呈送人类）"
+      },
+      "no_incremental_value": {
+        "threshold": "连续5个HG-1宪法审计未发现新规则建议且未触发任何规则退役",
+        "action": "宪法审计从每次HG-1降频为每3个HG-1"
+      },
+      "ai_semantic_poor_quality": {
+        "threshold": "语义信号与人类判断一致率<60%（连续3次对比）",
+        "action": "禁用语义信号，退回到只使用句法+程序+对齐信号"
+      }
+    },
+    "meta_on_exit_conditions": "退出条件本身也是规则，受§3.7.4规则退役自动化管理——如N个周期后证明不适用（如阈值太低导致过早退出），也需要策展修订。",
+    "framework_cross_refs": {
+      "§3.6 OPEN-1": {
+        "关系": "父问题",
+        "说明": "§3.7是OPEN-1的操作化方案；§3.6定义缺口和账本机制，§3.7定义检测、响应、度量"
+      },
+      "§1.6 OPEN-1": {
+        "关系": "状态同步",
+        "说明": "退出条件触发或验证指标达标时须同步更新OPEN-1状态"
+      },
+      "§1.5 死亡判据": {
+        "关系": "共享基线",
+        "说明": "绩效信号监测项与死亡判据使用同一套预登记指标（返工率/审查耗时/发现率）"
+      },
+      "§3.2 HG-1": {
+        "关系": "挂载点",
+        "说明": "漂移检测的所有人类接触点（告警/宪法审计/策展）都挂在HG-1议程上，不新增独立闸门"
+      },
+      "§3.4 闸门类型": {
+        "关系": "新增职责",
+        "说明": "HG-1'审查型'闸门基础上新增'宪法审计'子议程；人不只是审查产出质量，也审计规则-行为一致性"
+      },
+      "§10 Dev Log": {
+        "关系": "数据源",
+        "说明": "Dev Log的漏记率、格式完整性是句法信号和程序信号的输入"
+      },
+      "§9.2 独立审查": {
+        "关系": "审查方式",
+        "说明": "宪法审计中AI语义信号的校准应定期由独立模型在隔离上下文中复审（避免检测层自身的漂移）"
+      },
+      "§14 变更记录": {
+        "关系": "登记",
+        "说明": "本节变更已登记到§14 v1.2→v1.3条目"
+      }
+    }
+  },
+  "integration": {
+    "kill_test_first": {
+      "事前否决位": {
+        "layer": "L0 Spec(S4) + L1 Prompt",
+        "trigger": "项目启动+每轮任务",
+        "output": "GO/STOP/REDESIGN"
+      },
+      "预登记": {
+        "layer": "L0 Spec",
+        "trigger": "项目启动后、执行前",
+        "output": "预登记记录"
+      },
+      "先验对标": {
+        "layer": "L1 Prompt",
+        "trigger": "每轮任务前",
+        "output": "对标检查结果"
+      },
+      "魔鬼代言人审查": {
+        "layer": "L3 Workflow(adversarial verify)",
+        "trigger": "关键产出后",
+        "output": "多视角审查报告"
+      },
+      "模型自主执行": {
+        "layer": "L2 Loop",
+        "trigger": "任务执行中",
+        "output": "迭代产物"
+      }
+    },
+    "ars_plugin": {
+      "/ars-plan": {
+        "layer": "L1 Prompt准备"
+      },
+      "/ars-outline": {
+        "layer": "L1 Prompt准备"
+      },
+      "/ars-full": {
+        "layer": "L3 Workflow"
+      },
+      "/ars-reviewer": {
+        "layer": "L3 Workflow(adversarial verify特化)"
+      },
+      "/ars-revision-coach": {
+        "layer": "L3 Workflow"
+      },
+      "/ars-citation-check": {
+        "layer": "L3 Workflow(审查型)"
+      }
+    },
+    "claude_code_primitives": {
+      "CLAUDE.md": "L0 Spec入口文件（项目级）",
+      "memory/": "L0 Spec跨项目存储（用户级）",
+      "/loop": "L2 Loop定时特化",
+      "Workflow工具": "L3 Workflow执行引擎",
+      "Skill工具": "L1 Prompt特化模板",
+      "/session-end": "会话交接标准化执行器 ✅ 已创建 (2026-06-18, ~/.claude/skills/session-end/SKILL.md)",
+      "/effort": "L2/L3资源投入深度控制"
+    }
+  },
+  "templates": {
+    "spec": {
+      "file": "附录A",
+      "sections": 10
+    },
+    "prompt": {
+      "file": "附录B",
+      "types": [
+        "探索型",
+        "执行型",
+        "审查型"
+      ],
+      "common_elements": 6,
+      "escape_hatch_tiers": "v1.3新增分级逃生口L1/L2/L3"
+    },
+    "retrospect": {
+      "file": "附录C",
+      "types": [
+        "轻量版(5节)",
+        "深度版(8节)"
+      ],
+      "minimum_findings": "≥1失效+≥1意外"
+    },
+    "closure_checklist": {
+      "file": "附录D",
+      "categories": 5,
+      "total_items": 13
+    },
+    "session_handoff": {
+      "file": "附录E",
+      "phases": [
+        "Session Start(7项)",
+        "Session End(6项)"
+      ]
+    },
+    "risk_register": {
+      "file": "附录F",
+      "columns": 8,
+      "hg_trigger": "H影响+M及以上概率"
+    },
+    "dev_log_main": {
+      "file": "附录G",
+      "views": [
+        "文件树地图(横向)",
+        "变更时间轴(纵向)"
+      ],
+      "rules": "精简索引，每条变更一行+FK链接"
+    },
+    "dev_log_branch": {
+      "file": "附录G",
+      "sections": [
+        "基本信息",
+        "症状",
+        "根因",
+        "变更内容",
+        "影响分析",
+        "教训"
+      ],
+      "format_inherited_from": "ETF V3.6代码头部Bug记录格式"
+    },
+    "drift_detection_report": {
+      "file": "§3.7.7",
+      "name": "DriftDetectionReport schema",
+      "v1.3新增": "漂移检测层结构化输出模板——信号汇总/告警聚合/规则退役/宪法审计/闭环策展/已知盲区"
+    }
+  },
+  "external_references": {
+    "positioning_v1.3": {
+      "_comment": "v1.2修正→v1.3保留。价值不在原创，在裁剪+集成到个人AI协作场景。对应md §13.1/§13.1.1",
+      "claim": "未找到完全同构于本框架的个人AI协作轻量组合（非'别人没有'）",
+      "value": [
+        "个人化",
+        "轻量化",
+        "跨层集成",
+        "AI可执行化"
+      ],
+      "external_correspondences": {
+        "L4_Retrospect": "Scrum Sprint Retrospective(团队会议) / SRE blameless postmortem → 裁剪为个人+AI模板化回顾+Spec写回",
+        "L5_Closure": "PMI/PRINCE2组织级关闭流程(验收/预算/资源释放) → 裁剪为个人项目轻量检查清单+归档规范",
+        "Dev_Log": "Git log / ADR / Keep a Changelog / decision log → 集成为独立md+FK导航+时间轴主索引+全项目覆盖",
+        "Drift_Detection": "v1.3新增——headroom CacheAligner detector-only哲学 → 适配为语义治理层的连续漂移监测层(§3.7)。标注为'可借鉴的架构原则'，未经跨域验证，不等同于已验证的通用方法论。"
+      },
+      "personal_vs_organizational": {
+        "适用规模": {
+          "组织级": "多团队、正式利益相关方",
+          "本框架": "个人/小团队"
+        },
+        "触发者": {
+          "组织级": "项目经理+委员会/Scrum Master",
+          "本框架": "人或AI建议+Human Gate"
+        },
+        "核心关切": {
+          "组织级": "验收签字、预算结算、资源释放",
+          "本框架": "防无疾而终、知识提取、可重启性、防AI漂移(v1.3新增:连续漂移检测)"
+        },
+        "产出": {
+          "组织级": "关闭报告/会议纪要/移交文档",
+          "本框架": "终期总结+评估分析+Retrospect+memory写回+Dev Log+DriftDetectionReport(v1.3)"
+        }
+      }
+    },
+    "aligned_with_industry": [
+      "Spec/SDD Constitution",
+      "HITL Human Gates",
+      "Multi-agent orchestration patterns",
+      "Scrum Retrospective",
+      "SRE postmortem",
+      "ADR",
+      "Keep a Changelog",
+      "PMI/PRINCE2 Closure",
+      "headroom detector-only philosophy(v1.3)"
+    ],
+    "inspirations": {
+      "SDD_community": {
+        "source": "DeepLearning.AI, GitHub (danielrosehill, heltondoria)",
+        "concept": "Constitution + Feature Spec + Steering 三件套，spec与代码一起版本化",
+        "status": "已内化——L0 Spec结构与之高度一致"
+      },
+      "AWS_GenAI_Atlas": {
+        "source": "AWS (2025.10)",
+        "concept": "三类别+五种编排模式+HITL三阶段",
+        "status": "已内化——L3模式库+L-H闸门"
+      },
+      "Conversation_Routines": {
+        "source": "Robino, arXiv 2501.11613 (2025)",
+        "concept": "结构化system prompt嵌入业务逻辑+IF/THEN控制流+用户确认协议",
+        "status": "可深化——Prompt模板中的条件逻辑"
+      },
+      "Constraint_Decoupling": {
+        "source": "Capital One, arXiv (2026.01)",
+        "concept": "任务描述和约束分离为checklist提升合规82%→91.5%",
+        "status": "已采纳——Prompt模板已独立'否决条件'栏"
+      },
+      "VIDE_Framework": {
+        "source": "Politecnico di Milano (2025)",
+        "concept": "Architect→Builder→Inspector三Agent, SUS 84.4/100",
+        "status": "L3 adversarial verify与之类似"
+      },
+      "Production_Guardrails": {
+        "source": "n8n/Dataciders (2026.04)",
+        "concept": "四层guardrail(Input→Tool→Output→Process), ≤15 tools per agent",
+        "status": "尚未覆盖——可作为未来跨层关切"
+      },
+      "Visual_Para_Thinker": {
+        "source": "Xu et al., arXiv 2602.13310 (2026.02)",
+        "concept": "首个MLLM并行推理框架——Pa-Attention路径隔离+LPRoPE，证实纯纵向推理遇探索高原+路径隔离不足致伪多样性",
+        "status": "已内化——为L2 Loop无效循环退出和L3 adversarial verify路径隔离提供独立理论验证"
+      },
+      "headroom_trio": {
+        "source": "headroom三组件 (CacheAligner/SmartCrusher/CCR), MCP工具, 2026-06-13对标分析",
+        "concept": "(1) detector-only哲学(检测与处置解耦→§3.7漂移检测层架构原则来源) (2) 多信号优先级排序(→Workflow模式选择参照) (3) 可逆压缩与分级恢复(→§4.3分级逃生口方法论启发)",
+        "status": "v1.3已内化——三项均标注为'可借鉴的架构原则'，未经跨域验证，不等同于已验证的通用方法论。详见配套对标文档。经ChatGPT-5.5独立裁决(Codex CLI, 710K token)条件采纳。"
+      }
+    },
+    "future_directions": [
+      "Guardrail层（四层防护）",
+      "权限分级 Never/Always/Ask",
+      "Durable execution（跨会话断点续跑）",
+      "Agent版本管理（versioning/canary/rollback）",
+      "Golden set回归测试"
+    ],
+    "project_codenames": {
+      "_comment": "v1.6.4 发布前订正（2026-06-23）新增。对应 md §13.1.2 项目代号说明。代号是框架方法论的证据来源，个人项目案例库不随框架公开发布，此处仅作可理解性锚点。",
+      "note": "这些代号是框架方法论的证据来源，个人项目的案例库不随本框架公开发布，此处仅作可理解性锚点。",
+      "codenames": [
+        {
+          "code": "prompt-tdd",
+          "desc": "作者的 prompt 工程对照实验个人项目",
+          "case_library_public": "否（仅写回结论）"
+        },
+        {
+          "code": "形态匹配",
+          "desc": "已封存的金融形态识别个人项目",
+          "case_library_public": "否"
+        },
+        {
+          "code": "BDC2026",
+          "desc": "某数据竞赛项目",
+          "case_library_public": "否"
+        },
+        {
+          "code": "并购重组",
+          "desc": "并购重组案例研究个人项目（8 阶段流水线）",
+          "case_library_public": "否"
+        },
+        {
+          "code": "ETF 项目 V3.6",
+          "desc": "某 ETF 量化项目的结构化变更日志实践来源",
+          "case_library_public": "否"
+        },
+        {
+          "code": "PocketFlow",
+          "desc": "外部开源项目（100 行核心 + 分难度 cookbook）",
+          "case_library_public": "是（外部）"
+        },
+        {
+          "code": "GitNexus",
+          "desc": "外部开源项目（代码知识图谱工具）",
+          "case_library_public": "是（外部）"
+        },
+        {
+          "code": "Evolver",
+          "desc": "外部论文项目（arXiv:2604.15097）",
+          "case_library_public": "是（外部）"
+        },
+        {
+          "code": "Small_Scale",
+          "desc": "外部论文项目（ICLR 2026）",
+          "case_library_public": "是（外部）"
+        }
+      ]
+    }
+  },
+  "decisions_log": {
+    "date": "2026-06-10",
+    "total_decisions": 21,
+    "summary": {
+      "1_Spec变更权限": "不区分大小改——所有变更走HG-2",
+      "2_Loop收敛分档": "探索8/3, 执行5/2, 修复3/2",
+      "3_HG1触发频率": "量化每轮回测, 学术每章, 工程每模块",
+      "4_AdversarialVerify阈值": "常规≥2/3, 关键≥3/5, 快速≥1/2",
+      "5_Prompt模板分化": "三种——探索型/执行型/审查型",
+      "6_Loop日志": "仅记关键转折点",
+      "7_Workflow升级触发": "三条件——连续2轮HG-1驳回/遗漏关键维度/单次失败根因可能是方案不够多样",
+      "8_LoopUntilDry_K值": "K=2",
+      "9_Retrospect需HG": "需要——AI草稿→人确认后写回",
+      "10_Retrospect模板分化": "分深度和轻量两版",
+      "11_Retrospect最小发现数": "至少1失效+1意外，找不到标注原因",
+      "12_替代方案证据门槛": "三项全满足——可验证公开记录+同等或更严格标准+独立模型确认",
+      "13_归档路径": "三级分层——archive/+code/+data/raw/",
+      "14_Memory保留": "永久保留，更新时效标注，不删除",
+      "15_可复现性": "按项目类型分档（学术/量化严格，工程/探索最低）",
+      "16_评估指标集": "按类型预设默认集",
+      "17_评估分工": "三层互补——AI自评+独立模型+人类",
+      "18_风险触发HG": "H影响+M及以上概率",
+      "19_会话交接": "做成/session-end skill手动调用",
+      "20_Memory时效性": "30天自动提醒需验证",
+      "21_NextSteps格式": "标准化——动词开头+文件/命令+优先级+依赖"
+    }
+  },
+  "review_chain": {
+    "_comment": "v1.2新增，v1.3保留——框架审查链。注意独立性：框架v1.1+审查提示词+再审查②均由DeepSeek-v4-pro(Claude CLI)生成=作者一侧；真正独立于创作的只有ChatGPT-5.5和Opus 4.8",
+    "authorship": {
+      "框架v1.1三件": "Claude Code CLI / DeepSeek-v4-pro",
+      "ChatGPT审查提示词": "Claude Code CLI / DeepSeek-v4-pro",
+      "note": "同一模型身兼框架作者+提示词作者+再审查者三职"
+    },
+    "two_houses": {
+      "_comment": "按CLI栈分两个house，决定独立性",
+      "Claude_Code_CLI_house": {
+        "shares": "同一套memory/与CLAUDE.md",
+        "members": [
+          "DeepSeek-v4-pro=框架作者/提示词/再审查②",
+          "Opus 4.8=再再审查④/本版编辑"
+        ]
+      },
+      "Codex_CLI_house": {
+        "shares": "独立栈，不共享上面的memory",
+        "members": [
+          "ChatGPT-5.5=审查①/回应③/headroom对标独立裁决(v1.3)"
+        ]
+      },
+      "implication": "唯一站在Claude house外的独立声音是ChatGPT(Codex house)；Opus(④)与框架作者同在Claude house共享memory→对OPEN-1的背书带house内偏置"
+    },
+    "chain": [
+      {
+        "step": 1,
+        "harness": "Codex CLI",
+        "model": "ChatGPT-5.5",
+        "role": "独立审查",
+        "independent_of_framework": true,
+        "verdict": "8/10（再审查评分）；7判断+结构性遗漏+内部矛盾+过度工程+概念模糊+死亡判据+Top3"
+      },
+      {
+        "step": 2,
+        "harness": "Claude Code CLI",
+        "model": "DeepSeek-v4-pro",
+        "role": "再审查（实为作者自辩，非独立）",
+        "independent_of_framework": false,
+        "verdict": "给原审查8/10；4异议+4盲点+2问题；提出缓慢漂移(=作者对自身框架的自我批评)"
+      },
+      {
+        "step": 3,
+        "harness": "Codex CLI",
+        "model": "ChatGPT-5.5",
+        "role": "对再审查的回应",
+        "independent_of_framework": true,
+        "verdict": "接受大部分校准，保留4异议；选择性接战——未接战OPEN-1"
+      },
+      {
+        "step": 4,
+        "harness": "Claude Code CLI",
+        "model": "Opus 4.8",
+        "role": "再再审查+本版编辑",
+        "independent_of_framework": true,
+        "shares_house_with_author": true,
+        "verdict": "裁定回应'选择性接战'；但承认OPEN-1佐证偏弱(作者自识+同house背书,独立外部ChatGPT未佐证且HG关切方向相反)"
+      },
+      {
+        "step": 5,
+        "harness": "Codex CLI",
+        "model": "ChatGPT-5.5",
+        "role": "headroom对标三文档独立裁决 (v1.3)",
+        "independent_of_framework": true,
+        "verdict": "2026-06-13, 710K token。条件采纳Loop Drift Ledger(关键约束:只覆盖留下可观察痕迹的漂移+不新增阻断只新增观测)+条件采纳分级逃生口(Level 2限缩为可逆准备)+判决headroom应标注为可借鉴的架构原则。DeepSeek/ChatGPT方向性分歧已调和(交集=新增观测不新增阻断)。§3.7在此裁决基础上正式化。"
+      }
+    ],
+    "open1_corroboration_status": "v1.3增强——ChatGPT-5.5独立裁决(2026-06-13)条件采纳+分歧调和(交集=新增观测不新增阻断)。但仍未达独立交叉确认——§3.7监测层的实际有效性/噪音率/维护成本均未经验证。最需零卷入人类verify(裁决'闸门太多'vs'漂移没被覆盖')。",
+    "governance_note": "整链全为AI+用户(人类,方向把控)。框架作者=提示词作者=再审查者=DeepSeek-v4-pro→再审查②是自辩非独立。最需要的下一步不是再加同谱系AI审查,而是零卷入人类专家verify(裁决'闸门太多'vs'漂移没被覆盖')。框架'AI内部闭环≠人类审查'信念被审查链自身局限(作者多次自审+独立声音不交叉)所印证。"
+  },
+  "provenance_notes": {
+    "gitnexus_v1_5": "[I] 模式结构从GitNexus源码提取但GitNexus源文件未包含在本框架审查文件集中; R1/R2/R3审查报告存在于../GitNexus-analysis/但未随框架v1.5分发。框架声称的GitNexus runner.ts/types.ts/PR Swarm Review结构应在使用前对照源仓库独立验证。",
+    "evolver_v1_5_1": "[Sp] v1.5.1新增四节的思想源于Evolver项目(arXiv:2604.15097)但受限于: retained analyses非RCT、无统计推断、单模型家族(Gemini 3.1)、单任务域(科学代码求解)、核心代码混淆(obfuscation_wrapper.py)。Evolver综合评分4.1-4.2/10(两轮收敛Δ0.1)。DeepSeek+Qwen两轮审查在7/7核心事实上完全收敛(0证伪)。方法论可靠性6.5/10(受混淆阻挡)。四节均标注[Sp]，升级需独立试跑验证。审查报告:../Evolver-analysis/。",
+    "evidence_level_self_application": "[J] v1.5+v1.5.1新增章节的证据类型标注基于作者判断, 未经独立审查者逐条校准。v1.5.1四节经Codex ChatGPT-5.5 R4审查(7.2/10)验证了结构合理性但行为有效性仍为[Sp]。建议下一轮审查时独立标注对比。",
+    "pocketflow_v1_5_3": "[Sp] v1.5.3新增三节(§1.7/§9.9/附录H)的思想源于PocketFlow项目(../PocketFlow-analysis/)的三轮独立分析. B1(最小核心+示例外挂)和B2(难度分层)的可迁移性经DeepSeek/ChatGPT-5.5/GLM-5.2三方确认; 反模式H.2-H.4的案例事实经源码直接验证[S]，可迁移性经≥2后端确认[J]. 但在本框架场景中的行为有效性/读者反馈/反模式触发频率均待试跑验证. PocketFlow分析报告和Methodology_Asset_Conversion.md存在于PocketFlow-analysis目录下."
+  },
+  "evidence_classification": {
+    "_added": "v1.5 §9.6",
+    "taxonomy": {
+      "S": {
+        "label": "Source-verified",
+        "description": "直接读取源文件/数据确认",
+        "confidence": "high_for_static_facts"
+      },
+      "E": {
+        "label": "External-verified",
+        "description": "对照独立外部数据源确认",
+        "confidence": "high_depending_on_source_quality"
+      },
+      "I": {
+        "label": "Inferred",
+        "description": "从已验证证据推理得出",
+        "confidence": "medium"
+      },
+      "J": {
+        "label": "Expert_judgment",
+        "description": "基于领域经验, 无直接证据锚定",
+        "confidence": "medium_low"
+      },
+      "Sp": {
+        "label": "Speculative",
+        "description": "基于有限信息的猜想/预测",
+        "confidence": "low"
+      }
+    },
+    "usage_rules": [
+      "关键声称必须标注",
+      "[J]/[Sp]由独立审查者验证(非作者自审)",
+      "[I]推断链可从[S]/[E]前提重建",
+      "未验证声称列入清单+标注验证方式",
+      "[Sp]不进入执行摘要结论句"
+    ],
+    "typical_distribution_target": {
+      "S": "50-70%",
+      "E": "10-20%",
+      "I": "10-20%",
+      "J": "5-10%",
+      "Sp": "0-5%"
+    },
+    "distribution_note": "[J] 分布为启发式目标, 非经验确立",
+    "self_application_status": "[J] v1.5+v1.5.1+v1.5.3新增章节的证据类型标注基于作者判断, 未经独立审查者逐条校准. v1.5.1四节经Codex ChatGPT-5.5 R4审查(7.2/10)验证了结构合理性但行为有效性仍为[Sp]. v1.5.3三节(§1.7/§9.9/附录H)均标注[Sp]待试跑验证."
+  },
+  "experience_injection_budget": {
+    "_added": "v1.5.1",
+    "_section": "§9.7",
+    "_evidence_level": "[Sp]",
+    "_comment": "经验注入上下文预算规则——跨层关切。约束向AI上下文注入的经验摘要的格式和长度。只约束注入层(compact_view≤500字符)，不约束存储层(完整REO存档/事件日志/审查报告)。完整规格见_research/框架v1.5.1_新增节草案.md",
+    "sub_rules": {
+      "rule1_length_cap": {
+        "description": "注入长度上限",
+        "threshold": "单条经验摘要≤500字符[可配置:MAX_EXPERIENCE_INJECTION_CHARS]",
+        "overflow_handling": "超限须生成compact_view，不得直接截断"
+      },
+      "rule2_structured_encoding": {
+        "description": "结构化编码优先",
+        "format": "默认JSON({\"signal\":\"X\",\"confidence\":0.85,\"context\":\"Y\",\"source\":\"Z\"})，非自然语言"
+      },
+      "rule3_history_compression": {
+        "description": "历史压缩",
+        "injection_layer": "仅保留最近N次事件compact_view(N默认20)+统计摘要",
+        "storage_layer": "保留全量"
+      }
+    },
+    "upgrade_path": "[Sp]→[J]需完成§9.7子规则4的量化场景A/B测试(30因子×3重复×双臂，配对Wilcoxon+bootstrap CI+hold-out+量化风控指标)"
+  },
+  "research_experience_objects": {
+    "_added": "v1.5.1",
+    "_section": "§9.8",
+    "_evidence_level": "[Sp]",
+    "_comment": "研究经验对象(REO)——跨层关切。结构化的经验存储和检索机制，替代非结构化的'每次对话后写memory summary'模式。分存储层(完整JSON存档)和注入层(compact_view≤500字符)。完整规格见_research/框架v1.5.1_新增节草案.md",
+    "object_types": {
+      "validation_rule": {
+        "purpose": "可跨项目复用的方法论规则",
+        "storage": "reo/rules/rule_*.json"
+      },
+      "success_snapshot": {
+        "purpose": "具体研究步骤的快照",
+        "storage": "reo/snapshots/snap_*.json"
+      },
+      "audit_record": {
+        "purpose": "每次实验的完整记录",
+        "storage": "reo/events.jsonl(append-only)"
+      }
+    },
+    "key_mechanisms": {
+      "json_schema": "正式JSON Schema($schema/required/enum/pattern)",
+      "promotion_pipeline": "Audit→Snapshot→Rule(含hypothesis身份匹配、跨项目引用计数、冲突检测)",
+      "kill_test_collaboration": "审计记录通过pre_registration_id引用预注册，kill_condition是outcome判断的唯一source of truth",
+      "human_gate": "所有晋升需操作者手动确认；冲突裁决HG-2人工处理"
+    },
+    "implementation_phases": {
+      "phase_0": "事件schema",
+      "phase_1": "最小可用+validator",
+      "phase_2": "半自动",
+      "phase_3": "按需推荐"
+    },
+    "review_status": "结构设计已完成(经Codex 7.2/10审查)，量化场景的行为有效性待试跑验证"
+  },
+  "review": {
+    "multi_round_orchestration": {
+      "_added": "v1.5",
+      "_section": "§9.2",
+      "fast_track": {
+        "for": "已习惯在多个模型之间切换做审查的用户",
+        "skip": [
+          "触发条件表",
+          "后端切换判据矩阵",
+          "维度互补设计原则全文"
+        ],
+        "three_rules": [
+          "每轮聚焦不同维度（不重叠）",
+          "先冷读对象再对照前轮报告（防锚定）",
+          "三轮AI审查后仍有未解决分歧→升级至人类审查"
+        ],
+        "note": "其他编排细节是为第一次尝试多后端审查的人准备的——你已经在做了"
+      },
+      "trigger_conditions": [
+        {
+          "condition": "审查对象复杂度高（多维度、长文档）",
+          "action": "强烈建议多轮"
+        },
+        {
+          "condition": "第一轮发现 ≥ 3 个需修正项",
+          "action": "必须第二轮"
+        },
+        {
+          "condition": "前两轮为同一后端",
+          "action": "强烈建议第三轮换后端"
+        },
+        {
+          "condition": "三轮后仍有需修正项",
+          "action": "暂停，改由人类审查"
+        }
+      ],
+      "backend_switching": {
+        "R1": "任一可用后端（初始化基线）",
+        "R2": "可与R1相同（维度不重叠时仍可互补）",
+        "R3": "必须与R1/R2不同（前两轮同后端已达边际收益）",
+        "R4_plus": "不推荐（三轮AI审查的边际收益递减）"
+      },
+      "dimension_principles": [
+        "轮次间维度不重叠",
+        "先冷读后对照前轮报告（防锚定）",
+        "从硬到软：先事实/数据/一致性，再判断/决策/叙事",
+        "末轮做meta分析：综合前几轮发现"
+      ],
+      "human_escalation": "三轮AI审查后仍有≥2未解决分歧→升级至人类审查",
+      "case_study": "GitNexus分析项目: R1 ChatGPT-5.5(事实+结构) → R2 ChatGPT-5.5(过程+认知) → R3 Kimi-K2.7-Code(决策+竞争+meta)",
+      "evidence_level": "[I] 触发条件和编排原则从三轮实战推断，快通道设计经Qwen R5跨后端审查验证"
+    }
+  },
+  "framework_architecture_principle": {
+    "_section": "§1.7",
+    "_added": "v1.5.3",
+    "_evidence_level": "[Sp]",
+    "_source": "PocketFlow B1资产 '最小核心+示例外挂架构', 经DeepSeek/ChatGPT-5.5/GLM-5.2三轮独立确认可迁移性 [PocketFlow方法论转化，2026-06-18]",
+    "_comment": "框架自身的架构原则：定义核心(主文档强制规则)vs外挂(配套目录参考实现)的区分标准。防止两类根本性误用：把参考实现当强制规则，或把强制规则当可选附录跳过。",
+    "core_definition": {
+      "description": "主文档(本文件)——框架的canonical source of truth，不等于每句话都强制",
+      "minimum_mandatory_core": [
+        "七层+四跨层关切定义(§1.3速览表)",
+        "强制启用清单(§1.4最低强制版列): S1-S4/HG-0/HG-1/HG-3/Workflow三模式/Dev Log单时间轴",
+        "死亡判据(§1.5): 框架自身有效性的可测量判定标准",
+        "闸门触发条件与决策规则(§3.2-§3.5)",
+        "逃生口规则(§4.3+附录B): 工具/数据不可用时停，不用替代数据",
+        "闭合条件与分档(§8+§8.8)",
+        "可复现性/评估/会话交接的最低标准(§9)"
+      ],
+      "normative_reference": "[Sp]推测机制(§3.7.0/§9.7/§9.8)、模板附录A-G、变更记录§14、候选profile(§3.7.2.6)——在主文档中以便查阅，标注了证据等级和启用条件",
+      "navigation_and_meta": "§9.9、§13、本文档元数据——辅助读者高效使用框架，不产生合规义务",
+      "core_characteristic": "有合规牙齿——违反它会被框架的死亡判据或审查标准捕获。核心不回答'可以怎么做'，只回答'必须怎么做'和'什么情况下可以豁免'"
+    },
+    "external_plugins": {
+      "description": "配套目录提供场景化的应用模板、参考实现和治理记录。不是强制规则——'这里有已验证的做法，你可以直接用、改、或参考后自己设计'",
+      "directories": {
+        "_reviews": {
+          "role": "独立审查报告与提示词存档",
+          "analogy": "审查类cookbook(如pocketflow-judge)",
+          "usage": "做独立审查时参考提示词结构和评分维度；不要求每个项目产出等量审查"
+        },
+        "_research": {
+          "role": "对标分析、版本草案、方法论研究",
+          "analogy": "设计文档类cookbook(如各cookbook的docs/design.md)",
+          "usage": "需要理解某条原则的'为什么'时查阅；不要求每个项目做同等深度的对标研究"
+        },
+        "_protocols-and-tools": {
+          "role": "协议包、执行手册、verify工具",
+          "analogy": "工具集成类cookbook(如pocketflow-mcp)",
+          "usage": "执行特定协议时按手册操作；不要求每个项目跑全部协议"
+        },
+        "_archive": {
+          "role": "旧版归档——被取代但保留供追溯",
+          "analogy": "N/A(框架治理特有)",
+          "usage": "查历史版本或旧审查结论时翻阅；日常不读"
+        }
+      },
+      "plugin_characteristic": "无合规牙齿——跳过它不会触发死亡判据或导致审查FAIL。外挂的价值在于'别人踩过的坑你不用再踩'，而非'你必须这样踩'"
+    },
+    "distinction_rules": {
+      "description": "三条判定规则决定一项内容应进入核心文档还是配套目录",
+      "rules": [
+        {
+          "criterion": "普遍性",
+          "core": "任何项目类型(量化/学术/工程/探索)都适用",
+          "external": "仅特定类型或特定阶段适用"
+        },
+        {
+          "criterion": "强制性",
+          "core": "不遵守会导致框架死亡判据触发或审查FAIL",
+          "external": "参考实现，不遵守仅损失效率而非合规"
+        },
+        {
+          "criterion": "稳定性",
+          "core": "跨版本稳定，修改需走HG-2(Spec变更闸门)",
+          "external": "可按需增删，新增/删除走Dev Log记录即可"
+        }
+      ],
+      "boundary_default": "当一项内容无法确定该进核心还是外挂时，默认进外挂。理由：从外挂升级到核心只需一次编辑(且有HG-2闸门把关)，从核心移除到外挂则需要证明'之前的强制要求是错的'——成本不对称"
+    },
+    "anti_patterns": {
+      "description": "以下四种误用模式是本框架最常见的'使用失败'来源——不是框架有bug，是读者用错了材料层次",
+      "list": [
+        {
+          "id": "A1",
+          "pattern": "把外挂当核心读",
+          "manifestation": "打开_reviews/中的某份审查报告，以为其中的评分维度是强制模板，逐条套用到自己的项目审查",
+          "consequence": "过度审查——把参考实现当合规清单，审查耗时膨胀但无增量价值",
+          "correction": "审查维度以主文档§9.2为准；_reviews/中的报告是'某次审查怎么做的'，不是'每次审查必须怎么做'"
+        },
+        {
+          "id": "A2",
+          "pattern": "把核心当外挂跳过",
+          "manifestation": "只读§1.4的'30%复杂度就能跑'，跳过§1.5死亡判据、§3.2闸门触发条件、§4.3逃生口规则",
+          "consequence": "用了框架的'轻量'部分但没装刹车——项目跑偏时无退出机制",
+          "correction": "最低强制版不是'你挑着读'，而是明确的固定清单：S1–S4 + HG-0/1/3 + Workflow三模式 + 逃生口"
+        },
+        {
+          "id": "A3",
+          "pattern": "把配套目录当可选装饰",
+          "manifestation": "从不查阅_reviews/或_protocols-and-tools/，所有审查从零设计、所有协议从零起草",
+          "consequence": "重复造轮子——框架已提供审查SOP(methodological-review-sop.md)和验证包(_protocols-and-tools/)，不用等于浪费已沉淀的方法论资产",
+          "correction": "遇到'怎么做独立审查'→先查_reviews/中的既往报告和SOP；遇到'怎么验证框架合规'→先查_protocols-and-tools/"
+        },
+        {
+          "id": "A4",
+          "pattern": "外挂膨胀为核心",
+          "manifestation": "在配套目录中发现有用的参考实现后，要求把它写进主文档成为强制规则",
+          "consequence": "核心膨胀——主文档从方法论原则退化为操作手册合集，失去'最小核心'的可维护性",
+          "correction": "好的参考实现应留在配套目录并做好索引(让需要的人能找到)，而非升级为强制规则(让所有人都必须读)"
+        }
+      ],
+      "a4_special_warning": "本条原则本身(§1.7)也在它自己的管辖范围内——描述'最小核心'原则的节不应膨胀为核心中最长的节。如果未来发现本节内容需要拆分(例如反模式表移到配套目录、仅保留区分标准)，应同样适用'默认外挂'的边界判定规则。",
+      "demo_evidence": {
+        "description": "本原则并非纯理论推导。框架两次协议执行的对照提供了初步证据(未核实原始数据，据用户报告)",
+        "without_explicit_core_vs_plugin": "试读者不知从哪里开始读，2/4项任务完成",
+        "with_navigation_aid": "有准索引(成熟度评估表作为间接导航)后：4/4项任务完成",
+        "direction": "两次对照的方向一致——显式的组织说明降低了新读者的认知负担和导航成本",
+        "evidence_level": "[Sp]——此证据仅为N=2两次试读的对照，未达方法论意义的'已验证'，待更多试读确认"
+      }
+    },
+    "relationship_with_other_sections": {
+      "§1.4_usage_tiers": "§1.4管用多少(使用强度分档)，§1.7管在哪找(核心vs外挂组织逻辑)。两者正交互补——§1.4回答'30%复杂度就能跑——是哪30%'，§1.7回答'那30%就在这份主文档里，其余70%在配套目录'",
+      "§9.9_reading_navigation": "§1.7说明框架材料分布在主文档和4个配套目录，§9.9在此结构上叠加难度分层导航——§1.7管'在哪找'，§9.9管'从哪开始读'",
+      "§1.6_open_items": "§1.7描述了框架材料自身的组织逻辑，其中配套目录_reviews/和_protocols-and-tools/的部分内容与OPEN-4(最低上手时间未测)直接相关"
+    }
+  },
+  "reading_navigation": {
+    "_section": "§9.9",
+    "_added": "v1.5.3",
+    "_evidence_level": "[Sp]",
+    "_source": "PocketFlow B2资产——cookbook难度分层体系(☆☆☆→★★★) [PocketFlow方法论转化，2026-06-18]",
+    "_comment": "跨层关切——降低框架入门门槛，帮助不同背景的读者按难度梯度选择入口路径，而非被迫逐节通读。难度标注为[Sp]推测级，基于框架设计者单一视角，待读者反馈校准。",
+    "difficulty_levels": {
+      "☆☆☆_entry": {
+        "meaning": "概念定义/清单类，可独立阅读，无前置依赖",
+        "typical_reader": "无需AI协作经验"
+      },
+      "★☆☆_basic": {
+        "meaning": "操作流程类，需理解AI协作基本流程",
+        "typical_reader": "至少用AI辅助写过代码或文档"
+      },
+      "★★☆_advanced": {
+        "meaning": "机制设计类，需实际项目经验支撑理解",
+        "typical_reader": "至少完整跑过1个AI协作项目"
+      },
+      "★★★_expert": {
+        "meaning": "方法论/元层次类，需方法论背景",
+        "typical_reader": "理解框架自身的证据分类体系(§9.6)或等效训练"
+      }
+    },
+    "chapter_difficulty_map": [
+      {
+        "chapter": "§1 框架总览",
+        "difficulty": "☆☆☆",
+        "type": "概念定义",
+        "timing": "所有人最先读"
+      },
+      {
+        "chapter": "§2 L0 Spec",
+        "difficulty": "☆☆☆",
+        "type": "清单/模板",
+        "timing": "紧随§1，可直接套用"
+      },
+      {
+        "chapter": "§3 L-H Human Gate",
+        "difficulty": "★☆☆",
+        "type": "操作流程",
+        "timing": "开始第一个项目前"
+      },
+      {
+        "chapter": "§4 L1 Prompt",
+        "difficulty": "★☆☆",
+        "type": "操作流程",
+        "timing": "开始第一个项目前"
+      },
+      {
+        "chapter": "§10 Dev Log",
+        "difficulty": "★☆☆",
+        "type": "操作流程",
+        "timing": "可独立使用，随时查阅"
+      },
+      {
+        "chapter": "§5 L2 Loop",
+        "difficulty": "★★☆",
+        "type": "机制设计",
+        "timing": "跑完首个项目后精读"
+      },
+      {
+        "chapter": "§6 L3 Workflow",
+        "difficulty": "★★☆",
+        "type": "机制设计",
+        "timing": "需要多Agent编排时"
+      },
+      {
+        "chapter": "§7 L4 Retrospect",
+        "difficulty": "★★☆",
+        "type": "机制设计",
+        "timing": "项目至少完成一个里程碑后"
+      },
+      {
+        "chapter": "§8 L5 Closure",
+        "difficulty": "★★☆",
+        "type": "机制设计",
+        "timing": "项目收尾阶段"
+      },
+      {
+        "chapter": "§9.1-9.5 操作性跨层关切",
+        "difficulty": "★★☆",
+        "type": "操作规范",
+        "timing": "跑完首个项目后精读"
+      },
+      {
+        "chapter": "§9.6-9.8 方法论跨层关切",
+        "difficulty": "★★★",
+        "type": "方法论/元层次",
+        "timing": "理解基础工作流后精读"
+      },
+      {
+        "chapter": "§9.9 阅读导航",
+        "difficulty": "☆☆☆",
+        "type": "导航工具",
+        "timing": "任何人首次阅读框架前"
+      },
+      {
+        "chapter": "§11 与现有系统集成",
+        "difficulty": "★☆☆",
+        "type": "概念对照",
+        "timing": "按需查阅"
+      },
+      {
+        "chapter": "§12 附录A-G(模板/清单)",
+        "difficulty": "☆☆☆",
+        "type": "模板/清单",
+        "timing": "首次使用框架时直接套用"
+      },
+      {
+        "chapter": "§12 附录H(反模式)+§13-14",
+        "difficulty": "★★☆",
+        "type": "反模式/对标/变更",
+        "timing": "按需查阅"
+      }
+    ],
+    "reading_paths": {
+      "A_minimal_start": {
+        "audience": "首次接触框架、想立刻开跑",
+        "order": "§1 → §2 → 按需跳至目标章节",
+        "estimated_time": "15-20 min"
+      },
+      "B_standard_practice": {
+        "audience": "已有AI协作经验、想系统化",
+        "order": "§1 → §2 → §3 → §4 → §10 → §5(轻量版) → §8.8(闭合分档)",
+        "estimated_time": "45-60 min"
+      },
+      "C_full_methodology": {
+        "audience": "方法论研究者、框架贡献者",
+        "order": "逐章通读§1-§14，重点覆盖§9全系列(9.1-9.9)",
+        "estimated_time": "2-3 h"
+      }
+    },
+    "usage_notes": [
+      "☆章节可速览：入门级章节以概念和清单为主——已熟悉AI协作概念的读者可速览§1后直接套用§2模板",
+      "★☆章节建议实操后回读：基础操作流程的'真值'在跑过一个项目后才显现——首次阅读理解架构即可，完成后回读精进",
+      "★★章节按需激活：进阶章节不必一口气读完——遇到对应场景时精读",
+      "★★★章节是框架的'为什么'：跨层关切回答的不是'怎么做'而是'为什么这样设计'——不影响操作，但影响判断质量",
+      "标注本身是[Sp]：难度分级基于框架设计者的单一视角——不同背景读者的感知可能差异显著。升级到[J]需收集≥3位不同背景读者的难度感知反馈"
+    ],
+    "upgrade_path": "[Sp]→[J]需: (a)收集≥3位不同背景读者的反馈; (b)将感知难度与标注对照; (c)若≥2位读者对同一章节的感知偏差≥2级，启动重标",
+    "relationship": {
+      "§1.4_usage_tiers": "§1.4 A/B/C三档定义框架本身用多少(使用强度)，本节三条路径定义从哪开始读(阅读顺序)。两者正交——C档用户可从路径A开始阅读",
+      "§1.7_core_vs_plugin": "§1.7说明框架材料分布在主文档(核心)和4个配套目录(外挂)，本节在此结构上叠加难度分层导航——§1.7管'在哪找'，§9.9管'从哪开始读'"
+    }
+  },
+  "anti_patterns_catalog": {
+    "_section": "附录H",
+    "_added": "v1.5.3",
+    "_evidence_level": "[Sp]",
+    "_source": "PocketFlow C1-C3反模式资产组 + Small_Scale H.1(原§6.5.1迁移) [PocketFlow方法论转化，2026-06-18]",
+    "_comment": "反模式是经独立审查确认可迁移性的'不要这样做'的教训——案例事实和可迁移性经≥2个独立后端审查确认，但在本框架中的触发频率和治理收益仍为[Sp]待试跑验证。收录标准：(1)有具体项目案例(非假设); (2)经≥2个独立后端审查确认可迁移性; (3)有可操作的正向替代规则。",
+    "usage": "在Spec设计(L0)、实现(L2)、编排(L3)等阶段，对照本清单做一次快速自检——'我是否正在重蹈其中某条反模式？'如匹配，按对应规则修正。",
+    "entries": [
+      {
+        "id": "H.1",
+        "name": "文件系统作IPC",
+        "case": "Small_Scale仓库使用gen_id.txt文件作为推理脚本→评估脚本的进程间通信通道",
+        "consequences": [
+          "竞态: 两个推理运行同时写→只有一个路径被保留，另一个静默丢失",
+          "原子性: 部分写入=损坏路径，读取方拿到残缺数据",
+          "一致性: 5个推理脚本中仅3个实际写入此协议，其余2个不参与"
+        ],
+        "rule": "即使是'只传递一个路径'，也应该用CLI参数、stdout或pipe，而非文件系统。如果必须用文件，至少需要：原子写入(write-then-rename)+唯一文件名(含timestamp/pid)+读取方校验文件完整性",
+        "source": "Small_Scale分析，2026-06-13",
+        "applicable_layers": [
+          "L2 (Loop)",
+          "L3 (Workflow)"
+        ],
+        "severity": "中——单线程场景可能不暴露，并发时静默出错，调试困难",
+        "evidence": "[S] 源码直接验证"
+      },
+      {
+        "id": "H.2",
+        "name": "极简主义的隐性成本",
+        "case": "PocketFlow以'零依赖'为设计目标，拒绝提供LLM wrapper/embedding工具/search接口等参考实现。结果每个用户在各自项目中重复实现这些基础组件",
+        "consequences": [
+          "重复劳动: N个用户=N套LLM wrapper，每套独立调试相同的连接/重试/超时问题",
+          "标准化缺失: 无统一接口契约→组件互换困难→生态碎片化，用户无法共享改进",
+          "安全不统一: API key管理/错误重试/超时处理等最佳实践靠个体自觉，缺乏基线保障",
+          "隐性成本转移: '零依赖'把集成成本从库作者转移给了每个用户——总成本(N×个人成本)远高于作者提供一次参考实现的成本"
+        ],
+        "rule": "提供参考实现的同时允许替换，比完全不留实现更好。不为'极简'牺牲正确性和可用性。参考实现应满足三条：(a)标注为'可替换'而非'必须使用'，降低锁定感；(b)暴露清晰接口契约，使替换有据可依；(c)至少覆盖80%用户的常见路径",
+        "source": "PocketFlow方法论转化，2026-06-18",
+        "applicable_layers": [
+          "L0 (Spec/设计哲学)",
+          "L1 (Prompt/设计约束)"
+        ],
+        "severity": "中——不阻断功能，但系统性推高生态总成本，长期抑制社区贡献",
+        "evidence": "[Sp] 案例事实成立但外推到其他项目的频率未验证"
+      },
+      {
+        "id": "H.3",
+        "name": "继承层次膨胀",
+        "case": "PocketFlow用12个类实现sync/async×batch/parallel×node/flow的笛卡尔积——Node, Flow, BatchNode, BatchFlow, ParallelNode, ParallelFlow, AsyncNode, AsyncFlow, AsyncBatchNode, AsyncBatchFlow, AsyncParallelNode, AsyncParallelFlow。每新增一个正交维度(如streaming/distributed)，类数量将翻倍——3个维度=24个类，4个维度=48个类",
+        "consequences": [
+          "类爆炸: N个正交维度→2^N个类，维护成本指数增长",
+          "代码重复: 每个组合类重复实现相似的协调逻辑(如AsyncParallelBatchNode和AsyncParallelBatchFlow的并发编排代码高度重叠)",
+          "扩展阻力: 新增一个维度需触碰所有已有组合——修改面大，容易遗漏",
+          "测试负担: 每个组合类需要独立测试，但测试场景高度重叠，投入产出比低"
+        ],
+        "rule": "正交维度优先用组合(composition)而非继承(inheritance)。参考Python asyncio的设计——用asyncio.gather()组合任意协程，而非为每种并发模式建新类。判断标准：如果一个类的命名包含≥2个独立维度的形容词(如Async+Parallel+Batch)，应拆分为可组合的独立组件——async/sync是一个mixin或wrapper，batch/parallel是另一个独立的执行策略对象，两者通过组合而非继承协作",
+        "source": "PocketFlow方法论转化，2026-06-18",
+        "applicable_layers": [
+          "L0 (Spec/架构约定)",
+          "L2 (Loop/实现)"
+        ],
+        "severity": "高——随维度增长持续恶化，修复成本随已有代码量累积，且新增维度的边际成本递增",
+        "evidence": "[S] PocketFlow源码直接验证 + [J] 迁移性经2后端独立确认"
+      },
+      {
+        "id": "H.4",
+        "name": "重试逻辑与并发状态耦合",
+        "case": "PocketFlow的AsyncParallelBatchNode将重试计数器self.cur_retry存为实例字段，被多个并发协程(通过asyncio.gather)共享读写",
+        "consequences": [
+          "竞态条件: 并发访问共享可变状态→重试计数错乱，某些任务被错误地多重重试，另一些任务的重试被跳过",
+          "正确性失效: '最多重试N次'的保证在并发下不可证——单线程测试全部通过，生产并发才暴露",
+          "调试困难: 竞态非确定性→问题难以复现(可能100次才出现1次)，定位根因成本极高",
+          "隐蔽性: 不正确的行为(重试被跳过或超额重试)不产生error/log，静默破坏语义"
+        ],
+        "rule": "执行状态(重试计数、中间结果、进度标记、临时缓存)应为局部变量或栈变量，不存实例字段。实例字段仅存配置(初始化参数、阈值、开关、连接池)。判断标准：如果一个字段的值在单次执行过程中会变化，且多个执行单元可能并发访问同一实例——它就是执行状态，必须局部化",
+        "source": "PocketFlow方法论转化，2026-06-18",
+        "applicable_layers": [
+          "L2 (Loop/并发实现)"
+        ],
+        "severity": "高——并发下静默破坏正确性保证，单线程测试不可检测，属最难排查的缺陷类别",
+        "evidence": "[S] PocketFlow源码直接验证 + [J] 迁移性经2后端独立确认"
+      }
+    ],
+    "expansion_reserved": "当前收录4条反模式。已知候选(待≥2个项目验证共性后入库)：§3.7.4.1自适应权重淘汰中的'静态规则腐化'反模式思想(来自Evolver项目，[Sp]待试跑验证)。未来项目分析产出的新反模式按上方收录标准评审后追加。"
+  },
+  "known_limitations": {
+    "section": "§1.8",
+    "title": "已知局限与诚实声明",
+    "added_in": "v1.6, updated in v1.6.3",
+    "evidence_level": "[C+/N/A]",
+    "source": "Codex v1.5.5 MAJOR #1精神 + 复盘§9已知局限(PM-1~PM-6 + §9.3/§9.4) + Codex/Qwen多轮审查累积反馈",
+    "limitations": [
+      "单模型证据主导——A2/A3最初均基于GPT-5.5 temp=0单模型。2026-06-20更新: A2经Qwen qwen3.7-max跨模型复现(48/48收集, Codex盲评, Δ=−0.014方向一致), 首次跨模型方向一致弱复现, 证据二维M0→M2→M1*(v1.6.4订正)。A3尚未经跨模型复现。A2+A3的跨任务方向一致观察仍限GPT-5.5。以上结论严格限定于temp=0/CLI默认中文结构化判别任务内。",
+      "单团队实验者效应——设计/执行/审查未分离",
+      "无独立人类专家校准——评分体系全程LLM-LLM",
+      "二维证据体系未试跑——v1.6新增的二维等级待验证",
+      "N=2实验的统计基础——量化数字不可参数化推广",
+      "探索性vs确认性框架张力——Tier 0/Tier 1边界模糊",
+      "测试集区分度未分析——有效样本量可能远小于名义样本量",
+      "框架自身审查链局限——审查者池固定/停止规则内生/学习效应未控制"
+    ]
+  },
+  "framework_maintenance": {
+    "section": "§2.6",
+    "title": "框架自身的维护流程",
+    "added_in": "v1.6",
+    "evidence_level": "[D/N/A]",
+    "source": "跨版本维护实践规范化 + Codex/Qwen审查中反复出现的可维护性关切",
+    "key_rules": {
+      "versioning": "语义化版本(Major.Minor.Patch), Major需≥3后端审查+试跑, Minor需≥2后端审查, Patch可单后端",
+      "changelog": "每版记录触发事件/修改节/来源/证据等级, 版本时间线同步更新, 保留独立快照",
+      "writeback_review_gate": "新[Sp]节≥2后端+冻结期, 新[E-]节≥2后端0 MAJOR, 修订≥1后端, 重组≥1后端",
+      "three_piece_sync": "Minor+升级后.md/.json/.docx全量同步, ≥1轮异后端检查一致性",
+      "freeze_rules": "≥50%新[Sp]节完成试跑前不接受新[Sp]机制节"
+    },
+    "transition_clause": "§2.6审查门自v1.6审查通过后的下一版起生效; v1.6自身为pre-release draft",
+    "current_sync_status": {
+      "version": "v1.6.1",
+      "date": "2026-06-20",
+      "md": "v1.6.1 ✅",
+      "json": "v1.6.1 ✅ (本次同步)",
+      "docx": "v1.6.1 ✅ (pandoc 3.10全量重新生成)"
+    },
+    "three_piece_sync": {
+      "description": "每次Minor及以上版本升级后必须同步的四件套+验证",
+      "items": [
+        ".md主文档——编辑完成后自检交叉引用+版本标注一致性",
+        ".json配套——包含version_timeline+新节execution_contract",
+        ".docx配套——包含版本号+日期",
+        "VERSION纯文本文件——写入当前版本号(单行)，供脚本/CI快速读取",
+        "同步验证——≥1轮异后端审查检查三件套+VERSION版本一致性+内容忠实度"
+      ],
+      "lesson_v161": "VERSION文件自v1.5.4起未更新(跳了v1.5.5/v1.6/v1.6.1三个版本)，因三件套同步协议未将其列为检查项。2026-06-20补入。",
+      "last_sync": {
+        "version": "v1.6.4",
+        "date": "2026-06-22",
+        "md": "v1.6.4 ✅",
+        "json": "v1.6.4 ✅ (本次同步, metadata全量更新+§6.3.2新增)",
+        "docx": "v1.6.4 ✅ (2026-06-22 pandoc全量重生成, Mermaid 6图PNG, 边距1.8cm)",
+        "version_file": "1.6.4 ✅"
+      }
+    }
+  },
+  "experiment_design_checklist": {
+    "section": "§4.1.1.1",
+    "title": "对照实验设计强制检查清单",
+    "added_in": "v1.6",
+    "evidence_level": "[C+/M1]",
+    "source": "A2+A3深度复盘§7.1",
+    "tier1_hard_gates": {
+      "CK1": "效能分析/最小可检测效应量——Tier 1必须有, 事后报告MDE",
+      "CK2": "GT预定义完整性——边缘用例规则/多标签可接受集合/争议仲裁流程",
+      "CK3": "DV×天花板解决方案适用性矩阵——单维度任务禁止仅靠增加难度"
+    },
+    "conditional_items": {
+      "CK4": "测试集捷径审计+反编造测试——条件触发(强模型+prompt文本匹配), 可豁免",
+      "CK5": "INVENTORY等价性异后端验证——条件触发(≥2 prompt变体), 可豁免",
+      "CK6": "修复-回归循环审查门——条件触发(组件级以上结构性变更), 可豁免。A3 v2 审查发现 37.5% 新缺陷; 该 37.5% 来自单一未执行设计的审查预期, 不作为参数估计推广, 仅作为保守提醒。"
+    },
+    "usage": "Tier 1硬门(CK1-CK3)任一项FAIL→禁止进入Tier 1; 条件触发项(CK4-CK6)可 EXEMPT, 但须在预注册中记录豁免理由、风险声明、缓解措施; EXEMPT 由异后端审查者在 Tier 1 启动前审核, 可升级为 FAIL。"
+  },
+  "two_dimensional_evidence": {
+    "section": "§9.6.1",
+    "title": "证据等级的二维表示: 内部强度 × 跨模型推广性",
+    "added_in": "v1.6",
+    "evidence_level": "[C+/N/A]",
+    "source": "Codex v1.5.5 MAJOR #3 + 复盘跨实验综合",
+    "dimension_1_internal": {
+      "A": "多源交叉验证——≥2独立实验/项目/方法方向一致",
+      "B+": "单实验强证据——严谨设计+≥6轮审查+0未闭合MAJOR",
+      "B": "单实验中等证据——基本合理, 已知局限存在",
+      "C+": "多项目模式识别——≥2项目, 经≥2后端审查",
+      "C": "单项目观察——单个项目中发现的现象",
+      "D": "专家判断/推测——基于领域经验但无系统证据"
+    },
+    "dimension_2_cross_model": {
+      "M3": "跨≥3模型家族验证",
+      "M2": "跨2模型家族验证",
+      "M1": "两实验单模型家族(≥2独立实验, 同家族)",
+      "M0": "单实验单模型(1实验, 1家族)",
+      "N/A": "非LLM来源"
+    },
+    "notation": "[内部强度 / 跨模型推广性], e.g. [B+/M0], [C+/M1*]"
+  },
+  "methodological_fragment_three_layer_template": {
+    "section": "§9.10",
+    "title": "方法论片段模板: 三层模型",
+    "added_in": "v1.6",
+    "evidence_level": "[C+/N/A]",
+    "source": "A2+A3深度复盘§6.1(PT-M1迁移断裂)",
+    "layers": {
+      "layer_1": "问题识别(Problem Space)——核心问题描述+问题识别条件+检测方法",
+      "layer_2": "解决方案(Solution Space)——推荐方案+适用条件+替代方案+选择决策树",
+      "layer_3": "已知反例与失效模式(Failure Space)——已知反例+失效机制+静默失效信号+与其他MF的冲突"
+    },
+    "key_rules": [
+      "三层回答不同的问题, 不可互相替代",
+      "第三层是第二层的测试覆盖——每个适用条件须有对应已知反例",
+      "静默失效信号是强制字段——对于有自动化检测潜力的失效模式",
+      "三层可独立更新——某层证据增强不要求其他层同步更新"
+    ],
+    "pt_m1_example": "PT-M1三层示例见§9.10正文——A3的Hard Mode是任务可供性=1时选了前提不适用的方案"
+  },
+  "cross_layer_observability": {
+    "section": "§9.11",
+    "name": "跨层可观测性设计",
+    "added": "v1.6.2",
+    "source": "Codex GPT-5.5魔鬼代言人审查对§7.7放置位置的建议——被动观测不只发生在Retrospect阶段",
+    "relationship": "§7.7负责'如何在回顾中记录和归纳'，§9.11负责'如何在全流程中设计可观测性'",
+    "key_insight": "知识获取的渠道本身是一个值得设计的变量——不是所有洞察都能作为任务目标被计划，但可以提高副信号的可见性",
+    "layer_observability": {
+      "L0_Spec": {
+        "concern": "CLAUDE.md/memory/配置文件是否包含版本号和最后修改时间戳？",
+        "example": "版本号嵌入header+footer，确保grep可发现漂移"
+      },
+      "L1_Prompt": {
+        "concern": "Prompt是否要求agent记录副信号(版本号/证据路径/异常项/自报身份)？",
+        "example": "审查prompt显式要求记录调用的后端名和版本"
+      },
+      "L2_Loop": {
+        "concern": "迭代日志是否捕获否决条件触发/方向改变/意外发现？是否保留原始输出供事后对比？",
+        "example": "保留原始输出而非仅保留摘要"
+      },
+      "L3_Workflow": {
+        "concern": "多agent/后端编排是否产生可对比的结构化输出？冗余调用是否被记录？",
+        "example": "多后端审查同时记录各后端的自报身份和telemetry"
+      },
+      "L4_Retrospect": {
+        "concern": "意外发现是否标注了发现方式/复核状态/适用边界(§7.7.5)？",
+        "example": "深度版模板三个可选子字段"
+      },
+      "L5_Closure": {
+        "concern": "闭合前Retrospect是否覆盖了扩展分类框架中未覆盖的渠道(§7.7.3)？",
+        "example": "逐渠道自问'这个渠道有没有可能遗漏的信号？'"
+      },
+      "cross_layer": {
+        "concern": "配套文件(md/json/VERSION)的同步是否为可观测事件？",
+        "example": "三件套同步脚本输出diff摘要，供事后审查"
+      }
+    },
+    "principles": [
+      "不增加摩擦: 可观测性设计应嵌入现有流程，而非新增独立步骤",
+      "不替代主动验证: 可观测性不替代§9.2的主动验证计划——主动验证覆盖已知风险，可观测性覆盖未知未知",
+      "不过度工程: 触发条件——涉及跨文件/跨版本/跨后端一致性的操作≥每月一次，或错误成本≥需重做2小时以上工作"
+    ],
+    "evidence_level": "[Sp]（推测，概念推导非经验实证）"
+  }
+}

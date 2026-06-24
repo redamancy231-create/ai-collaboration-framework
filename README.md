@@ -1,0 +1,155 @@
+# AI 协作项目全生命周期框架
+
+**版本**：v1.6.4（2026-06-22）  
+**状态**：Working Paper（持续更新中，引用请注明版本号）  
+**许可**：CC BY 4.0  
+**语言**：简体中文（其他语言译本以简体中文原文为准）  
+**编码**：UTF-8（全部文本文件）  
+**翻译**：[正體中文](zh-Hant/README.md) · [English](en/README.md)  
+**AI 生成声明**：本仓库大部分内容由人机协作生成（详见 [PUBLISHING.md](PUBLISHING.md)）
+
+一套描述"如何用 AI 协作跑完一个完整项目"的元层次操作规范——从启动、执行、审查到封存的全生命周期流程框架。核心信念：方向盘 > 发动机、分层不互相替代、从失败反向沉淀、AI 闭环 ≠ 人类审查。
+
+> **定位声明**：这是一个**半开放的个人方法论工具**——它不追求成为独立于作者的"通用框架"（一个人不可能拥有覆盖所有项目类型、工具链、验证独立性的经验谱系）。它提供的是经过多后端审查和对照实验证据标注的个人实践模式。欢迎参考、改编、和贡献反例；但读者应预期需要翻译成本才能适配自己的场景。详见 §1.8 局限 #9 和 `_research/通用框架可行性讨论_20260621.md`。
+
+### 项目性质
+
+**这是一份小型技术文档，不是软件项目。** 本仓库不包含可运行的应用程序、库或 Web 服务。这里的"代码"是文档生成脚本（MD → JSON/DOCX 转换），"数据"是审查报告和案例研究，核心交付物是一份约 15 万字符的 Markdown 文档。
+
+如果你在找：下载安装指南、API 文档、Demo 页面 —— 这些这里都没有。  
+如果你在找：一套经过实证检验的 AI 协作方法论框架 —— [`AI协作项目全生命周期框架.md`](AI协作项目全生命周期框架.md) 是入口。
+
+---
+
+## 主文档规模
+
+主文档 `AI协作项目全生命周期框架.md` 是一份约 16 万字符（约 310 KB）的 Markdown 文档，以中文为主，含若干代码块、表格和 Mermaid 图表。精确的字符级统计随版本变动，不在此维护；如需当前数值可运行 `_workflows/count_chars_v164.py`。
+
+---
+
+## 目录结构
+
+```
+AI协作项目全生命周期框架/
+│
+├── AI协作项目全生命周期框架.md        ← 📖 主文档（入口）
+├── AI协作项目全生命周期框架.json       ← 机器可读版
+├── AI协作项目全生命周期框架.docx       ← Word 版（pandoc 生成）
+├── README.md                           ← 本文件（结构导航）
+├── CLAUDE.md                           ← AI 助手项目指令
+├── PUBLISHING.md                       ← 发布边界与 AI 生成声明
+├── LICENSE                             ← CC BY 4.0 许可证
+├── VERSION                             ← 版本号（1.6.4）
+├── project_status.md                   ← 项目状态追踪
+├── reference_files.md                  ← 关键文件索引
+├── project.yaml                        ← DOCX 管道项目配置
+├── inventory.csv                       ← 文件清单（与发布包内容一致）
+├── verify_version_consistency.py       ← 版本一致性校验脚本
+├── .gitignore                          ← 发布包边界定义
+│
+├── _archive/                           ← 🗄 历史封存
+│   ├── 元审查合规清单.{md,json}          — 框架自身合规审查
+│   ├── 独立审查标准操作程序_SOP.{md,json} — 审查 SOP v1.0
+│   ├── provenance_erratum_20260617.md   — 模型 provenance 勘误
+│   ├── v1.5.1冻结期_待执行协议清单.md     — 冻结期协议清单（已归档）
+│   └── docx_legacy_scripts/             — DOCX 旧版生成脚本归档（含 README 说明取代关系）
+│
+├── _mermaid_png/                       ← 🎨 图表源码 + 矢量图
+│   └── *.mmd（源）/ *.emf（矢量）        — Mermaid 源码 + EMF 矢量图
+│                                          （PNG/SVG/PDF 渲染缓存不入库，见 .gitignore）
+│
+├── _protocols-and-tools/               ← 📋 协议 + 工具 + 配套文档
+│   ├── meta-audit-checklist.{md,json}   — 元审查合规清单 v1.0.4+（75 项）
+│   ├── methodological-review-sop.{md,json} — 独立审查 SOP v1.0.4
+│   ├── 框架级成熟度评估表.{md,json}       — 框架自身成熟度评估 v0.4
+│   ├── 外部依赖登记表.{md,json}          — 工具链/模型/平台依赖追踪
+│   ├── 可调参数索引.md                   — 魔法数字集中索引
+│   ├── import_integrity_check.py        — Python 导入检查工具（已弃用，见主文档 §9.1）
+│   ├── AI协作项目全生命周期框架_OPEN4试读计时协议.{md,json}
+│   └── AI协作项目全生命周期框架_人类专家verify包.{md,json}
+│
+├── _research/                          ← 🔬 案例研究材料
+│   ├── CCR作为逃生口案例研究.{md,json}
+│   ├── CacheAligner与AI框架OPEN-1对标分析.{md,json}
+│   ├── ChatGPT-5.5独立审查_headroom对标三文档.{md,json}
+│   ├── SmartCrusher方法论提取.{md,json}
+│   ├── headroom对标分析_封存说明.{md,json}
+│   ├── 通用框架可行性讨论_20260621.md
+│   ├── 两次试跑对比_2026-06-22.md
+│   └── drafts/                         — 废弃草案（v1.3.2 / v1.5.1）
+│
+├── _reviews/                           ← 🔍 多后端独立审查报告
+│   ├── (各版本审查报告 + 交叉验证记录 .md/.json/.txt)
+│   ├── prompts/                        — 审查提示词
+│   ├── last_messages/                  — CLI 输出片段
+│   └── retrospects/                    — 复盘记录
+│
+├── _workflows/                         ← ⚙ 构建 + 同步 + 翻译脚本
+│   ├── regenerate_docx.py               — DOCX 全量重生成（Mermaid + pandoc + 样式）
+│   ├── regenerate_inventory.py          — 重生成 inventory.csv
+│   ├── count_chars_v164.py              — 字符级统计
+│   ├── sync_v16{1,2,3,4}_docx.py        — 各版本 DOCX 同步（历史）
+│   ├── i18n/                            — 翻译管道（术语表 + 翻译/检查脚本 + 审查报告）
+│   └── *.js                            — Workflow 定义脚本
+│
+├── en/                                  ← 🌐 English translation
+│   ├── README.md
+│   ├── AI协作项目全生命周期框架.md
+│   └── reference_files.md
+│
+└── zh-Hant/                            ← 🌏 正體中文翻譯
+    ├── README.md
+    ├── AI协作项目全生命周期框架.md
+    └── reference_files.md
+```
+
+---
+
+## 快速导航
+
+| 你想…… | 从这里开始 |
+|---------|-----------|
+| 了解框架内容 | [`AI协作项目全生命周期框架.md`](AI协作项目全生命周期框架.md) |
+| 机器处理/交叉分析 | [`AI协作项目全生命周期框架.json`](AI协作项目全生命周期框架.json) |
+| 了解项目当前状态和待办 | [`project_status.md`](project_status.md) |
+| 查找特定文件 | [`reference_files.md`](reference_files.md) |
+| 查看独立审查记录 | [`_reviews/`](_reviews/) |
+| 查看审查 SOP | [`_protocols-and-tools/methodological-review-sop.md`](_protocols-and-tools/methodological-review-sop.md) |
+| 了解框架成熟度 | [`_protocols-and-tools/框架级成熟度评估表.md`](_protocols-and-tools/框架级成熟度评估表.md) |
+
+---
+
+## 子目录命名约定
+
+| 前缀 | 含义 |
+|------|------|
+| `_` | AI 工作中间产物（不被人类直接消费） |
+| 无前缀 | 人类直接消费的核心文件 |
+
+`_archive` / `_mermaid_png` / `_reviews` / `_workflows` 均为 AI 工作目录。  
+`_protocols-and-tools` / `_research` 人类可读，但非主文档。
+
+---
+
+## 三件套约定
+
+主文档同时维护三种格式：
+
+| 格式 | 用途 | 消费者 |
+|------|------|--------|
+| `.md` | 权威版本 | 人类 + AI |
+| `.json` | 结构化配套 | 机器（脚本消费、交叉验证） |
+| `.docx` | 传统分发 | 人类（Word 阅读/打印） |
+
+`.json` 和 `.docx` 均由 `.md` 派生，修改以 `.md` 为准。
+
+---
+
+## 审查链
+
+本框架经 **5 种后端 × 5 个 CLI** 的多轮独立审查，审查谱系记录于主文档 § 审查链。所有审查报告归档于 [`_reviews/`](_reviews/)。
+
+---
+
+*生成模型：DeepSeek-V4-Pro (via Claude Code CLI) · 2026-06-22*  
+*目录结构与文件计数校正：Claude Opus 4.8 (via Claude Code CLI) · 2026-06-23 — 移除已迁出的构建产物/缓存条目，对齐发布包真实结构（经 Codex GPT-5.5 独立清点交叉验证）*

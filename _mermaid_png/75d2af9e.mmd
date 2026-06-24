@@ -1,0 +1,18 @@
+flowchart TD
+    Start([项目启动]) --> HG0
+
+    HG0["<b>HG-0: 启动闸门</b><br/>触发：新项目立项<br/>内容：Plan 审查 + 初始 Spec 人确认<br/>决策：GO / REDESIGN / STOP<br/>（对标 kill-test-first）"]
+
+    HG0 -->|GO| Loop[执行循环<br/>Prompt → Loop → Workflow]
+
+    Loop --> HG1
+
+    HG1["<b>HG-1: 里程碑闸门</b><br/>触发：量化每轮回测后+重要Bug修复后 /<br/>学术每章完成后+收到外部审阅后 /<br/>工程每功能模块完成后<br/>内容：本阶段产出人审查 + 下阶段方向人确认<br/>决策：继续 / 转向 / 暂停 / 闭合"]
+
+    HG1 --> HG2
+
+    HG2["<b>HG-2: Spec 变更闸门</b><br/>触发：任何对 L0 Spec 的修改请求（不区分大小改）<br/>内容：变更内容 + 变更理由 + 影响评估 → 人确认<br/>决策：批准 / 驳回 / 修改后再审"]
+
+    HG2 --> HG3
+
+    HG3["<b>HG-3: 闭合闸门</b><br/>触发：项目达到闭合条件 或 人主动提出<br/>内容：终期报告 + 闭合检查清单 + lessons learned<br/>决策：正式闭合 / 暂缓闭合（等待某事）/ 重启"]

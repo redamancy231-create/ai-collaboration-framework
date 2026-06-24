@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "document_type": "human_verify_pack",
+    "schema_version": "1.1",
+    "date": "2026-06-21",
+    "revision_note": "v1.1修订：审查链事实更新（5 backend × 4 CLI house）、模型命名修正（GPT-5.5 via Codex CLI）、OPEN-4状态更新（已有正式协议）、章节引用核实。初始版v1.0写于2026-06-11（Opus 4.8）。",
+    "author": "DeepSeek-V4-Pro (via Claude Code CLI shell)",
+    "original_author": "Claude (Opus 4.8 / Claude Code CLI); v1.0 written 2026-06-11",
+    "audience": "零卷入的人类专家——不在 Claude Code CLI house（不共享框架/审查的 memory），最好对 AI 协作或个人项目管理有实务经验",
+    "estimated_read_time_min": "10-15",
+    "companion_md": "AI协作项目全生命周期框架_人类专家verify包.md",
+    "framework_version_at_revision": "v1.6.4",
+    "purpose": "整条审查链全为 AI（截至v1.6.4：5 backend × 4 CLI house）。框架作者=再审查者同栈（Claude CLI / DeepSeek-V4-Pro）。在HG频率争议上，多个独立后端中仅GPT-5.5(via Codex CLI)给出相反结论——Qwen和Kimi的独立审查未在此问题上挑战作者立场。AI圈子内部在此问题上缺乏有效张力→需要house外的人裁一个方向。",
+    "version": "v1.1"
+  },
+  "min_background": [
+    "框架分层：Spec(项目宪法)→Prompt(单次任务)→Loop(AI自主反复试错,每轮极快)，关键节点插 Human Gate(HG-0启动/HG-1里程碑/HG-2改Spec/HG-3闭合)",
+    "矛盾根源：人审离散(按里程碑触发)，AI Loop执行连续(每轮都在动)"
+  ],
+  "the_question": "当前 Human Gate 设计的真问题，更接近 A(闸门太多应减少)还是 B(闸门有覆盖盲区应新增Loop内自检)？两者方向相反。",
+  "position_A": {
+    "claimant": "独立 AI——GPT-5.5 (via Codex CLI)",
+    "independent_of_framework": true,
+    "diagnosis": "闸门太多、摩擦过重；'任何Spec改动都要人确认'会拖垮效率",
+    "direction": "减少 / 分级 闸门",
+    "strongest_reason": "个人项目里闸门越多越没人真用→全是橡皮图章；过度工程是个人方法论头号死法"
+  },
+  "position_B": {
+    "claimant": "框架作者(Claude CLI / DeepSeek-V4-Pro) + 同栈(Claude CLI / Opus 4.8)",
+    "independent_of_framework": false,
+    "diagnosis": "闸门有覆盖盲区：AI在Loop内连续小调整(放宽筛选→改权重→调阈值)每次不触发闸门(没改Spec)，却累积成方向偏转，到里程碑才发现",
+    "direction": "新增一个 Loop 内'方向一致性自检'",
+    "strongest_reason": "失败常是缓慢漂移而非大爆炸；框架自己也承认'人抽查频率<AI犯错频率'(§10.8)；过去出过'机制存在但没被及时触发'的事故"
+  },
+  "conflict_disclosure": {
+    "warning": "不要因为'B有两票、A一票'就倒向B——那两票同源",
+    "detail": "B的提出者=框架作者本人；支持B的第二票(Opus)与作者共享同一CLI与memory；A是唯一圈外声音"
+  },
+  "response_slots": [
+    {
+      "q": 1,
+      "ask": "A还是B？或'分场景'——若是，分界线是什么(什么项目该减闸门/什么该加自检)？"
+    },
+    {
+      "q": 2,
+      "ask": "若倾向B：那个'Loop内方向自检'值得加吗？还是会变成没人用的橡皮图章(即落回A的批评)？"
+    },
+    {
+      "q": 3,
+      "ask": "真实人+AI协作里，'缓慢漂移'是真问题还是被AI夸大的稻草人？"
+    },
+    {
+      "q": 4,
+      "ask": "一句话：这套框架现在最该做的一件事是什么？"
+    }
+  ],
+  "out_of_scope": [
+    "读完整框架",
+    "点评其他部分",
+    "委婉措辞"
+  ],
+  "full_doc_refs": {
+    "OPEN-1待决项+处置方案+Action": "框架 §1.6",
+    "争议概念基础_Loop Drift Ledger": "框架 §3.6",
+    "OPEN-1操作化落地_漂移检测层": "框架 §3.7"
+  },
+  "secondary_open_items_not_in_this_pack": {
+    "OPEN-3": "框架是否把用户原有好实践提炼'降级'了——仍未解决，需对比模板vs原件，另起instrument",
+    "OPEN-4": "新人读懂框架要多久——已有正式协议（AI协作项目全生命周期框架_OPEN4试读计时协议.md），待执行"
+  }
+}

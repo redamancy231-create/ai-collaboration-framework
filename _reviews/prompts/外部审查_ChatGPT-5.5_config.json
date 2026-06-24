@@ -1,0 +1,103 @@
+{
+  "component": "external_review_ChatGPT-5.5",
+  "version": "v1.0",
+  "date": "2026-06-10",
+  "reviewer": "ChatGPT-5.5 (Codex CLI / GPT-5系)",
+  "reviewer_relationship": "零卷入独立审查——ChatGPT-5.5 未参与框架的任何设计/讨论/迭代",
+  "iron_rule": "独立第二意见——不被设计者语言牵引，不同情设计者，质疑概念本身如需要，标注信心水平",
+
+  "project_under_review": {
+    "name": "AI协作项目全生命周期框架",
+    "version": "v1.1",
+    "type": "元层次项目方法规范",
+    "designers": ["金融工程专业学生", "Claude (deepseek-v4-pro)"],
+    "empirical_basis": [
+      "形态匹配ETF策略（17版本迭代，2026-04至2026-05）",
+      "并购重组案例研究（8阶段流水线，2026-05）",
+      "LIT报告完整性测试（4轮AI评估，2026-05至2026-06）",
+      "多模型对照实验（治理审计，2026-05至2026-06）"
+    ],
+    "design_timeline": "2026-06-10，单次会话内从四层框架扩展到完整七层体系",
+    "status": "已定稿，但部分组件标注为'待实证'"
+  },
+
+  "review_scope": {
+    "core_judgments": [
+      { "id": "J1", "name": "七层架构覆盖完整性", "question": "L0-L5是否有结构性遗漏？需加/减/合并哪些层？" },
+      { "id": "J2", "name": "Human Gate充分性", "question": "4闸门+3类型+5条AI职责是否充分且可执行？" },
+      { "id": "J3", "name": "Dev Log成熟度评估诚实性", "question": "3/10已验证的判断是否客观？AI自动维护假设是否根本不可行？" },
+      { "id": "J4", "name": "Workflow模式合理性", "question": "6种模式是否过度设计？决策树是否可被AI可靠执行？" },
+      { "id": "J5", "name": "外部对标充分性", "question": "'独特贡献'判断是否准确？是否有选择性偏差？" },
+      { "id": "J6", "name": "框架即战力", "question": "能否直接用于新项目？会遇到什么障碍？" },
+      { "id": "J7", "name": "框架死亡判据", "question": "在什么条件下应放弃或大修？" }
+    ],
+    "open_dimensions": {
+      "A": "结构性遗漏",
+      "B": "内部矛盾与张力",
+      "C": "过度工程",
+      "D": "概念模糊",
+      "E": "缺失的跨层交互",
+      "F": "可测试性与验证方案",
+      "G": "优先级排序 (Top 3)"
+    }
+  },
+
+  "review_constraints": {
+    "no_sympathy": "不要同情设计者——有问题直接说",
+    "no_language_capture": "不要被框架自身的语言牵引——质疑概念本身如需要",
+    "confidence_labeling": "每个判断标注信心水平（高/中/低）+ 不确定性来源",
+    "verified_vs_unverified": "独立验证框架的成熟度评估是否诚实，补充遗漏的成熟度问题"
+  },
+
+  "prompt_meta": {
+    "designed_by": "Claude (Opus 4.8 / Fable 5) — 框架共同设计者",
+    "design_principle": "kill-test-first — 独立审查+魔鬼代言人视角+不允许设计者自我正当化",
+    "self_review_status": "本提示词未经独立审查（设计者自审）。审查者如发现提示词本身存在引导性/偏见，请在报告第十一章明确指出。",
+    "potential_biases_self_identified": [
+      "提示词由框架设计者撰写——可能无意中强调框架的优点而弱化缺点",
+      "7个核心判断的措辞可能暗示了设计者的预期答案",
+      "审查约束中的'不要同情设计者'可能过度矫正——导致审查者为反对而反对"
+    ]
+  },
+
+  "files": {
+    "input": [
+      "AI协作项目全生命周期框架.md (1503行)",
+      "AI协作项目全生命周期框架.json (486行)"
+    ],
+    "prompt": "外部审查_ChatGPT-5.5_提示词.md",
+    "prompt_json": "外部审查_ChatGPT-5.5_提示词.json",
+    "expected_output": "AI协作项目全生命周期框架_ChatGPT-5.5审查报告.md"
+  },
+
+  "output_spec": {
+    "format": "Markdown",
+    "sections": [
+      "一、总体评价",
+      "二、核心判断逐条评估 (J1-J7，每条含表态+信心水平+依据+修正建议)",
+      "三、结构性遗漏",
+      "四、内部矛盾与张力",
+      "五、过度工程",
+      "六、概念模糊",
+      "七、缺失的跨层交互",
+      "八、可测试性与验证方案",
+      "九、框架死亡判据建议",
+      "十、优先级改进建议 (Top 3，含优先级+问题+方案+理由)",
+      "十一、补充意见（含对提示词本身的审查）"
+    ],
+    "per_judgment_format": {
+      "statement": "判断 X：[...] → [认同/部分认同/反对]",
+      "confidence": "[高/中/低] — [不确定性来源]",
+      "basis": "[依据...]",
+      "follow_up_or_correction": "[追问或修正建议...]"
+    }
+  },
+
+  "usage_instructions": {
+    "step1": "将 外部审查_ChatGPT-5.5_提示词.md 的全文复制粘贴给 ChatGPT-5.5",
+    "step2": "同时附上 AI协作项目全生命周期框架.md 和 AI协作项目全生命周期框架.json",
+    "step3": "ChatGPT-5.5 按输出格式生成审查报告",
+    "step4": "将审查报告保存为 AI协作项目全生命周期框架_ChatGPT-5.5审查报告.md",
+    "step5": "回到 Claude Code 会话，将审查发现写回框架（如适用）"
+  }
+}

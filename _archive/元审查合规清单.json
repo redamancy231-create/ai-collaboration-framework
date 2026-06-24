@@ -1,0 +1,227 @@
+{
+  "metadata": {
+    "name": "元审查合规清单",
+    "version": "1.0",
+    "date": "2026-06-13",
+    "model": "DeepSeek-V4-Pro",
+    "status": "draft",
+    "description": "用框架自身的标准审计框架自身的合规性——四维度检查清单（Provenance完整性/审查独立性/记忆系统健康/最佳实践使用）",
+    "companion_md": "元审查合规清单.md",
+    "trigger_schedule": {
+      "version_release": { "scope": "full", "priority": "P0" },
+      "monthly_check": { "scope": "quick_scan", "priority": "P1" },
+      "death_criterion_warning": { "scope": "full_with_rca", "priority": "P0" },
+      "review_chain_extension": { "scope": "dimension_2_only", "priority": "P1" },
+      "memory_structure_change": { "scope": "dimension_3_only", "priority": "P2" }
+    }
+  },
+
+  "scoring": {
+    "grading_scale": [
+      { "range": "90-100%", "label": "健康", "action": "继续监测" },
+      { "range": "75-89%", "label": "值得关注", "action": "3个工作日内完成P0整改" },
+      { "range": "60-74%", "label": "受损", "action": "P0+P1整改+暂停新产出" },
+      { "range": "0-59%", "label": "不安全", "action": "暂停所有框架活动+触发HG-2 Spec大修+人类裁决" }
+    ]
+  },
+
+  "dimensions": {
+    "dimension_1_provenance": {
+      "title": "Provenance完整性",
+      "framework_ref": "§9.2, §14, feedback_generated_files_model_provenance",
+      "total_items": 20,
+      "sections": {
+        "1_1_framework_main_docs": {
+          "items": [
+            { "id": "1.1.1", "check": "主md头部有生成模型声明", "file": "AI协作项目全生命周期框架.md", "pass_criteria": "header含> **生成模型**: <具体后端名>", "fail_criteria": "缺失或写'Claude'(CLI壳名)", "remediation": "补全声明于文件头部" },
+            { "id": "1.1.2", "check": "配套JSON的metadata.model字段存在", "file": "AI协作项目全生命周期框架.json", "pass_criteria": "meta.model字段存在且值为具体后端名", "fail_criteria": "缺失字段或值为CLI壳名", "remediation": "补\"model\": \"DeepSeek-V4-Pro\"到meta块" },
+            { "id": "1.1.3", "check": "主docx头部有生成模型声明", "file": "AI协作项目全生命周期框架.docx", "pass_criteria": "docx首段或属性中含生成模型", "fail_criteria": "缺失", "remediation": "md→docx转换后手工检查并补声明" }
+          ]
+        },
+        "1_2_review_chain_provenance": {
+          "items": [
+            { "id": "1.2.1", "check": "①ChatGPT-5.5审查报告——provenance完整", "pass_criteria": "声明审查者=ChatGPT-5.5, CLI=Codex CLI, 上下文隔离=是", "fail_criteria": "缺失任一项", "remediation": "补全CLI和上下文隔离状态" },
+            { "id": "1.2.2", "check": "②再审查报告——provenance完整（标注自辩性质）", "pass_criteria": "声明审查者=DeepSeek-V4-Pro(框架作者)+显式标注为自辩非独立", "fail_criteria": "仅写'Claude(deepseek-v4-pro)'未标注自辩性质", "remediation": "加显式标注'审查者身份=框架作者→此为自辩非独立审查'" },
+            { "id": "1.2.3", "check": "③ChatGPT-5.5回应——provenance完整", "pass_criteria": "声明回应者=ChatGPT-5.5, CLI=Codex CLI", "fail_criteria": "缺失CLI和上下文隔离", "remediation": "补全" },
+            { "id": "1.2.4", "check": "④Opus 4.8再再审查——provenance完整（标注house偏置）", "pass_criteria": "声明审查者=Opus 4.8, CLI=Claude Code CLI + 标注与框架作者同house", "fail_criteria": "缺失house偏置标注", "remediation": "加'与框架作者(DeepSeek)同在Claude-CLI house,共享memory→对OPEN-1的背书带house内偏置'" },
+            { "id": "1.2.5", "check": "headroom对标三文档——provenance完整", "pass_criteria": "三份md头部+json meta均含生成模型", "fail_criteria": "缺失", "remediation": "逐一检查并补全三份文件" },
+            { "id": "1.2.6", "check": "ChatGPT-5.5独立裁决报告——provenance完整", "pass_criteria": "声明裁决者=ChatGPT-5.5, CLI=Codex CLI, 上下文独立", "fail_criteria": "缺失上下文独立性声明", "remediation": "补CLI和上下文隔离声明" },
+            { "id": "1.2.7", "check": "审查提示词文件——作者provenance标注", "pass_criteria": "外部审查_ChatGPT-5.5_提示词.{md,json}声明作者=DeepSeek-V4-Pro(框架作者)", "fail_criteria": "缺失作者标注", "remediation": "补作者标注——这是关键盲点" }
+          ]
+        },
+        "1_3_claude_ambiguity_audit": {
+          "items": [
+            { "id": "1.3.1", "check": "全文搜索'Claude'：每个出现处后端明确", "pass_criteria": "每个'Claude'或后跟括号注明后端,或上下文清楚指CLI壳", "fail_criteria": "存在'Claude'独自出现的歧义点", "remediation": "标注所有歧义点,统一'后端名(via CLI名)'格式" },
+            { "id": "1.3.2", "check": "审查报告文件的署名顺序一致", "pass_criteria": "统一格式'审查者: <后端模型名> (via <CLI名>)'", "fail_criteria": "格式不一", "remediation": "统一格式" },
+            { "id": "1.3.3", "check": "JSON审查文件的model字段标准化", "pass_criteria": "所有审查文件.json有标准化model字段", "fail_criteria": "缺model字段或值不一致", "remediation": "补全+统一" }
+          ]
+        },
+        "1_4_header_format_consistency": {
+          "items": [
+            { "id": "1.4.1", "check": "md文件: 声明位置统一", "pass_criteria": "头部blockquote区含> **生成模型**: <后端名>", "fail_criteria": "用了不同位置/格式", "remediation": "标准化到统一位置" },
+            { "id": "1.4.2", "check": "json文件: metadata.model字段统一", "pass_criteria": "含\"metadata\": {\"model\": \"<后端名>\"}", "fail_criteria": "有的在meta.model有的在metadata.model", "remediation": "统一为metadata.model" }
+          ]
+        }
+      }
+    },
+
+    "dimension_2_independence": {
+      "title": "审查独立性",
+      "framework_ref": "§9.2, §14, feedback_model_provenance",
+      "total_items": 11,
+      "sections": {
+        "2_1_per_review_independence": {
+          "items": [
+            { "id": "2.1.1", "reviewer": "①ChatGPT-5.5审查v1.1", "reviewer_backend": "ChatGPT-5.5", "author_backend": "DeepSeek-V4-Pro", "backend_different": true, "context_isolated": true, "is_independent": true, "note": "唯一独立于框架创作的外部审查" },
+            { "id": "2.1.2", "reviewer": "②DeepSeek-V4-Pro再审查①", "reviewer_backend": "DeepSeek-V4-Pro", "author_backend": "ChatGPT-5.5", "backend_different": true, "context_isolated": true, "is_independent_for_01": true, "is_independent_for_framework": false, "note": "双重身份：对①独立、对框架不独立(审查者=框架作者)" },
+            { "id": "2.1.3", "reviewer": "③ChatGPT-5.5回应②", "reviewer_backend": "ChatGPT-5.5", "author_backend": "DeepSeek-V4-Pro", "backend_different": true, "context_isolated": true, "is_independent": true, "note": "对②独立,对框架独立" },
+            { "id": "2.1.4", "reviewer": "④Opus 4.8再再审查③", "reviewer_backend": "Opus 4.8", "author_backend": "ChatGPT-5.5", "backend_different": true, "context_isolated": false, "is_independent": "partial", "note": "house内偏置——与框架作者共享memory" },
+            { "id": "2.1.5", "reviewer": "ChatGPT-5.5独立裁决headroom", "reviewer_backend": "ChatGPT-5.5", "author_backend": "DeepSeek-V4-Pro", "backend_different": true, "context_isolated": true, "is_independent": true },
+            { "id": "2.1.6", "reviewer": "审查提示词作者披露", "note": "审查提示词由DeepSeek-V4-Pro(框架作者)撰写→对审查①和裁决都存在引导性偏差,文件自身未标注" }
+          ]
+        },
+        "2_2_independence_declaration": {
+          "items": [
+            { "id": "2.2.1", "check": "每个审查报告自声明独立性", "pass_criteria": "每次审查含(a)后端(b)被审对象作者后端(c)后端是否不同(d)上下文是否隔离(e)综合判定", "fail_criteria": "缺失任一项", "remediation": "逐审查报告补全五要素" },
+            { "id": "2.2.2", "check": "审查链独立性总览表存在", "pass_criteria": "独立文件中存在审查链独立性汇总表", "fail_criteria": "无总览,信息分散", "remediation": "补汇总表(可引用本清单2.1表)" },
+            { "id": "2.2.3", "check": "'独立'声称的准确性", "pass_criteria": "任何'独立'声称与实际独立性判定一致", "fail_criteria": "存在夸大或误导性声称", "remediation": "审查§1.6/§14/审查报告的'独立'用词" },
+            { "id": "2.2.4", "check": "裸环境checklist引用", "pass_criteria": "审查时引用了多模型对照实验项目的裸环境checklist", "fail_criteria": "未引用但声称独立", "remediation": "补交叉引用" }
+          ]
+        },
+        "2_3_duplicate_backend_detection": {
+          "items": [
+            { "id": "2.3.1", "check": "无'同一后端标不同标签'的重计", "pass_criteria": "每个后端仅计一次独立票", "fail_criteria": "同一后端以不同标签出现被多次计入" },
+            { "id": "2.3.2", "check": "'多方独立共识'的计数准确", "pass_criteria": "声称N方独立共识,实际独立方数≥N", "fail_criteria": "计数虚高" }
+          ]
+        }
+      }
+    },
+
+    "dimension_3_memory_health": {
+      "title": "记忆系统健康",
+      "framework_ref": "§2.3, §9.3, §8.6",
+      "total_items": 15,
+      "sections": {
+        "3_1_timeliness": {
+          "items": [
+            { "id": "3.1.1", "check": "每个memory文件有last_updated时间戳", "pass_criteria": "头部含updatedSessionId或last_updated", "fail_criteria": "缺失时间戳", "remediation": "补last_updated字段" },
+            { "id": "3.1.2", "check": "超过30天的文件标记需验证", "pass_criteria": "MEMORY.md中超过30天的条目附带时效提醒", "fail_criteria": "MEMORY.md列出超30天条目但无提醒", "remediation": "逐条标注(当前日期2026-06-13,30天前=2026-05-14)" },
+            { "id": "3.1.3", "check": "已归档项目的memory标注已归档非X天前", "pass_criteria": "形态匹配/并购重组用'已归档(YYYY-MM-DD)'", "fail_criteria": "仍用'X天前'表述", "remediation": "统一改为'已归档(闭合日期)'" }
+          ]
+        },
+        "3_2_consistency": {
+          "items": [
+            { "id": "3.2.1", "check": "MEMORY.md所有引用条目对应文件存在", "pass_criteria": "31条链接指向的.md全部存在", "fail_criteria": "存在断链", "remediation": "列出断链文件,检查是否已删除/重命名" },
+            { "id": "3.2.2", "check": "memory/目录所有.md在MEMORY.md中有引用", "pass_criteria": "无孤儿文件", "fail_criteria": "有文件但MEMORY.md未列", "remediation": "列出孤儿文件,决定删除/重命名/添加引用" },
+            { "id": "3.2.3", "check": "跨文件引用一致性", "pass_criteria": "[[文件名]]引用目标存在且内容一致", "fail_criteria": "目标不存在或内容不符", "remediation": "抽查引用频率最高的5条" },
+            { "id": "3.2.4", "check": "reference_ai_framework_files.md中路径全部有效", "pass_criteria": "列出的13个md+13个json+1个py全存在", "fail_criteria": "路径错误/文件已移动", "remediation": "逐文件检查" }
+          ]
+        },
+        "3_3_contradiction_detection": {
+          "items": [
+            { "id": "3.3.1", "check": "框架版本号在多个memory中一致", "pass_criteria": "project_ai_framework/reference_ai_framework_files/MEMORY中版本一致", "fail_criteria": "不同文件记录不同版本", "remediation": "检索所有含v1.的memory文件交叉比对" },
+            { "id": "3.3.2", "check": "项目路径在多个memory中一致", "pass_criteria": "reference_project_paths与reference_ai_framework_files一致", "fail_criteria": "路径差异" },
+            { "id": "3.3.3", "check": "审查链模型描述一致", "pass_criteria": "project_ai_framework与reference_ai_framework_files对审查链描述一致", "fail_criteria": "矛盾", "remediation": "核对两处关于审查独立性的表述" },
+            { "id": "3.3.4", "check": "'Claude'的使用在memory中一致", "pass_criteria": "feedback_model_provenance说Claude=CLI壳,其他memory遵守", "fail_criteria": "其他文件用Claude当后端描述", "remediation": "grep memory/中的Claude使用" }
+          ]
+        },
+        "3_4_structure_health": {
+          "items": [
+            { "id": "3.4.1", "check": "每个memory文件有标准frontmatter", "pass_criteria": "name/description/metadata(node_type/type/originSessionId)", "fail_criteria": "缺失关键字段", "remediation": "补全" },
+            { "id": "3.4.2", "check": "feedback类memory有执行跟踪", "pass_criteria": "type=feedback的memory有对应执行证据", "fail_criteria": "写下feedback但从未执行", "remediation": "抽查2-3条feedback执行率" },
+            { "id": "3.4.3", "check": "无重复/高度近似memory文件", "pass_criteria": "无两个文件覆盖同主题但矛盾或冗余", "fail_criteria": "A和B说同一件事但版本不同步" }
+          ]
+        }
+      }
+    },
+
+    "dimension_4_best_practices": {
+      "title": "最佳实践实际使用",
+      "framework_ref": "全框架七层+四跨层关切+Dev Log",
+      "total_items": 18,
+      "sections": {
+        "4_1_claude_md_compliance": {
+          "items": [
+            { "id": "4.1.1", "check": "框架项目有项目级CLAUDE.md", "pass_criteria": "<PROJECT_ROOT>/CLAUDE.md存在", "fail_criteria": "不存在", "remediation": "最高优先级——创建", "current_status": "FAIL: 不存在" },
+            { "id": "4.1.2", "check": "CLAUDE.md含框架自身Spec摘要", "pass_criteria": "含(a)版本(b)状态(c)关键路径(d)不可违反约束", "fail_criteria": "不存在或不完整" },
+            { "id": "4.1.3", "check": "CLAUDE.md提醒审查独立性约束", "pass_criteria": "提醒任何审查须注意后端provenance和上下文隔离", "fail_criteria": "缺失" }
+          ]
+        },
+        "4_2_spec_completeness": {
+          "items": [
+            { "id": "4.2.1", "check": "S1项目状态", "current": "project_ai_framework.md(memory)有——但不是项目级project_status.md", "assessment": "partial" },
+            { "id": "4.2.2", "check": "S2关键文件路径", "current": "reference_ai_framework_files.md有且详细", "assessment": "pass" },
+            { "id": "4.2.3", "check": "S3技术约定", "current": "缺失", "assessment": "fail", "remediation": "补：生成文件的模型provenance规则+md/json双件同步" },
+            { "id": "4.2.4", "check": "S4否决条件/红线", "current": "主文档§1.5含框架级死亡判据", "assessment": "pass" },
+            { "id": "4.2.5", "check": "S5成功标准", "current": "缺失", "assessment": "fail", "remediation": "补:什么算框架有效" },
+            { "id": "4.2.6", "check": "S6评估计划", "current": "缺失——框架自身无三层分工评估计划", "assessment": "fail", "remediation": "补:如何评估框架有效性" },
+            { "id": "4.2.7", "check": "S8风险登记", "current": "OPEN-1~5已覆盖但非附录F格式", "assessment": "partial" }
+          ]
+        },
+        "4_3_review_process_compliance": {
+          "items": [
+            { "id": "4.3.1", "check": "审查提示词经人类审查", "pass_criteria": "提示词发送前经HG确认", "fail_criteria": "AI生成→直接发出→未走HG", "remediation": "检查提示词是否经人类审查" },
+            { "id": "4.3.2", "check": "v1.1→v1.2变更走HG-2", "pass_criteria": "5项改动落地前经人类确认", "fail_criteria": "AI直接修改了Spec(框架主文档)未走HG-2" },
+            { "id": "4.3.3", "check": "v1.3草案写入走HG", "pass_criteria": "草案内容写入前经人类确认", "fail_criteria": "AI自行写入主文档未经人" },
+            { "id": "4.3.4", "check": "闭合条件定义", "pass_criteria": "框架项目有明确闭合条件", "fail_criteria": "缺失" }
+          ]
+        },
+        "4_4_kill_test_first": {
+          "items": [
+            { "id": "4.4.1", "check": "新方法论主张前经kill-test", "pass_criteria": "headroom→框架的三项迁移前经kill-test检查", "fail_criteria": "跳过或未记录" },
+            { "id": "4.4.2", "check": "OPEN-1=最高杀伤发现判断经kill-test", "pass_criteria": "经否决条件检查+标注来源", "fail_criteria": "直接写入未经检查", "remediation": "标注'此为审查链推导非预先假设,未过kill-test'" },
+            { "id": "4.4.3", "check": "先验对标执行前声明", "pass_criteria": "headroom对标前先验对标格式完备", "fail_criteria": "未经格式" }
+          ]
+        },
+        "4_5_dev_log": {
+          "items": [
+            { "id": "4.5.1", "check": "框架项目有DEV_LOG.md", "pass_criteria": "根目录存在DEV_LOG.md+dev-logs/", "fail_criteria": "不存在", "current_status": "FAIL: 不存在" },
+            { "id": "4.5.2", "check": "§14变更记录符合Dev Log格式", "pass_criteria": "含时间戳+来源+关联审阅+FK", "fail_criteria": "缺失分支文档链接" },
+            { "id": "4.5.3", "check": "审查链变更记录可追溯", "pass_criteria": "每项改动可FK追溯到审查报告具体行", "fail_criteria": "仅有摘要无FK锚点" }
+          ]
+        },
+        "4_6_automation": {
+          "items": [
+            { "id": "4.6.1", "check": "md↔json同步脚本存在并使用", "pass_criteria": "脚本存在且定期执行", "fail_criteria": "手工同步→版本不同步风险" },
+            { "id": "4.6.2", "check": "version-bump脚本/流程", "pass_criteria": "版本号更新有自动化流程", "fail_criteria": "手工修改→遗漏风险" },
+            { "id": "4.6.3", "check": "session-end skill存在", "pass_criteria": "/session-end skill已创建", "fail_criteria": "skill不存在", "current_status": "PASS: 2026-06-18 创建, 经三后端独立审查验证" }
+          ]
+        },
+        "4_7_usage_tier_compliance": {
+          "items": [
+            { "id": "4.7.1", "check": "框架自身声明使用强度档位", "pass_criteria": "明确定义当前在哪一档", "fail_criteria": "未定义" },
+            { "id": "4.7.2", "check": "复扩条件达标（若高于最低强制版）", "pass_criteria": "复扩条件已满足有证据", "fail_criteria": "未定义复扩条件" }
+          ]
+        }
+      }
+    }
+  },
+
+  "audit_log_template": {
+    "structure": [
+      "审查执行者信息(后端+CLI+上下文)",
+      "审查范围和触发事件",
+      "四维度得分卡",
+      "综合评级",
+      "P0立即行动项(版本发布阻断)",
+      "P1本次迭代整改项",
+      "P2后续迭代优化项",
+      "人类裁决项"
+    ],
+    "archive_path": "<PROJECT_ROOT>/audit-logs/元审查_YYYY-MM-DD.{md,json}"
+  },
+
+  "self_reflexivity": {
+    "own_provenance": {
+      "model": "DeepSeek-V4-Pro",
+      "cli": "Claude Code CLI",
+      "warning": "本清单由框架作者生成——按框架§9.2,元审查的执行者须(后端不同×上下文隔离),不可由框架作者执行"
+    },
+    "own_death_criteria": [
+      "连续2次元审查<30%失败项被整改→清单沦为走过场→大修或废弃",
+      "元审查耗时>2h且发现率<10%→清单过度详细→精简",
+      "框架版本迭代后>20%检查项不再适用→清单老化→更新"
+    ],
+    "own_hg_requirement": "草案在首次执行前须经人类审查(HG-0);检查项增删改走HG-2"
+  }
+}

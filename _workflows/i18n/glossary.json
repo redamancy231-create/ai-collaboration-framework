@@ -1,0 +1,1433 @@
+{
+  "metadata": {
+    "version": "v1.1",
+    "date": "2026-06-23",
+    "model": "DeepSeek-V4-Pro (via Claude Code CLI)",
+    "description": "AI协作项目全生命周期框架 术语对照表。简体中文→正体中文(台湾IT习惯)+英文(美式)",
+    "total_terms": 190,
+    "type_counts": {
+      "A": 89,
+      "B": 21,
+      "C": 11,
+      "D": 60,
+      "E": 9
+    },
+    "framework_version": "v1.6.4",
+    "reviewed_by": [
+      "Codex GPT-5.5",
+      "Qwen qwen3.7-max"
+    ],
+    "changelog": "综合Codex(魔鬼代言人)+Qwen(完备性)双后端审查修复：修正翻译错误~25处，新增术语~45条，删除A/D重复6条+E类重复1条，D类内部拆分为4子类，JSON增加framework_version/do_not_translate字段；補「模板」→「範本」(B-189)+「实现」→「實作」(D-190)獨立條目（Qwen審校發現）"
+  },
+  "terms": {
+    "Spec（项目宪法）": {
+      "zh-Hant": "Spec（專案憲法）",
+      "en": "Spec (Project Constitution)",
+      "type": "A",
+      "note": "框架核心層名，保留英文Spec大寫；「宪法」→「憲法」為兩岸一致轉換",
+      "id": "A-001"
+    },
+    "L0 Spec": {
+      "zh-Hant": "L0 Spec",
+      "en": "L0 Spec",
+      "type": "A",
+      "note": "層編號體系，不翻譯",
+      "do_not_translate": true,
+      "id": "A-002"
+    },
+    "L1 Context（上下文管理）/ Prompt（任务规格）": {
+      "zh-Hant": "L1 Context（上下文管理）/ Prompt（任務規格）",
+      "en": "L1 Context (Context Management) / Prompt (Task Specification)",
+      "type": "A",
+      "note": "保留英文+中文括注；「任务」→「任務」、「规格」→「規格」為兩岸一致轉換",
+      "id": "A-003"
+    },
+    "L2 Execute（执行）/ Loop（执行迭代）": {
+      "zh-Hant": "L2 Execute（執行）/ Loop（執行迭代）",
+      "en": "L2 Execute (Execution) / Loop (Execution Iteration)",
+      "type": "A",
+      "note": "保留英文+中文括注；「执行」→「執行」為兩岸一致轉換",
+      "id": "A-004"
+    },
+    "L3 Review（审查）/ Workflow（多任务编排）": {
+      "zh-Hant": "L3 Review（審查）/ Workflow（多任務編排）",
+      "en": "L3 Review (Review) / Workflow (Multi-Task Orchestration)",
+      "type": "A",
+      "note": "保留英文+中文括注；「审查」→「審查」、「任务」→「任務」為台灣習慣",
+      "id": "A-005"
+    },
+    "L4 Retrospect（复盘）": {
+      "zh-Hant": "L4 Retrospect（復盤）",
+      "en": "L4 Retrospect (Post-Mortem Analysis)",
+      "type": "A",
+      "note": "注意：不是「回顧」，框架明確用「复盘/復盤」；英文Retrospect保留大寫",
+      "id": "A-006"
+    },
+    "L5 Closure（封存）": {
+      "zh-Hant": "L5 Closure（封存）",
+      "en": "L5 Closure (Archival & Sunset Determination)",
+      "type": "A",
+      "note": "注意：不是「關閉」或「結束」；含歸檔與條件判定雙重語義",
+      "id": "A-007"
+    },
+    "L-H Human Gate（人类闸门）": {
+      "zh-Hant": "L-H Human Gate（人類閘門）",
+      "en": "L-H Human Gate",
+      "type": "A",
+      "note": "保留英文+中文括注；「闸门」→「閘門」為兩岸一致轉換",
+      "id": "A-008"
+    },
+    "证据二维矩阵": {
+      "zh-Hant": "證據二維矩陣",
+      "en": "Two-Dimensional Evidence Matrix",
+      "type": "A",
+      "note": "內部強度 × 跨模型推廣性；「矩阵」→「矩陣」為兩岸一致轉換",
+      "id": "A-009"
+    },
+    "内部强度 A/B+/B/C+/C/D": {
+      "zh-Hant": "內部強度 A/B+/B/C+/C/D",
+      "en": "Internal Strength A/B+/B/C+/C/D",
+      "type": "A",
+      "note": "A-D六級，保留英文等級標記；「强度」→「強度」為兩岸一致轉換",
+      "id": "A-010"
+    },
+    "跨模型推广性 M0/M1/M2/M3/N/A": {
+      "zh-Hant": "跨模型推廣性 M0/M1/M2/M3/N/A",
+      "en": "Cross-Model Generalizability M0/M1/M2/M3/N/A",
+      "type": "A",
+      "note": "M等級體系，保留英文等級標記；「推广」→「推廣」為兩岸一致轉換",
+      "id": "A-011"
+    },
+    "[E-]": {
+      "zh-Hant": "[E-]",
+      "en": "[E-]",
+      "type": "A",
+      "note": "陰性證據標註，不翻譯；表示預期驗證但未通過（證據標註符號，非概念）",
+      "do_not_translate": true,
+      "id": "A-012"
+    },
+    "[E]": {
+      "zh-Hant": "[E]",
+      "en": "[E]",
+      "type": "A",
+      "note": "External-verified，證據標註，不翻譯（證據標註符號，非概念）",
+      "do_not_translate": true,
+      "id": "A-013"
+    },
+    "[S]": {
+      "zh-Hant": "[S]",
+      "en": "[S]",
+      "type": "A",
+      "note": "Source-verified，證據標註，不翻譯（證據標註符號，非概念）",
+      "do_not_translate": true,
+      "id": "A-014"
+    },
+    "[I]": {
+      "zh-Hant": "[I]",
+      "en": "[I]",
+      "type": "A",
+      "note": "Inferred，證據標註，不翻譯（證據標註符號，非概念）",
+      "do_not_translate": true,
+      "id": "A-015"
+    },
+    "[J]": {
+      "zh-Hant": "[J]",
+      "en": "[J]",
+      "type": "A",
+      "note": "Expert judgment，證據標註，不翻譯（證據標註符號，非概念）",
+      "do_not_translate": true,
+      "id": "A-016"
+    },
+    "[Sp]": {
+      "zh-Hant": "[Sp]",
+      "en": "[Sp]",
+      "type": "A",
+      "note": "Speculative，證據標註，不翻譯；貫穿全文（證據標註符號，非概念）",
+      "do_not_translate": true,
+      "id": "A-017"
+    },
+    "[D/N/A]": {
+      "zh-Hant": "[D/N/A]",
+      "en": "[D/N/A]",
+      "type": "A",
+      "note": "編輯者判斷/非LLM來源，證據標註，不翻譯（證據標註符號，非概念）",
+      "do_not_translate": true,
+      "id": "A-018"
+    },
+    "方法论片段（MF）": {
+      "zh-Hant": "方法論片段（MF）",
+      "en": "Methodology Fragment (MF)",
+      "type": "A",
+      "note": "全文高頻；MF縮寫保留；「论」→「論」為兩岸一致轉換",
+      "id": "A-019"
+    },
+    "三层模型（MF模板）": {
+      "zh-Hant": "三層模型（MF模板）",
+      "en": "Three-Layer Model (MF Template)",
+      "type": "A",
+      "note": "Problem Space / Solution Space / Failure Space；「层」→「層」為兩岸一致轉換",
+      "id": "A-020"
+    },
+    "漂移检测层": {
+      "zh-Hant": "漂移偵測層",
+      "en": "Drift Detection Layer",
+      "type": "A",
+      "note": "「检测」→「偵測」為台灣IT習慣（detection選用「偵測」而非「檢測」）",
+      "id": "A-021"
+    },
+    "漂移信号（句法/语义/程序/对齐/绩效）": {
+      "zh-Hant": "漂移訊號（句法/語意/程序/對齊/績效）",
+      "en": "Drift Signals (Syntactic / Semantic / Procedural / Alignment / Performance)",
+      "type": "A",
+      "note": "「信号」→「訊號」、「语义」→「語意」、「对齐」→「對齊」為台灣習慣",
+      "id": "A-022"
+    },
+    "被动观测": {
+      "zh-Hant": "被動觀測",
+      "en": "Opportunistic Observation",
+      "type": "A",
+      "note": "注意：非 passive observation 的直譯，更接近 opportunistic observation——主動捕捉意外發現而非消極等待",
+      "id": "A-023"
+    },
+    "反向沉淀": {
+      "zh-Hant": "反向沉澱",
+      "en": "Reverse Precipitation",
+      "type": "A",
+      "note": "從失敗和驚喜中反向提煉；保留異質感，非地道英語成語",
+      "id": "A-024"
+    },
+    "三件套": {
+      "zh-Hant": "三件套",
+      "en": "Three-Piece Suite",
+      "type": "A",
+      "note": ".md / .json / .docx 配套檔案組；保留口語化異質感",
+      "id": "A-025"
+    },
+    "写回": {
+      "zh-Hant": "寫回",
+      "en": "Write-Back",
+      "type": "A",
+      "note": "Retrospect→Spec 操作；「写」→「寫」為兩岸一致轉換",
+      "id": "A-026"
+    },
+    "冻结期": {
+      "zh-Hant": "凍結期",
+      "en": "Freeze Period",
+      "type": "A",
+      "note": "「冻」→「凍」為兩岸一致轉換",
+      "id": "A-027"
+    },
+    "死亡判据": {
+      "zh-Hant": "死亡判據",
+      "en": "Kill Criteria",
+      "type": "A",
+      "note": "框架自身的終止條件；「据」→「據」為兩岸一致轉換",
+      "id": "A-028"
+    },
+    "证据等级": {
+      "zh-Hant": "證據等級",
+      "en": "Evidence Level",
+      "type": "A",
+      "note": "注意區分：'证据等级'=Evidence Level（單條證據的強度），'五级证据分类'=Five-Tier Evidence Classification（五級體系）",
+      "id": "A-029"
+    },
+    "审查链": {
+      "zh-Hant": "審查鏈",
+      "en": "Review Chain",
+      "type": "A",
+      "note": "「审查」→「審查」、「链」→「鏈」為台灣習慣",
+      "id": "A-030"
+    },
+    "审查链谱系": {
+      "zh-Hant": "審查鏈譜系",
+      "en": "Review Provenance",
+      "type": "A",
+      "note": "記錄每次審查的後端模型與上下文；provenance在此處作為概念名詞",
+      "id": "A-031"
+    },
+    "循环漂移账本（Loop Drift Ledger）": {
+      "zh-Hant": "迴圈漂移帳本（Loop Drift Ledger）",
+      "en": "Loop Drift Ledger",
+      "type": "A",
+      "note": "保留英文括注；「循环」→「迴圈」、「账」→「帳」為台灣習慣",
+      "id": "A-032"
+    },
+    "信号聚合与告警规则": {
+      "zh-Hant": "訊號聚合與警示規則",
+      "en": "Signal Aggregation & Alert Rules",
+      "type": "A",
+      "note": "四級：綠/黃/橙/紅；「信号」→「訊號」、「与」→「與」為台灣習慣",
+      "id": "A-033"
+    },
+    "规则退役": {
+      "zh-Hant": "規則退役",
+      "en": "Rule Sunset",
+      "type": "A",
+      "note": "統一使用 Sunset 體系表示規則退役（不再混用 retirement）",
+      "id": "A-034"
+    },
+    "宪法审计（constitutional audit）": {
+      "zh-Hant": "宪法稽核（constitutional audit）",
+      "en": "Constitutional Audit",
+      "type": "A",
+      "note": "Spec合規檢查；保留英文括注；台灣IT/治理語境 audit→稽核",
+      "id": "A-035"
+    },
+    "闭环策展": {
+      "zh-Hant": "閉環策展",
+      "en": "Closed-Loop Curation",
+      "type": "A",
+      "note": "「环」→「環」為兩岸一致轉換；策展取其「篩選+維護」義",
+      "id": "A-036"
+    },
+    "天花板效应": {
+      "zh-Hant": "天花板效應",
+      "en": "Ceiling Effect",
+      "type": "A",
+      "note": "注意與統計學「天花板效應」區分；此處指AI審查能力上限",
+      "id": "A-037"
+    },
+    "诚实声明": {
+      "zh-Hant": "誠實聲明",
+      "en": "Honesty Statement",
+      "type": "A",
+      "note": "框架的自我限制宣告",
+      "id": "A-038"
+    },
+    "使用强度分档": {
+      "zh-Hant": "使用強度分檔",
+      "en": "Usage Intensity Tier",
+      "type": "A",
+      "note": "A（最低強制版）/ B（預設版）/ C（完整版）；「档」→「檔」為兩岸一致轉換",
+      "id": "A-039"
+    },
+    "项目规模分档": {
+      "zh-Hant": "專案規模分檔",
+      "en": "Project Scale Tier",
+      "type": "A",
+      "note": "S（探索）/ M（標準）/ L（正式）；「项目」→「專案」為台灣IT習慣",
+      "id": "A-040"
+    },
+    "强制启用清单": {
+      "zh-Hant": "強制啟用清單",
+      "en": "Mandatory Activation Checklist",
+      "type": "A",
+      "note": "「启」→「啟」為兩岸一致轉換",
+      "id": "A-041"
+    },
+    "核心 vs 外挂": {
+      "zh-Hant": "核心 vs 外掛",
+      "en": "Core vs Companion",
+      "type": "A",
+      "note": "外挂對應配套目錄/參考實現；cookbook 僅為§1.7中的類比說明，不進入正式術語",
+      "id": "A-042"
+    },
+    "合规牙齿": {
+      "zh-Hant": "合規牙齒",
+      "en": "Compliance Teeth",
+      "type": "A",
+      "note": "比喻性術語，保留原文異質感；指規則的實際約束力",
+      "id": "A-043"
+    },
+    "逃生口": {
+      "zh-Hant": "逃生口",
+      "en": "Escape Hatch",
+      "type": "A",
+      "note": "偏離框架的合法出口；保留口語化隱喻",
+      "id": "A-044"
+    },
+    "已知待决项登记（OPEN items）": {
+      "zh-Hant": "已知待決項登記（OPEN items）",
+      "en": "OPEN Items Registry",
+      "type": "A",
+      "note": "OPEN-1至OPEN-5；保留英文標記",
+      "id": "A-045"
+    },
+    "魔鬼代言人审查": {
+      "zh-Hant": "魔鬼代言人審查",
+      "en": "Adversarial Review",
+      "type": "A",
+      "note": "注意非字面「devil's advocate」；英文用adversarial review更準確表達對抗式檢驗",
+      "id": "A-046"
+    },
+    "作者-读者同构假设": {
+      "zh-Hant": "作者-讀者同構假設",
+      "en": "Author-Reader Structural Isomorphism Assumption",
+      "type": "A",
+      "note": "強調「同构」的結構對應含義（isomorphism），非一般同質性（homogeneity）",
+      "id": "A-047"
+    },
+    "外部依赖漂移风险": {
+      "zh-Hant": "外部依賴漂移風險",
+      "en": "External Dependency Drift Risk",
+      "type": "A",
+      "note": "「依赖」→「依賴」、「风险」→「風險」為兩岸一致轉換",
+      "id": "A-048"
+    },
+    "审查门": {
+      "zh-Hant": "審查門",
+      "en": "Review Gate",
+      "type": "A",
+      "note": "「门」→「門」為兩岸一致轉換",
+      "id": "A-049"
+    },
+    "写回审查门": {
+      "zh-Hant": "寫回審查門",
+      "en": "Write-Back Review Gate",
+      "type": "A",
+      "note": "Retrospect→Spec寫回前的強制審查關卡",
+      "id": "A-050"
+    },
+    "三件套同步协议": {
+      "zh-Hant": "三件套同步協定",
+      "en": "Three-Piece Suite Synchronization Protocol",
+      "type": "A",
+      "note": "「协议」→「協定」為台灣IT習慣（protocol在台灣慣用「協定」）",
+      "id": "A-051"
+    },
+    "框架级成熟度评估表": {
+      "zh-Hant": "框架級成熟度評估表",
+      "en": "Framework-Level Maturity Assessment Table",
+      "type": "A",
+      "note": "「级」→「級」為兩岸一致轉換",
+      "id": "A-052"
+    },
+    "最低强制版/默认版/完整版": {
+      "zh-Hant": "最低強制版/預設版/完整版",
+      "en": "Minimum Mandatory / Default / Full Edition",
+      "type": "A",
+      "note": "A/B/C三檔；「默认」→「預設」為台灣IT習慣",
+      "id": "A-053"
+    },
+    "研究经验对象（REO）": {
+      "zh-Hant": "研究經驗物件（REO）",
+      "en": "Research Experience Object (REO)",
+      "type": "A",
+      "note": "保留英文縮寫+中文；「对象」→「物件」為台灣IT習慣（object→物件）",
+      "id": "A-054"
+    },
+    "经验注入": {
+      "zh-Hant": "經驗注入",
+      "en": "Experience Injection",
+      "type": "A",
+      "note": "將被動觀測所得回饋至框架；注入保留原文異質感",
+      "id": "A-055"
+    },
+    "Dev Log（开发手册）": {
+      "zh-Hant": "Dev Log（開發手冊）",
+      "en": "Dev Log (Development Log)",
+      "type": "A",
+      "note": "貫穿全文的跨層產物；保留英文+中文括注",
+      "id": "A-056"
+    },
+    "双轴独立性": {
+      "zh-Hant": "雙軸獨立性",
+      "en": "Dual-Axis Independence",
+      "type": "A",
+      "note": "後端模型不同 + 上下文隔離；「轴」→「軸」為兩岸一致轉換",
+      "id": "A-057"
+    },
+    "独立审查": {
+      "zh-Hant": "獨立審查",
+      "en": "Independent Review",
+      "type": "A",
+      "note": "「审查」→「審查」為台灣習慣",
+      "id": "A-058"
+    },
+    "交叉验证": {
+      "zh-Hant": "交叉驗證",
+      "en": "Cross-Verification",
+      "type": "A",
+      "note": "非 ML 意義的 cross-validation；強調異後端交叉驗證",
+      "id": "A-059"
+    },
+    "异后端审查": {
+      "zh-Hant": "異後端審查",
+      "en": "Cross-Backend Review",
+      "type": "A",
+      "note": "使用不同AI模型後端進行審查；「异」→「異」、「后」→「後」為兩岸一致轉換",
+      "id": "A-060"
+    },
+    "provenance": {
+      "zh-Hant": "provenance",
+      "en": "provenance",
+      "type": "A",
+      "note": "保留英文小寫；作為框架操作術語不翻譯",
+      "do_not_translate": true,
+      "id": "A-061"
+    },
+    "上下文隔离": {
+      "zh-Hant": "上下文隔離",
+      "en": "Context Isolation",
+      "type": "A",
+      "note": "審查獨立性的必要條件之一",
+      "id": "A-062"
+    },
+    "裸环境 checklist": {
+      "zh-Hant": "裸環境 checklist",
+      "en": "Bare Environment Checklist",
+      "type": "A",
+      "note": "獨立審查的前置檢查清單；「环」→「環」為兩岸一致轉換",
+      "id": "A-063"
+    },
+    "冷读（blind-first assessment）": {
+      "zh-Hant": "冷讀（blind-first assessment）",
+      "en": "Cold Read (Blind-First Assessment)",
+      "type": "A",
+      "note": "審查方法論；先不看原文資訊進行獨立判斷",
+      "id": "A-064"
+    },
+    "[SEMI-ED]": {
+      "zh-Hant": "[SEMI-ED]",
+      "en": "[SEMI-ED]",
+      "type": "A",
+      "note": "編輯獨立性標註；Semi-Editorial；不翻譯（證據標註符號，非概念）",
+      "do_not_translate": true,
+      "id": "A-065"
+    },
+    "数据": {
+      "zh-Hant": "資料",
+      "en": "data",
+      "type": "B",
+      "note": "一般上下文用「資料」；數值型數據可用「數據」；台灣IT：database→資料庫",
+      "id": "B-066"
+    },
+    "软件": {
+      "zh-Hant": "軟體",
+      "en": "software",
+      "type": "B",
+      "note": "台灣用「軟體」而非「軟件」",
+      "id": "B-067"
+    },
+    "信息": {
+      "zh-Hant": "資訊",
+      "en": "information",
+      "type": "B",
+      "note": "台灣用「資訊」；information technology→資訊科技",
+      "id": "B-068"
+    },
+    "服务器": {
+      "zh-Hant": "伺服器",
+      "en": "server",
+      "type": "B",
+      "note": "台灣IT標準譯法；§9.5",
+      "id": "B-069"
+    },
+    "默认": {
+      "zh-Hant": "預設",
+      "en": "default",
+      "type": "B",
+      "note": "台灣IT習慣用「預設」而非「默認」",
+      "id": "B-070"
+    },
+    "命令行": {
+      "zh-Hant": "命令列",
+      "en": "command line",
+      "type": "B",
+      "note": "台灣IT習慣用「命令列」；CLI→命令列介面",
+      "id": "B-071"
+    },
+    "质量": {
+      "zh-Hant": "品質",
+      "en": "quality",
+      "type": "B",
+      "note": "台灣IT習慣用「品質」",
+      "id": "B-072"
+    },
+    "代码块": {
+      "zh-Hant": "程式碼區塊",
+      "en": "code block",
+      "type": "B",
+      "note": "「代码」→「程式碼」、「块」→「區塊」為台灣IT習慣",
+      "id": "B-073"
+    },
+    "代码": {
+      "zh-Hant": "程式碼",
+      "en": "code",
+      "type": "B",
+      "note": "台灣IT習慣用「程式碼」",
+      "id": "B-074"
+    },
+    "源码": {
+      "zh-Hant": "原始碼",
+      "en": "source code",
+      "type": "B",
+      "note": "台灣IT習慣用「原始碼」",
+      "id": "B-075"
+    },
+    "后端": {
+      "zh-Hant": "後端",
+      "en": "backend",
+      "type": "B",
+      "note": "指AI模型後端；台灣IT用「後端」",
+      "id": "B-076"
+    },
+    "通过（方法/手段）": {
+      "zh-Hant": "透過",
+      "en": "by means of / via",
+      "type": "B",
+      "note": "台灣用「透過」表示by means of；「通過」僅用於物理空間穿越",
+      "id": "B-077"
+    },
+    "通过（物理穿越）": {
+      "zh-Hant": "通過",
+      "en": "pass through",
+      "type": "B",
+      "note": "僅用於物理空間穿越；by means of應作「透過」",
+      "id": "B-078"
+    },
+    "审查": {
+      "zh-Hant": "審查",
+      "en": "review",
+      "type": "B",
+      "note": "兩岸字形差異：大陆「查」从木旦，台灣「查」从木旦（同字）；但「审」→「審」",
+      "id": "B-079"
+    },
+    "框架": {
+      "zh-Hant": "框架",
+      "en": "framework",
+      "type": "B",
+      "note": "兩岸一致",
+      "id": "B-080"
+    },
+    "方向盘 > 发动机": {
+      "zh-Hant": "方向盤 > 引擎",
+      "en": "Steering Wheel > Engine",
+      "type": "C",
+      "note": "台灣IT和日常隱喻中 engine 慣用「引擎」而非「發動機」",
+      "id": "C-081"
+    },
+    "分层不互相替代": {
+      "zh-Hant": "分層不互相替代",
+      "en": "Layers Are Not Interchangeable",
+      "type": "C",
+      "note": "強調層與層之間不可互相替代，非單層本身不可替代",
+      "id": "C-082"
+    },
+    "从失败中反向沉淀": {
+      "zh-Hant": "從失敗中反向沉澱",
+      "en": "Reverse Precipitation from Failures",
+      "type": "C",
+      "note": "保留異質感，不追求地道英語",
+      "id": "C-083"
+    },
+    "AI 内部闭环 ≠ 人类审查": {
+      "zh-Hant": "AI 內部閉環 ≠ 人類審查",
+      "en": "AI Internal Closed Loop ≠ Human Review",
+      "type": "C",
+      "note": "核心警示；「环」→「環」為兩岸一致轉換",
+      "id": "C-084"
+    },
+    "新增观测，不新增阻断": {
+      "zh-Hant": "新增觀測，不新增阻斷",
+      "en": "Add Observability, Not Blocking",
+      "type": "C",
+      "note": "ChatGPT-5.5與DeepSeek交集共識；漂移檢測設計原則",
+      "id": "C-085"
+    },
+    "离散审查测不出连续漂移": {
+      "zh-Hant": "離散審查測不出連續漂移",
+      "en": "Discrete Reviews Cannot Detect Continuous Drift",
+      "type": "C",
+      "note": "OPEN-1核心表述；「测」→「測」為兩岸一致轉換",
+      "id": "C-086"
+    },
+    "30% 复杂度就能跑": {
+      "zh-Hant": "30% 複雜度就能跑",
+      "en": "Runs at 30% Complexity",
+      "type": "C",
+      "note": "保留口語化風格；框架入門門檻表述",
+      "id": "C-087"
+    },
+    "规则只增不减": {
+      "zh-Hant": "規則只增不減",
+      "en": "Rules Only Increase, Never Decrease",
+      "type": "C",
+      "note": "防止「狼來了」效應；「减」→「減」為兩岸一致轉換",
+      "id": "C-088"
+    },
+    "加复杂度比减复杂度容易": {
+      "zh-Hant": "加複雜度比減複雜度容易",
+      "en": "Adding Complexity Is Easier Than Removing It",
+      "type": "C",
+      "note": "框架設計原則；提醒克制添加規則",
+      "id": "C-089"
+    },
+    "沉默省略仍是弱实践": {
+      "zh-Hant": "沉默省略仍是弱實踐",
+      "en": "Silent Omission Is Still Weak Practice",
+      "type": "C",
+      "note": "漂移檢測中不記錄省略也是問題；英文偏地道可接受（作為原則/警示語追求可讀性）",
+      "id": "C-090"
+    },
+    "幸存者偏差/伪模式化/噪声误读/观测污染/成本失控/副产品崇拜/安全错觉": {
+      "zh-Hant": "倖存者偏差/偽模式化/雜訊誤讀/觀測污染/成本失控/副產品崇拜/安全錯覺",
+      "en": "Survivorship Bias / Pseudo-Patterning / Misreading Noise / Observation Pollution / Cost Overrun / Byproduct Worship / Safety Illusion",
+      "type": "C",
+      "note": "Failure Space 10種失效模式中的7種。Cost Overrun 比 Cost Runaway 更穩定；Misreading Noise 比 Noise Misreading 更自然",
+      "id": "C-091"
+    },
+    "workflow": {
+      "zh-Hant": "workflow",
+      "en": "workflow",
+      "type": "D",
+      "note": "保留英文小寫",
+      "do_not_translate": true,
+      "id": "D-092"
+    },
+    "agent": {
+      "zh-Hant": "agent",
+      "en": "agent",
+      "type": "D",
+      "note": "保留英文小寫",
+      "do_not_translate": true,
+      "id": "D-093"
+    },
+    "pipeline": {
+      "zh-Hant": "pipeline",
+      "en": "pipeline",
+      "type": "D",
+      "note": "保留英文小寫",
+      "do_not_translate": true,
+      "id": "D-094"
+    },
+    "checkpoint": {
+      "zh-Hant": "checkpoint",
+      "en": "checkpoint",
+      "type": "D",
+      "note": "保留英文小寫",
+      "do_not_translate": true,
+      "id": "D-095"
+    },
+    "gate": {
+      "zh-Hant": "gate",
+      "en": "gate",
+      "type": "D",
+      "note": "閘門；保留英文小寫",
+      "do_not_translate": true,
+      "id": "D-096"
+    },
+    "对照实验": {
+      "zh-Hant": "對照實驗",
+      "en": "Controlled Experiment",
+      "type": "D",
+      "note": "「实验」→「實驗」為兩岸一致轉換",
+      "id": "D-097"
+    },
+    "阴性结果": {
+      "zh-Hant": "陰性結果",
+      "en": "Negative Result",
+      "type": "D",
+      "note": "假設未獲支持的實驗結果",
+      "id": "D-098"
+    },
+    "对抗验证（adversarial verify）": {
+      "zh-Hant": "對抗驗證（adversarial verify）",
+      "en": "Adversarial Verification",
+      "type": "D",
+      "note": "§6.2模式3；保留英文括注",
+      "id": "D-099"
+    },
+    "完备性审查（completeness critic）": {
+      "zh-Hant": "完備性審查（completeness critic）",
+      "en": "Completeness Critic",
+      "type": "D",
+      "note": "§6.2模式6；角色名非泛化活動名，保留 Critic",
+      "id": "D-100"
+    },
+    "迭代至枯竭（loop-until-dry）": {
+      "zh-Hant": "迭代至枯竭（loop-until-dry）",
+      "en": "Loop-Until-Dry",
+      "type": "D",
+      "note": "§6.2模式5；迭代到無新發現為止",
+      "id": "D-101"
+    },
+    "评委团（judge panel）": {
+      "zh-Hant": "評審團（judge panel）",
+      "en": "Judge Panel",
+      "type": "D",
+      "note": "台灣更自然用「評審團」；§6.2模式4",
+      "id": "D-102"
+    },
+    "屏障并行（barrier parallel）": {
+      "zh-Hant": "屏障並行（barrier parallel）",
+      "en": "Barrier Parallel",
+      "type": "D",
+      "note": "§6.2模式2；「并」→「並」為兩岸一致轉換",
+      "id": "D-103"
+    },
+    "流水线（pipeline）": {
+      "zh-Hant": "管線（pipeline）",
+      "en": "Pipeline",
+      "type": "D",
+      "note": "§6.2模式1；台灣IT習慣「管線」而非「流水線」；保留英文括注",
+      "id": "D-104"
+    },
+    "声明式管道执行（Pipeline DAG）": {
+      "zh-Hant": "宣告式管線執行（Pipeline DAG）",
+      "en": "Declarative Pipeline Execution (Pipeline DAG)",
+      "type": "D",
+      "note": "§6.2模式8；「声明」→「宣告」為台灣IT習慣（declarative→宣告式）",
+      "id": "D-105"
+    },
+    "结构化多角色审查（Structured Multi-Role Review）": {
+      "zh-Hant": "結構化多角色審查（Structured Multi-Role Review）",
+      "en": "Structured Multi-Role Review",
+      "type": "D",
+      "note": "§6.2模式9；「审查」→「審查」為台灣習慣",
+      "id": "D-106"
+    },
+    "Creator-Verifier": {
+      "zh-Hant": "Creator-Verifier",
+      "en": "Creator-Verifier",
+      "type": "D",
+      "note": "§6.2模式7；獨立驗證模式；不翻譯",
+      "do_not_translate": true,
+      "id": "D-107"
+    },
+    "硬关卡（hard gate）": {
+      "zh-Hant": "硬關卡（hard gate）",
+      "en": "Hard Gate",
+      "type": "D",
+      "note": "§6.2模式9；必須通過才能繼續的強制檢查點",
+      "id": "D-108"
+    },
+    "预登记（pre-registration）": {
+      "zh-Hant": "預註冊（pre-registration）",
+      "en": "Pre-Registration",
+      "type": "D",
+      "note": "研究方法語境下台灣慣用「預註冊」",
+      "id": "D-109"
+    },
+    "科学门（science gates）": {
+      "zh-Hant": "科學門（science gates）",
+      "en": "Science Gates",
+      "type": "D",
+      "note": "§4.1.1；實驗設計的品質關卡",
+      "id": "D-110"
+    },
+    "双评分者盲评协议": {
+      "zh-Hant": "雙評分者盲評規程",
+      "en": "Dual-Rater Blinded Scoring Protocol",
+      "type": "D",
+      "note": "台灣研究語境「協議」非最佳；protocol 在此為規程/方案義",
+      "id": "D-111"
+    },
+    "路径隔离原则": {
+      "zh-Hant": "路徑隔離原則",
+      "en": "Path Isolation Principle",
+      "type": "D",
+      "note": "§6.2模式3；確保審查者不接觸被審查者的上下文",
+      "id": "D-112"
+    },
+    "审查维度互补设计": {
+      "zh-Hant": "審查維度互補設計",
+      "en": "Complementary Review-Dimension Design",
+      "type": "D",
+      "note": "§9.2；不同審查輪次檢查不同維度",
+      "id": "D-113"
+    },
+    "跨模型复现": {
+      "zh-Hant": "跨模型重現",
+      "en": "Cross-Model Replication",
+      "type": "D",
+      "note": "§1.8, §9.6.1；台灣習慣用「重現」而非「复现」",
+      "id": "D-114"
+    },
+    "捷径审计（shortcut audit）": {
+      "zh-Hant": "捷径稽核（shortcut audit）",
+      "en": "Shortcut Audit",
+      "type": "D",
+      "note": "CK4；檢查AI是否走捷徑而非深度分析；台灣IT/治理語境 audit→稽核",
+      "id": "D-115"
+    },
+    "静默失效": {
+      "zh-Hant": "靜默失效",
+      "en": "Silent Failure",
+      "type": "D",
+      "note": "§9.10；AI系統無提示地產出錯誤結果",
+      "id": "D-116"
+    },
+    "阴性结论": {
+      "zh-Hant": "陰性結論",
+      "en": "Negative Conclusion",
+      "type": "D",
+      "note": "§6.3.1；不支持假設的研究結論",
+      "id": "D-117"
+    },
+    "确认偏误（二次确认偏误）": {
+      "zh-Hant": "確認偏誤（二次確認偏誤）",
+      "en": "Confirmation Bias (Second-Order Confirmation Bias)",
+      "type": "D",
+      "note": "§14；「偏误」→「偏誤」為台灣習慣",
+      "id": "D-118"
+    },
+    "假多样性": {
+      "zh-Hant": "假多樣性",
+      "en": "Pseudo-Diversity",
+      "type": "D",
+      "note": "§6.2模式3；看似多模型審查實則同源偏差",
+      "id": "D-119"
+    },
+    "锚定风险/锚定": {
+      "zh-Hant": "錨定風險/錨定",
+      "en": "Anchoring Risk / Anchoring",
+      "type": "D",
+      "note": "§6.2模式9, §9.2；先入為主資訊影響後續判斷",
+      "id": "D-120"
+    },
+    "kill-test-first": {
+      "zh-Hant": "kill-test-first",
+      "en": "kill-test-first",
+      "type": "D",
+      "note": "skill名稱，不翻譯",
+      "do_not_translate": true,
+      "id": "D-121"
+    },
+    "Protocol 3": {
+      "zh-Hant": "Protocol 3",
+      "en": "Protocol 3",
+      "type": "D",
+      "note": "框架內部審查協議編號，不翻譯",
+      "do_not_translate": true,
+      "id": "D-122"
+    },
+    "PocketFlow": {
+      "zh-Hant": "PocketFlow",
+      "en": "PocketFlow",
+      "type": "D",
+      "note": "外部參考專案，不翻譯",
+      "do_not_translate": true,
+      "id": "D-123"
+    },
+    "prompt-tdd": {
+      "zh-Hant": "prompt-tdd",
+      "en": "prompt-tdd",
+      "type": "D",
+      "note": "外部參考專案，不翻譯",
+      "do_not_translate": true,
+      "id": "D-124"
+    },
+    "五级证据分类": {
+      "zh-Hant": "五級證據分類",
+      "en": "Five-Tier Evidence Classification",
+      "type": "D",
+      "note": "[S]/[E]/[I]/[J]/[Sp]五級體系",
+      "id": "D-125"
+    },
+    "HG-0/HG-1/HG-2/HG-3": {
+      "zh-Hant": "HG-0/HG-1/HG-2/HG-3",
+      "en": "HG-0/HG-1/HG-2/HG-3",
+      "type": "D",
+      "note": "人類閘門編號，不翻譯；三語嚴格保持一致無空格",
+      "do_not_translate": true,
+      "id": "D-126"
+    },
+    "会话交接（Session Handoff）": {
+      "zh-Hant": "對話交接（Session Handoff）",
+      "en": "Session Handoff",
+      "type": "D",
+      "note": "§9.3；AI對話間的狀態傳遞（非技術session）",
+      "id": "D-127"
+    },
+    "可复现性声明": {
+      "zh-Hant": "可重現性聲明",
+      "en": "Reproducibility Statement",
+      "type": "D",
+      "note": "§2.2, §9.1；台灣習慣用「重現」而非「复现」",
+      "id": "D-128"
+    },
+    "规则疲劳": {
+      "zh-Hant": "規則疲勞",
+      "en": "Rule Fatigue",
+      "type": "D",
+      "note": "§2.6；過多規則導致遵守意願下降",
+      "id": "D-129"
+    },
+    "最低强制核心": {
+      "zh-Hant": "最低強制核心",
+      "en": "Minimum Mandatory Core",
+      "type": "D",
+      "note": "§1.7；框架不可削減的最小集合",
+      "id": "D-130"
+    },
+    "参考实现": {
+      "zh-Hant": "參考實作",
+      "en": "Reference Implementation",
+      "type": "D",
+      "note": "§1.7；台灣IT習慣用「實作」而非「实现」",
+      "id": "D-131"
+    },
+    "配套目录": {
+      "zh-Hant": "配套目錄",
+      "en": "Companion Directory",
+      "type": "D",
+      "note": "§1.7；可複數為 Companion Directories；「目录」→「目錄」",
+      "id": "D-132"
+    },
+    "自指涉节": {
+      "zh-Hant": "自指涉節",
+      "en": "Self-Referential Section",
+      "type": "D",
+      "note": "§1.7；框架中描述框架自身的章節",
+      "id": "D-133"
+    },
+    "半开放方法论": {
+      "zh-Hant": "半開放方法論",
+      "en": "Semi-Open Methodology",
+      "type": "D",
+      "note": "§1.8；部分公開、部分封存的研究方法",
+      "id": "D-134"
+    },
+    "多后端审查链": {
+      "zh-Hant": "多後端審查鏈",
+      "en": "Multi-Backend Review Chain",
+      "type": "D",
+      "note": "§14；使用多個AI模型後端串聯審查",
+      "id": "D-135"
+    },
+    "冗余暴露/一致维护暴露/审查附带暴露": {
+      "zh-Hant": "冗餘暴露/一致維護暴露/審查附帶暴露",
+      "en": "Redundancy-Driven Discovery / Consistency-Maintenance Discovery / Review-Incidental Discovery",
+      "type": "D",
+      "note": "§7.7.2；Exposure 在此為 reveal/discovery 義，非風險暴露",
+      "id": "D-136"
+    },
+    "比较型/维护型/审查型/执行型/失败型/使用型/时漂型/缺失型": {
+      "zh-Hant": "比較型/維護型/審查型/執行型/失敗型/使用型/時漂型/缺失型",
+      "en": "Comparative / Maintenance / Review / Execution / Failure / Usage / Temporal-Drift / Absence Types",
+      "type": "D",
+      "note": "§7.7.3；八種被動觀測渠道",
+      "id": "D-137"
+    },
+    "changelog": {
+      "zh-Hant": "changelog",
+      "en": "changelog",
+      "type": "E",
+      "note": "§14即changelog；保留英文小寫不翻譯；全文標題中可用 Changelog",
+      "id": "E-138"
+    },
+    "版本时间线": {
+      "zh-Hant": "版本時間線",
+      "en": "Version Timeline",
+      "type": "E",
+      "note": "§14；「线」→「線」為兩岸一致轉換",
+      "id": "E-139"
+    },
+    "退役判定": {
+      "zh-Hant": "退役判定",
+      "en": "Sunset Determination",
+      "type": "E",
+      "note": "與'规则退役'（Rule Sunset）統一使用 Sunset 體系；決定規則/產物何時廢止的判斷標準",
+      "id": "E-140"
+    },
+    "语义化版本": {
+      "zh-Hant": "語意化版本",
+      "en": "Semantic Versioning",
+      "type": "E",
+      "note": "Major.Minor.Patch；「语义」→「語意」為台灣IT習慣（semantic→語意）",
+      "id": "E-141"
+    },
+    "CLAUDE.md": {
+      "zh-Hant": "CLAUDE.md",
+      "en": "CLAUDE.md",
+      "type": "E",
+      "note": "檔案名稱，不翻譯",
+      "id": "E-142"
+    },
+    "memory/": {
+      "zh-Hant": "memory/",
+      "en": "memory/",
+      "type": "E",
+      "note": "目錄名稱，不翻譯",
+      "id": "E-143"
+    },
+    "project_spec.md": {
+      "zh-Hant": "project_spec.md",
+      "en": "project_spec.md",
+      "type": "E",
+      "note": "§2.2, §8.5；檔案名稱，不翻譯",
+      "id": "E-144"
+    },
+    "模板（附录A-G）": {
+      "zh-Hant": "範本（附錄A-G）",
+      "en": "Templates (Appendices A-G)",
+      "type": "E",
+      "note": "§12；台灣IT習慣用「範本」而非「模板」；「附录」→「附錄」",
+      "id": "E-145"
+    },
+    "反模式清单（附录H）": {
+      "zh-Hant": "反模式清單（附錄H）",
+      "en": "Anti-Pattern Catalog (Appendix H)",
+      "type": "E",
+      "note": "§1.7, 附錄H；「模式」兩岸一致，「清单」→「清單」",
+      "id": "E-146"
+    },
+    "分级逃生口": {
+      "zh-Hant": "分級逃生口",
+      "en": "Tiered Escape Hatch",
+      "type": "A",
+      "note": "§4.3；三級逃生機制，ETF R5事故驅動",
+      "id": "A-147",
+      "sections": [
+        "§4.3"
+      ]
+    },
+    "L1 检索恢复": {
+      "zh-Hant": "L1 檢索恢復",
+      "en": "L1 Retrieval Recovery",
+      "type": "A",
+      "note": "§4.3；第一級逃生口：重新檢索外部資訊",
+      "id": "A-148",
+      "sections": [
+        "§4.3"
+      ]
+    },
+    "L2 同源降级继续": {
+      "zh-Hant": "L2 同源降級繼續",
+      "en": "L2 Same-Source Degraded Continuation",
+      "type": "A",
+      "note": "§4.3；第二級逃生口：降級後繼續",
+      "id": "A-149",
+      "sections": [
+        "§4.3"
+      ]
+    },
+    "L3 停止报告": {
+      "zh-Hant": "L3 停止報告",
+      "en": "L3 Stop-and-Report",
+      "type": "A",
+      "note": "§4.3；第三級逃生口：停止並報告，絕不用替代數據",
+      "id": "A-150",
+      "sections": [
+        "§4.3"
+      ]
+    },
+    "事件流健康度监测": {
+      "zh-Hant": "事件流健康度監測",
+      "en": "Event Stream Health Monitoring",
+      "type": "A",
+      "note": "§3.7.0；監測AI協作事件流的整體健康狀態",
+      "id": "A-151",
+      "sections": [
+        "§3.7.0"
+      ]
+    },
+    "自适应权重淘汰": {
+      "zh-Hant": "自適應權重淘汰",
+      "en": "Adaptive Weight Pruning",
+      "type": "A",
+      "note": "§3.7.4.1；+0.05/-0.15/0.0數值待敏感性分析",
+      "id": "A-152",
+      "sections": [
+        "§3.7.4.1"
+      ]
+    },
+    "五类漂移信号": {
+      "zh-Hant": "五類漂移訊號",
+      "en": "Five Categories of Drift Signals",
+      "type": "A",
+      "note": "§3.7.2；句法/程序/對齊/閘門繞過/績效五類",
+      "id": "A-153",
+      "sections": [
+        "§3.7.2"
+      ]
+    },
+    "难度分层漂移": {
+      "zh-Hant": "難度分層漂移",
+      "en": "Difficulty-Stratified Drift",
+      "type": "A",
+      "note": "§3.7.2.6；ML項目可選profile，非第六類獨立信號",
+      "id": "A-154",
+      "sections": [
+        "§3.7.2.6"
+      ]
+    },
+    "四级告警": {
+      "zh-Hant": "四級警示",
+      "en": "Four-Level Alerting",
+      "type": "A",
+      "note": "§3.7；綠/黃/橙/紅四級",
+      "id": "A-155"
+    },
+    "detector-only 哲学": {
+      "zh-Hant": "detector-only 哲學",
+      "en": "detector-only philosophy",
+      "type": "A",
+      "note": "§3.7；只觀測不修改，來自headroom CacheAligner對標",
+      "id": "A-156"
+    },
+    "休眠审查": {
+      "zh-Hant": "休眠審查",
+      "en": "Dormancy Review",
+      "type": "A",
+      "note": "§3.7.4；長時間未觸發的規則進入休眠審查狀態",
+      "id": "A-157"
+    },
+    "路由声明": {
+      "zh-Hant": "路由宣告",
+      "en": "Routing Declaration",
+      "type": "A",
+      "note": "§6.3.1；A3實驗核心概念",
+      "id": "A-158",
+      "sections": [
+        "§6.3.1"
+      ]
+    },
+    "Flow-as-Node": {
+      "zh-Hant": "Flow-as-Node",
+      "en": "Flow-as-Node",
+      "type": "A",
+      "note": "§6.3.2；嵌套工作流描述模式，不翻譯",
+      "do_not_translate": true,
+      "id": "A-159",
+      "sections": [
+        "§6.3.2"
+      ]
+    },
+    "嵌套工作流": {
+      "zh-Hant": "巢狀工作流",
+      "en": "Nested Workflow",
+      "type": "A",
+      "note": "§6.3.2；A1實驗核心概念",
+      "id": "A-160",
+      "sections": [
+        "§6.3.2"
+      ]
+    },
+    "格式效应": {
+      "zh-Hant": "格式效應",
+      "en": "Format Effect",
+      "type": "D",
+      "note": "§6.3.1；prompt格式對LLM輸出的影響",
+      "id": "D-161"
+    },
+    "结构效应": {
+      "zh-Hant": "結構效應",
+      "en": "Structure Effect",
+      "type": "D",
+      "note": "§6.3.2；工作流描述結構對LLM輸出的影響",
+      "id": "D-162"
+    },
+    "模型家族": {
+      "zh-Hant": "模型家族",
+      "en": "Model Family",
+      "type": "D",
+      "note": "§9.6.1；同一模型系列的不同版本（如GPT-5→GPT-5.5）",
+      "id": "D-163",
+      "sections": [
+        "§9.6.1"
+      ]
+    },
+    "问题空间": {
+      "zh-Hant": "問題空間",
+      "en": "Problem Space",
+      "type": "A",
+      "note": "§9.10方法论片段三层模板——第一层：问题识别",
+      "id": "A-164",
+      "sections": [
+        "§9.10"
+      ]
+    },
+    "解决方案空间": {
+      "zh-Hant": "解決方案空間",
+      "en": "Solution Space",
+      "type": "A",
+      "note": "§9.10方法论片段三层模板——第二层：解决方案适用条件",
+      "id": "A-165",
+      "sections": [
+        "§9.10"
+      ]
+    },
+    "失效空间": {
+      "zh-Hant": "失效空間",
+      "en": "Failure Space",
+      "type": "A",
+      "note": "§9.10方法论片段三层模板——第三层：已知反例/失效模式",
+      "id": "A-166",
+      "sections": [
+        "§9.10"
+      ]
+    },
+    "静默失效信号": {
+      "zh-Hant": "靜默失效訊號",
+      "en": "Silent Failure Signal",
+      "type": "A",
+      "note": "§9.10；AI系統無提示地產出錯誤結果的跡象",
+      "id": "A-167"
+    },
+    "任务可供性": {
+      "zh-Hant": "任務可供性",
+      "en": "Task Affordance",
+      "type": "D",
+      "note": "§9.10；任務特徵是否可供AI有效執行",
+      "id": "D-168"
+    },
+    "跨层可观测性": {
+      "zh-Hant": "跨層可觀測性",
+      "en": "Cross-Layer Observability",
+      "type": "A",
+      "note": "§9.11；L0-L5各層可觀測性關切+3原則",
+      "id": "A-169",
+      "sections": [
+        "§9.11"
+      ]
+    },
+    "探索性 vs 确认性框架": {
+      "zh-Hant": "探索性 vs 確認性框架",
+      "en": "Exploratory vs Confirmatory Framework",
+      "type": "A",
+      "note": "§1.8#6；框架的探索性本質是局限也是誠實聲明",
+      "id": "A-170",
+      "sections": [
+        "§1.8"
+      ]
+    },
+    "单模型证据主导": {
+      "zh-Hant": "單模型證據主導",
+      "en": "Single-Model Evidence Dominance",
+      "type": "D",
+      "note": "§1.8；多數證據來自單一模型後端的局限",
+      "id": "D-171"
+    },
+    "Major/Minor/Patch 升级": {
+      "zh-Hant": "Major/Minor/Patch 升級",
+      "en": "Major/Minor/Patch Upgrade",
+      "type": "D",
+      "note": "§2.6；三級版本升級規則",
+      "id": "D-172"
+    },
+    "文件系统作IPC": {
+      "zh-Hant": "檔案系統作IPC",
+      "en": "File System as IPC",
+      "type": "D",
+      "note": "附錄H.1；反面模式",
+      "id": "D-173",
+      "sections": [
+        "附录H.1"
+      ]
+    },
+    "继承层次膨胀": {
+      "zh-Hant": "繼承層次膨脹",
+      "en": "Inheritance Hierarchy Bloat",
+      "type": "D",
+      "note": "附錄H.3；反面模式",
+      "id": "D-174",
+      "sections": [
+        "附录H.3"
+      ]
+    },
+    "后端切换判据": {
+      "zh-Hant": "後端切換判據",
+      "en": "Backend-Switching Criteria",
+      "type": "D",
+      "note": "§9.2；何時應切換獨立審查後端的判斷標準",
+      "id": "D-175"
+    },
+    "审查频率适应性上调": {
+      "zh-Hant": "審查頻率適應性上調",
+      "en": "Adaptive Review Frequency Increase",
+      "type": "D",
+      "note": "§9.2；Protocol 3實證發現",
+      "id": "D-176"
+    },
+    "文件": {
+      "zh-Hant": "檔案",
+      "en": "File",
+      "type": "B",
+      "note": "台灣IT慣用「檔案」；非「文件」",
+      "id": "B-177"
+    },
+    "网络": {
+      "zh-Hant": "網路",
+      "en": "Network",
+      "type": "B",
+      "note": "台灣IT慣用「網路」；非「網絡」",
+      "id": "B-178"
+    },
+    "接口": {
+      "zh-Hant": "介面",
+      "en": "Interface",
+      "type": "B",
+      "note": "台灣IT慣用「介面」",
+      "id": "B-179"
+    },
+    "配置": {
+      "zh-Hant": "組態",
+      "en": "Configuration",
+      "type": "B",
+      "note": "台灣IT慣用「組態」；config→組態",
+      "id": "B-180"
+    },
+    "日志": {
+      "zh-Hant": "日誌",
+      "en": "Log",
+      "type": "B",
+      "note": "台灣IT慣用「日誌」",
+      "id": "B-181"
+    },
+    "过度工程": {
+      "zh-Hant": "過度工程",
+      "en": "Overengineering",
+      "type": "D",
+      "note": "§1.4；使用超過需求的框架功能",
+      "id": "D-182"
+    },
+    "声称校准": {
+      "zh-Hant": "聲稱校準",
+      "en": "Claim Calibration",
+      "type": "A",
+      "note": "§9.6；將證據強度標註與實際驗證程度對齊",
+      "id": "A-183"
+    },
+    "已知反例": {
+      "zh-Hant": "已知反例",
+      "en": "Known Counterexamples",
+      "type": "A",
+      "note": "§9.10；方法論片段必須記錄的失效條件",
+      "id": "A-184"
+    },
+    "版本号规则": {
+      "zh-Hant": "版本號規則",
+      "en": "Versioning Rules",
+      "type": "D",
+      "note": "§2.6；Major.Minor.Patch三級規則",
+      "id": "D-185"
+    },
+    "最小可行 Prompt 六要素": {
+      "zh-Hant": "最小可行 Prompt 六要素",
+      "en": "Six Elements of a Minimum Viable Prompt",
+      "type": "A",
+      "note": "§4.3；Prompt設計的六個強制要素",
+      "id": "A-186"
+    },
+    "否决条件": {
+      "zh-Hant": "否決條件",
+      "en": "Kill Conditions",
+      "type": "A",
+      "note": "§4.3；一票否決的硬性條件",
+      "id": "A-187"
+    },
+    "完成标准": {
+      "zh-Hant": "完成標準",
+      "en": "Completion Criteria",
+      "type": "D",
+      "note": "§4.3；任務完成的客觀判定標準",
+      "id": "D-188"
+    },
+    "模板": {
+      "zh-Hant": "範本",
+      "en": "Template",
+      "type": "B",
+      "note": "台灣IT習慣用「範本」而非「模板」；此為獨立條目，補充E-145的附錄限定版本",
+      "id": "B-189"
+    },
+    "实现": {
+      "zh-Hant": "實作",
+      "en": "Implementation",
+      "type": "D",
+      "note": "台灣IT習慣用「實作」而非「实现」；此為獨立條目，補充D-131的「参考实现」限定版本。注意OpenCC s2twp會將「实现」轉為「實現」，覆蓋須針對OpenCC輸出「實現」→「實作」",
+      "id": "D-190"
+    }
+  }
+}

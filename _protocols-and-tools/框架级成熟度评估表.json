@@ -1,0 +1,375 @@
+{
+  "metadata": {
+    "title": "框架级成熟度评估表（Framework-Wide Maturity Assessment）",
+    "version": "v0.4",
+    "date": "2026-06-16",
+    "creator_model": "GLM-5.2",
+    "creator_cli": "ZCode CLI shell",
+    "creator_house": "ZCode house（审查链谱系外第四后端；框架作者=DeepSeek-v4-pro）",
+    "creator_role": "编辑者（非审查者）",
+    "independence_level": "[SEMI-ED]",
+    "independence_note": "编辑独立于内容创作（GLM-5.2未参与框架设计/审查链），但创建指令由用户提供、评估对象由用户指定；成熟度判断基于框架自身已记录证据，未做新独立验证",
+    "status": "Protocol 3 首次试跑完成——方法论提取方法论项目（M-tier，闭合时 14/20 loops，2026-06-16 闭合）作为首次真实试跑，试跑数据已写回本表",
+    "evidence_level_overall": "[J] GLM-5.2编辑者评估（按框架§9.6，[J]须经独立审查者交叉确认才提升可信度）。注意：GLM-5.2评DeepSeek写的框架='编辑者评估'，比独立审查者的[J]弱，比DeepSeek自评的'作者自评'偏置风险不同",
+    "companion_md": "框架级成熟度评估表.md",
+    "positioning": "§10.8（Dev Log 成熟度表）的全框架推广；补 §9.6 证据纪律的自我应用缺口；§1.6 OPEN-2（死亡判据缺预登记基线）的预登记载体",
+    "reviewer_guidance": "后续独立审查者复核时：(a)验证每行成熟度判断是否与框架文档记录一致（不应高估）；(b)验证GLM-5.2是否在'部分验证/待实证/零数据'边界判断中引入未声明乐观偏置；(c)'~30%部分验证'汇总数字可被独立复核重新计算"
+  },
+  "edit_history": [
+    {
+      "version": "v0.1",
+      "date": "2026-06-15",
+      "editor_model": "GLM-5.2",
+      "editor_cli": "ZCode CLI shell",
+      "change": "冻结期初版创建。零试跑基线，编辑者评估，未经独立审查者复核。成熟度判断基于框架自身文档记录（§10.8、各审查报告、§1.6 OPEN项）。配套.md同步生成。",
+      "provenance_note": "本文件创建者=GLM-5.2，非框架作者DeepSeek-v4-pro。本文件评估的是DeepSeek所写框架的成熟度。"
+    },
+    {
+      "version": "v0.2",
+      "date": "2026-06-16",
+      "editor_model": "DeepSeek-v4-pro",
+      "editor_cli": "Claude Code CLI shell",
+      "change": "Protocol 3 首次试跑数据写回。方法论提取方法论项目（M-tier，闭合时 14/20 loops）作为首次真实试跑完成。更新 8 行成熟度，新增 protocol_3_feedback。Codex CLI (ChatGPT-5.5) 写回核查通过。",
+      "provenance_note": "写回者=DeepSeek-v4-pro（框架作者自评），比 GLM-5.2 的 [SEMI-ED] 更弱。写回内容经 Codex CLI (ChatGPT-5.5) 单轮核查。"
+    }
+  ],
+  "maturity_scale": {
+    "已验证": "在 ≥1 个真实项目中被实测有效，有可追溯的项目数据/审查报告佐证",
+    "部分验证": "某些子项已验证，某些未验证（拆细到子项标注）",
+    "待实证": "设计完成，有理论支撑或单点案例，但未经端到端验证",
+    "零数据": "纯设计推断，无任何项目接触，仅有逻辑论证"
+  },
+  "layers": {
+    "L0_Spec": {
+      "S1_S10_components": {
+        "maturity": "部分验证",
+        "evidence": "S1/S2/S3/S4/S9 有现有 memory/ 实践对应物；S5/S6/S8 现状须新建（§2.4 标注 30%/5%/20%）"
+      },
+      "maintenance_mechanism": {
+        "maturity": "部分验证（试跑1）",
+        "evidence": "试跑前：机制描述完整，从未实测。试跑1（方法论提取方法论）：project_spec.md 执行完整累积修订（v0.1->v0.2->v0.3->v1.0）、审查发现->框架文档写回（Phase 5/7/7.5 共 26 项发现）、终期归档（archive/）。反向沉淀频率：每 Phase 后。",
+        "trial1_verified": "写回确实发生",
+        "trial1_pending": "多项目时的跨项目沉淀"
+      }
+    },
+    "L_H_HumanGate": {
+      "HG_0_1_2_3_definition": {
+        "maturity": "部分验证（试跑1）",
+        "evidence": "试跑前：触发条件为设计。试跑1：HG-0 触发（Codex 7.2/10，5 强制修订）；HG-1 触发（OPEN-2/3 决策，用户确认）；HG-2/3 未触发。C4 证据局限：人工交互内容未留存（IMPROVE）。",
+        "trial1_pending": "HG-2/3 仍需触发案例；HG 交互记录留存机制需改进"
+      },
+      "gate_types_and_AI_role": {
+        "maturity": "部分验证（试跑1）",
+        "evidence": "试跑前：定义清晰但未测。试跑1：AI 在 HG-1 处如实记录用户决策并标注 C4 证据局限（Phase 7 F4），未替人决定。",
+        "trial1_verified": "AI 未越权",
+        "trial1_pending": "仅 1 次 HG-1 触发，样本不足"
+      }
+    },
+    "L1_Prompt": {
+      "three_templates": {
+        "maturity": "待实证",
+        "evidence": "分化是逻辑推断；无三模板跑出不同质的证据"
+      },
+      "six_elements": {
+        "maturity": "部分验证",
+        "evidence": "否决条件来自 kill-test-first 门1 已用；其他要素未独立验证"
+      },
+      "tiered_escape_hatches_L1L2L3": {
+        "maturity": "部分验证",
+        "evidence": "L3 有 ETF R5 消融事故验证；L1/L2 是 v1.3 新增零数据"
+      }
+    },
+    "L2_Loop": {
+      "convergence_by_task_type": {
+        "maturity": "待实证",
+        "evidence": "数字（探索8/执行5/修复3）基于 Visual Para-Thinker 理论，未在本框架场景校准"
+      },
+      "no_improvement_exit": {
+        "maturity": "待实证",
+        "evidence": "理论合理；机制未跑过"
+      }
+    },
+    "L3_Workflow": {
+      "patterns_1_to_7": {
+        "maturity": "部分验证",
+        "evidence": "模式 3/7 有 GitNexus 验证；模式 1/2/4/5/6 单点或零数据"
+      },
+      "pattern_8_Pipeline_DAG": {
+        "maturity": "待实证",
+        "evidence": "GitNexus 14 阶段管道单项目 + 9-agent workflow；Python 参考实现未集成测试"
+      },
+      "pattern_9_Multi_Role_Review": {
+        "maturity": "待实证",
+        "evidence": "GitNexus PR Swarm 单项目；Solo/Swarm 跨工具兼容性未测"
+      },
+      "selection_decision_tree": {
+        "maturity": "待实证",
+        "evidence": "决策树完整；实际选模式时是否查阅未测"
+      }
+    },
+    "L4_Retrospect": {
+      "lightweight_deep_templates": {
+        "maturity": "部分验证（试跑1）",
+        "evidence": "试跑前：模板设计完整，从未在任何项目跑过（零数据）。试跑1：深度版模板首次完整执行（方法论提取方法论 Phase 8），字段齐全，产出 3 失效 + 3 意外。模板字段无缺失。",
+        "trial1_pending": "轻量版仍未验证；多项目时的模板复用性"
+      },
+      "minimum_finding_requirement": {
+        "maturity": "部分验证（试跑1）",
+        "evidence": "试跑前：纪律明确，未测是否会变成强行制造假发现（零数据）。试跑1：强制要求逼出深度分析（失效 1 的根因分析追溯至 plan 未审、意外 1 的反事实比较），未出现形式化应付。Kimi Phase 8 事实核查确认 3 失效 + 3 意外均有文件证据支撑。",
+        "trial1_pending": "N=1，仍需观察是否在更简单项目中也有效"
+      },
+      "trigger_mechanism": {
+        "maturity": "待实证",
+        "evidence": "触发表清晰；实际触发是否被遵守未测"
+      }
+    },
+    "L5_Closure": {
+      "six_closure_conditions": {
+        "maturity": "部分验证（试跑1 增强）",
+        "evidence": "试跑前：形态匹配项目有 v1.1 终期报告对应。试跑1：闭合条件逐项检查通过，但 Retrospect 时 Protocol 3 为 IMPROVE->条件PASS（3 项 IMPROVE），Phase 7.6 4 MAJOR 作为已知遗留，闭合后补修至 0 MAJOR。非首次闭合即完全无遗留。"
+      },
+      "closure_checklist": {
+        "maturity": "部分验证（试跑1）",
+        "evidence": "试跑前：形态匹配项目部分跑过。试跑1：逐项完整性已记录（Phase 8 Retrospect §7），Kimi 核查后发现发现数口径和闭合条件表述问题，已修正。清单项覆盖闭合路径但首次使用时出现口径不一致。"
+      },
+      "archive_path_spec": {
+        "maturity": "部分验证（试跑1）",
+        "evidence": "试跑前：规范清晰，无项目按此归档过。试跑1：按三级分层归档（archive/ 含 Retrospect、reviews/ 含 HG-0 及 Phase 2-8 审查/核查报告、synthesis/ 含对比矩阵+模式目录+递归观察、explorations/ 含 12 张证据卡）。"
+      }
+    }
+  },
+  "cross_layer": {
+    "reproducibility_9_1": {
+      "maturity": "部分验证",
+      "evidence": "与 reference_python_versions.md 融合；训练-评估对齐来自 Small_Scale 单案例"
+    },
+    "evaluation_3_layers": {
+      "maturity": "待实证",
+      "evidence": "LIT 教训支撑 AI 自评不可靠；三层分工本身未端到端跑"
+    },
+    "default_metrics": {
+      "maturity": "部分验证",
+      "evidence": "量化来自 ETF；学术 ARS；工程通用"
+    },
+    "session_handoff": {
+      "maturity": "部分验证",
+      "evidence": "基于 memory/ 实践 + BDC2026 教训"
+    },
+    "risk_register": {
+      "maturity": "待实证",
+      "evidence": "BDC2026 反面案例；模板未持续维护使用"
+    },
+    "security_boundary_9_5": {
+      "maturity": "待实证",
+      "evidence": "声明清晰；升级触发未实战"
+    },
+    "evidence_taxonomy_9_6": {
+      "maturity": "部分验证",
+      "evidence": "GitNexus §8.5-8.7 实施过，R3（Kimi）确认有效——少数有验证的 v1.5 新增项"
+    },
+    "experience_injection_9_7": {
+      "maturity": "零数据 [Sp]",
+      "evidence": "Evolver 思想；升级需 30因子×3 A/B 测试（未执行）"
+    },
+    "REO_9_8": {
+      "maturity": "零数据 [Sp]",
+      "evidence": "结构设计完成（Codex R4 7.2）；Phase 0-3 未启动"
+    }
+  },
+  "drift_detection_3_7": {
+    "loop_drift_ledger_3_6": {
+      "maturity": "零数据",
+      "evidence": "三层架构设计完整；预登记 6 项指标；从未跑"
+    },
+    "event_health_3_7_0": {
+      "maturity": "零数据 [Sp]",
+      "evidence": "Evolver 思想；公式未校准"
+    },
+    "design_principles_3_7_1": {
+      "maturity": "待实证",
+      "evidence": "原则清晰；detector-only 来自 headroom 对标；未被违反检验"
+    },
+    "five_signals_3_7_2": {
+      "maturity": "零数据",
+      "evidence": "监测项/检测方式/阈值全设计；阈值是先验设定，噪音率未知"
+    },
+    "difficulty_stratified_3_7_2_6": {
+      "maturity": "零数据",
+      "evidence": "ML 可选 profile；Small_Scale 单案例；退出条件预登记"
+    },
+    "aggregation_rules_3_7_3": {
+      "maturity": "零数据",
+      "evidence": "聚合规则理论构造；多类信号相关性未知"
+    },
+    "rule_retirement_3_7_4": {
+      "maturity": "零数据",
+      "evidence": "生命周期字段+退役流程设计；自身也适用"
+    },
+    "adaptive_weight_3_7_4_1": {
+      "maturity": "零数据 [Sp]",
+      "evidence": "Evolver 思想；权重数值未敏感性分析"
+    },
+    "constitutional_audit_3_7_5": {
+      "maturity": "零数据",
+      "evidence": "审计内容/输出设计；从未在 HG-1 执行"
+    },
+    "closed_loop_curation_3_7_6": {
+      "maturity": "零数据",
+      "evidence": "决策树+节奏设计；从未触发"
+    },
+    "monitoring_schema_3_7_7": {
+      "maturity": "待实证",
+      "evidence": "Schema 设计完整（v1.3 加 calibration 字段）；从未填充真实数据"
+    },
+    "limits_exit_3_7_8": {
+      "maturity": "设计级 [J]",
+      "evidence": "限制声明诚实；退出条件预登记但未触发"
+    }
+  },
+  "dev_log_10_8": {
+    "summary": "直接引用 §10.8 既有评估——3/10 已验证（Bug 记录格式/注释不可靠前提/独立持久化方向），7/10 待实证或零数据"
+  },
+  "companion_tools": {
+    "methodological_review_sop_v1_0_3": {
+      "maturity": "部分验证",
+      "evidence": "GitNexus 三轮审查按此执行；rubric 纯净度标 [SEMI]"
+    },
+    "meta_audit_checklist_v1_0_3": {
+      "maturity": "待实证",
+      "evidence": "设计完整；框架作者不可自审原则下，从未由独立审查者完整执行"
+    },
+    "import_integrity_check_py": {
+      "maturity": "已弃用",
+      "evidence": "Codex 审查认定不可靠；v1.5.1 冻结期换 pyflakes/ruff"
+    },
+    "md_to_docx_framework_py": {
+      "maturity": "部分验证",
+      "evidence": "已生成当前 .docx；表格/代码块/行内代码验证过"
+    },
+    "v1_5_1_draft_sections": {
+      "maturity": "设计级 [Sp]",
+      "evidence": "Codex R4 7.2/10 通过；行为有效性待试跑"
+    }
+  },
+  "distribution_summary": {
+    "trial0_baseline": {
+      "validated_or_partial": "~30%",
+      "to_be_empirically_tested": "~40%",
+      "zero_data_or_speculative": "~30%"
+    },
+    "trial1_after_writeback": {
+      "validated_or_partial": "~45%",
+      "to_be_empirically_tested": "~30%",
+      "zero_data_or_speculative": "~25%"
+    },
+    "interpretation": "试跑1 后：L0 Spec 维护机制、L-H HG-0/1、L4 Retrospect（模板+最小发现）、L5 Closure（条件+清单+归档）从待实证/零数据升级为部分验证。上层建筑（§3.7 漂移检测、§9.7/9.8）仍为零数据——这些组件需要不同类型的项目才能验证。"
+  },
+  "open_items_correspondence": {
+    "OPEN_2": "本表即是预登记基线载体；试跑前各行为基线，试跑后更新；§1.5 死亡判据可对照本表历史版本计算",
+    "OPEN_4": "试读协议执行后数据回写本表 L1 Prompt 行",
+    "OPEN_1": "§3.7 整节零数据；首次试跑若用 §3.7，触发/误报数据更新第 3 节",
+    "OPEN_3": "部分验证行（来自现有实践）正是 OPEN-3 关切对象",
+    "OPEN_5": "第 1 节 L5 Closure 行待 OPEN-5 分档后细化"
+  },
+  "update_mechanism": {
+    "first_trial_run_complete": "已完成（2026-06-16，方法论提取方法论项目 Phase 8 Retrospect 写回）",
+    "open_item_status_change": "同步更新 §7 对应行",
+    "framework_version_upgrade_post_unfreeze": "本表版本号同步；新增组件追加新行",
+    "independent_reviewer_audit": "作者 [J] 判断经交叉确认后可标独立审查确认"
+  },
+  "version_history": [
+    {
+      "version": "v0.1",
+      "date": "2026-06-14/15（跨天编辑）",
+      "note": "冻结期初版，GLM-5.2 编辑者评估，零试跑基线，未经独立审查"
+    },
+    {
+      "version": "v0.2",
+      "date": "2026-06-16",
+      "note": "Protocol 3 首次试跑数据写回。DeepSeek-v4-pro 写回，8 行成熟度更新 + protocol_3_feedback 新增。Codex CLI (ChatGPT-5.5) 写回核查通过。配套 .md 已同步。"
+    }
+  ],
+  "protocol_3_feedback": {
+    "trial_project": "../方法论提取方法论/（CLOSED，58 项发现，0 CRITICAL 遗留，0 MAJOR 遗留，1007 行框架文档）",
+    "feedback_items": [
+      {
+        "item": "C1/C5 计时执行缺失",
+        "description": "测量口径已定义（success_criteria.md 指定了每 phase 首条 prompt 计时），但未指定可靠计时工具，DEV_LOG 未完整记录，导致 C1/C5 均判 IMPROVE",
+        "affects": "L1 Prompt 指标设计须同时含可操作的计时工具"
+      },
+      {
+        "item": "C4 交互记录不足",
+        "description": "HG 闸门的人工交互时间和内容未留存，导致 C4 仅能判 IMPROVE",
+        "affects": "L-H Human Gate 须强制要求交互记录留存"
+      },
+      {
+        "item": "审查频率涌现",
+        "description": "独立审查从 Phase 7 一次演变为每 Phase 持续（10 轮异后端审查，不含复编码），是正面涌现",
+        "affects": "§5.2 审查触发条件应允许适应性调整"
+      },
+      {
+        "item": "异后端审查互补实证",
+        "description": "Phase 5 Codex+Qwen 双轮审查零重叠（17+16=33 项不同发现）",
+        "affects": "§9.2 独立审查要求——异后端 >=2 轮有实证支撑"
+      },
+      {
+        "item": "提取者效应量化",
+        "description": "Phase 3 复编码得显著分歧率 ~22% + 独有特征 inflation ~65%（phase3_recoding_comparison.md）；Phase 4 Qwen 复验证将纯效应修正为 ~9.4%（phase4_validated_pattern_catalog.md）",
+        "affects": "§9.7 经验注入的复编码要求获实证支撑"
+      },
+      {
+        "item": "Loop 预算充足",
+        "description": "M-tier <=20 loops 在实际中只用了 14/20（闭合时），并行 Workflow 效率高于预期",
+        "affects": "L2 Loop 收敛条件——M-tier 预算可适当下调"
+      }
+    ],
+    "c1_c8_summary": {
+      "C1": {
+        "target": "<=20min/条",
+        "actual": "未完整计时",
+        "verdict": "IMPROVE"
+      },
+      "C2": {
+        "target": "<=8/任务",
+        "actual": "Phase 级均 <=3",
+        "verdict": "PASS"
+      },
+      "C3a": {
+        "target": "<10%",
+        "actual": "核心决策均记录",
+        "verdict": "PASS"
+      },
+      "C3b": {
+        "target": "<25%",
+        "actual": "条目覆盖率良好",
+        "verdict": "PASS"
+      },
+      "C4": {
+        "target": "必须人工过目",
+        "actual": "用户确认，交互未留存",
+        "verdict": "IMPROVE"
+      },
+      "C5": {
+        "target": "观测指标",
+        "actual": "未完整计时",
+        "verdict": "IMPROVE"
+      },
+      "C6": {
+        "target": ">=1 失效+>=1 意外",
+        "actual": "3 失效+3 意外",
+        "verdict": "PASS"
+      },
+      "C7": {
+        "target": "<=20/<=25",
+        "actual": "闭合时 14/20（闭合后核查追加至 15/20）",
+        "verdict": "PASS"
+      },
+      "C8": {
+        "target": "Codex 交叉验证",
+        "actual": "10 轮异后端审查（+1 轮复编码），最高 7.7",
+        "verdict": "PASS"
+      },
+      "overall_verdict": "IMPROVE->条件PASS（5 PASS / 3 IMPROVE / 0 REDO）"
+    }
+  }
+}

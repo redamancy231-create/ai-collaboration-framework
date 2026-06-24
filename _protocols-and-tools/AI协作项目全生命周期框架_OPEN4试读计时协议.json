@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "document_type": "test_protocol",
+    "schema_version": "1.0",
+    "date": "2026-06-11",
+    "author": "Claude (Opus 4.8 / Claude Code CLI)",
+    "instrument_for": "OPEN-4（框架最低上手时间未测）",
+    "companion_md": "AI协作项目全生命周期框架_OPEN4试读计时协议.md",
+    "principle": "判据须开测前冻结（kill-test-first 预登记精神），不许事后调阈值",
+    "version": "v1.6.3"
+  },
+  "one_liner": "非设计者冷读框架→计时到'能用'+记误解点→对照预冻结阈值给 PASS/改进/重做",
+  "tester": {
+    "must": [
+      "没参与框架设计",
+      "没读过审查链",
+      "没听过设计者口头解释"
+    ],
+    "profile": "贴近目标用户：个人做项目、有基本AI协作经验、没用过本框架",
+    "excluded": [
+      "设计者本人",
+      "读过审查链的人",
+      "AI(Opus/DeepSeek等已带设计上下文)——AI不能替代此测试，它测人类上手成本"
+    ]
+  },
+  "materials": {
+    "give": "框架主文档(.md或.docx)完整版",
+    "do_not_give": [
+      "审查报告",
+      "本协议的判据",
+      "任何口头导读"
+    ],
+    "task": "读到能照着最低强制版(§1.4)起一个新项目——不要求吃透完整版"
+  },
+  "steps": [
+    "开测前主持人先把判据冻结(不告诉测试者)",
+    "测试者开始读，计时开始；允许边读边记/出声思考",
+    "主持人全程不解释不补充(一解释就污染计时)，只记卡点/回翻/想跳过处",
+    "测试者自认'能开始用了'→记T1",
+    "做3分钟理解检查：通过→记T2；不通过→继续读+记缺什么"
+  ],
+  "comprehension_check": [
+    "用自己的话说出 Spec/Prompt/Loop/Workflow 各管什么？",
+    "起新项目最少先定哪几样(对应最低强制版)？",
+    "HG-2 什么时候触发？(改Spec才触发、Loop内调参不触发=OPEN-1盲区，看新人能否自己嗅到)"
+  ],
+  "criteria_frozen_before_test": {
+    "T1_gt_2h": "可执行性不合格(目标用户是无onboarding的个人)",
+    "core_misunderstandings_ge_2": "核心表达不清(七层职责/Spec↔Prompt边界/HG触发)→重写那几节",
+    "check_lt_2of3": "没真懂，T1是错觉，不算数",
+    "verdict": [
+      "PASS(T1≤2h且核心无误解且检查≥2/3)",
+      "改进(部分超标,列具体节)",
+      "重做(T1远超或核心多处误解)"
+    ]
+  },
+  "output": {
+    "one_page_record": [
+      "T1",
+      "T2",
+      "误解点清单(章节+原话+他以为的意思)",
+      "放弃信号",
+      "三态裁定"
+    ],
+    "write_back": "框架§1.6 OPEN-4状态；若改进/重做→起一次Retrospect"
+  },
+  "cost": "1个测试者、1次、半天内完成。当前性价比最高的待决项。"
+}

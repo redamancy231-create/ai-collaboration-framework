@@ -1,0 +1,34 @@
+{
+  "version": "v1.6.4",
+  "date": "2026-06-22",
+  "model": "DeepSeek-V4-Pro (via Claude Code CLI shell)",
+  "total_chars": 165790,
+  "total_bytes": 320005,
+  "total_lines": 3753,
+  "non_empty_lines": 2717,
+  "char_categories": {
+    "cjk_ideographs": 66946,
+    "cjk_punct": 7270,
+    "cjk_total": 74216,
+    "ascii_letters": 31335,
+    "ascii_digits": 8257,
+    "ascii_punct": 25256,
+    "spaces": 19692,
+    "newlines": 3752
+  },
+  "structure": {
+    "headings": 246,
+    "table_rows": 758,
+    "internal_links": 27,
+    "code_blocks": 48,
+    "mermaid": 7
+  },
+  "content_partition": {
+    "body": 62836,
+    "code": 24064,
+    "table": 53851,
+    "blockquote": 19521,
+    "heading": 4636,
+    "other": 883
+  }
+}

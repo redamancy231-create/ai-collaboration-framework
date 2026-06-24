@@ -1,0 +1,213 @@
+{
+  "metadata": {
+    "title": "AI协作框架 v1.4 独立审查报告",
+    "date": "2026-06-13",
+    "reviewer_actual_identity": "OpenAI Codex CLI coding agent, based on GPT-5",
+    "identity_note": "不能独立证明用户指定的 ChatGPT-5.5 标签；按当前运行环境声明为 Codex/GPT-5。",
+    "review_type": "independent final artifact review",
+    "decision": "修改后通过",
+    "weighted_score_out_of_10": 5.37,
+    "rounded_weighted_score_out_of_10": 5.4
+  },
+  "scope": {
+    "primary_document": "<PROJECT_ROOT>/AI协作项目全生命周期框架.md",
+    "companion_files": [
+      "<PROJECT_ROOT>/AI协作项目全生命周期框架.json",
+      "<PROJECT_ROOT>/meta-audit-checklist.md",
+      "<PROJECT_ROOT>/meta-audit-checklist.json",
+      "<PROJECT_ROOT>/methodological-review-sop.md",
+      "<PROJECT_ROOT>/methodological-review-sop.json",
+      "<USER_HOME>/.claude/skills/kill-test-first/SKILL.md"
+    ],
+    "source_material_checked": [
+      "<SMALL_SCALE_PROJECT>/small_scale_methodology_transfer_20260613.md",
+      "<SMALL_SCALE_PROJECT>/small_scale_methodology_transfer_20260613.json",
+      "<SMALL_SCALE_PROJECT>/independent_review_codex_20260613.md",
+      "<SMALL_SCALE_PROJECT>/independent_review_codex_20260613.json"
+    ]
+  },
+  "version_binding": {
+    "AI协作项目全生命周期框架.md": {
+      "lines": 2313,
+      "sha256": "0341B69D289DD69AE5D82760F4CD9B13C12045683458920F6D1E1E094FC83458"
+    },
+    "AI协作项目全生命周期框架.json": {
+      "lines": 1817,
+      "sha256": "199462BBF91FACA1F7ABECDF54F2AF409046A16DA627BFE0D2B645B9257C04E5"
+    },
+    "meta-audit-checklist.md": {
+      "lines": 691,
+      "sha256": "6F2034E69C7F110651314AB8FEBBB97BA8A08A1958BB0546DA8604D2CDAA7103"
+    },
+    "meta-audit-checklist.json": {
+      "lines": 815,
+      "sha256": "4419F55D47AC4D012C4E5A275E7227D137330F93C2F21F303C40A271F2D07BF9"
+    },
+    "methodological-review-sop.md": {
+      "lines": 484,
+      "sha256": "EE66CF22F8F37FDEAEBB68D1A5DDA983CBA31BA782BA50E802C850012D61B050"
+    },
+    "methodological-review-sop.json": {
+      "lines": 554,
+      "sha256": "877C8FF0F6B460734C168E74392F25A491742D4351EDDE39B3C4FE1F9EADC3AF"
+    },
+    "kill-test-first/SKILL.md": {
+      "lines": 113,
+      "sha256": "7B500A85CB4BDBB9DE8472968B0CA559F2EA04CBAEF7BF1FA64AB3D76458B08A"
+    }
+  },
+  "scores": [
+    {
+      "dimension": "变更质量",
+      "weight": 0.30,
+      "score": 6.2,
+      "weighted_contribution": 1.86,
+      "summary": "有真实增益，尤其是可复现性、版本绑定、证据等级、训练-评估配置对齐；但部分案例映射牵强，附录H和配置schema死亡判据位置不稳。",
+      "key_points": [
+        "T1 放入附录H而非 §4.3 是正确降级。",
+        "T3 降为概念标签是合理的，没有降级过度。",
+        "§9.1 训练-评估配置对齐与原可复现性表互补。",
+        "§4.3 cutoff_len L2 案例属于强行映射。"
+      ]
+    },
+    {
+      "dimension": "一致性与自反性",
+      "weight": 0.25,
+      "score": 4.8,
+      "weighted_contribution": 1.20,
+      "summary": "§14 对前置审查状态标注诚实，但发布包多处版本、计数、JSON 同步失败。",
+      "key_points": [
+        "主文档头部仍写 v1.3，尾部写 v1.4。",
+        "meta-audit Markdown 元数据仍写 v1.0.1/v1.3，但正文写 v1.4/67项。",
+        "主 JSON metadata 写 1.4，但正文结构未同步 v1.4 新增内容。",
+        "难度分层漂移与既有绩效/数据分布监测不完全正交。"
+      ]
+    },
+    {
+      "dimension": "过度工程风险",
+      "weight": 0.20,
+      "score": 4.7,
+      "weighted_contribution": 0.94,
+      "summary": "新增内容提高实用性，但继续扩大未试跑监测面；缺少同步删减、分档和 profile 化。",
+      "key_points": [
+        "§3.7 已复杂，新增第六类扩大 OPEN-1 待验证面积。",
+        "附录H只有两个条目，抽象层级不齐。",
+        "meta-audit 从64到67项，继续增加规则负担。",
+        "kill-test 6.5 不阻断是缓解因素，但仍增加启动摩擦。"
+      ]
+    },
+    {
+      "dimension": "遗漏与边界",
+      "weight": 0.15,
+      "score": 5.8,
+      "weighted_contribution": 0.87,
+      "summary": "T1-T13 主要建议已落地，T14/T15 未说明处置；Small_Scale 单项目案例密度偏高，框架适用范围有扩张趋势。",
+      "key_points": [
+        "T14/T15 是 P3 常识级跨项目联结，不落地可接受，但 §14 应声明 deferred/not adopted。",
+        "T7 未提供实际 import_integrity_check.py，只是文档思路。",
+        "新增案例全部来自 Small_Scale，需标注单案例诱导。",
+        "ML/Python/依赖治理内容应作为 profile 而非默认核心。"
+      ]
+    },
+    {
+      "dimension": "对比v1.3独立审查的改善",
+      "weight": 0.10,
+      "score": 5.0,
+      "weighted_contribution": 0.50,
+      "summary": "OPEN-1 措辞和证据等级机制有改善，但一致性和过度工程风险没有结构性改善。",
+      "key_points": [
+        "OPEN-1 Markdown 状态比 v1.3 的“已覆盖”更谨慎。",
+        "版本绑定与 evidence_level 直接修补前置审查暴露的问题。",
+        "一致性问题从局部状态矛盾升级为跨 Markdown/JSON/模板不同步。",
+        "§3.7.2.6 让 OPEN-1 待验证面更大。"
+      ]
+    }
+  ],
+  "top_findings": [
+    {
+      "id": "F1",
+      "severity": "High",
+      "title": "v1.4 发布包版本同步失败，主 JSON 未同步正文新增内容",
+      "evidence": [
+        "AI协作项目全生命周期框架.md:3 仍写版本 v1.3；2313 写 v1.4 状态。",
+        "meta-audit-checklist.md:8 仍写 v1.0.1；19、35、37 写 v1.4/67项。",
+        "AI协作项目全生命周期框架.json metadata version=1.4，但正文仍以 v1.3 漂移层和旧 OPEN-1 状态为主。"
+      ],
+      "impact": "直接削弱框架关于 provenance、版本绑定、结构化同步的核心承诺。",
+      "recommendation": "修正所有 Markdown/JSON 元数据、正文结构、模板计数和 OPEN-1 状态后再发布 v1.4。",
+      "dimension": ["一致性与自反性", "对比v1.3独立审查的改善"]
+    },
+    {
+      "id": "F2",
+      "severity": "High",
+      "title": "难度分层漂移作为第六类信号不正交，并扩大 OPEN-1 未验证面",
+      "evidence": [
+        "AI协作项目全生命周期框架.md:486-503 新增难度分层漂移。",
+        "AI协作项目全生命周期框架.md:412-414、744-748 仍称五类信号。",
+        "新增监测项混合样本占比漂移与 per-tier 准确率趋势。"
+      ],
+      "impact": "从通用漂移检测层转向 ML 特例集合，增加未校准监测项和误报风险。",
+      "recommendation": "改为 ML 项目可选 profile 或绩效信号子视图；若保留第六类，统一所有五类引用并预登记单独退出条件。",
+      "dimension": ["一致性与自反性", "过度工程风险"]
+    },
+    {
+      "id": "F3",
+      "severity": "Medium-High",
+      "title": "cutoff_len 案例放入 §4.3 L2 逃生口属于强行映射",
+      "evidence": [
+        "AI协作项目全生命周期框架.md:842 将训练 cutoff_len 与评估 max_tokens 不一致列为 L2 同源降级案例。",
+        "AI协作项目全生命周期框架.md:1304-1316 已有更合适的训练-评估配置对齐表。"
+      ],
+      "impact": "稀释 L2/L3 逃生口边界，把实验归因风险误写成信息降级继续策略。",
+      "recommendation": "删除 §4.3 该案例，只保留 §9.1 中的 ML 配置对齐规则。",
+      "dimension": ["变更质量", "遗漏与边界"]
+    },
+    {
+      "id": "F4",
+      "severity": "Medium",
+      "title": "配置无 schema 验证作为框架死亡判据错位",
+      "evidence": [
+        "AI协作项目全生命周期框架.md:168 将配置无 schema 验证加入框架自身死亡判据。"
+      ],
+      "impact": "把工程配置卫生问题上升为框架整体死亡标准，可能误伤无配置层或轻量文档项目。",
+      "recommendation": "移到 Spec、可复现性或工程/ML profile 的启动检查；§1.5 保留框架级生存指标。",
+      "dimension": ["变更质量", "过度工程风险"]
+    },
+    {
+      "id": "F5",
+      "severity": "Medium",
+      "title": "附录H作为通用模式库过早，且条目抽象层级不齐",
+      "evidence": [
+        "AI协作项目全生命周期框架.md:2091-2125 附录H只有 H.1 优化目标分解和 H.2 Import 完整性自检。",
+        "AI协作项目全生命周期框架.md:1316 已在 §9.1 引用 Import 完整性自检。"
+      ],
+      "impact": "增加一个尚未成熟的抽象容器，后续容易成为事故条目堆放点。",
+      "recommendation": "改名为候选模式库/实验性模式库，或等至少5条跨项目验证模式后再独立成库。",
+      "dimension": ["变更质量", "过度工程风险"]
+    }
+  ],
+  "required_changes_for_pass": [
+    "修正所有版本、计数和适用范围元数据：主文档头部 v1.4、目录 §14 标题、meta-audit v1.0.2 与 67 项模板、SOP 修订历史和 A9 引用。",
+    "同步三个 JSON：主 JSON 必须包含 v1.4 新增结构，OPEN-1 状态与 Markdown 一致；meta/SOP JSON 的 scope、version_note、schema 示例与 Markdown 一致。",
+    "将 §3.7.2.6 改成 ML 项目可选 profile 或绩效信号子项；若坚持第六类，统一所有“五类”引用并添加独立退出条件。",
+    "从 §4.3 L2 删除 cutoff_len 案例，避免逃生口语义扩张。",
+    "明确 T14/T15 的处置状态为 deferred/not adopted，并说明其为 P3 常识级跨项目联结。"
+  ],
+  "answers_to_explicit_questions": {
+    "T1_location": "合理。优化目标分解不属于逃生口，放在模式库比放在 §4.3 更准确；但附录H作为通用模式库目前偏早。",
+    "T3_downgrade": "没有降级过度。单案例不足以推出强制收敛规则，作为概念标签用于评估指标选择是合适的。",
+    "difficulty_drift_orthogonality": "不完全正交。它混合数据难度分布漂移和分层绩效下降，适合 ML profile 或绩效信号子视图。",
+    "training_eval_alignment_vs_reproducibility": "互补。原表覆盖环境、依赖、seed、硬件、代码版本；新增表覆盖 ML 实验归因所需的 tokenizer、截断、template、采样和预处理路径。",
+    "governance_statement_honesty": "§14 对前置审查而非 final 产物审查的标注是诚实的；但发布包元数据同步失败削弱了自反性执行。",
+    "bloat_assessment": "+136 行中有有效内容，但缺少 profile 化和退役合并；整体比 v1.3 更有用，也更臃肿。",
+    "kill_test_6_5": "方向正确，因其不阻断而可接受；应限定在研究/量化/ML/数据管线类新方向默认启用。",
+    "single_project_case_risk": "风险偏高。多数案例来自 Small_Scale，应标注单案例诱导，待跨项目复核。",
+    "v1_3_improvement": "局部改善，但未结构性改善。OPEN-1 措辞更谨慎，版本/evidence 机制更好；一致性和过度工程风险仍突出。"
+  },
+  "final_verdict": {
+    "decision": "修改后通过",
+    "rationale": "核心增量有真实价值，但当前 final 产物未满足自身的版本绑定、JSON同步和自反审计要求。",
+    "not_pass_reason": "不建议直接通过，因为发布包同步缺陷和 §3.7 新信号过度扩张会放大 v1.3 已知风险。",
+    "not_rewrite_reason": "不退回重写，因为可复现性、版本绑定、证据等级和训练-评估对齐等核心机制方向正确，可通过定点修订解决。"
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "metadata": {
+    "document_type": "meta_review",
+    "schema_version": "1.0",
+    "review_target": {
+      "name": "ChatGPT-5.5审查报告",
+      "filename": "AI协作项目全生命周期框架_ChatGPT-5.5审查报告.md",
+      "date": "2026-06-11",
+      "reviewer": "ChatGPT-5.5"
+    },
+    "meta_reviewer": {
+      "name": "Claude (deepseek-v4-pro)",
+      "role": "框架设计参与者，非独立第三方",
+      "review_nature": "对抗式——审视审查的逻辑、盲点和过度断言"
+    },
+    "meta_review_date": "2026-06-11",
+    "source_markdown": "AI协作项目全生命周期框架_审查报告再审查.md",
+    "language": "zh-CN"
+  },
+  "overall_assessment": {
+    "review_quality_score": 8,
+    "max_score": 10,
+    "summary": "高质量外部审查，但不是不可申诉的最终判决。核心价值在于给出了可操作的证伪路径（5个验证实验 + 6个框架死亡判据），使审查本身可检验。",
+    "dimensional_scores": {
+      "factual_accuracy": { "score": 9, "note": "引用和判断的事实基础基本正确" },
+      "judgment_calibration": { "score": 7, "note": "有反向偏差（过度否定），部分判断过于绝对" },
+      "actionability": { "score": 9, "note": "验证实验和死亡判据具体可执行" },
+      "depth_and_coverage": { "score": 8, "note": "七个判断 + 六类问题覆盖全面，但跳过了设计哲学检验" },
+      "balance": { "score": 5, "note": "肯定与批评比例严重失衡，对框架强项的挖掘不够深" },
+      "category_awareness": { "score": 6, "note": "在个人框架 vs 企业标准的对标上存在类别错配" }
+    }
+  },
+  "fully_agreed_findings": [
+    {
+      "id": "F1",
+      "finding": "已定稿与待实证的内部矛盾",
+      "review_section": "内部张力#1",
+      "analysis": "框架v1.1声明已定稿，但Dev Log 10个组件中7个标为待实证或零数据。对设计者来说定稿=设计完成等待验证，对读者来说定稿=已验证过。两者在同一个文档中冲突。",
+      "recommendation": "将状态改为'草案冻结，等待试跑验证'",
+      "severity": "高"
+    },
+    {
+      "id": "F2",
+      "finding": "框架自身缺少死亡判据",
+      "review_section": "判断7 + 第九节",
+      "analysis": "对称性违反：框架要求每个项目和Prompt有死亡判据，但自己没有。6个建议判据大部分阈值合理，可直接作为v1.2输入。",
+      "recommendation": "直接采用审查第九节的6个判据，微调阈值后写入框架",
+      "severity": "高"
+    },
+    {
+      "id": "F3",
+      "finding": "外部对标中'未找到形式化对应物'表述过强",
+      "review_section": "判断5",
+      "analysis": "Scrum Retrospective、SRE postmortem、ADR、PMI/PRINCE2 Closure都是真实存在的形式化实践。说未找到对应物在字面上不成立。",
+      "recommendation": "改为'未找到完全同构于本框架的个人AI协作轻量组合'，补充对照表说明差异化",
+      "severity": "中高"
+    }
+  ],
+  "substantive_disagreements": [
+    {
+      "id": "D1",
+      "topic": "外部对标中的类别错配",
+      "review_section": "判断5 + 第十一节外部对标",
+      "disagreement": "审查将PRINCE2 Closure（组织级项目管理标准）和Scrum Retrospective（团队会议格式）作为个人AI协作框架的对标基准，存在类别错配。框架Closure解决的是'个人项目经常无疾而终'问题，不是在与PRINCE2竞争。Scrum Retrospective是团队会议，框架Retrospect是AI辅助的个人回顾→模板→Spec写回机制。",
+      "corrective": "补充对照表：Scrum Retrospective→L4对照（触发者/产出物/执行者差异）、PMI Closure→L5对照（组织级 vs 个人轻量）。框架差异化在裁剪+集成，不在原创性。",
+      "severity": "中"
+    },
+    {
+      "id": "D2",
+      "topic": "过度工程指控中的稻草人倾向",
+      "review_section": "第五节",
+      "disagreement": "审查将Workflow六模式并列归为过度工程，但这是模式库（pattern library），不是'每次都要用六种'。框架6.3节给了决策树，6.2节开头说pipeline是默认。模式库大≠过度工程。类似地，Dev Log双视图是同一文件的两个section，不是两套独立系统。",
+      "partial_agreement": "框架确实没有明确区分强制/可选——这不是过度工程，是信号不清。",
+      "corrective": "不做删减，而是在全文标注强制/可选标签",
+      "severity": "中"
+    },
+    {
+      "id": "D3",
+      "topic": "审查者反向偏差确有体现",
+      "review_section": "第十一节（审查自反）",
+      "disagreement": "审查自反地指出'不要同情设计者'可能造成反向偏差，而在报告中有体现：(a)判断6的反对过于绝对——框架附录A-G已是适配模板雏形；(b)内部矛盾被过度列举——'永久保留memory可能制造噪音'已有30天缓解机制但审查未承认；(c)肯定与批评比例严重失衡（约100字肯定 vs 约9000字批判）",
+      "corrective": "采纳审查时需要校准权重：对框架的强项多加保留分数",
+      "severity": "中低（不影响核心发现）"
+    },
+    {
+      "id": "D4",
+      "topic": "验证实验可行性被高估",
+      "review_section": "第八节",
+      "disagreement": "新项目A/B试跑在单用户、项目异质性高的场景中几乎不可行。找不到两个足够相似的对照项目，且串行执行有时间顺序污染。",
+      "alternative": "更务实的验证路径：(1)历史回放实验→(2)单项目前后对照→(3)跨项目对照（可无限推迟）。前两步不需要新项目。",
+      "severity": "中"
+    }
+  ],
+  "review_blind_spots": [
+    {
+      "id": "B1",
+      "topic": "未检验框架设计哲学的内部自洽性",
+      "detail": "审查跳过了四个核心信念（方向盘>发动机、分层不互相替代、从失败中反向沉淀、AI闭环≠人类审查）是否内部自洽的检验。这四个信念共同导出七层架构——如果审查在信念层找到矛盾，杀伤力远大于在实施层找过度工程。",
+      "my_assessment": "四个信念是自洽的且互相支撑，审查没有做这一步是它的深度局限。"
+    },
+    {
+      "id": "B2",
+      "topic": "未评估框架对已有实践的提炼准确度",
+      "detail": "框架1.3节每层都有'现有对应物'，说明这些层是从用户已有实践中提炼的。审查关注'层有没有外部对标'，没问'框架对已有实践的提炼是否准确'。如果框架把用户已有的80分实践提炼成60分模板，比缺少外部对标更严重。",
+      "my_assessment": "这个检查值得在试跑后做一次。"
+    },
+    {
+      "id": "B3",
+      "topic": "未识别Human Gate的频率-覆盖缺口",
+      "detail": "当前HG设计中，AI在Loop中连续做小方向调整，每次不触犯HG-2阈值（未修改Spec），但小调整可累积成大的方向偏转。人的审查是离散的（按里程碑），AI执行是连续的（每轮Loop），离散审查无法检测连续漂移。这是一个比HG-2粒度更根本的问题。",
+      "my_assessment": "建议在Loop中插入轻量级的方向一致性自检（不要求人确认，但要求AI自报偏差）。这是审查完全没有触及的盲区。"
+    },
+    {
+      "id": "B4",
+      "topic": "未给出复扩条件",
+      "detail": "审查说当前不应继续扩展，但没说满足什么条件后可以重新考虑扩展。好的审查应给出复扩门槛（如漏记率<5%、交接恢复时间改善>30%等）。",
+      "my_assessment": "审查留下了'永远不要扩展'的暗示，这本身是一个偏差。"
+    }
+  ],
+  "unasked_critical_questions": [
+    {
+      "id": "Q1",
+      "question": "这个框架的最可能的失败模式是什么？",
+      "my_answer": "缓慢漂移：AI维护质量未经检验→Dev Log漏记→Retrospect基于不完整信息→Spec被错误更新→下一轮Prompt基于错误Spec→方向漂移。人的抽查频率（HG-1）天然低于AI犯错频率，离散审查无法检测连续漂移。Human Gate的频率设计是框架的阿喀琉斯之踵。",
+      "structural_echo": "这与BDC2026提交失败的教训同构：风险登记存在但未被及时触发。"
+    },
+    {
+      "id": "Q2",
+      "question": "框架对新用户的最低上手时间是多少？",
+      "my_answer": "未测量。框架v1.1约1500行，如果理解时间>2小时，在可执行性上已经失败——目标用户是个人，没有专门onboarding时间。建议在v1.2前找人试读一次，记录理解时间和误解点。"
+    }
+  ],
+  "priority_recommendations": [
+    {
+      "priority": "P0",
+      "action": "做最低强制版标注",
+      "detail": "不删减内容，但全文加标签明确区分：强制遵守（S1-S4、HG-0/1/3、三种核心Workflow模式、Dev Log单时间轴）vs 可选升级（S5-S10细节、HG-2分级、高级Workflow模式、Dev Log双视图）",
+      "vs_review_top3": "审阅P1（最小可运行版），不同在于保留全量内容加标签而非删减为两个文档",
+      "rationale": "审查的过度工程指控部分源于强制/可选信号不清。'30%复杂度就能跑'如果不说清是哪30%，等于没说。"
+    },
+    {
+      "priority": "P1",
+      "action": "加入框架自我死亡判据 + 预登记指标",
+      "detail": "直接采用审查第九节的6个判据（微调阈值），在下一个活跃项目中预登记5个指标（交接恢复时间、漏记率、返工次数、HG等待次数、审查发现率）。",
+      "vs_review_top3": "审阅P2——完全一致",
+      "rationale": "对称性修复。框架不能只要求别人有死亡判据。这是最容易做的事（不需要改架构，只需要加一段）。"
+    },
+    {
+      "priority": "P2",
+      "action": "修正外部对标表述 + 补充对照表",
+      "detail": "把公开资料未找到形式化对应物改为未找到完全同构于本框架的个人AI协作轻量组合。补充Scrum Retrospective→L4、PMI/PRINCE2 Closure→L5、ADR→Dev Log的对照表，说明框架差异化在裁剪+集成。",
+      "vs_review_top3": "审查在对标修正上散落各处，未列入Top 3。提升为P2因为工作量小且防御价值高。",
+      "rationale": "框架的组合价值是真的，但需要用更诚实的定位来保护它。独特贡献表述如果不修正，会持续吸引不必要的外部批评。"
+    }
+  ],
+  "action_sequence": [
+    {
+      "step": 1,
+      "timing": "本次会话",
+      "actions": [
+        "修正框架状态声明：已定稿→草案冻结，等待试跑验证",
+        "修正外部对标中独特贡献的表述 + 补充对照表",
+        "在框架中加入自我死亡判据（采用审查第九节，微调阈值）"
+      ]
+    },
+    {
+      "step": 2,
+      "timing": "下个活跃项目启动时",
+      "actions": [
+        "预登记5个验证指标"
+      ]
+    },
+    {
+      "step": 3,
+      "timing": "试跑1-2个里程碑后",
+      "actions": [
+        "做第一次数据对账（漏记率、恢复时间）",
+        "触发死亡判据评估"
+      ]
+    },
+    {
+      "step": 4,
+      "timing": "试跑完整项目后",
+      "actions": [
+        "做深度Retrospect",
+        "决定是否复扩高级功能（judge panel/completeness critic/Dev Log双视图等）"
+      ]
+    }
+  ],
+  "position_statement": {
+    "disclaimer": "作为框架设计参与者（非独立第三方），在审读审查报告时天然有防御倾向。以上对审查的异议可能部分源于这种防御倾向。读者应自行校准。",
+    "affirmation": "对抗式审读不是为了否定审查者，而是为了在审查和建议之间找到更准确的平衡点。审查报告的8/10分不是终点，是v1.2的起点。"
+  }
+}

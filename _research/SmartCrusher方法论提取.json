@@ -1,0 +1,210 @@
+{
+  "metadata": {
+    "title": "SmartCrusher 方法论提取",
+    "date": "2026-06-13",
+    "source": "headroom项目分析 (https://github.com/chopratejas/headroom)",
+    "version": "v1.1",
+    "language": "zh-CN",
+    "model": "DeepSeek-V4-Pro",
+    "word_count_estimate": 7500,
+    "cross_references": [
+      "CacheAligner与AI框架OPEN-1对标分析.md",
+      "CCR作为逃生口案例研究.md",
+      "AI协作项目全生命周期框架.md"
+    ],
+    "methodology_caveat": "本提取建立在headroom（确定性工程域）与AI协作框架（语义治理域）的类比之上。以下维度可能不可迁移：(1)答案确定性——SmartCrusher的「重要」由统计信号代理，框架的「重要」需语义判断；(2)模式可穷举性——五维评分覆盖已知信号类型，框架漂移形态是开放集合；(3)反馈信号客观性——TOIN反馈自动数值优化，框架Retrospect依赖人类语义判断；(4)代价结构可比性——压缩过度=多检索一次，框架错误=项目方向偏转。核心迁移假设未经独立验证，应被视为方法论启发而非操作建议。（P0-2修正，2026-06-13）",
+    "p0_revisions": {
+      "p0_1": "已在md§6.4中区分客观变动记录（CCR标记同构）与主观自评（CacheAligner被删rewrite路径同构），通过交叉引用与CacheAligner对标文档统一立场",
+      "p0_2": "已在本json及配套md中添加方法论前提声明"
+    }
+  },
+  "sections": [
+    {
+      "id": "1",
+      "title": "概述",
+      "summary": "介绍SmartCrusher是什么（headroom的智能JSON数组压缩器，五维度评分、三阶段决策流），为什么值得提取方法论，以及文档定位（方法论资产而非工具手册）。",
+      "key_claims": [
+        "SmartCrusher能在45000 tokens中保留信息密度最高的约4500 tokens（90%缩减）",
+        "核心独特性：不盲目截断，而是在统计学、信息论和检索相关性三个维度上对每个元素评分",
+        "可迁移模式集合：五维保留评分体系、三阶段决策流、统计方法工具箱、TOIN学习闭环"
+      ],
+      "tables": [],
+      "code_references": []
+    },
+    {
+      "id": "2",
+      "title": "五维保留评分体系",
+      "summary": "详述SmartCrusher的五个保留维度及其优先级层次：约束层（错误项100%保留）> 锚点层（首尾项结构完整性）> 相关层（用户意图对齐）。",
+      "key_claims": [
+        "错误项通过12个关键词(error/exception/failed/failure/critical/fatal/crash/panic/abort/timeout/denied/rejected)做子串匹配，故意偏宽（宁可过度保留），是TOIN语义模型的fallback",
+        "首尾项保留（前30%+后15%）是密度感知的非均匀采样，不同于简单截断",
+        "统计离群值（|value-mean|>2σ）基于信息论——罕见事件携带更多信息",
+        "查询相关项分确定性锚点匹配和概率性BM25/embedding评分两条路径",
+        "变点检测使用滑动窗口均值偏移，标记系统行为变化的瞬间"
+      ],
+      "tables": [],
+      "code_references": [
+        "outliers.rs:237-283 detect_error_items_for_preservation",
+        "error_keywords.rs:17-30 错误关键词表",
+        "config.rs:44-45 first_fraction=0.3, last_fraction=0.15",
+        "orchestration.rs:198-213 prioritize_indices中的first-3/last-2兜底",
+        "planning.rs:602-634 for_each_anomaly",
+        "orchestration.rs:232-278 numeric_anomaly_indices",
+        "planning.rs:474-517 apply_query_signals",
+        "statistics.rs detect_sequential_pattern",
+        "planning.rs:206-217 change point window"
+      ]
+    },
+    {
+      "id": "3",
+      "title": "三阶段决策流",
+      "summary": "解析SmartCrusher的完整执行路径：ContentRouter（先识别类型再选择策略）→ Lossless-first（无损压缩优先，阈值30%）→ CCR兜底（有损路径+可检索标记）。",
+      "key_claims": [
+        "ContentRouter根据数组类型分发到四策略之一（SmartSample/TopN/ClusterSample/TimeSeries/Skip），'识别类别→选择策略→执行'是Workflow编排决策树的精确同构",
+        "Lossless-first原则：先尝试TabularCompactor（CSV-schema/JSON compaction/markdown-kv），节省<30%才回退有损路径",
+        "30%阈值是经验值：太低不值得牺牲LLM可读性，太高等于关闭无损路径",
+        "CCR兜底：有损路径不丢数据，原始数据通过SHA-256 hash存入CCR store，压缩结果中嵌入sentinel标记供LLM检索"
+      ],
+      "tables": [],
+      "code_references": [
+        "classifier.rs classify_array",
+        "analyzer.rs SmartAnalyzer::analyze_array",
+        "crusher.rs:611-639 crush_array lossless-first attempt",
+        "crusher.rs:690-706 CCR-Dropped marker emission",
+        "compaction/ 模块 TabularCompactor"
+      ]
+    },
+    {
+      "id": "4",
+      "title": "统计方法工具箱",
+      "summary": "提取五个独立可复用的统计组件：稀有状态检测（帕累托分布+基数上限）、错误关键词扫描、结构离群检测、香农熵分析、变点检测（滑动窗口均值偏移）。",
+      "key_claims": [
+        "稀有状态检测（Bug #3修复后）：基数上限从10升到50，帕累托分布自适应判断'哪些值是尾巴'",
+        "错误关键词是TOIN语义模型的fallback，演化路径为：硬编码关键词→字段语义学习→字段级精确检测",
+        "结构离群和数值离群是正交的信息维度，合在一起覆盖'异于常态'的可操作定义",
+        "香农熵用于检测ID类字段（高熵>0.7）和重复内容字段（低熵<0.3）",
+        "Bug #2修复：字符串编码数字的误分类gate——所有值都源自字符串时不分类为序列字段",
+        "变点检测vs 2σ离群：前者是趋势转换，后者是单点异常，覆盖不同类型的'重要'"
+      ],
+      "tables": [],
+      "code_references": [
+        "outliers.rs:122-235 detect_rare_status_values",
+        "error_keywords.rs:17-30",
+        "outliers.rs:61-109 detect_structural_outliers",
+        "statistics.rs:51-83 calculate_string_entropy + is_uuid_format",
+        "statistics.rs detect_sequential_pattern + Bug #2 gate"
+      ]
+    },
+    {
+      "id": "5",
+      "title": "可迁移原理",
+      "summary": "提炼四条不限于JSON压缩的通用信息筛选原则：错误项绝对优先、Lossless-first渐进退化、内容类型决定保留策略、多信号优先级排序（约束>锚点>相关性）。",
+      "key_claims": [
+        "'错误项绝对优先'是硬约束而非可权衡的得分项——任何信息筛选系统都应有独立的否决/强制保留管道",
+        "'Lossless-first, lossy-as-fallback'体现渐进退化设计——不丢数据只降表示，保持可审计性",
+        "'内容类型决定保留策略'是无免费午餐定理在信息筛选上的映射——没有通用的'重要性'定义",
+        "'多信号优先级排序'显式化约束>锚点>相关性的价值层次，优于简单的加权和"
+      ],
+      "tables": [],
+      "code_references": []
+    },
+    {
+      "id": "6",
+      "title": "与 AI 协作框架的交叉引用",
+      "summary": "在四个维度建立SmartCrusher与框架的结构性对应关系：adaptive_k与收敛条件、四策略分派与Workflow模式库、错误项保留与Retrospect最小发现数、有损路径+CCR与OPEN-1漂移检测。",
+      "key_claims": [
+        "adaptive_k边界与框架L2 Loop收敛退出阈值同构——都隐含'做更多不一定更好'的判断",
+        "四策略分派与Workflow六模式共享同构的元结构：先判断类型→选择模式→决定是否升级",
+        "框架Retrospect的'至少1失效+1意外'与SmartCrusher的错误项+变点检测在统计上有深刻对称性",
+        "CCR与OPEN-1候选机制的哲学一致：不信任单一决策点的完备性，总是保留回溯和验证的路径"
+      ],
+      "tables": [
+        {
+          "caption": "SmartCrusher策略与Workflow模式对应",
+          "columns": [
+            "SmartCrusher 策略",
+            "对应 Workflow 模式",
+            "原理"
+          ]
+        }
+      ],
+      "code_references": []
+    },
+    {
+      "id": "7",
+      "title": "TOIN 学习闭环：Retrospect -> Spec 更新的结构同构",
+      "summary": "展示TOIN（Tool Output Intelligence Network）的循环结构（执行压缩→记录TOIN→聚合分析→调整参数→下次更好）与框架Retrospect-Spec更新循环的完全同构。",
+      "key_claims": [
+        "TOIN和框架的循环结构完全一致：执行→记录→回顾→调整→下次更好",
+        "关键差异：TOIN调整自动（无需审批），框架Spec更新走人类闸门HG-2——反映两个系统的风险容忍度不同"
+      ],
+      "tables": [],
+      "code_references": [
+        "smart_crusher.py:384-462 _record_to_toin"
+      ]
+    },
+    {
+      "id": "8",
+      "title": "边界条件与局限性",
+      "summary": "声明SmartCrusher方法论的四个边界：假设数据有结构（JSON数组）、统计信号代理语义重要性可能遗漏、依赖检索反馈质量、lossless_min_savings_ratio是经验阈值。",
+      "key_claims": [
+        "非结构化文本不适用——统计方法（字段级离群、稀有状态检测）完全失效",
+        "五维评分无法捕捉语义层面的重要性（LLM才能捕捉的细微之处）",
+        "TOIN学习效果取决于LLM实际使用headroom_retrieve的质和量",
+        "30%阈值是合理起点，但不是普适最优解——取决于LLM行为和downstream task"
+      ],
+      "tables": [],
+      "code_references": []
+    },
+    {
+      "id": "9",
+      "title": "交叉引用",
+      "summary": "列出本文与同系列文档、框架章节的精确索引关系。",
+      "key_claims": [
+        "三篇文档构成headroom架构分析的完整系列",
+        "与框架的6处精确章节对应（§5.3/§6.3/§7.5/§4.3+§6.4/§7+§2.3/§4.5）"
+      ],
+      "tables": [
+        {
+          "caption": "与框架章节的精确索引",
+          "columns": [
+            "SmartCrusher 概念",
+            "框架章节",
+            "同构关系"
+          ]
+        }
+      ],
+      "code_references": []
+    }
+  ],
+  "key_insights": [
+    "五维保留评分体系的三层优先级结构（约束>锚点>相关性）是通用的信息筛选设计模板，优于将所有信号压平为一个加权和的扁平化范式",
+    "'错误项绝对优先'原则要求：某些信号类别是硬约束而非可权衡的得分项——需要一个独立于评分之外的否决/强制保留管道",
+    "三阶段决策流（ContentRouter→Lossless-first→CCR兜底）体现了从'不知道这是什么'到'知道怎么压缩它'的完整认知升级路径",
+    "TOIN学习闭环与框架Retrospect-Spec更新的完全结构同构证明：最小自适应系统设计模板是跨领域存在的——执行→记录→回顾→调整→下次更好",
+    "CCR的'不丢数据只降表示'范式是渐进退化的典范——压缩了什么和能取回什么之间保持可审计性，不信任单一决策点的完备性"
+  ],
+  "related_framework_sections": [
+    "§5.3 收敛条件（探索8/3, 执行5/2, 修复3/2）",
+    "§6.2 编排模式库（6种模式+决策树）",
+    "§6.3 编排模式决策树",
+    "§7.5 最小发现数要求（至少1条失效+1条意外）",
+    "§4.3 逃生口",
+    "§6.4 OPEN-1",
+    "§7 L4 Retrospect + §2.3 Spec维护",
+    "§4.5 三种Prompt模板的完成标准阶梯"
+  ],
+  "related_files": [
+    "https://github.com/example/headroom/blob/main/headroom/smart_crusher.py",
+    "https://github.com/example/headroom/blob/main/headroom/crusher.rs",
+    "https://github.com/example/headroom/blob/main/headroom/planning.rs",
+    "https://github.com/example/headroom/blob/main/headroom/orchestration.rs",
+    "https://github.com/example/headroom/blob/main/headroom/statistics.rs",
+    "https://github.com/example/headroom/blob/main/headroom/outliers.rs",
+    "https://github.com/example/headroom/blob/main/headroom/error_keywords.rs",
+    "https://github.com/example/headroom/blob/main/headroom/classifier.rs",
+    "https://github.com/example/headroom/blob/main/headroom/analyzer.rs",
+    "https://github.com/example/headroom/blob/main/headroom/config.rs",
+    "https://github.com/example/headroom/blob/main/headroom/compaction/"
+  ]
+}

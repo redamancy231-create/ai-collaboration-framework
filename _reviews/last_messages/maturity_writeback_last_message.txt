@@ -1,0 +1,10 @@
+已完成核查并写入：
+
+[maturity_writeback_verification.md](<PROJECT_ROOT>/_reviews/maturity_writeback_verification.md)
+
+结论摘要：通过 10 项、存疑 5 项、不通过 1 项。整体看，8 行从“待实证/零数据”升级到“部分验证”大体合理，但有几处文案需要修正：
+
+- C1/C5 不是“未定义测量方法”，而是“有粗略测量口径但未完整计时/未指定可靠计时工具”。
+- 审查轮数有 10 / 11 / reviews 目录 12 个 md 文件三种口径，需要统一说明。
+- 14/20 loops 对“项目闭合时”成立，但闭合后 Kimi 核查追加到 15/20。
+- L5 闭合行把“IMPROVE→条件PASS”和 Phase 7.6 后补修过程写得过于干净，应改成“条件闭合后补修”。

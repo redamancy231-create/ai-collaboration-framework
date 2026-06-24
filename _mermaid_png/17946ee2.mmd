@@ -1,0 +1,23 @@
+flowchart TD
+    Detect[检测到漂移信号] --> Type{信号类型?}
+
+    Type -->|规则被违反<br/>对齐/程序信号触发| RuleReview[审查该规则]
+    Type -->|规则休眠<br/>N 个周期未触发| Dormant[审查该规则]
+    Type -->|新行为模式<br/>反复出现但未被覆盖| NewPattern[审查该模式]
+
+    RuleReview --> RuleOK{规则本身<br/>合理?}
+    RuleOK -->|合理但未遵守| WhyNot[分析为什么没遵守]
+    WhyNot --> AIF["AI 忘记 → Prompt 模板中加固"]
+    WhyNot --> HS["人跳过 → 讨论：时间压力还是规则无意义?"]
+    WhyNot --> EL["环境/工具限制 → 放宽规则或升级工具"]
+    RuleOK -->|不切实际/过严| Revise["<b>修订规则</b>"]
+
+    Dormant --> DWhy{休眠原因?}
+    DWhy -->|风险已不存在| Dep["<b>废弃规则</b>"]
+    DWhy -->|规则重要但检测失效| FixDetect[修复检测]
+    DWhy -->|一直未踩到该场景| LowFreq["保留但标注「低频」"]
+
+    NewPattern --> PType{模式性质?}
+    PType -->|良性| LogIt[记入 Dev Log 备查<br/>不需要规则]
+    PType -->|建设性| RegNew["<b>注册为新规则</b><br/>写入 Spec 或框架"]
+    PType -->|破坏性| RegDetect["<b>注册为新规则 + 配检测机制</b>"]

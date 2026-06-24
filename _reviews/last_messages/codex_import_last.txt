@@ -1,0 +1,3 @@
+Wrote the review to [codex_review_import_checker.md](<PROJECT_ROOT>/codex_review_import_checker.md).
+
+Key finding: the checker is not reliable as a release gate. `is_resolvable()` reimplements import resolution too narrowly, so it falsely flags builtins like `sys`/`builtins`, misses submodule failures due to `split(".")[0]`, mishandles relative imports, depends on the checker process’s `sys.path`, and has Windows/encoding portability issues. I also ran `python import_integrity_check.py .` and confirmed it incorrectly reports `sys` as unresolved.

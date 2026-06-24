@@ -1,0 +1,163 @@
+{
+  "metadata": {
+    "title": "CCR 作为逃生口案例研究",
+    "date": "2026-06-13",
+    "source": "headroom项目分析 (https://github.com/chopratejas/headroom)",
+    "version": "1.0",
+    "language": "zh-CN",
+    "model": "DeepSeek-V4-Pro",
+    "word_count_estimate": 7000,
+    "cross_references": [
+      "CacheAligner与AI框架OPEN-1对标分析.md",
+      "SmartCrusher方法论提取.md",
+      "AI协作项目全生命周期框架.md"
+    ],
+    "methodology_caveat": "本案例研究建立在headroom（确定性工程域）与AI协作框架（语义治理域）的类比之上。以下维度可能不可迁移：(1)信息不完整性的可知性——CCR压缩标记显式告知LLM信息不完整，框架需LLM自主判断（CCR自身承认的失败模式）；(2)恢复路径的确定性——CCR检索=hash查找（确定性），框架恢复=语义判断（非确定性）；(3)场景范畴——CCR处理有意为之的软信息压缩，框架§4.3处理突发硬工具失效，不应共用升级链。核心迁移假设未经独立验证，应被视为方法论启发而非操作建议。（P0-2修正，2026-06-13）",
+    "p0_revisions": {
+      "p0_2": "已在本json及配套md中添加方法论前提声明"
+    }
+  },
+  "sections": [
+    {
+      "id": "1",
+      "title": "概述",
+      "summary": "介绍CCR（Compress-Cache-Retrieve）作为可逆压缩的核心架构组件，阐明其将逃生口从'被动停止'升级为'主动检索恢复'的范式意义，以及对框架§4.3的直接价值。",
+      "key_claims": [
+        "CCR的基本逻辑：压缩时存原始数据→注入检索工具→拦截检索调用→跨轮次追踪主动扩展",
+        "传统逃生口范式是'被动阻断'（stop-and-report），CCR展示的是'主动恢复'（retrieve-and-continue）",
+        "CCR把逃生口从围栏（barrier）变成了安全阀（relief valve）：不是阻断执行，而是提供受控恢复通道",
+        "对框架的直接价值：提供Level 1（检索恢复）和Level 2（降级继续）两种中间层级，丰富现有全部落在Level 3的逃生口体系"
+      ],
+      "tables": [],
+      "code_references": []
+    },
+    {
+      "id": "2",
+      "title": "CCR 四阶段架构",
+      "summary": "详细解析CCR的四个独立阶段：Compression Store（存储+hash生成）、Tool Injection（向LLM注入检索工具）、Response Handler（拦截检索调用）、Context Tracker（跨轮次追踪主动扩展）。每阶段均分析其安全意义。",
+      "key_claims": [
+        "Compression Store：SHA-256/BLAKE3 96位hash，支持InMemory/SQLite/Redis三种后端，TTL 300秒，Rust-Python桥接镜像失败不中断压缩",
+        "Tool Injection：三种注入模式+PR-B7粘滞注册（sticky-on）避免tools数组变动→cache bust",
+        "Response Handler：非侵入式中间层，最多3轮检索循环，分离CCR调用和其他工具调用",
+        "Context Tracker：工作空间隔离（跨项目泄露事故后加入）+时间折扣+主动扩展上限2条目/轮"
+      ],
+      "tables": [],
+      "code_references": [
+        "ccr/ 模块 CompressionStore",
+        "ccr/ 模块 Tool Injection (Anthropic/OpenAI/Google三种格式)",
+        "ccr/ 模块 Response Handler (max_retrieval_rounds=3)",
+        "ccr/ 模块 Context Tracker (workspace_key隔离)"
+      ]
+    },
+    {
+      "id": "3",
+      "title": "与框架 §4.3 逃生口的对照分析",
+      "summary": "在9个维度上将CCR逃生口与框架§4.3逃生口进行系统对照，揭示两者根本差异：passive block design vs active recovery design。",
+      "key_claims": [
+        "框架§4.3处理数据完整性问题（工具/数据不可用），CCR处理数据可用性问题（有意为之的信息压缩）",
+        "框架§4.3是执行路径上的路障（stop），CCR是执行路径上的加油站（retrieve）",
+        "九个对照维度统一揭示同一根本差异：被动阻断设计vs主动恢复设计"
+      ],
+      "tables": [
+        {
+          "caption": "框架§4.3 vs CCR逃生口九维度对照",
+          "columns": ["维度", "框架 §4.3 逃生口", "CCR 逃生口"]
+        }
+      ],
+      "code_references": []
+    },
+    {
+      "id": "4",
+      "title": "分级逃生口设计模式",
+      "summary": "从CCR提炼出通用三级逃生口模式：Level 1检索恢复（已知检索路径）→ Level 2降级继续（信息质量下降但非不可用）→ Level 3停止报告（完全不可用），并定义各级间的升级条件。",
+      "key_claims": [
+        "Level 1前提是检索路径已知且可靠；Level 2前提是部分信息仍可用且不确定性能被标注",
+        "Level 3是最强安全保证但也是最昂贵的恢复路径——过度使用制造不必要摩擦",
+        "升级原则：每次升级需要明确理由，升级后状态必须显式标记，L3触发必须满足至少一个硬条件",
+        "三级体系不削弱现有L3防护（ETF R5事故驱动的硬安全要求），而是在安全前提下增加低成本恢复路径"
+      ],
+      "tables": [],
+      "code_references": []
+    },
+    {
+      "id": "5",
+      "title": "给框架 §4.3 的具体建议",
+      "summary": "提出四项具体建议：增加Level 1（检索/验证路径）、增加Level 2（降级继续）、Level 3措辞微调（增加升级关系说明）、新增分级升级规则小结。",
+      "key_claims": [
+        "建议保持审慎：L1和L2是对现有L3的补充而非削弱",
+        "考虑到ChatGPT-5.5（闸门太多）和DeepSeek-v4-pro（覆盖不够）的方向性分歧，此处建议提供中间路径而非激进修改",
+        "所有建议均通过CCR案例验证可行性"
+      ],
+      "tables": [],
+      "code_references": []
+    },
+    {
+      "id": "6",
+      "title": "CCR 的关键安全决策",
+      "summary": "分析CCR的五项安全相关显式决策及其对框架逃生口设计的启示：哈希碰撞抗性、TTL过期、工作空间隔离、密钥脱敏、最大检索轮次限制。",
+      "key_claims": [
+        "96位hash在默认LRU缓存（1000条目TTL 300s）中碰撞概率远低于实际风险",
+        "TTL 300秒明确定义'合理追溯期'——逃生口恢复窗口需要有界",
+        "工作空间隔离源自实际事故：共享进程内Context Tracker无项目来源标识导致跨项目泄露",
+        "密钥脱敏防止恢复路径的审计日志成为敏感数据二次暴露的途径",
+        "最大3轮检索循环防止无限恢复循环——逃生通道不是无限的",
+        "综合提炼：逃生口不是免费的——需要碰撞抗性、时效边界、来源隔离、日志脱敏和资源上限五个维度的防护"
+      ],
+      "tables": [],
+      "code_references": []
+    },
+    {
+      "id": "7",
+      "title": "局限性：CCR 不能替代现有逃生口",
+      "summary": "明确CCR的三个局限性：硬失效场景无效（bash不可用/文件系统不可读/数据源缺失）、资源假设不总是成立、LLM可能不调用检索工具。强调CCR是补充不是替代。",
+      "key_claims": [
+        "硬失效场景CCR完全无效——压缩发生、原始数据在存储中、LLM可调用工具三个前提缺一不可",
+        "LLM可能不调用检索工具（'不知道缺少什么'）是与L3误停止对称但相反的风险",
+        "CCR是Level 1/2的补充，不替代Level 3——场景对照表清晰界定各自适用范围"
+      ],
+      "tables": [
+        {
+          "caption": "框架§4.3 vs CCR适用场景对照",
+          "columns": ["场景", "框架 §4.3（停止报告）", "CCR（检索恢复）", "推荐"]
+        }
+      ],
+      "code_references": []
+    },
+    {
+      "id": "8",
+      "title": "交叉引用",
+      "summary": "定位本文在headroom架构分析三文档系列中的位置，以及与框架核心文档的关系。",
+      "key_claims": [
+        "三文档分工：CCR讲分级逃生口（压缩后的恢复），CacheAligner讲detector-only（压缩前的门卫），SmartCrusher讲压缩方法论（CCR的上游生产者）",
+        "本文是框架§4.3的外部方法补充，不修改框架正文，但为未来修订（如v1.3）提供分级逃生口设计模式"
+      ],
+      "tables": [
+        {
+          "caption": "三文档分工",
+          "columns": ["文档", "焦点", "与本文的关系"]
+        }
+      ],
+      "code_references": []
+    }
+  ],
+  "key_insights": [
+    "CCR实现了逃生口设计的范式升级：从'被动阻断'（stop-and-report）到'主动恢复'（retrieve-and-continue）——把逃生口从围栏变成安全阀",
+    "三级分级逃生口模式（L1检索恢复→L2降级继续→L3停止报告）可以在保持硬安全要求的前提下提供低成本恢复路径，回应ChatGPT-5.5'闸门太多'的关切",
+    "L3的'绝不用替代数据'是ETF R5事故驱动的硬安全要求，不可削弱——CCR的L1/L2是在此基础上的补充，而非替代",
+    "逃生口不是免费的：碰撞抗性、时效边界、来源隔离、日志脱敏和资源上限五个维度缺一不可——CCR通过五项显式安全决策为每个维度提供了设计参考",
+    "CCR与框架的根本差异在于'压缩是有意为之的信息不足，有已知恢复路径' vs '工具失效是意外信息断裂，无已知恢复路径'——前者可以自主恢复，后者必须人类介入"
+  ],
+  "related_framework_sections": [
+    "§4.3 逃生口（三条规则全部落在Level 3）",
+    "§1.6 OPEN-1",
+    "§6.4 OPEN-1 连续漂移与Human Gate频率-覆盖缺口",
+    "§7 L4 Retrospect",
+    "§2.3 Spec维护"
+  ],
+  "related_files": [
+    "https://github.com/example/headroom/blob/main/headroom/ccr/",
+    "https://github.com/example/headroom/blob/main/headroom/crusher.rs",
+    "https://github.com/example/headroom/blob/main/headroom/smart_crusher.py",
+    "https://github.com/example/headroom/blob/main/REALIGNMENT/01-bug-list.md"
+  ]
+}

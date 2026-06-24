@@ -1,0 +1,817 @@
+{
+  "metadata": {
+    "model": "DeepSeek-v4-pro (via Claude Code CLI shell)",
+    "document_type": "元审查合规清单",
+    "version": "1.0.4+",
+    "version_note": "GPT-5.5 (via Codex CLI) 独立审查修订（M8: 拆分个人/通用项 + M9: 去预判化）",
+    "date": "2026-06-21",
+    "scope": "v1.4",
+    "framework_relationship": "依据框架 §9.2（清单审计）派生的执行层工具；非框架组成部分",
+    "reflexivity_note": "本清单自身由 DeepSeek-V4-Pro（框架作者）生成。按框架自身 §9.2 标准，元审查的执行者必须满足（后端不同 × 上下文隔离）——不可由框架作者自审。v1.0.1 修订按 GPT-5.5 (via Codex CLI) 独立审查意见（M8/M9）执行，修订操作由 DeepSeek-v4-pro 完成（非独立操作——属作者按审查意见修改，非元审查执行）。",
+    "revision": "v1.4配套更新：64->67 items (新增I-012,B-019,B-020)",
+    "framework_version": "v1.6.4",
+    "total_items": 75
+  },
+  "scoring": {
+    "healthy": {
+      "range": "90-100%",
+      "label": "健康",
+      "meaning": "框架自身合规性良好"
+    },
+    "notable": {
+      "range": "75-89%",
+      "label": "值得关注",
+      "meaning": "存在需改进的薄弱环节"
+    },
+    "impaired": {
+      "range": "60-74%",
+      "label": "受损",
+      "meaning": "多项核心要求未满足，需系统性修复"
+    },
+    "unsafe": {
+      "range": "<60%",
+      "label": "不安全",
+      "meaning": "框架自身规范大面积失效，须暂停新发布并整改"
+    }
+  },
+  "dimensions": [
+    {
+      "id": "P",
+      "name": "Provenance完整性",
+      "description": "模型来源声明的完整性、一致性和可追溯性",
+      "item_count": 20,
+      "core_concern": "框架主md+JSON的model字段已补(2026-06-13交叉验证修复)；审查链产物provenance程度不一；'Claude'歧义标签待统一",
+      "items": [
+        {
+          "id": "P-001",
+          "name": "框架主文档模型声明",
+          "condition": "AI协作项目全生命周期框架.md 必须包含元数据栏，声明生成模型",
+          "pass_criteria": "元数据栏存在，生成模型 字段非空且非 'Claude'（须为具体后端模型名）",
+          "fail_criteria": "缺失元数据栏；或模型字段为 'Claude'（歧义）；或字段为空",
+          "remediation": "按 feedback_generated_files_model_provenance.md 规范补充元数据栏，模型名写 DeepSeek-v4-pro",
+          "prejudgment": "PASS",
+          "prejudgment_detail": "2026-06-13交叉验证中已补充，元数据栏含生成模型字段（本项已修复，待独立审查者执行时确认）"
+        },
+        {
+          "id": "P-002",
+          "name": "JSON伴随文件模型字段",
+          "condition": "AI协作项目全生命周期框架.json 须包含 metadata.model 字段",
+          "pass_criteria": "metadata.model 存在且非空，值为具体后端模型名",
+          "fail_criteria": "缺失 metadata 顶层键；或 metadata 无 model 字段；或值为 'Claude'",
+          "remediation": "在 JSON 顶层添加 metadata 结构含 model 字段",
+          "prejudgment": "PASS",
+          "prejudgment_detail": "JSON metadata.model 字段已存在，值为 DeepSeek-v4-pro (via Claude Code CLI shell)"
+        },
+        {
+          "id": "P-003",
+          "name": "DOCX转换产物模型声明",
+          "condition": "AI协作项目全生命周期框架.docx 须在文档属性或首段标注生成模型",
+          "pass_criteria": "文档属性 Author 或首段含模型名",
+          "fail_criteria": "无任何模型来源标识",
+          "remediation": "在 docx 首段添加生成模型声明或在文档属性中标注",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "P-004",
+          "name": "审查报告①模型声明（GPT-5.5初审查）",
+          "condition": "GPT-5.5 (via Codex CLI) 出具的初审查报告须标注自身模型名",
+          "pass_criteria": "报告含模型名 'GPT-5.5 (via Codex CLI)' 或等效标识（注：'ChatGPT-5.5' 为旧标签——ChatGPT 是产品名非模型名，实际后端为 GPT-5.5；2026-06-17 修正）",
+          "fail_criteria": "仅标注 'AI' 或缺失标注",
+          "remediation": "补充模型来源声明，使用实际后端模型名 GPT-5.5",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "P-005",
+          "name": "审查报告②模型声明（DS-v4-pro再审查）",
+          "condition": "DeepSeek-v4-pro 出具的再审查报告须标注自身模型名",
+          "pass_criteria": "报告含模型名 'DeepSeek-v4-pro'",
+          "fail_criteria": "仅标注 'Claude' 或缺失标注",
+          "remediation": "补充模型来源声明，注意区分 CLI shell 与后端模型",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "P-006",
+          "name": "审查报告③模型声明（Opus 4.8再再审查）",
+          "condition": "Opus 4.8 出具的再再审查报告须标注自身模型名",
+          "pass_criteria": "报告含模型名，可明确识别为 Opus 4.8 系列",
+          "fail_criteria": "标注模糊或缺失",
+          "remediation": "补充具体模型名",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "P-007",
+          "name": "审查提示词模型声明",
+          "condition": "审查提示词文件须标注撰写模型",
+          "pass_criteria": "文件含元数据栏，标注撰写者模型名",
+          "fail_criteria": "缺失模型来源",
+          "remediation": "补充元数据栏",
+          "prejudgment": "待检查",
+          "prejudgment_detail": "审查提示词由框架作者撰写，可能未标注"
+        },
+        {
+          "id": "P-008",
+          "name": "kill-test-first skill 模型声明",
+          "condition": "自写 skill kill-test-first 的定义文件须标注生成/修改模型",
+          "pass_criteria": "skill 定义中标注模型名",
+          "fail_criteria": "无模型标注",
+          "remediation": "在 skill 文件中补充元数据",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "P-009",
+          "name": "gbt7714 skill 模型声明",
+          "condition": "自写 skill gbt7714 的定义文件须标注生成/修改模型",
+          "pass_criteria": "skill 定义中标注模型名",
+          "fail_criteria": "无模型标注",
+          "remediation": "在 skill 文件中补充元数据",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "P-010",
+          "name": "memory/MEMORY.md 模型声明",
+          "condition": "用户 auto-memory MEMORY.md 中记录的长期记忆须标注记录时的模型",
+          "pass_criteria": "关键记忆条目有模型来源",
+          "fail_criteria": "记忆条目无法追溯记录者",
+          "remediation": "补充模型来源标注（可行范围内）",
+          "prejudgment": "待检查",
+          "prejudgment_detail": "多数记忆条目未标注记录模型"
+        },
+        {
+          "id": "P-011",
+          "name": "project_status 系列文件模型声明",
+          "condition": "project_status.md 类文件须标注最后更新模型",
+          "pass_criteria": "文件含更新模型信息",
+          "fail_criteria": "无更新模型标注",
+          "remediation": "补充元数据",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "P-012",
+          "name": "Claude歧义标签排查",
+          "condition": "框架相关所有文件中出现 'Claude' 的实例须可明确分辨是 CLI 壳还是后端模型",
+          "pass_criteria": "每个 'Claude' 出现均可在上下文中确定指 CLI 壳或后端模型；或已替换为精确表述",
+          "fail_criteria": "存在无法分辨的 'Claude' 引用",
+          "remediation": "全局搜索替换：CLI 壳改为 'Claude Code CLI shell'，后端模型改为具体模型名",
+          "prejudgment": "FAIL",
+          "prejudgment_detail": "'Claude'歧义标签待统一（已知问题，见 feedback_model_provenance.md）"
+        },
+        {
+          "id": "P-013",
+          "name": "框架引用的外部项目 provenance",
+          "condition": "框架文档中提及的其他项目须有可追溯的 provenance",
+          "pass_criteria": "每个引用项目可链接到其 provenance 记录",
+          "fail_criteria": "引用项目 provenance 不可考",
+          "remediation": "补充交叉引用或注明 provenance 不可考",
+          "prejudgment": "部分通过",
+          "prejudgment_detail": "形态匹配项目中 Claude腿后端不可考 已标注"
+        },
+        {
+          "id": "P-014",
+          "name": "HEADROOM 对标文档 model 字段",
+          "condition": "三份 headroom 对标文档的 model 字段须正确",
+          "pass_criteria": "model 字段为具体后端模型名",
+          "fail_criteria": "model 字段缺失或为 'Claude'",
+          "remediation": "修正 model 字段",
+          "prejudgment": "PASS",
+          "prejudgment_detail": "2026-06-13已补"
+        },
+        {
+          "id": "P-015",
+          "name": "DOCX 图表格式要点文件的 provenance",
+          "condition": "feedback_docx_chart_format.md 须标注生成模型",
+          "pass_criteria": "文件含模型来源",
+          "fail_criteria": "无模型标注",
+          "remediation": "补充元数据",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "P-016",
+          "name": "新生成文件是否含模型声明（系统性检查）",
+          "condition": "2026-06-13 之后生成的任何正式产出须含模型声明",
+          "pass_criteria": "所有新文件均满足 provenance 规范",
+          "fail_criteria": "存在新文件缺失模型声明",
+          "remediation": "补充后重新生成",
+          "prejudgment": "PASS",
+          "prejudgment_detail": "立规后合规"
+        },
+        {
+          "id": "P-017",
+          "name": "历史文件补标进度",
+          "condition": "2026-06-13 之前生成的正式产出中已补标的比例",
+          "pass_criteria": "补标比例 ≥ 80%",
+          "fail_criteria": "<80%",
+          "remediation": "批量补标",
+          "prejudgment": "待统计",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "P-018",
+          "name": "Provenance 的交叉验证",
+          "condition": "同一产物的 md/json/docx 三件中模型声明是否一致",
+          "pass_criteria": "三件模型声明一致",
+          "fail_criteria": "不一致",
+          "remediation": "统一修正",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "P-019",
+          "name": "metadata.json 独立文件",
+          "condition": "项目根或子目录若存在 metadata.json 须含 model 字段",
+          "pass_criteria": "model 字段存在且正确",
+          "fail_criteria": "缺失或不正确",
+          "remediation": "补充/修正",
+          "prejudgment": "N/A",
+          "prejudgment_detail": "无独立 metadata.json"
+        },
+        {
+          "id": "P-020",
+          "name": "Provenance 链的完整性",
+          "condition": "从框架原稿到审查报告①→②→③→v1.2终稿全链每步生成模型可追溯",
+          "pass_criteria": "全链无断点",
+          "fail_criteria": "存在不可追溯的步骤",
+          "remediation": "补全缺失的 provenance 记录",
+          "prejudgment": "部分通过",
+          "prejudgment_detail": "主链可追溯，但部分中间产物 provenance 存疑"
+        }
+      ]
+    },
+    {
+      "id": "I",
+      "name": "审查独立性",
+      "description": "审查链各环节的独立性和无污染性",
+      "item_count": 11,
+      "core_concern": "④Opus再再审查与框架作者同house(共享memory)→部分独立；审查提示词由作者自写→引导性偏差；裸环境checklist未引用",
+      "items": [
+        {
+          "id": "I-001",
+          "name": "审查①独立性（GPT-5.5 / Codex CLI）",
+          "condition": "GPT-5.5 (via Codex CLI) 与框架作者须满足（后端不同 × 上下文隔离）",
+          "pass_criteria": "后端模型不同（已满足）；上下文无共享 memory/project 文件",
+          "fail_criteria": "共享了框架作者的 memory 或 project 上下文",
+          "remediation": "若共享，重新在裸环境中执行审查",
+          "prejudgment": "待核实",
+          "prejudgment_detail": "后端不同已满足；上下文隔离程度待查"
+        },
+        {
+          "id": "I-002",
+          "name": "审查②独立性（DS-v4-pro再审查）",
+          "condition": "再审查由 DS-v4-pro 执行自身初稿 → 此为自审，按框架 §9.2 不具独立性",
+          "pass_criteria": "N/A — 此项本质不独立，需标记为 非独立审查",
+          "fail_criteria": "N/A — 此项不可 PASS，仅可标记",
+          "remediation": "框架 v1.2 已将其标注为 作者自审，无需修复；但未来应替换为独立审查者",
+          "prejudgment": "标记（非独立）",
+          "prejudgment_detail": "框架已自我标注"
+        },
+        {
+          "id": "I-003",
+          "name": "审查③独立性（Opus 4.8）",
+          "condition": "Opus 4.8 与框架作者须满足（后端不同 × 上下文隔离）",
+          "pass_criteria": "后端不同（已满足）；上下文隔离",
+          "fail_criteria": "共享了作者 memory",
+          "remediation": "若共享，重新在裸环境中执行",
+          "prejudgment": "FAIL",
+          "prejudgment_detail": "Opus再再审查与框架作者同house（共享memory），部分独立但不完全"
+        },
+        {
+          "id": "I-004",
+          "name": "审查提示词独立性",
+          "condition": "审查提示词是否由框架作者撰写",
+          "pass_criteria": "提示词由独立第三方撰写（理想）；或标注为 作者自写（可接受但须透明）",
+          "fail_criteria": "作者撰写但未标注 → 存在引导性偏差风险",
+          "remediation": "标注提示词来源；未来由独立方撰写或至少审核提示词",
+          "prejudgment": "FAIL",
+          "prejudgment_detail": "审查提示词由作者自写，存在引导性偏差；应在报告中标注"
+        },
+        {
+          "id": "I-005",
+          "name": "审查上下文污染检查",
+          "condition": "每次审查是否在裸环境（新对话、无 memory 注入）中执行",
+          "pass_criteria": "审查者在审查前无框架相关上下文",
+          "fail_criteria": "审查者已读取框架内容或相关 memory",
+          "remediation": "在裸环境中重新执行",
+          "prejudgment": "待核实",
+          "prejudgment_detail": "裸环境checklist已制定但未确认引用"
+        },
+        {
+          "id": "I-006",
+          "name": "裸环境 checklist 的引用",
+          "condition": "框架审查是否引用了多模型对照实验项目中制定的裸环境 checklist",
+          "pass_criteria": "审查记录中引用或确认了裸环境条件",
+          "fail_criteria": "审查记录未提及环境隔离措施",
+          "remediation": "补充环境隔离说明",
+          "prejudgment": "FAIL",
+          "prejudgment_detail": "裸环境checklist未引用"
+        },
+        {
+          "id": "I-007",
+          "name": "裁判模型独立性",
+          "condition": "审查中若用 LLM 做裁判，裁判须独立于选手",
+          "pass_criteria": "裁判模型与审查者/被审查模型均不同",
+          "fail_criteria": "裁判与任一方相同或同系列",
+          "remediation": "替换为独立裁判",
+          "prejudgment": "N/A",
+          "prejudgment_detail": "本次审查链中未使用独立 LLM judge"
+        },
+        {
+          "id": "I-008",
+          "name": "人类专家审查的缺席",
+          "condition": "框架审查链是否包含零卷入人类专家",
+          "pass_criteria": "至少一次人类专家独立审查（理想）；或标注 缺人类审查",
+          "fail_criteria": "未标注人类审查缺席",
+          "remediation": "标注风险；安排人类专家审查",
+          "prejudgment": "FAIL",
+          "prejudgment_detail": "全链无人类专家审查，框架已自述 急需零卷入人类专家verify"
+        },
+        {
+          "id": "I-009",
+          "name": "框架 §9.2 审查独立性标准是否满足",
+          "condition": "审查链是否满足 §9.2 定义的（后端不同 × 上下文隔离）标准",
+          "pass_criteria": "所有审查环节满足标准",
+          "fail_criteria": "存在不满足的环节且未标注",
+          "remediation": "标注不满足的环节；未来补齐",
+          "prejudgment": "部分通过",
+          "prejudgment_detail": "已标注非独立环节，但 Opus 4.8 同 house 问题未明确标注为 部分独立"
+        },
+        {
+          "id": "I-010",
+          "name": "独立性标注的透明度",
+          "condition": "所有不满足独立性的审查环节是否在框架文档中明确标注",
+          "pass_criteria": "每个非独立环节有标注 + 说明偏差方向",
+          "fail_criteria": "存在未标注的非独立环节",
+          "remediation": "补充标注",
+          "prejudgment": "部分通过",
+          "prejudgment_detail": "②已标注，④同house问题标注不够明确"
+        },
+        {
+          "id": "I-011",
+          "name": "未来审查的独立性保障",
+          "condition": "框架是否制定了未来审查的独立性保障机制",
+          "pass_criteria": "有明确的独立性检查清单或流程",
+          "fail_criteria": "无机制",
+          "remediation": "制定并纳入框架",
+          "prejudgment": "FAIL",
+          "prejudgment_detail": "暂无制度化机制；本清单可部分填补但未纳入框架"
+        }
+      ]
+    },
+    {
+      "id": "M",
+      "name": "记忆系统健康",
+      "description": "项目记忆文件的时效性、一致性和完整性",
+      "item_count": 15,
+      "core_concern": "超过30天的文件需标记'需验证'(30天前=2026-05-14)；已归档项目标注需统一；跨文件引用完整性待核实",
+      "items": [
+        {
+          "id": "M-001",
+          "name": "30天时效性标记",
+          "condition": "所有 memory/ 下文件若最后修改日期距今超过30天须标记 '需验证'",
+          "pass_criteria": "超过30天的文件已标记",
+          "fail_criteria": "存在未标记的过期文件",
+          "remediation": "扫描并批量标记",
+          "prejudgment": "FAIL",
+          "prejudgment_detail": "30天前=2026-05-14，多个文件可能已过期"
+        },
+        {
+          "id": "M-002",
+          "name": "项目状态文件同步性",
+          "condition": "project_status.md 系列与实际项目状态是否一致",
+          "pass_criteria": "文件状态描述与实际一致",
+          "fail_criteria": "状态不一致",
+          "remediation": "更新状态文件",
+          "prejudgment": "待检查",
+          "prejudgment_detail": "形态匹配已归档CLOSED，需确认状态文件同步"
+        },
+        {
+          "id": "M-003",
+          "name": "已归档项目标注一致性",
+          "condition": "所有已归档项目是否统一使用 CLOSED-FINAL 或等效标记",
+          "pass_criteria": "归档标记格式统一",
+          "fail_criteria": "归档标记混乱",
+          "remediation": "统一标记格式",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "M-004",
+          "name": "跨文件引用完整性",
+          "condition": "MEMORY.md 中引用的子文件是否全部存在",
+          "pass_criteria": "所有引用文件存在且可读取",
+          "fail_criteria": "存在死链",
+          "remediation": "修复或移除死链",
+          "prejudgment": "待核实",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "M-005",
+          "name": "MEMORY.md 内部一致性",
+          "condition": "MEMORY.md 中不同条目描述同一事物时是否一致",
+          "pass_criteria": "无矛盾条目",
+          "fail_criteria": "存在不一致",
+          "remediation": "统一矛盾条目",
+          "prejudgment": "待检查",
+          "prejudgment_detail": "多条目由不同会话记录，可能存在不一致"
+        },
+        {
+          "id": "M-006",
+          "name": "项目根路径索引准确性",
+          "condition": "reference_project_paths.md 中的路径是否与实际一致",
+          "pass_criteria": "所有路径可访问",
+          "fail_criteria": "存在无效路径",
+          "remediation": "更正路径",
+          "prejudgment": "PASS",
+          "prejudgment_detail": "2026-06-11全量审计校正"
+        },
+        {
+          "id": "M-007",
+          "name": "设备硬件清单的时效性",
+          "condition": "reference_device_hardware.md 是否反映当前硬件状态",
+          "pass_criteria": "与实际硬件一致",
+          "fail_criteria": "硬件变更后未更新",
+          "remediation": "更新清单",
+          "prejudgment": "PASS",
+          "prejudgment_detail": "2026-06-06全量盘点"
+        },
+        {
+          "id": "M-008",
+          "name": "Skill 清单完整性",
+          "condition": "skill_inventory.md 是否包含所有已安装 skill",
+          "pass_criteria": "清单与实际一致",
+          "fail_criteria": "有遗漏或多余的 skill 记录",
+          "remediation": "同步清单",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "M-009",
+          "name": "Skill 清理记录时效性",
+          "condition": "skill_cleanup_log.md 是否反映最新清理状态",
+          "pass_criteria": "清理记录与实际一致",
+          "fail_criteria": "已清理的 skill 仍在清单中或反之",
+          "remediation": "同步",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "M-010",
+          "name": "笔记本冷启动排查文件时效性",
+          "condition": "project_laptop_boot_hang.md 是否反映最新排查进展",
+          "pass_criteria": "记录与最新 bootcheck 脚本结果一致",
+          "fail_criteria": "记录过时",
+          "remediation": "更新状态",
+          "prejudgment": "待检查",
+          "prejudgment_detail": "需确认 post-F.30 干净连胜的最新计数"
+        },
+        {
+          "id": "M-011",
+          "name": "CloudDrive2 崩溃排查文件时效性",
+          "condition": "project_clouddrive2_crashes.md 是否反映最新排查进展",
+          "pass_criteria": "记录与最新观测一致",
+          "fail_criteria": "记录过时",
+          "remediation": "更新状态",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "M-012",
+          "name": "MEMORY.md 文件大小/条目数",
+          "condition": "MEMORY.md 的条目数量和总大小是否在可管理范围内",
+          "pass_criteria": "文件 ≤ 500 行；条目数 ≤ 30",
+          "fail_criteria": "文件过大或条目过多",
+          "remediation": "归档旧条目到子文件；精简冗余",
+          "prejudgment": "待检查",
+          "prejudgment_detail": "当前条目数可能偏多"
+        },
+        {
+          "id": "M-013",
+          "name": "重复/冗余记忆条目",
+          "condition": "MEMORY.md 中是否存在内容重复或高度重叠的条目",
+          "pass_criteria": "无重复条目",
+          "fail_criteria": "存在重复",
+          "remediation": "合并或删除重复",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "M-014",
+          "name": "废弃项目记忆清理",
+          "condition": "已归档项目的详细记忆是否仍占据主 MEMORY.md",
+          "pass_criteria": "已归档项目保留摘要/链接，细节移至子文件",
+          "fail_criteria": "已归档项目细节占据主文件大量篇幅",
+          "remediation": "提取到独立子文件，主文件保留一行摘要+链接",
+          "prejudgment": "待检查",
+          "prejudgment_detail": "形态匹配、并购重组等已归档项目仍占较多篇幅"
+        },
+        {
+          "id": "M-015",
+          "name": "记忆条目创建日期可追溯",
+          "condition": "每条重要记忆是否标注创建/最后修改日期",
+          "pass_criteria": "关键条目有日期",
+          "fail_criteria": "无日期标注，无法判断时效性",
+          "remediation": "补充日期",
+          "prejudgment": "待检查",
+          "prejudgment_detail": "多数条目有日期，但需全面检查"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "name": "最佳实践实际使用",
+      "description": "框架自身是否按 §2–§7 要求使用工具和实践",
+      "item_count": 18,
+      "core_concern": "框架项目缺CLAUDE.md(S0最高优先级)；缺DEV_LOG.md；缺session-end skill；缺S5成功标准/S6评估计划；审查提示词可能未走HG；v1.3草案写入可能未走HG-2",
+      "items": [
+        {
+          "id": "B-001",
+          "name": "项目级 CLAUDE.md 的存在",
+          "condition": "框架项目根目录是否包含 CLAUDE.md",
+          "pass_criteria": "CLAUDE.md 存在且 ≥ 最低强制版内容（§1.4）",
+          "fail_criteria": "文件不存在；或内容不足",
+          "remediation": "创建 CLAUDE.md，至少含最低强制版",
+          "prejudgment": "FAIL（S0最高优先级）",
+          "prejudgment_detail": "框架项目没有项目级 CLAUDE.md。框架 §2.2 说 L0 Spec 载体=CLAUDE.md+memory/，但框架自身没有；连最低强制版（§1.4）都不达标"
+        },
+        {
+          "id": "B-002",
+          "name": "CLAUDE.md 内容完整性",
+          "condition": "若 CLAUDE.md 存在，内容是否 ≥ 框架 §1.4 定义的最低强制版",
+          "pass_criteria": "含项目描述 + 关键路径 + 执行约束 + 禁止事项",
+          "fail_criteria": "内容不足",
+          "remediation": "按 §1.4 补充",
+          "prejudgment": "N/A",
+          "prejudgment_detail": "依赖 B-001 先修复"
+        },
+        {
+          "id": "B-003",
+          "name": "DEV_LOG.md 的存在",
+          "condition": "框架项目是否维护 DEV_LOG.md",
+          "pass_criteria": "DEV_LOG.md 存在且记录关键开发事件",
+          "fail_criteria": "缺失",
+          "remediation": "创建 DEV_LOG.md 并回溯关键事件",
+          "prejudgment": "FAIL",
+          "prejudgment_detail": "框架项目缺 DEV_LOG.md"
+        },
+        {
+          "id": "B-004",
+          "name": "Session-end skill 的使用",
+          "condition": "每次会话结束是否触发 session-end 流程",
+          "pass_criteria": "有 session-end 记录或等效机制",
+          "fail_criteria": "无 session-end 实践",
+          "remediation": "建立 session-end skill 或检查清单",
+          "prejudgment": "PASS",
+          "prejudgment_detail": "✅ 2026-06-18 创建, ~/.claude/skills/session-end/SKILL.md, 经三后端审查(DeepSeek/GPT-5.5/Qwen3.7-max)验证"
+        },
+        {
+          "id": "B-005",
+          "name": "S4 自检（审查）的证据",
+          "condition": "框架的每次重大修改是否经过 S4 审查关",
+          "pass_criteria": "有审查记录",
+          "fail_criteria": "重大修改无审查记录",
+          "remediation": "补充审查或标注豁免理由",
+          "prejudgment": "部分通过",
+          "prejudgment_detail": "v1.2 修改经过三模型审查链"
+        },
+        {
+          "id": "B-006",
+          "name": "S5 成功标准的定义",
+          "condition": "框架项目是否定义了 S5 成功标准",
+          "pass_criteria": "有明确的成功标准文档",
+          "fail_criteria": "无成功标准",
+          "remediation": "定义并记录",
+          "prejudgment": "FAIL",
+          "prejudgment_detail": "缺 S5 成功标准"
+        },
+        {
+          "id": "B-007",
+          "name": "S6 评估计划的定义",
+          "condition": "框架项目是否定义了 S6 评估计划",
+          "pass_criteria": "有评估计划文档",
+          "fail_criteria": "无评估计划",
+          "remediation": "制定评估计划",
+          "prejudgment": "FAIL",
+          "prejudgment_detail": "缺 S6 评估计划"
+        },
+        {
+          "id": "B-008",
+          "name": "审查提示词是否通过 HG 审查",
+          "condition": "审查提示词是否通过了 headroom grill（HG）或等效对抗式检查",
+          "pass_criteria": "有 HG 检查记录",
+          "fail_criteria": "无记录",
+          "remediation": "对审查提示词执行 HG 检查",
+          "prejudgment": "待核实",
+          "prejudgment_detail": "审查提示词可能未走 HG"
+        },
+        {
+          "id": "B-009",
+          "name": "审查报告是否通过 HG 审查",
+          "condition": "三份审查报告是否通过 HG 检查",
+          "pass_criteria": "有 HG 检查记录",
+          "fail_criteria": "无记录",
+          "remediation": "补充 HG 检查",
+          "prejudgment": "待核实",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "B-010",
+          "name": "v1.2 修改是否走完整 S0–S6 流程",
+          "condition": "框架 v1.2 的五项收敛改动是否按 S0–S6 流程执行",
+          "pass_criteria": "每项改动有对应阶段记录",
+          "fail_criteria": "遗漏阶段",
+          "remediation": "补全或标注豁免",
+          "prejudgment": "待检查",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "B-011",
+          "name": "HEADROOM 工具的实际使用",
+          "condition": "框架项目是否实际使用了 headroom_compress/retrieve",
+          "pass_criteria": "有使用记录",
+          "fail_criteria": "零使用",
+          "remediation": "在合适场景使用",
+          "prejudgment": "待检查",
+          "prejudgment_detail": "2026-06-13 对话中 headroom 使用习惯已在建立"
+        },
+        {
+          "id": "B-012",
+          "name": "HG-2（对抗式第二轮）的使用",
+          "condition": "框架 v1.3 草案写入是否经过 HG-2（对抗式第二轮审查）",
+          "pass_criteria": "有 HG-2 记录",
+          "fail_criteria": "未经 HG-2",
+          "remediation": "执行 HG-2",
+          "prejudgment": "待核实",
+          "prejudgment_detail": "v1.3草案写入可能未走HG-2"
+        },
+        {
+          "id": "B-013",
+          "name": "Kill-test-first 的使用",
+          "condition": "框架新增重大特性前是否经过 kill-test（事前否决位）",
+          "pass_criteria": "每次重大新增前有 kill-test 记录",
+          "fail_criteria": "未经 kill-test",
+          "remediation": "补充 kill-test",
+          "prejudgment": "待核实",
+          "prejudgment_detail": null
+        },
+        {
+          "id": "B-014",
+          "name": "先验对标检查",
+          "condition": "框架新增方法论前是否执行 先验对标",
+          "pass_criteria": "有对标记录",
+          "fail_criteria": "无对标",
+          "remediation": "补充对标",
+          "prejudgment": "待核实",
+          "prejudgment_detail": "kill-test-first skill已增先验对标关，但框架自身是否使用待查"
+        },
+        {
+          "id": "B-015",
+          "name": "交付物双件（md+json）实践",
+          "condition": "框架重要交付物是否同时产出 md 和 json",
+          "pass_criteria": "重要交付物有双件",
+          "fail_criteria": "重要交付物仅单件",
+          "remediation": "补产 JSON",
+          "prejudgment": "部分通过",
+          "prejudgment_detail": "框架主文档有三件（md+json+docx）"
+        },
+        {
+          "id": "B-016",
+          "name": "docx 产出规范合规性",
+          "condition": "框架 docx 是否符合 feedback_docx_chart_format.md 规范",
+          "pass_criteria": "图表格式符合规范（矢量EMF、300dpi PNG）",
+          "fail_criteria": "图表使用 SVG/PDF 或低分辨率",
+          "remediation": "按规范重新生成",
+          "prejudgment": "待检查",
+          "prejudgment_detail": "框架 docx 可能无图表，则为 N/A"
+        },
+        {
+          "id": "B-017",
+          "name": "UTF-8 编码规范",
+          "condition": "框架项目中 Python 脚本处理中文时是否设置 PYTHONIOENCODING=utf-8",
+          "pass_criteria": "中文处理脚本有编码设置",
+          "fail_criteria": "缺失编码设置",
+          "remediation": "添加编码设置",
+          "prejudgment": "待检查",
+          "prejudgment_detail": "如 DOCX 转换脚本"
+        },
+        {
+          "id": "B-018",
+          "name": "生成文件规范合规（反馈闭环）",
+          "condition": "框架是否根据 feedback_generated_files_model_provenance.md 的立规更新了已有产出",
+          "pass_criteria": "2026-06-13后产出的文件均合规；历史文件已补标",
+          "fail_criteria": "新产出缺失模型声明",
+          "remediation": "补标",
+          "prejudgment": "部分通过",
+          "prejudgment_detail": "三份headroom对标文档已补；框架主文档2026-06-13交叉验证已补"
+        }
+      ]
+    }
+  ],
+  "trigger_mechanism": {
+    "triggers": [
+      {
+        "trigger": "版本发布（如 v1.3）",
+        "scope": "完整四维度 64 项",
+        "priority": "P0（阻断）",
+        "note": "任何 FAIL 项必须在发布前修复或标注豁免"
+      },
+      {
+        "trigger": "月检（每月1日）",
+        "scope": "维度三（记忆系统健康）全部 + 维度四关键项（B-001/B-003/B-004）",
+        "priority": "P1",
+        "note": "快速扫描，产出月检报告"
+      },
+      {
+        "trigger": "死亡判据警告（框架 §1.5）",
+        "scope": "完整四维度 + 根因分析",
+        "priority": "P0（阻断）",
+        "note": "触发条件见框架 §1.5"
+      },
+      {
+        "trigger": "审查链新增/变更",
+        "scope": "维度二（审查独立性）全部",
+        "priority": "P1",
+        "note": "每次新增审查者时触发"
+      },
+      {
+        "trigger": "新项目启动",
+        "scope": "维度一全部 + 维度四全部",
+        "priority": "P2",
+        "note": "建议在新项目初期执行，预防性合规"
+      }
+    ],
+    "execution_rules": {
+      "executor_qualification": "按框架 §9.2，执行者须满足（后端不同 × 上下文隔离）——不可由框架作者（DS-v4-pro）自审；不可与框架项目共享 memory",
+      "record_format": "使用审计日志模板，逐项记录结果",
+      "exemption_rules": "任何 N/A 项须标注原因；任何标记项须说明标记理由",
+      "score_calculation": "通过率 = (PASS + 标记) / (总项数 − N/A项数)；标记项计入分子但不改变 FAIL 状态"
+    }
+  },
+  "audit_log_template": {
+    "fields": [
+      "执行日期",
+      "执行者（模型名）",
+      "执行者独立性（满足§9.2 / 不满足及偏差说明）",
+      "触发条件",
+      "执行范围"
+    ],
+    "dimension_tables": [
+      {
+        "dimension": "维度一：Provenance完整性",
+        "columns": [
+          "ID",
+          "结果",
+          "详情"
+        ],
+        "items": "P-001 ~ P-020"
+      },
+      {
+        "dimension": "维度二：审查独立性",
+        "columns": [
+          "ID",
+          "结果",
+          "详情"
+        ],
+        "items": "I-001 ~ I-011"
+      },
+      {
+        "dimension": "维度三：记忆系统健康",
+        "columns": [
+          "ID",
+          "结果",
+          "详情"
+        ],
+        "items": "M-001 ~ M-015"
+      },
+      {
+        "dimension": "维度四：最佳实践实际使用",
+        "columns": [
+          "ID",
+          "结果",
+          "详情"
+        ],
+        "items": "B-001 ~ B-018"
+      }
+    ],
+    "summary": {
+      "total_pass_rate": "X/64 = X%",
+      "rating": "健康 / 值得关注 / 受损 / 不安全",
+      "p0_blockers": [],
+      "recommendations": ""
+    }
+  },
+  "appendix": {
+    "framework_relationship": {
+      "derivation": "本清单依据框架 §9.2（清单审计）概念派生，但作为独立工具存在",
+      "version_independence": "本清单有独立版本号，不随框架版本自动更新",
+      "audit_target": "当前述及的 框架 指 AI协作项目全生命周期框架 v1.3",
+      "executor_constraint": "框架作者不得执行本清单的完整审计；须由独立审查者执行",
+      "feedback_loop": "本清单的审计结果应反馈至框架的改进流程（S7 反馈关）"
+    }
+  }
+}

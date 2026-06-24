@@ -1,0 +1,114 @@
+# AI 协作项目全生命周期框架 — DOCX Pipeline 项目配置
+# 由 docx-pipeline Phase 2 生成
+# 日期: 2026-06-21
+
+project:
+  name: "AI 协作项目全生命周期框架"
+  root: "."
+  description: "AI 协作方法论框架——半开放的个人方法论工具（v1.6.4）"
+
+paths:
+  md_source: "AI协作项目全生命周期框架.md"
+  docx_output: "_pipeline_output/AI协作项目全生命周期框架.docx"
+  json_source: "AI协作项目全生命周期框架.json"
+  work_dir: "_pipeline_output/work"
+  reference_docx: ""
+
+fonts:
+  east_asian: "微软雅黑"
+  latin: "微软雅黑"
+  symbol: ""
+
+font_sizes:
+  body: 10.5
+  table: 9.0
+  code: 8.5
+  headings:
+    h1: 18.0
+    h2: 14.0
+    h3: 12.0
+    h4: 11.0
+    h5: 10.5
+    h6: 9.0
+
+font_colors:
+  body: "auto"
+  heading: "#1A237E"
+  link: "#0563C1"
+  code: "auto"
+  code_block_bg: "#F5F5F5"
+  blockquote: "#555555"
+  horizontal_rule: "#CCCCCC"
+
+page:
+  size: "A4"
+  orientation: "portrait"
+  margins:
+    top: 1.8
+    bottom: 1.8
+    left: 1.8
+    right: 1.8
+
+pandoc:
+  enabled: true
+  extra_args:
+    - "--number-sections"
+  reference_docx: ""
+
+mermaid:
+  enabled: true
+  image:
+    format: "png"
+    dpi: 300
+    scale: 1.0
+  render:
+    mmdc_path: "mmdc"
+    puppeteer_config: ""
+    timeout: 60
+
+version:
+  number: "1.6.4"
+  label: "v1.6.4 — prompt-tdd A1 实验写回 §6.3.2 [E-] ceiling-limited + 发布前订正(M8/M10+8处措辞)"
+  date: "2026-06-24"
+
+styles:
+  toc:
+    enabled: true
+    depth: 3
+    title: "目录"
+  table:
+    style: "Table Grid"
+    autofit: true
+    header_bold: true
+    header_shading: "#D9E2F3"
+  paragraph:
+    line_spacing: 1.15
+    space_after: 6.0
+    first_line_indent: 0.0
+  heading:
+    levels:
+      h1:
+        font_east_asian: "微软雅黑"
+        bold: true
+        size: 18.0
+        color: "#1A237E"
+      h2:
+        font_east_asian: "微软雅黑"
+        bold: true
+        size: 14.0
+        color: "#1A237E"
+      h3:
+        font_east_asian: "微软雅黑"
+        bold: true
+        size: 12.0
+        color: "#1A237E"
+
+backup:
+  enabled: true
+  max_backups: 5
+  suffix: ".bak"
+
+_pipeline:
+  template: "report"
+  generated_by: "docx-pipeline Phase 2"
+  generated_date: "2026-06-21"

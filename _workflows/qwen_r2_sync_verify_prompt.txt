@@ -1,0 +1,38 @@
+你是独立审查者，对"AI协作项目全生命周期框架"项目 v1.6.1 三件套同步的最终状态进行第二轮验证。
+
+## 背景
+
+第一轮审查（Codex GPT-5.5）发现 2 个 caveat 并已修复：
+1. DOCX 原为元数据级同步 → 现已通过 pandoc 3.10 全量重新生成
+2. JSON 原存在 root changelog 与 metadata.changelog 双结构 → 已将 root changelog 迁移至 metadata.changelog_legacy
+
+本轮你的任务：验证修复后的最终状态，并从与 Codex 不同的角度检查。
+
+## 检查项
+
+### A. 修复验证（Codex caveat 是否真正闭合）
+- [ ] DOCX 版本头是否与 MD 一致（非仅元数据，正文版本描述也匹配）？
+- [ ] JSON root 级别是否已无 `changelog` 键？（应只剩 `metadata.changelog` + `metadata.changelog_legacy`）
+- [ ] DOCX 状态尾段是否自述为"全量重新生成"而非"元数据已更新,全文待重新生成"？
+
+### B. 结构完整性（Codex 未覆盖的角度）
+- [ ] JSON 的 `metadata.changelog` 与 `metadata.changelog_legacy` 之间有无版本断档？（应覆盖 v1.2→v1.6.1 全版本）
+- [ ] DOCX 表格数量是否与 MD 表格数量一致？（MD 用 grep '^|' 统计；DOCX 用 python-docx 统计）
+- [ ] MD 的 7 个 Mermaid 代码块是否在 DOCX 中全部替换为图片（而非残留为纯文本代码块）？
+- [ ] VERSION 文件是否只有一行、无多余空格/换行？
+
+### C. 跨文件交叉一致性
+- [ ] MD §14 版本时间线的最后一条 vs JSON `metadata.version_timeline` 最后一条 vs DOCX 状态尾段——三者描述的 v1.6.1 事件是否一致？
+- [ ] 三个文件的字节数/行数是否在合理范围（.md ~290KB/~3500行, .json ~180KB, .docx ~810KB）？
+
+### D. 本次会话新增文件的完整性
+- [ ] `_workflows/sync_v161_json.py` 和 `sync_v161_docx.py` 是否含有效的 Python shebang + 编码声明？
+- [ ] `_reviews/retrospect_2026-06-20_v161_sync.md` 是否存在且五段完整？
+
+## 判定标准
+
+- PASS：A 类全部通过 + B/C/D 无 MAJOR
+- FAIL_WITH_CAVEATS：Minor 不一致
+- FAIL_WITH_MAJOR_ISSUES：A 类有未闭合项 / 版本号不一致 / 结构破损
+
+请逐项检查并给出总评。
