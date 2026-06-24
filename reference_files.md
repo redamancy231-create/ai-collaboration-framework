@@ -1,11 +1,11 @@
 # 关键文件索引
 
-> 最后更新: 2026-06-24（第五会话：发布前最终审计闭合，pre_push_check.py就绪）
-> 2026-06-23 结构校正（Claude Opus 4.8 via Claude Code CLI）：移除已迁出的构建产物/缓存与 `_backups/` 条目。
+> 最后更新: 2026-06-25（GitHub发布：新增check.sh，.docx移至Release附件）
 
 ## 代码
 
 - [pre_push_check.py](pre_push_check.py) — 发布前机械闸门(环境变量注入+10条规则)
+- [check.sh](check.sh) — pre_push_check wrapper(自动检测路径/用户名)
 - [_workflows/sync_v163_docx.py](_workflows/sync_v163_docx.py) — v1.6.3 DOCX全量重生成+边距调整
 - [_workflows/count_chars_v163.py](_workflows/count_chars_v163.py) — v1.6.3 字符统计脚本(含内容分区)
 - [_workflows/verify_chars_v163.py](_workflows/verify_chars_v163.py) — 字符统计独立交叉验证
@@ -25,7 +25,7 @@
 ### 核心
 - [AI协作项目全生命周期框架.md](AI协作项目全生命周期框架.md) — 主文档 v1.6.4
 - [AI协作项目全生命周期框架.json](AI协作项目全生命周期框架.json) — 机器可读版 v1.6.4
-- [AI协作项目全生命周期框架.docx](AI协作项目全生命周期框架.docx) — Word版 v1.6.4（2026-06-22 pandoc全量重生成，边距1.8cm）
+- [AI协作项目全生命周期框架.docx](AI协作项目全生命周期框架.docx) — Word版 v1.6.4（2026-06-22 pandoc全量重生成，边距1.8cm；2026-06-25起不进git→走GitHub Release附件下载）
 
 ### 项目元数据
 - [README.md](README.md) — 目录结构导航+项目简介
