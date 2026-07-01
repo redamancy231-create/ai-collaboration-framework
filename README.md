@@ -8,6 +8,8 @@
 **翻译**：[正體中文](zh-Hant/README.md) · [English](en/README.md)  
 **AI 生成声明**：本仓库大部分内容由人机协作生成（详见 [PUBLISHING.md](PUBLISHING.md)）
 
+> **English Abstract**: A comprehensive methodology framework for **full-lifecycle human-AI collaboration** — from project initiation, execution, and independent review through to archival. ~68,000 Chinese characters; empirically tested through **3 controlled prompt engineering experiments** (Prompt-TDD) and **50+ rounds of multi-model independent review** across 5 LLM backends. Covers: specification-driven development (Spec Coding), prompt experiment design with evidence grading, multi-agent workflow orchestration, passive observation mechanisms for serendipitous discovery, and project closure protocols. Full **[English translation](en/)** available. Licensed **CC BY 4.0**.
+
 一套描述"如何用 AI 协作跑完一个完整项目"的元层次操作规范——从启动、执行、审查到封存的全生命周期流程框架。核心信念：方向盘 > 发动机、分层不互相替代、从失败反向沉淀、AI 闭环 ≠ 人类审查。
 
 > **定位声明**：这是一个**半开放的个人方法论工具**——它不追求成为独立于作者的"通用框架"（一个人不可能拥有覆盖所有项目类型、工具链、验证独立性的经验谱系）。它提供的是经过多后端审查和对照实验证据标注的个人实践模式。欢迎参考、改编、和贡献反例；但读者应预期需要翻译成本才能适配自己的场景。详见 §1.8 局限 #9 和 `_research/通用框架可行性讨论_20260621.md`。
