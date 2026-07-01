@@ -1,4 +1,45 @@
-## 会话备注（2026-06-24 第五会话，DeepSeek-V4-Pro via Claude Code CLI）
+## 会话备注（2026-06-30，DeepSeek-V4-Pro via Claude Code CLI）
+
+**write-claude-md 多项目类型测试 + .lsp.json 部署 + Codex 异后端交叉验证闭环**
+
+- **`.lsp.json` 部署**：复制到三个活跃 Python 项目（2026大数据挑战赛 / 形态匹配ETF策略 / prompt-tdd）。注意 LSP 工具需会话重启后注册
+- **write-claude-md BDC2026 审计**（数据竞赛型）：213→155行（−27%）。砍 11 处（文件详述/历史记录/跨项目关联），指针化特征列表+参数到 config.py，新增 5 条 6/27 实证教训（market_cap_rank 泄漏、LambdaRank 维度敏感性等），更新模型 regression→LGBMRanker。Codex GPT-5.5 异后端审查 3/5
+- **write-claude-md prompt-tdd 审计**（Python 实验库型）：70→78行（重构）。砍项目结构树/资产状态表/审查轮次计数，指针化模型名到实验设计文档，新增成熟度/Tier/工程门科学门完整定义 + 架构约束 4 条 + 避坑指南 5 条。Codex GPT-5.5 异后端审查 4/5
+- **write-claude-md 形态匹配ETF策略 审计**（已关闭量化研究型）：279→168行（−40%）。砍文件详述/可复用资产枚举/跨项目关联，指针化 18 行版本演进详表到终期总结报告，保留 8 条 Bug 教训 + 7 级风控规则 + 重启门槛。Codex GPT-5.5 异后端审查 4/5
+- **Codex 异后端交叉验证 ×3**：三份 CLAUDE.md 分别投 Codex GPT-5.5 独立审查（自有 PowerShell/rg 搜索策略）。Codex 行为模式第四次复现"文件验证型"。三项目共 14 项 Codex 独有发现，0 项与 Workflow 互相证伪——互补率 100%
+- **Codex 审查发现的关键遗漏**（写入避坑）：(1) prompt-tdd 实验管线模板 `collect_<exp>.py` 与实际脚本名不匹配 → 会误导 Agent 跑不存在脚本；(2) prompt-tdd 指针化不彻底——避坑指南中残留 `Qwen CLI`/`GPT-5.5 temp=0` 模型名引用；(3) 形态匹配ETF策略日志 glob 命令漏掉嵌套 `第N轮/` 目录 → 实测匹配 0 文件；(4) 绩效数字口径 `4.55% vs 5.96% → -1.13%` 算术上不相等（实际差 −1.41pp）
+- **被动观测**：(1) 指针化不彻底是编辑者审查自己产出的系统性盲区——三个项目都被 Codex 抓到模型名残留；(2) CLOSED 项目的 CLAUDE.md 标准应不同——操作命令权重降低、避坑/教训/重启门槛权重提高，当前 write-claude-md Skill 未区分项目生命周期；(3) Codex 在形态匹配ETF策略中实测了日志 glob 命令确认匹配 0 文件——这是前两份审查未做的"命令可执行性验证"，比纯粹文本审查多一层防护
+
+**Next Steps**：
+- 将 write-claude-md Skill 中补充"项目生命周期差异"（活跃/CLOSED 不同标准） → P2 → 下次会话
+- 找非设计者执行 OPEN-4 试读计时协议 → P2 → 发布后，无依赖
+- 确认 GitHub 页面上仓库描述/README 渲染正常 → P2 → 无依赖
+
+---
+
+## 会话备注（2026-06-28→06-29，DeepSeek-V4-Pro via Claude Code CLI）
+
+**LSP 优先约束段落：实验 → 三后端审查 → 合成 → 修订闭环**
+
+- **LSP vs grep 对比实验**：`_workflows/` 下 21 个 .py 文件的函数定义搜索——grep 1 次调用 vs LSP 21 次调用，结果一致但 grep 效率远胜。结论：LSP 非万能，需分流决策框架
+- **CLAUDE.md LSP 段落初版**：四级分流（必须LSP/倾向LSP/倾向grep/直接grep）+ 透明度规则。经 write-claude-md 脆弱性测试自审通过
+- **三后端异后端独立审查**：同份 prompt 投 Codex GPT-5.5 / Kimi K2.6 / Qwen Qwen3.7-Max → 20 条独立发现，8 收敛（40%）+ 10 互补（50%）+ 2 冲突（已裁决）。审查 prompt：`_reviews/prompts/lsp_priority_rules_review_prompt_20260628.md`；三份审查报告：`_reviews/codex-gpt-5.5_lsp_rules_review_20260628.txt` / `kimi-k2.6_*` / `qwen-qwen3.7-max_*`；合成报告：`_reviews/lsp_rules_multi_backend_synthesis_20260628.md`
+- **CLAUDE.md LSP 段落定稿**：应用全部 10 条修改建议（P0 混合策略+优先级冲突+透明度格式改 [工具] 标记；P1 语义引用/诊断条件化/接口继承/误匹配概率/精度默认 LSP；P2 Python 边界+回退策略）。段落从 ~350 字符扩至 ~750 字符，四级→五级（新增混合策略）
+- **write-claude-md 方法论实测**：Step 5（多后端验证）在三轮审查中（06-27×2 + 本次）行为模式完整复现——Codex 验证型/Kimi 概念型/Qwen 结构型，是可复现的系统性差异。互补率 50% 说明即使评估对象质量高，多角度审视仍有显著增量价值
+- **模型行为模式跨轮次稳定性验证**：06-27 两轮 + 本轮共三轮，三模型审查风格完全复现，非随机表现
+- **透明度规则实战检验**：本会话首次在回答中标注 `[工具]` 格式，实测可执行
+
+**Next Steps**：
+- ~~在 BDC2026 项目上测试 write-claude-md Skill（数据竞赛类型）~~ → ✅ 2026-06-30 完成
+- ~~在 prompt-tdd 项目上测试 write-claude-md Skill（Python 库类型）~~ → ✅ 2026-06-30 完成
+- ~~复制 `.lsp.json` 到其他活跃 Python 项目~~ → ✅ 2026-06-30 完成
+- 找非设计者执行 OPEN-4 试读计时协议 → P2 → 发布后，无依赖
+- 确认 GitHub 页面上仓库描述/README 渲染正常 → P2 → 无依赖
+
+---
+
+
+**LSP 工具需会话重启**：`.lsp.json` 在会话中途创建后 LSP 工具不可用——Claude Code 仅在启动时扫描配置文件。下次会话在项目根启动后自动注册。
 
 **发布前最终审计 —— 两层防护闭合**
 
@@ -130,9 +171,35 @@
 
 ## 项目状态: AI协作项目全生命周期框架
 
-- 当前阶段: v1.6.4（已发布）——GitHub 公开仓库 `github.com/redamancy231-create/ai-collaboration-framework`，206 文件 + Release v1.6.4 附件（.docx 6.6MB）
-- 本轮完成: git init + git commit + git push 到 GitHub；gh CLI 安装与认证；.docx 移出 git 历史走 Release 附件；check.sh wrapper 简化 pre_push_check.py 调用；代理端口修正 7890→7897；仓库描述设置
-- 发现的问题: 无
+- 当前阶段: v1.6.4（已发布）— 同前
+- 本轮完成:
+  1. 配置了 LSP 集成：安装 pyright 1.1.411，创建 `.lsp.json`，CLAUE.md 加 LSP 优先约束，pyright 诊断验证通过
+  2. 澄清了 Claude Code LSP 三层架构（内置/ MCP 桥接/ VS Code 桥接），确认内置 LSP 为最简路径
+  3. 回答了"为何 LSP 不自动优先"：系统提示历史惯性 + 普适性 vs 条件可用性 + opt-in 设计哲学
+- 发现的问题:
+  - LSP 工具需会话重启才注册（`.lsp.json` 中途创建不被热加载）
+  - Python exit code 49 仍存在（Git Bash 裸 `python` 不可用，全路径可用），本次未排查
+  - write-claude-md Skill 待多项目类型验证（同前，来自 06-27）
+  - auto classifier 间歇不可用（同前，来自 06-27）
+
+## 会话备注（2026-06-27，DeepSeek-V4-Pro via Claude Code CLI）
+
+**CLAUDE.md 重构 + 编写方法论建立 + write-claude-md Skill 创建**
+
+- **CLAUDE.md 重构**：对框架项目 CLAUDE.md 执行逐条脆弱性测试，163行→77行（砍58%）。砍掉：目录地图(23行)、核心资产清单(17行)、版本脉络(11行)、已读文件列表(11行)等可推导信息。补上：环境与命令(完全缺失)。经 Codex/Qwen/Kimi 三后端同 prompt 独立审查，14项发现 0 互相证伪。最终采纳约 12 项修正后定稿 77 行。
+- **CLAUDE.md 编写方法论**：从书籍 §10.5.1（三规则+十项清单）+ 三后端实证合并出五步协议（脆弱性测试→五缺→五滥→三项实证规则→多后端验证）。写入 memory + 创建 `/write-claude-md` Skill。
+- **三后端审查模式实证**：两轮独立审查（CLAUDE.md + Skill），同一份 prompt 投三个后端。两轮分布结构几乎一致（3/3 收敛~3条、独特发现~8条、0互相证伪）。自然多样性模式从"单点观测"升级为"复现"。同时发现审查行为模式分为"文件验证型"（Codex）和"摘要评估型"（Qwen/Kimi）两种。
+- **Skill 审查**：write-claude-md 初版经三后端审查，发现 6 项自反性失败（违反自身五滥检查、范式混用、无输出模板等），全部修正后 107→186 行。新增：触发分级、上下文采集 Step 0、输出模板、术语定义、反例/教训、死亡判据。
+- **记忆系统更新**：新增 3 条方法论记忆 + 更新 skill_inventory（43 skills）+ 更新 MEMORY.md。
+
+**Next Steps**：
+- 在 BDC2026 项目上测试 write-claude-md Skill（数据竞赛类型） → P1 → 下次会话，无依赖
+- 在 prompt-tdd 项目上测试 write-claude-md Skill（Python 库类型） → P1 → 下次会话，无依赖
+- 继续排查 Python Git Bash 不可用问题（exit code 49） → P2 → 下次会话
+
+**Retrospect 候选**：
+- 两次三后端审查自然多样性模式复现 → 值得写 Retrospect（跨项目通用的方法论发现）
+- Python exit code 49 问题 → 仅本项目环境，不写 Retrospect
 
 ## 会话备注（2026-06-25，DeepSeek-V4-Pro via Claude Code CLI）
 

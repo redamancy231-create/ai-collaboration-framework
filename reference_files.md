@@ -1,6 +1,6 @@
 # 关键文件索引
 
-> 最后更新: 2026-06-25（GitHub发布：新增check.sh，.docx移至Release附件）
+> 最后更新: 2026-06-29（新增 LSP 规则三后端审查文件 5 件 + .lsp.json）
 
 ## 代码
 
@@ -29,7 +29,8 @@
 
 ### 项目元数据
 - [README.md](README.md) — 目录结构导航+项目简介
-- [CLAUDE.md](CLAUDE.md) — 项目CLAUDE.md v1.6.4
+- [CLAUDE.md](CLAUDE.md) — 项目CLAUDE.md v1.6.4（含LSP优先约束）
+- [.lsp.json](.lsp.json) — LSP(pyright)配置
 - [VERSION](VERSION) — 版本号文件(1.6.4)
 - [project.yaml](project.yaml) — DOCX管道项目配置v1.6.4
 - [project_status.md](project_status.md) — 项目状态追踪
@@ -80,6 +81,19 @@
 - [_reviews/kimi_en_translation_review_20260624.md](_reviews/kimi_en_translation_review_20260624.md) — Kimi 英文可读性审查报告
 - [_reviews/codex_block_fix_report_20260624.md](_reviews/codex_block_fix_report_20260624.md) — Codex 代码块补修报告
 - [_reviews/O7_R3_final_verification_20260624.md](_reviews/O7_R3_final_verification_20260624.md) — O7 终验 R3 发布前审查报告
+- [_reviews/prompts/claude_md_methodology_review_prompt_20260627.md](_reviews/prompts/claude_md_methodology_review_prompt_20260627.md) — CLAUDE.md 方法论审查 prompt（可复用模板）
+- [_reviews/prompts/write_claude_md_skill_review_prompt_20260627.md](_reviews/prompts/write_claude_md_skill_review_prompt_20260627.md) — write-claude-md Skill 审查 prompt（可复用模板）
+- [_reviews/codex_claude_md_methodology_review_20260627.txt](_reviews/codex_claude_md_methodology_review_20260627.txt) — Codex GPT-5.5 CLAUDE.md 审查报告
+- [_reviews/qwen_claude_md_methodology_review_20260627.txt](_reviews/qwen_claude_md_methodology_review_20260627.txt) — Qwen Qwen3.7-Max CLAUDE.md 审查报告
+- [_reviews/kimi-k2.6_claude_md_methodology_review_20260627.txt](_reviews/kimi-k2.6_claude_md_methodology_review_20260627.txt) — Kimi K2.6 CLAUDE.md 审查报告
+- [_reviews/codex_write_claude_md_skill_review_20260627.txt](_reviews/codex_write_claude_md_skill_review_20260627.txt) — Codex GPT-5.5 write-claude-md Skill 审查报告
+- [_reviews/qwen_write_claude_md_skill_review_20260627.txt](_reviews/qwen_write_claude_md_skill_review_20260627.txt) — Qwen Qwen3.7-Max write-claude-md Skill 审查报告
+- [_reviews/kimi-k2.6_write_claude_md_skill_review_20260627.txt](_reviews/kimi-k2.6_write_claude_md_skill_review_20260627.txt) — Kimi K2.6 write-claude-md Skill 审查报告
+- [_reviews/prompts/lsp_priority_rules_review_prompt_20260628.md](_reviews/prompts/lsp_priority_rules_review_prompt_20260628.md) — LSP 优先约束段落审查 prompt（可复用模板，2026-06-28）
+- [_reviews/codex-gpt-5.5_lsp_rules_review_20260628.txt](_reviews/codex-gpt-5.5_lsp_rules_review_20260628.txt) — Codex GPT-5.5 LSP 规则审查报告
+- [_reviews/kimi-k2.6_lsp_rules_review_20260628.txt](_reviews/kimi-k2.6_lsp_rules_review_20260628.txt) — Kimi K2.6 LSP 规则审查报告
+- [_reviews/qwen-qwen3.7-max_lsp_rules_review_20260628.txt](_reviews/qwen-qwen3.7-max_lsp_rules_review_20260628.txt) — Qwen Qwen3.7-Max LSP 规则审查报告
+- [_reviews/lsp_rules_multi_backend_synthesis_20260628.md](_reviews/lsp_rules_multi_backend_synthesis_20260628.md) — LSP 规则三后端审查合成报告
 
 ### 翻译 → `zh-Hant/`
 - [zh-Hant/README.md](zh-Hant/README.md) — 正体中文 README

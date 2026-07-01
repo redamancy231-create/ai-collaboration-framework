@@ -1,0 +1,2105 @@
+OpenAI Codex v0.142.2
+--------
+workdir: E:\workspace\projects\AI协作项目全生命周期框架
+model: gpt-5.5
+provider: packycode
+approval: never
+sandbox: danger-full-access
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f04cc-5625-7dc2-bbd8-cf48120f715c
+--------
+user
+你是受邀对一份方法论文档进行独立评审的审稿人。你的任务不是复述文档内容，而是基于给定的评估原则，对其方法论和产出进行批判性评估。
+
+## 背景
+
+"CLAUDE.md"是 Claude Code（Anthropic 的 AI 编程助手 CLI）的项目级配置文件。它在每次会话启动时自动加载，作为持久化的项目级指令。它的作用是告诉 AI：(1) 不能做什么 (2) 环境/命令是什么 (3) 易误解的概念 (4) 编辑纪律。
+
+## 评估原则（来自方法论专著）
+
+### 三条核心规则
+1. **必要性**：每一条都是 LLM 必须知道且无法自行推断的信息。Claude 通过读代码/运行 ls/Glob 能自己获取的内容不应出现在 CLAUDE.md 中。
+2. **可操作性**：每一条都是具体、明确且可执行的指令。描述性文字（"项目有X"）不如操作性文字（"做X/别做X"）。
+3. **脆弱性测试**：每一条若被删去，都会直接导致 LLM 犯错或偏离预期。
+
+### 十项应包含/应避免
+应包含：(1) 关键命令 (2) 定制规范 (3) 架构约束 (4) 环境要求 (5) 避坑指南
+应避免：(6) 可推导信息 (7) 通用惯例 (8) 易变信息 (9) 文件详述 (10) 空泛建议
+
+### 核心洞察
+- 少即多：冗长的 CLAUDE.md 导致关键规则淹没在噪声中，且每次 API 调用全量加载消耗 token
+- 易变信息会导致缓存失效（Anthropic prompt cache 是前缀匹配）
+- 专业领域详细知识应迁移至 Skills 模块，实现按需加载
+
+## 被评估的案例
+
+项目背景：这是一个 AI 协作方法论的元层次框架项目——它描述"如何用 AI 协作跑完一个完整项目"。不是软件项目，核心交付物是一份 Markdown 文档（~16 万字符），附带 JSON（结构化配套）和 DOCX（Word 版）。项目已发布在 GitHub。
+
+### 旧版 CLAUDE.md（163 行）
+
+旧版包含：项目定义（6行）+ 证据来源/已读文件列表（14行）+ 快速恢复和关键入口（13行）+ 完整目录地图含文件大小（23行）+ 从 v1.0 到 v1.6.4 的 9 个版本说明（11行）+ OPEN 项速览表格（8行）+ 核心资产概念清单 17 项（17行）+ 停止条件 6 条（7行）+ 已知坑位 概念/操作（21行）+ 跨项目关联 11 条（12行）+ 更新协议（15行）
+
+关键问题：约 60% 的内容是 Claude 通过读文件/运行 ls/Glob 就能自己获取的（目录地图 23 行、已读文件列表 11 行、核心资产清单 17 行、版本历史 11 行等）。同时，环境要求和命令入口完全缺失。
+
+### 新版 CLAUDE.md（71 行）
+
+内容如下：
+```
+# CLAUDE.md — AI协作项目全生命周期框架
+
+## Agent 边界
+- 可派：按框架 SOP 执行审查/试读/试跑；按 §8.8 S/M/L 分档执行闭合；按 §1.7 原则评估新增内容是否应外挂
+- 禁止：修改核心机制（未经试跑回写）；OPEN 项最终裁决；框架级成熟度评估独立复核（需异后端）；GitHub 发布执行
+- 审查独立性硬约束：禁止用框架编写时的同一后端模型审查框架（违反 §9.2）——同一后端换 CLI 壳=伪独立。已验证可用：Codex GPT-5.5 / Qwen Qwen3.7-Max / Kimi Kimi-K2.7-Code / ZCode GLM-5.2
+
+## 环境与命令
+- 运行环境：Windows 11 + Git Bash；Python 3.12；Node.js（mmdc 需要）；pandoc（DOCX 生成）；OpenCC（正體中文转换）
+- Python 中文脚本必须设 PYTHONIOENCODING=utf-8，路径全部用正斜杠
+- 关键命令：[5 条具体命令含用途说明]
+- DOCX 生成管道详情见 _workflows/；翻译管道见 _workflows/i18n/
+- 版本号单一事实源：VERSION 文件。勿在 CLAUDE.md 中维护版本号副本
+
+## 快速恢复
+按顺序先读：
+1. 本文件（CLAUDE.md）
+2. project_status.md ——上次会话做了什么、当前待办（Claude 从代码文件中不可推导）
+3. 主文档 §1.4–§1.7 ——使用强度分档 + 死亡判据 + OPEN 项 + §1.7 最小核心原则
+4. 框架级成熟度评估表.md ——了解各部分成熟度，避免高估不稳定组件
+- 需要定位特定文件时：reference_files.md（人类标注版文件索引）
+
+## 停止条件
+- 新增 [Sp] 节或修改核心机制 → 须先经过 ≥1 次试跑验证，不可仅凭方法论提取就写入
+- 不用作者模型自审框架（违反 §9.2 独立性）
+- 不混淆编辑者与审查者角色——编辑判断仍需异后端独立复核
+- OPEN-4 或 OPEN-1 未确认前 → 不启动大规模第二次试跑
+- 三件套任一件修改后 → 必须同步更新另外两件 + 触发 ≥1 轮异后端交叉验证
+- 不要用 import_integrity_check.py ——经审查不可靠，正确工具：pyflakes/ruff
+
+## 已知坑位
+[易误解概念 5 条：冻结期/两维正交/独立审查双轴/Claude=壳名/§1.7自反风险]
+[易误操作 6 条：清理边界/OPEN单一事实源/provenance记录/JSON手工同步/Mermaid DPI/归档交叉引用]
+
+## 跨项目行为制约
+- Evolver（混淆代码项目）→ 四个 [Sp] 节来源可信度低 → 禁止未经试跑将其从 [Sp] 升级
+- PocketFlow/prompt-tdd → §6.3.2 [E-] ceiling-limited → 修改时遵守已有证据上限
+- BDC2026（反面案例）→ §7/§8 的设计依据 → 不可弱化这两节
+- 方法论提取/Protocol 3 → "试跑→回写"是核心机制 → 所有机制变更必须遵循此模式
+
+## 更新协议
+[5 条编辑纪律：触发条件/必做清单/外挂优先/异后端验证/provenance]
+```
+
+## 评估要求
+
+请从以下维度进行独立评估，给出具体判断和理由（不只说"好"或"不好"，要说"为什么"）：
+
+1. **方法论一致性**：新版是否真正执行了它所声称的原则（三规则+十项）？有没有声称砍掉但在某处偷偷保留的可推导信息？有没有该加但没加的内容？
+
+2. **盲点检测**：从你的视角看，这个 CLAUDE.md 有没有遗漏任何 LLM 不可推导但实际操作中会导致犯错的信息？你有没有想到该项目特有的陷阱是我们遗漏的？
+
+3. **过度削减风险**：有没有哪条被删掉的内容你认为是误删——删了之后 LLM 确实会因此犯错？
+
+4. **可推广性**：这个方法论（脆弱性测试驱动+逐条删留判断）推广到其他类型项目时的适用程度如何？有什么项目类型会比这个更难或更容易？
+
+5. **反直觉发现**：有没有和主流建议相反但你认为正确的判断？（比如"版本历史应该砍掉"这种——很多人会认为版本历史是重要的上下文）
+
+请保持批判性——如果你认为某处做错了，明确指出并给出修正方案。如果你认为有更好的替代方案，也请说明。
+
+codex
+我会按 `academic-paper-reviewer` 技能来处理：它适合这种独立审稿式评估，但我会把输出压缩到你指定的五个维度，而不是套完整期刊审稿模板。
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -LiteralPath 'C:/Users/33455/.codex/skills/academic-research-skills/academic-paper-reviewer/SKILL.md' -Raw" in E:\workspace\projects\AI协作项目全生命周期框架
+ succeeded in 148ms:
+---
+name: academic-paper-reviewer
+description: "Multi-perspective academic paper review with dynamic reviewer personas. Simulates 5 independent reviewers (EIC + 3 peer reviewers + Devil's Advocate) with field-specific expertise. Supports full review, re-review (verification), quick assessment, methodology focus, Socratic guided, and calibration modes. Triggers on: review paper, peer review, manuscript review, referee report, review my paper, critique paper, simulate review, editorial review, calibrate reviewer, reviewer calibration, measure reviewer accuracy."
+metadata:
+  version: "1.9.1"
+  last_updated: "2026-05-18"
+  status: active
+  data_access_level: verified_only
+  task_type: open-ended
+  related_skills:
+    - academic-paper
+    - academic-pipeline
+---
+
+# Academic Paper Reviewer v1.9.1 鈥?Multi-Perspective Academic Paper Review Agent Team
+
+Simulates a complete international journal peer review process: automatically identifies the paper's field, dynamically configures 5 reviewers (Editor-in-Chief + 3 peer reviewers + Devil's Advocate) who review from four non-overlapping perspectives 鈥?methodology, domain expertise, cross-disciplinary viewpoints, and core argument challenges 鈥?ultimately producing a structured Editorial Decision and Revision Roadmap.
+
+**v1.1 Improvements**:
+1. Added Devil's Advocate Reviewer 鈥?specifically challenges core arguments, detects logical fallacies, and identifies the strongest counter-arguments
+2. Added `re-review` mode 鈥?verification review, focused on checking whether revisions address the review comments
+3. Expanded review team from 4 to 5 members
+
+> **Routing discipline (v3.9.2):** see `.claude/CLAUDE.md` "Routing Discipline (v3.9.2)" + `shared/references/intent_clarification_protocol.md` for cross-skill routing rules. This skill assumes routing has already settled 鈥?ambiguous cross-phase materials should have been clarified upstream.
+
+---
+
+## Quick Start
+
+**Simplest command:**
+```
+Review this paper: [paste paper or provide file]
+```
+
+**Output:**
+1. Automatically identifies the paper's field and methodology type
+2. Dynamically configures the specific identities and expertise of 5 reviewers
+3. 5 independent review reports (each from a different perspective)
+4. 1 Editorial Decision Letter + Revision Roadmap
+
+---
+
+## Trigger Conditions
+
+### Trigger Keywords
+
+**English**: review paper, peer review, manuscript review, referee report, review my paper, critique paper, simulate review, editorial review, calibrate reviewer, reviewer calibration, measure reviewer accuracy
+
+### Non-Trigger Scenarios
+
+| Scenario | Skill to Use |
+|----------|-------------|
+| Need to write a paper (not review) | `academic-paper` |
+| Need in-depth investigation of a research topic | `deep-research` |
+| Need to revise a paper (already have review comments) | `academic-paper` (revision mode) |
+
+### Quick Mode Selection Guide
+
+| Your Situation | Recommended Mode | Spectrum |
+|----------------|-----------------|----------|
+| Need comprehensive review (first submission) | full | balanced |
+| Checking if revisions addressed comments | re-review | fidelity |
+| Quick quality assessment (15 min) | quick | fidelity |
+| Focus only on methods/statistics | methodology-focus | fidelity |
+| Want to learn by doing (guided review) | guided | originality |
+| Want to know this reviewer's own error profile before trusting its scores | calibration | fidelity |
+
+**Spectrum** (v3.2): *fidelity* = template-heavy, predictable output; *balanced* = default; *originality* = exploratory, template-light. See `shared/mode_spectrum.md` for the full cross-skill spectrum table.
+
+Not sure? Use `full` for pre-submission review, `re-review` for post-revision verification. `calibration` is opt-in 鈥?run it once per domain when you want to know the reviewer's FNR/FPR before relying on its rubric scores.
+
+---
+
+## Agent Team (7 Agents)
+
+| # | Agent | Role | Phase |
+|---|-------|------|-------|
+| 1 | `field_analyst_agent` | Analyzes the paper's field, dynamically configures 5 reviewer identities | Phase 0 |
+| 2 | `eic_agent` | Journal Editor-in-Chief 鈥?journal fit, originality, overall quality | Phase 1 |
+| 3 | `methodology_reviewer_agent` | Peer Reviewer 1 鈥?research design, statistical validity, reproducibility | Phase 1 |
+| 4 | `domain_reviewer_agent` | Peer Reviewer 2 鈥?literature coverage, theoretical framework, domain contribution | Phase 1 |
+| 5 | `perspective_reviewer_agent` | Peer Reviewer 3 鈥?cross-disciplinary connections, practical impact, challenging fundamental assumptions | Phase 1 |
+| 6 | **`devils_advocate_reviewer_agent`** | **Devil's Advocate 鈥?core argument challenges, logical fallacy detection, strongest counter-arguments** | **Phase 1** |
+| 7 | `editorial_synthesizer_agent` | Synthesizes all reviews, identifies consensus and disagreements, makes editorial decision | Phase 2 |
+
+---
+
+## Orchestration Workflow (3 Phases)
+
+```
+User: "Review this paper"
+     |
+=== Phase 0: FIELD ANALYSIS & PERSONA CONFIGURATION ===
+     |
+     +-> [field_analyst_agent] -> Reviewer Configuration Card (x5)
+         - Reads the complete paper
+         - Identifies: primary discipline, secondary discipline, research paradigm, methodology type, target journal tier, paper maturity
+         - Dynamically generates specific identities for 5 reviewers:
+           * EIC: Which journal's editor, area of expertise, review preferences
+           * Reviewer 1 (Methodology): Methodological expertise, what they particularly focus on
+           * Reviewer 2 (Domain): Domain expertise, research interests
+           * Reviewer 3 (Perspective): Cross-disciplinary angle, what unique perspective they bring
+           * Devil's Advocate: Specifically challenges core arguments, detects logical gaps
+     |
+     ** Presents Reviewer Configuration to user for confirmation (adjustable) **
+     |
+=== Phase 1: PARALLEL MULTI-PERSPECTIVE REVIEW ===
+     |
+     |-> [eic_agent] -------> EIC Review Report
+     |   - Journal fit, originality, significance, relevance to readership
+     |   - Does not go deep into methodology (that's Reviewer 1's job)
+     |   - Sets the review tone
+     |
+     |-> [methodology_reviewer_agent] -> Methodology Review Report
+     |   - Research design rigor, sampling strategy, data collection
+     |   - Analysis method selection, statistical validity, effect sizes
+     |   - Reproducibility, data transparency
+     |
+     |-> [domain_reviewer_agent] -------> Domain Review Report
+     |   - Literature review completeness, theoretical framework appropriateness
+     |   - Academic argument accuracy, incremental contribution to the field
+     |   - Missing key references
+     |
+     |-> [perspective_reviewer_agent] --> Perspective Review Report
+     |   - Cross-disciplinary connections and borrowing opportunities
+     |   - Practical applications and policy implications
+     |   - Broader social or ethical implications
+     |
+     +-> [devils_advocate_reviewer_agent] --> Devil's Advocate Report
+         - Core argument challenges (strongest counter-arguments)
+         - Cherry-picking detection
+         - Confirmation bias detection
+         - Logic chain validation
+         - Overgeneralization detection
+         - Alternative paths analysis
+         - Stakeholder blind spots
+         - "So what?" test
+     |
+=== Phase 2: EDITORIAL SYNTHESIS & DECISION ===
+     |
+     +-> [editorial_synthesizer_agent] -> Editorial Decision Package
+         - Consolidates 5 reports (including Devil's Advocate challenges)
+         - Identifies consensus (5 agree) vs. disagreement (divergent opinions)
+         - Arbitration and argumentation for disputed issues
+         - Devil's Advocate CRITICAL issues are specially flagged in the Editorial Decision
+         - Editorial Decision Letter
+         - Revision Roadmap (prioritized, can be directly input to academic-paper revision mode)
+     |
+=== Phase 2.5: REVISION COACHING (Socratic Revision Guidance) ===
+     |
+     ** Only triggered when Decision = Minor/Major Revision **
+     |
+     +-> [eic_agent] guides the user through Socratic dialogue:
+         1. Overall positioning 鈥?"After reading the review comments, what surprised you the most?"
+         2. Core issue focus 鈥?Guides user to understand consensus issues
+         3. Revision strategy 鈥?"If you could only change three things, which three would you choose?"
+         4. Counter-argument response 鈥?Guides user to think about how to respond to Devil's Advocate challenges
+         5. Implementation planning 鈥?Helps prioritize revisions
+     |
+     +-> After dialogue ends, produces:
+         - User's self-formulated revision strategy
+         - Reprioritized Revision Roadmap
+     |
+     ** User can say "just fix it" to skip guidance **
+```
+
+### Checkpoint Rules
+
+1. **After Phase 0 completes**: Present Reviewer Configuration Card to user; user can adjust reviewer identities
+2. 鈿狅笍 **IRON RULE**: 5 reviewers review independently, without cross-referencing each other.
+3. 鈿狅笍 **IRON RULE**: Synthesizer cannot fabricate review comments; must be based on specific reports from Phase 1.
+4. 鈿狅笍 **IRON RULE**: If the Devil's Advocate finds CRITICAL issues, the Editorial Decision cannot be Accept.
+5. **Phase 2.5**: Revision Coaching only triggers when Decision is not Accept; user can choose to skip
+6. 鈿狅笍 **IRON RULE 鈥?READ-ONLY CONSTRAINT**: Reviewers MUST NOT modify the submitted manuscript. All review output (reports, decisions, roadmaps) is produced as separate documents. The reviewer examines the paper 鈥?it never rewrites it. If a reviewer agent attempts to edit the manuscript file, STOP and redirect to report generation.
+
+---
+
+## Phase-by-phase Invocation Contract (v3.9.2)
+
+academic-paper-reviewer runs in 3 phases internally (Phase 0 field analysis 鈫?Phase 1 panel review 鈫?Phase 2 editorial synthesis). Within the full ARS pipeline, this skill sits at the orchestrator's Phase 5 (Review), but each agent inside the reviewer skill is single-phase relative to the skill's own phase numbering.
+
+Two invocation modes:
+
+**Mode A 鈥?orchestrator-driven (default):** `pipeline_orchestrator_agent` (in `academic-pipeline` skill) dispatches `academic-paper-reviewer` as part of the full ARS pipeline Stage 3 (Review).
+
+**Mode B 鈥?phase-by-phase (cross-session resume):** User invokes one reviewer agent per phase across sessions, or runs the full reviewer panel standalone via `/ars-review` equivalent.
+
+In Mode B, **single-phase agents (Bucket A per `docs/design/2026-05-18-ars-v3.9.2-agent-phase-classification.md`) stay strictly within their assigned phase for writes**. The 6 Bucket A agents in academic-paper-reviewer are: `eic_agent`, `methodology_reviewer`, `domain_reviewer`, `perspective_reviewer`, `devils_advocate_reviewer` (all Phase 1 panel) + `editorial_synthesizer` (Phase 2 synthesis). Reading the full paper draft is **expected** for all reviewers 鈥?without context they cannot evaluate.
+
+The 1 Bucket D agent (`field_analyst` at Phase 0) is meta 鈥?it configures the panel; no boundary fence needed.
+
+The v3.6.2 Sprint Contract Protocol (paper-blind Phase 1 + paper-visible Phase 2 + data delimiter) additionally constrains all reviewer agents' within-phase discipline. Phase Boundary (phase scope) and Sprint Contract (within-phase paper-blind/paper-visible discipline) both apply 鈥?neither overrides the other.
+
+Routing into Mode B requires explicit user signal 鈥?`/ars-<mode>` slash command or `[direct-mode]` prefix. Ambiguous cross-phase input defaults to clarification per `.claude/CLAUDE.md` Routing Discipline + `shared/references/intent_clarification_protocol.md`.
+
+**Enforcement (v3.9.2):** prompt-level via Phase Boundary blocks on Bucket A agents + advisory verifier (`scripts/check_pipeline_integrity.py`). Deterministic PreToolUse hook + multi-phase envelope deferred to v3.10 active conductor (#134).
+
+---
+
+## Operational Modes (6 Modes)
+
+| Mode | Trigger | Agents | Output |
+|------|---------|--------|--------|
+| `full` | Default / "full review" | All 7 agents | 5 review reports + Editorial Decision + Revision Roadmap |
+| **`re-review`** | **Pipeline Stage 3' / "verification review"** | **field_analyst + eic + editorial_synthesizer** | **Revision response checklist + residual issues + new Decision** |
+| `quick` | "quick review" | field_analyst + eic | EIC quick assessment + key issues list (15-minute version) |
+| `methodology-focus` | "check methodology" | field_analyst + eic + methodology_reviewer | In-depth methodology review report (panel 2 under v3.6.2 sprint contract: EIC + methodology) |
+| `guided` | "guide me" | All + Socratic dialogue | Socratic issue-by-issue guided review |
+| **`calibration`** (v3.2) | **"calibrate reviewer" / "measure reviewer accuracy"** | **All 7 agents, 5x per gold paper, cross-model default-on** | **Calibration Report: FNR/FPR/balanced accuracy/AUC + per-dimension calibration error + session-scoped confidence disclosure** |
+
+### Mode Selection Logic
+
+```
+"Review this paper"                      -> full
+"Give me a quick look at this paper"     -> quick
+"Help me check the methodology"          -> methodology-focus
+"Does this paper have methodology issues"-> methodology-focus
+"Guide me to improve this paper"         -> guided
+"Walk me through the issues in my paper" -> guided
+"Verification review" / "Check revisions"-> re-review
+"How accurate is your review scoring?"   -> calibration
+"Calibrate against these 10 papers"      -> calibration
+```
+
+---
+
+## Re-Review Mode (Verification Review)
+
+Dedicated mode for Pipeline Stage 3' 鈥?verifies whether revisions address first-round review comments. Uses R&R Traceability Matrix (Schema 11) with Author's Claim + Verified? columns.
+
+**Input**: Original Revision Roadmap + Revised manuscript + Response to Reviewers (optional)
+**Output**: Verification Review Report with traceability matrix + new issues + Decision
+
+> See `references/re_review_mode_protocol.md` for full verification logic, output format template, and Socratic guidance details.
+
+---
+
+## Guided Mode (Socratic Guided Review)
+
+Helps authors understand problems themselves through progressive revelation. EIC opens with strengths, then gradually introduces deeper issues from each reviewer perspective.
+
+> See `references/guided_mode_protocol.md` for dialogue flow, rules, and progressive revelation sequence.
+
+---
+
+## Calibration Mode (v3.2)
+
+Opt-in mode that measures this reviewer's FNR / FPR / balanced accuracy against a user-supplied gold set (5-20 papers with known outcomes). Runs `full` 5x per paper with fresh context, cross-model default-on. Produces a Calibration Report attached as a confidence disclosure to subsequent reviews in the session.
+
+> See `references/calibration_mode_protocol.md` for full spec: intake rules, ensembling methodology, output format, and failure cases this mode does not fix.
+
+---
+
+## Review Output Format
+
+Each reviewer's report structure is detailed in `templates/peer_review_report_template.md`.
+
+### Devil's Advocate Report Structure (Special Format)
+
+The Devil's Advocate uses a dedicated format, not the standard reviewer template:
+- **Strongest Counter-Argument** (200-300 words)
+- **Issue List** (categorized as CRITICAL / MAJOR / MINOR, with dimension and location)
+- **Ignored Alternative Explanations/Paths**
+- **Missing Stakeholder Perspectives**
+- **Observations (Non-Defects)**
+
+---
+
+## Editorial Decision Format
+
+The Editorial Decision Letter structure is detailed in `templates/editorial_decision_template.md`.
+
+---
+
+## Integration
+
+### Upstream/Downstream Relationships
+
+```
+deep-research --> academic-paper --> [integrity check] --> academic-paper-reviewer --> academic-paper (revision) --> academic-paper-reviewer (re-review) --> [final integrity] --> finalize
+   (research)       (writing)         (integrity audit)      (review)                    (revision)                    (verification review)                (final verification)   (finalization)
+```
+
+### Specific Integration Methods
+
+| Integration Direction | Description |
+|----------------------|-------------|
+| **Upstream: academic-paper -> reviewer** | Receives the complete paper output from `academic-paper` full mode, directly enters Phase 0 |
+| **Upstream: integrity check -> reviewer** | In the Pipeline, the paper must pass integrity check before entering reviewer |
+| **Downstream: reviewer -> academic-paper** | The Revision Roadmap format can be directly used as reviewer feedback input for `academic-paper` revision mode |
+| **Downstream: reviewer (re-review) -> integrity** | After re-review completes, proceeds to final integrity verification |
+
+### Pipeline Usage Example
+
+> See `references/integration_guide.md` for a complete 9-step pipeline usage example.
+
+---
+
+## Agent File References
+
+| Agent | Definition File |
+|-------|----------------|
+| field_analyst_agent | `agents/field_analyst_agent.md` |
+| eic_agent | `agents/eic_agent.md` |
+| methodology_reviewer_agent | `agents/methodology_reviewer_agent.md` |
+| domain_reviewer_agent | `agents/domain_reviewer_agent.md` |
+| perspective_reviewer_agent | `agents/perspective_reviewer_agent.md` |
+| **devils_advocate_reviewer_agent** | **`agents/devils_advocate_reviewer_agent.md`** |
+| editorial_synthesizer_agent | `agents/editorial_synthesizer_agent.md` |
+
+---
+
+## Reference Files
+
+| Reference | Purpose | Used By |
+|-----------|---------|---------|
+| `references/review_criteria_framework.md` | Structured review criteria framework (differentiated by paper type) | all reviewers |
+| `references/top_journals_by_field.md` | Top journal lists for major academic fields (EIC role calibration) | field_analyst, eic |
+| `references/editorial_decision_standards.md` | Accept/Minor/Major/Reject criteria and decision matrix | eic, editorial_synthesizer |
+| `references/statistical_reporting_standards.md` | Statistical reporting standards + APA 7.0 format quick reference + red flag list | methodology_reviewer |
+| `references/quality_rubrics.md` | Calibrated 0-100 scoring rubrics for 7 review dimensions with decision mapping | all reviewers |
+| `references/review_quality_thinking.md` | Cognitive framework for review quality: three lenses (internal validity, external validity, contribution), common reviewer traps, calibration questions | all reviewers |
+| `references/re_review_mode_protocol.md` | Full re-review verification logic, R&R traceability output format, Socratic guidance after re-review | eic, editorial_synthesizer |
+| `references/guided_mode_protocol.md` | Guided mode dialogue flow, progressive revelation sequence, dialogue rules | all reviewers |
+| `references/calibration_mode_protocol.md` | Calibration mode: FNR/FPR/balanced accuracy measurement against user-supplied gold set, 5x ensembling, session-scoped confidence disclosure (v3.2) | all reviewers |
+| `references/integration_guide.md` | Complete 9-step pipeline usage example | 鈥?|
+| `references/changelog.md` | Full version history | 鈥?|
+
+---
+
+## Templates
+
+| Template | Purpose |
+|----------|---------|
+| `templates/peer_review_report_template.md` | Review report template used by each reviewer |
+| `templates/editorial_decision_template.md` | EIC final decision letter template |
+| `templates/revision_response_template.md` | Revision response template for authors (R->A->C format) |
+
+---
+
+## Examples
+
+| Example | Demonstrates |
+|---------|-------------|
+| `examples/hei_paper_review_example.md` | Full review example: "Impact of Declining Birth Rates on Management Strategies of Taiwan's Private Universities" |
+| `examples/interdisciplinary_review_example.md` | Cross-disciplinary review example: "Using Machine Learning to Predict University Closure Risk in Taiwan" |
+
+---
+
+## Anti-Patterns
+
+Explicit prohibitions to prevent common failure modes, especially during long conversations:
+
+| # | Anti-Pattern | Why It Fails | Correct Behavior |
+|---|-------------|-------------|-----------------|
+| 1 | **Fabricating review comments** | Synthesizer invents critique not in any reviewer report | Every synthesis point must trace to a specific Phase 1 reviewer report |
+| 2 | **Duplicate criticisms across reviewers** | R1/R2/R3 raise identical points = fake diversity | Each reviewer has a distinct perspective; overlapping topics get different angles |
+| 3 | **Ignoring Devil's Advocate CRITICAL findings** | Editorial Decision says Accept despite DA flagging critical issues | If DA finds CRITICAL 鈫?Decision cannot be Accept (Checkpoint Rule #4) |
+| 4 | **Rubber-stamp re-review** | Re-review says "all addressed" without verification | Each concern must be independently verified against the revised manuscript |
+| 5 | **Sycophantic score inflation** | Giving 8/10 to mediocre work to avoid conflict | Scores must be evidence-based; a paper with methodology gaps cannot score >6 on rigor |
+| 6 | **Editing the manuscript** | Reviewer "helpfully" fixes the paper directly | READ-ONLY: produce reports, never modify the paper (Checkpoint Rule #6) |
+| 7 | **Generic feedback** | "The methodology could be stronger" without specifics | Every criticism must include: what's wrong, where it is, and a proposed fix |
+
+---
+
+## Quality Standards
+
+| Dimension | Requirement |
+|-----------|-------------|
+| Perspective differentiation | Each reviewer's review must come from a different angle; no duplicate criticisms |
+| Evidence-based | EIC's decision must be based on specific reviewer comments; no fabrication |
+| Specificity | Reviews must cite specific passages, data, or page numbers from the paper; no vague comments |
+| Balance | Strengths and Weaknesses must be balanced; cannot only criticize without affirming |
+| Professional tone | Review tone must be professional and constructive; avoid personal attacks or demeaning language |
+| Actionability | Each weakness must include specific improvement suggestions |
+| Format consistency | All reports must follow the template structure; no freestyle |
+| **Devil's Advocate completeness** | **Devil's Advocate must produce the strongest counter-argument; cannot be omitted** |
+| **CRITICAL threshold** | **鈿狅笍 IRON RULE: Devil's Advocate CRITICAL issues cannot be ignored by the Editorial Decision** |
+
+---
+
+## Output Language
+
+Follows the paper's language. Academic terms remain in English. User can override (e.g., "review this Chinese paper in English").
+
+---
+
+## Related Skills
+
+| Skill | Relationship |
+|-------|-------------|
+| `academic-paper` | Upstream (provides paper) + Downstream (receives revision roadmap) |
+| `deep-research` | Upstream (provides research foundation) |
+| `tw-hei-intelligence` | Auxiliary (verifies higher education data accuracy) |
+| `academic-pipeline` | Orchestrated by (Stage 3 + Stage 3') |
+
+---
+
+## v3.6.2 Sprint Contract Hard Gate
+
+- **Reviewer hard gate.** All reviewer modes that ship with contracts (`reviewer_full`, `reviewer_methodology_focus`) now run two-call Phase 1 (paper-content-blind) + Phase 2 (paper-visible) orchestration. See `references/sprint_contract_protocol.md`.
+- **Schema 13 sprint contract.** Template-driven acceptance criteria with `panel_size`, `acceptance_dimensions`, `failure_conditions` (with `severity` precedence + `cross_reviewer_quantifier` panel-relative thresholds), `measurement_procedure`, optional `override_ladder`, bounded `agent_amendments`. Validator: `scripts/check_sprint_contract.py`. Schema: `shared/sprint_contract.schema.json`.
+- **Synthesizer three-step mechanical protocol.** Build cross-reviewer matrix 鈫?evaluate each failure_condition with panel-relative quantifier + expression vocabulary 鈫?resolve precedence by severity. Forbidden operations explicit in `agents/editorial_synthesizer_agent.md`.
+- **methodology_focus reduced panel.** `reviewer_methodology_focus` mode runs a 2-reviewer panel (EIC + methodology only) instead of the default 5.
+- **Templates:** `shared/contracts/reviewer/full.json` (panel 5) and `shared/contracts/reviewer/methodology_focus.json` (panel 2). Reserved modes (`reviewer_re_review`, `reviewer_calibration`, `reviewer_guided`) keep pre-v3.6.2 behaviour until follow-up patch templates land.
+
+---
+
+## Version Info
+
+| Item | Content |
+|------|---------|
+| Skill Version | 1.9.1 |
+| Last Updated | 2026-05-18 |
+| Maintainer | Cheng-I Wu |
+| Dependent Skills | academic-paper v1.0+ (upstream/downstream integration) |
+| Role | Multi-perspective academic paper review simulator |
+
+---
+
+## Changelog
+
+> See `references/changelog.md` for full version history.
+
+
+codex
+我会先核对仓库里的实际 `CLAUDE.md`，因为你给的是压缩版摘录，里面有几处用占位符概括。评审结论会区分“基于你给出的摘要”和“实际文件可验证”的判断。
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'rg --files' in E:\workspace\projects\AI协作项目全生命周期框架
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'Get-ChildItem -Force' in E:\workspace\projects\AI协作项目全生命周期框架
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -LiteralPath 'CLAUDE.md' -Raw" in E:\workspace\projects\AI协作项目全生命周期框架
+ succeeded in 174ms:
+# CLAUDE.md 鈥?AI鍗忎綔椤圭洰鍏ㄧ敓鍛藉懆鏈熸鏋?
+## Agent 杈圭晫
+- **鍙淳**锛氭寜妗嗘灦 SOP 鎵ц瀹℃煡/璇曡/璇曡窇锛涙寜 搂8.8 S/M/L 鍒嗘。鎵ц闂悎锛涙寜 搂1.7 鍘熷垯璇勪及鏂板鍐呭鏄惁搴斿鎸?- **绂佹**锛氫慨鏀规牳蹇冩満鍒讹紙鏈粡璇曡窇鍥炲啓锛夛紱OPEN 椤规渶缁堣鍐筹紱妗嗘灦绾ф垚鐔熷害璇勪及鐙珛澶嶆牳锛堥渶寮傚悗绔級锛汫itHub 鍙戝竷鎵ц
+- **瀹℃煡鐙珛鎬х‖绾︽潫**锛氱姝㈢敤妗嗘灦缂栧啓鏃剁殑鍚屼竴鍚庣妯″瀷瀹℃煡妗嗘灦锛堣繚鍙?搂9.2锛夆€斺€斿悓涓€鍚庣鎹?CLI 澹?浼嫭绔嬨€傚凡楠岃瘉鍙敤锛欳odex GPT-5.5 / Qwen Qwen3.7-Max / Kimi Kimi-K2.7-Code / ZCode GLM-5.2
+
+## 鐜涓庡懡浠?- **杩愯鐜**锛歐indows 11 + Git Bash锛汸ython 3.12锛汵ode.js锛坢mdc 闇€瑕侊級锛沺andoc锛圖OCX 鐢熸垚锛夛紱OpenCC锛堟楂斾腑鏂囪浆鎹級
+- **Python 涓枃鑴氭湰蹇呴』璁?* `PYTHONIOENCODING=utf-8`锛岃矾寰勫叏閮ㄧ敤姝ｆ枩鏉?- 鍏抽敭鍛戒护锛?  ```bash
+  bash check.sh                      # 鍙戝竷鍓嶆満姊伴椄闂紙P0 闂紝鎺ㄨ崘鍏ュ彛锛?  python pre_push_check.py           # 鍚屼笂锛岄渶鎵嬪姩璁剧幆澧冨彉閲?  python verify_version_consistency.py --skip-archive  # 鍏ㄩ」鐩増鏈竴鑷存€ч獙璇?  python _workflows/regenerate_docx.py    # 鍏ㄩ噺閲嶇敓鎴?.docx锛坧andoc + Mermaid锛?  python _workflows/regenerate_inventory.py  # 閲嶇敓鎴?inventory.csv
+  ```
+- DOCX 鐢熸垚绠￠亾璇︽儏瑙?`_workflows/` 涓?`sync_v16*.py` 鍜?`regenerate_docx.py`锛涚炕璇戠閬撹 `_workflows/i18n/`
+- 鐗堟湰鍙峰崟涓€浜嬪疄婧愶細`VERSION` 鏂囦欢锛涗富鏂囨。 搂14 涓哄畬鏁?edit_history銆傚嬁鍦?CLAUDE.md 涓淮鎶ょ増鏈彿鍓湰
+
+## 蹇€熸仮澶?鎸夐『搴忓厛璇伙細
+1. 鏈枃浠讹紙CLAUDE.md锛?2. `project_status.md` 鈥斺€斾笂娆′細璇濆仛浜嗕粈涔堛€佸綋鍓嶅緟鍔炪€佸凡鐭ラ仐鐣欓棶棰橈紙Claude 浠庝唬鐮佹枃浠朵腑涓嶅彲鎺ㄥ锛?3. 涓绘枃妗?搂1.4鈥撀?.7 鈥斺€斾娇鐢ㄥ己搴﹀垎妗?+ 姝讳骸鍒ゆ嵁 + OPEN 椤?+ 搂1.7 鏈€灏忔牳蹇冨師鍒?4. `_protocols-and-tools/妗嗘灦绾ф垚鐔熷害璇勪及琛?md` 鈥斺€斾簡瑙ｅ悇閮ㄥ垎鎴愮啛搴︼紝閬垮厤楂樹及涓嶇ǔ瀹氱粍浠?- 闇€瑕佸畾浣嶇壒瀹氭枃浠舵椂锛歚reference_files.md`锛堜汉绫绘爣娉ㄧ増鏂囦欢绱㈠紩锛屾爣娉ㄤ簡姣忎釜鏂囦欢"涓轰粈涔堥噸瑕?鈥斺€擥lob 鍙垪鏂囦欢鍚嶏紝浣嗙粰涓嶄簡杩欎釜鍒ゆ柇锛?
+## 鍋滄鏉′欢
+- **鏂板 [Sp] 鑺傛垨淇敼鏍稿績鏈哄埗** 鈫?椤诲厛缁忚繃 鈮? 娆¤瘯璺戦獙璇侊紝涓嶅彲浠呭嚟鏂规硶璁烘彁鍙栧氨鍐欏叆銆倂1.5.1 鍐荤粨鏈熸暀璁細"鍔犲鏉傚害姣斿噺澶嶆潅搴﹀鏄?
+- **涓嶇敤浣滆€呮ā鍨嬭嚜瀹℃鏋?*锛堣繚鍙?搂9.2 鐙珛鎬э級
+- **涓嶆贩娣嗙紪杈戣€呬笌瀹℃煡鑰呰鑹?*鈥斺€旂紪杈戝垽鏂粛闇€寮傚悗绔嫭绔嬪鏍?- **OPEN-4锛堣瘯璇昏鏃讹級鎴?OPEN-1锛堜汉绫讳笓瀹?verify锛夋湭纭鍓?* 鈫?涓嶅惎鍔ㄥぇ瑙勬ā绗簩娆¤瘯璺?- **涓変欢濂楋紙.md / .json / .docx锛変换涓€浠朵慨鏀瑰悗** 鈫?蹇呴』鍚屾鏇存柊鍙﹀涓や欢 + 瑙﹀彂 鈮? 杞紓鍚庣浜ゅ弶楠岃瘉
+- **涓嶈鐢?`_protocols-and-tools/import_integrity_check.py`** 鈥斺€旂粡瀹℃煡璁ゅ畾涓嶅彲闈犮€傛纭伐鍏凤細`pyflakes` / `ruff`
+
+## 宸茬煡鍧戜綅
+
+### 鏄撹瑙ｆ蹇?- **"鍐荤粨鏈?宸茶В闄?*锛?026-06-16 Protocol 3 瀹屾垚锛夆€斺€斾絾"璋ㄦ厧鍔犲鏉傚害"鐨勬暀璁粛閫傜敤
+- **"浣跨敤寮哄害鍒嗘。"锛埪?.4 A/B/C锛夆墵 "椤圭洰瑙勬ā鍒嗘。"锛埪?.8 S/M/L锛?*鈥斺€斾袱涓浜ょ淮搴︼紝鐢ㄥ畬涓嶈兘浜掓崲
+- **"鐙珛瀹℃煡"鍙岃酱瀹氫箟**锛埪?.2锛夛細鍚庣妯″瀷涓嶅悓 **脳** 涓婁笅鏂囬殧绂伙紝涓よ€呭繀椤诲悓鏃舵弧瓒炽€傚浜嗕綔鑰?memory/CLAUDE.md = 涓婁笅鏂囨湭闅旂 = [SEMI] 鎴?[NON]
+- **"Claude"鍦?provenance 涓婁笅鏂囦腑 = CLI 澹冲悕**锛屼笉鏄悗绔ā鍨嬧€斺€斿悗绔渶褰撳満璁板綍锛屼笉鍙簨鍚庢仮澶?- **搂1.7 "鏈€灏忔牳蹇?+ 绀轰緥澶栨寕"瀛樺湪鑷弽椋庨櫓**鈥斺€旀鏋惰嚜韬槸鍚﹂伒瀹堜簡杩欎竴鍘熷垯灏氭棤鐙珛楠岃瘉
+
+### 鏄撹鎿嶄綔
+- **鏍囪瘑/璺緞娓呯悊浠呴檺鍙戝竷鍖?*锛歚.gitignore` 瀹氫箟浜嗗彂甯冭竟鐣屻€俙../寮€婧愬彂甯冨噯澶?` 鍜?`../_attic/` 涓嶅湪鍙戝竷鑼冨洿鍐咃紝鏃犻渶娓呯悊
+- **OPEN 椤圭姸鎬佸彉鏇村彧鏀?搂1.6 涓€澶?*锛堝崟涓€浜嬪疄婧愬師鍒欙級
+- **鎵€鏈夌紪杈戝繀椤昏褰?provenance**锛堢紪杈戣€呮ā鍨?+ CLI 澹冲悕 + 鏃ユ湡 + 鐙珛鎬х骇鍒級鈫?鍐欏叆涓绘枃妗?搂14 鍜?JSON `edit_history`
+- **涓绘枃妗ｅ拰涓?JSON 椤诲悓姝ユ洿鏂?*鈥斺€擩SON 鏄墜宸ョ淮鎶ょ殑缁撴瀯鍖栭暅鍍忥紙闈炲叏閲忕敓鎴愶級锛屾瘡鐗堥渶鏂板缓 sync 鑴氭湰鎴栨墜宸ヨˉ鍏ャ€傚巻鍙诧細v1.6.2鈥搗1.6.4 鐨?.json sync 钀藉悗浜?.docx sync锛岄潬浜嬪悗鑴氭湰琛ュ洖
+- **Mermaid 娓叉煋 PNG 涓嶅甫 DPI 鍏冩暟鎹?*鈥斺€擶ord 榛樿 96 DPI 鑷?~3脳 鎷変几鎴柇銆傜敓鎴愬悗椤绘敞鍏?300 DPI
+- 褰掓。鏃ф枃浠舵椂椤诲悓姝ユ洿鏂?README.md / reference_files.md / inventory.csv 涓殑浜ゅ弶寮曠敤
+
+## 璺ㄩ」鐩涓哄埗绾?姣忔潯鏄鏋朵腑鐗瑰畾鑺傜殑鎿嶄綔闄愬埗鈥斺€旀潵婧愰」鐩殑璐ㄩ噺鐩存帴绾︽潫璇ヨ妭鐨勫彲鍗囩骇鎬э細
+- **Evolver锛堟贩娣嗕唬鐮侀」鐩級** 鈫?鍥涗釜 [Sp] 鑺傦紙搂3.7.0 / 搂3.7.4.1 / 搂9.7 / 搂9.8锛夋潵婧愬彲淇″害浣?鈫?**绂佹**鏈粡璇曡窇灏嗗叾浠?[Sp] 鍗囩骇锛屽嵆浣挎湁鏂拌瘉鎹篃瑕佷粠 [Sp] 鈫?[E-] 璧锋
+- **PocketFlow / prompt-tdd 瀹為獙閾?* 鈫?搂6.3.2 [E-] ceiling-limited + 闄勫綍 H 鍙嶆ā寮?鈫?淇敼杩欎簺鑺傛椂閬靛畧宸叉湁璇佹嵁涓婇檺锛屼笉鍙秴鍑哄疄楠岃鐩栬寖鍥?- **BDC2026锛堝弽闈㈡渚嬶級** 鈫?搂7 浼氳瘽浜ゆ帴 + 搂8 椋庨櫓渚濊禆鐨勮璁′緷鎹?鈫?涓嶅彲寮卞寲杩欎袱鑺傦紝涓嶅彲灏?"浼氳瘽浜ゆ帴缂哄け鑷磋触" 鐨勬暀璁檷绾т负鍙€?- **鏂规硶璁烘彁鍙?/ Protocol 3** 鈫?"璇曡窇 鈫?鍥炲啓"鏄鏋舵牳蹇冩満鍒?鈫?鎵€鏈夋満鍒跺彉鏇村繀椤婚伒寰妯″紡
+
+## 鏇存柊鍗忚
+- **瑙﹀彂鏉′欢**锛氳瘯璺戝畬鎴愬悗 / OPEN 椤圭姸鎬佸彉鏇?/ 澶栭儴鏂规硶璁烘彁鍙栧啓鍏?/ 涓変欢濂椾换涓€浠舵洿鏂?/ README 鐗堟湰鍙锋垨缁熻鍖哄彉鏇?- **鏇存柊鍚庡繀鍋?*锛氭洿鏂版湰鏂囦欢鏈熬鏃ユ湡 + README.md 鐗堟湰鍙峰拰缁熻鍖?+ JSON `metadata` 鐗堟湰/鏃ユ湡
+- **鏂板鍐呭浼樺厛澶栨寕**锛堥檮褰曟垨鐙珛鏂囦欢锛夛紝涓嶇洿鎺ヨ繘鏍稿績绔犺妭鈥斺€斅?.7 鑷弽瑕佹眰
+- **閲嶅ぇ鐗堟湰鍙樻洿鍚?* 鈫?瑙﹀彂 鈮? 杞紓鍚庣浜ゅ弶楠岃瘉
+- 鎵€鏈夌紪杈戦伒瀹?搂14 provenance 璁板綍绾緥
+
+---
+鏈€鍚庢洿鏂帮細2026-06-27
+鐢熸垚妯″瀷锛欴eepSeek-V4-Pro锛坴ia Claude Code CLI锛?
+
+ succeeded in 192ms:
+PUBLISHING.md
+project_status.md
+project.yaml
+pre_push_check.py
+LICENSE
+inventory.csv
+_workflows\verify_chars_v163.py
+_workflows\sync_v164_json.py
+_workflows\sync_v164_docx.py
+_workflows\sync_v163_docx.py
+_workflows\sync_v162_docx.py
+_workflows\sync_v161_json.py
+_workflows\sync_v161_docx.py
+_workflows\regenerate_inventory.py
+_workflows\regenerate_docx.py
+_workflows\qwen_r2_sync_verify_prompt.txt
+_workflows\qwen_r2_sync_verify_output.txt
+_workflows\qwen_r2_review_prompt.txt
+_workflows\p1-fixes-and-framework-update-wf_cb35565b-a13.js
+AI协作项目全生命周期框架.md
+AI协作项目全生命周期框架.json
+check.sh
+CLAUDE.md
+_workflows\char_stats_v163.json
+_workflows\analyze-claude-code-guide-wf_2bad0858-e71.js
+_workflows\codex_v16_json_crosscheck_prompt.md
+_workflows\codex_v16_crosscheck_prompt.md
+_workflows\codex_review_claude_md_prompt.txt
+_workflows\codex_crosscheck_v161_sync_prompt.txt
+_workflows\codex_crosscheck_prompt.txt
+_workflows\char_stats_v164.json
+_workflows\count_chars_v164.py
+_workflows\count_chars_v163.py
+_workflows\convert-three-methodological-assets-wf_eae7b704-c49.js
+_workflows\desensitize_codex_log.py
+_workflows\deep-review-headroom-docs-wf_b14121db-398.js
+_workflows\evaluate-chatgpt-response-wf_e260d92b-87d.js
+en\reference_files.md
+en\README.md
+en\AI协作项目全生命周期框架.md
+reference_files.md
+README.md
+verify_version_consistency.py
+VERSION
+_workflows\i18n\codex_glossary_review_prompt.txt
+_workflows\i18n\check_translation.py
+_workflows\i18n\审查报告_术语表_Qwen_qwen3.7-max_20260623.md
+_workflows\i18n\审查报告_术语表_Codex_GPT-5.5_20260623.md
+_workflows\i18n\translate_zh-Hant.py
+_workflows\i18n\split_for_translation.py
+_workflows\i18n\qwen_glossary_review_prompt.txt
+_workflows\i18n\glossary.md
+_workflows\i18n\glossary.json
+_workflows\i18n\fix_part4a_templates.py
+_workflows\i18n\fix_part3_blocks.py
+_workflows\i18n\fix_glossary.py
+_workflows\i18n\fix_appendix_templates.py
+_workflows\i18n\fix_all_blocks.py
+_workflows\i18n\DESIGN.md
+_reviews\AI协作项目全生命周期框架_ChatGPT-5.5对再审查意见的回应.json
+_reviews\AI协作项目全生命周期框架_ChatGPT-5.5审查报告.md
+_reviews\AI协作项目全生命周期框架_ChatGPT-5.5审查报告.json
+_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告.md
+_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告.json
+_reviews\AI协作项目全生命周期框架_ChatGPT-5.5对再审查意见的回应.md
+_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.json
+_reviews\AI协作项目全生命周期框架_v1.5_独立审查报告_R5.md
+_workflows\i18n\concat_en.py
+_reviews\独立审查_ChatGPT-5.5_审查报告.md
+_reviews\独立审查_ChatGPT-5.5_审查报告.json
+_reviews\框架v1.5.1_Codex审查报告.md
+_reviews\框架v1.3.2_Codex审查报告.md
+_reviews\_codex_v161_review_prompt.txt
+_reviews\_codex_v161_review_output.txt
+_mermaid_png\fa491014.mmd
+_mermaid_png\fa491014.emf
+_mermaid_png\a63858b7.mmd
+_mermaid_png\a63858b7.emf
+_mermaid_png\75d2af9e.mmd
+_mermaid_png\75d2af9e.emf
+_mermaid_png\62fea27d.mmd
+_mermaid_png\62fea27d.emf
+_mermaid_png\61ed3e50.mmd
+_mermaid_png\61ed3e50.emf
+_mermaid_png\17946ee2.mmd
+_mermaid_png\17946ee2.emf
+_reviews\codex_v16_json_crosscheck_20260620.txt
+_reviews\codex_v16_crosscheck_rereview_20260620.txt
+_reviews\codex_v16_crosscheck_20260620.txt
+_reviews\codex_v164_json_sync_review_output.txt
+_reviews\codex_review_v1.5.1_三件套同步审查.md
+_reviews\codex_review_v1.5.1_三件套同步审查.json
+_reviews\codex_review_open5_and_reorg_report.md
+_reviews\codex_review_import_checker.md
+_reviews\codex_review_glm52_edits_report.md
+_reviews\codex_review_audience_stability_20260621.txt
+_reviews\codex_naked_audit_20260624.md
+_reviews\codex_claude_md_methodology_review_20260627.txt
+_reviews\codex_block_fix_report_20260624.md
+_reviews\AI协作项目全生命周期框架_对ChatGPT-5.5回应的再再审查.md
+_reviews\AI协作项目全生命周期框架_对ChatGPT-5.5回应的再再审查.json
+_reviews\AI协作项目全生命周期框架_审查报告再审查.md
+_reviews\AI协作项目全生命周期框架_审查报告再审查.json
+_reviews\m8m10_evidence_labeling_review_prompt.md
+_reviews\O7_R3_final_verification_20260624.md
+_reviews\maturity_writeback_verification.md
+_reviews\qwen_claude_md_methodology_review_20260627.txt
+_reviews\m8m10_review_qwen_qwen3.7-max_20260624.md
+_reviews\m8m10_review_codex_gpt5.5_20260624.md
+_reviews\qwen_en_translation_review_20260624.md
+_reviews\qwen_review_audience_stability_20260621.txt
+_reviews\independent_review_v1.4_kimi_20260613.md
+_reviews\independent_review_v1.4_kimi_20260613.json
+_reviews\independent_review_v1.4_codex_20260613.md
+_reviews\independent_review_v1.4_codex_20260613.json
+_reviews\kimi_prompt_bias_review_report.json
+_reviews\kimi_en_translation_review_20260624.md
+_reviews\kimi_prompt_bias_review_report.md
+zh-Hant\reference_files.md
+zh-Hant\README.md
+zh-Hant\AI协作项目全生命周期框架.md
+_workflows\i18n\configs\en\translation_brief.md
+_reviews\last_messages\codex_review_v132_last_message.txt
+_reviews\last_messages\codex_last_message_v1.5.txt
+_reviews\last_messages\codex_last_message.txt
+_reviews\last_messages\codex_import_last.txt
+_reviews\last_messages\codex_v1.4_last_message.txt
+_reviews\last_messages\codex_review_v151_last_message.txt
+_reviews\last_messages\maturity_writeback_last_message.txt
+_reviews\last_messages\独立审查_ChatGPT-5.5_last-message.txt
+_reviews\retrospects\retrospect_2026-06-20_v161_sync.md
+_reviews\retrospects\retrospect_2026-06-20.md
+_reviews\retrospects\retrospect_2026-06-19.md
+_reviews\retrospects\retrospect_2026-06-21_session2.md
+_reviews\retrospects\retrospect_2026-06-21.md
+_reviews\retrospects\retrospect_2026-06-23.md
+_reviews\prompts\独立审查_ChatGPT-5.5_提示词.md
+_reviews\prompts\外部审查_ChatGPT-5.5_提示词.md
+_reviews\prompts\外部审查_ChatGPT-5.5_提示词.json
+_reviews\prompts\外部审查_ChatGPT-5.5_config.json
+_reviews\prompts\run_qwen_review.py
+_reviews\prompts\run_codex_review.py
+_reviews\prompts\qwen_review_prompt_v1.5.md
+_reviews\prompts\qwen_review_prompt_v1.5.json
+_reviews\prompts\qwen_r2_md_to_json_faithfulness_review.md
+_reviews\prompts\mechanical_consistency_check_20260621.txt
+_reviews\prompts\kimi_review_v1.4_prompt.md
+_reviews\prompts\kimi_prompt_bias_review.md
+_reviews\prompts\codex_v164_json_sync_review_prompt.txt
+_reviews\prompts\codex_review_v1.5.1_sync.md
+_reviews\prompts\codex_review_v1.4_prompt.md
+_reviews\prompts\codex_review_prompt_v151.md
+_reviews\prompts\codex_review_prompt_v132.md
+_reviews\prompts\codex_review_prompt_v1.5.md
+_reviews\prompts\codex_review_open5_and_reorg_prompt.md
+_reviews\prompts\codex_review_import_prompt.md
+_reviews\prompts\codex_review_glm52_edits_prompt.md
+_reviews\prompts\codex_design_kimi_prompt_task.md
+_reviews\prompts\claude_md_methodology_review_prompt_20260627.md
+_reviews\prompts\audience_stability_review_qwen_20260621.txt
+_reviews\prompts\audience_stability_review_codex_20260621.txt
+_protocols-and-tools\meta-audit-checklist.md
+_protocols-and-tools\meta-audit-checklist.json
+_protocols-and-tools\import_integrity_check.py
+_protocols-and-tools\AI协作项目全生命周期框架_人类专家verify包.md
+_protocols-and-tools\AI协作项目全生命周期框架_人类专家verify包.json
+_protocols-and-tools\AI协作项目全生命周期框架_OPEN4试读计时协议.md
+_protocols-and-tools\AI协作项目全生命周期框架_OPEN4试读计时协议.json
+_protocols-and-tools\外部依赖登记表.json
+_protocols-and-tools\可调参数索引.md
+_protocols-and-tools\methodological-review-sop.md
+_protocols-and-tools\methodological-review-sop.json
+_protocols-and-tools\框架级成熟度评估表.json
+_protocols-and-tools\外部依赖登记表.md
+_protocols-and-tools\框架级成熟度评估表.md
+_research\通用框架可行性讨论_20260621.md
+_research\两次试跑对比_2026-06-22.md
+_research\_codex_trial_comparison_review.txt
+_research\SmartCrusher方法论提取.md
+_research\SmartCrusher方法论提取.json
+_research\headroom对标分析_封存说明.md
+_research\headroom对标分析_封存说明.json
+_research\CCR作为逃生口案例研究.json
+_research\CacheAligner与AI框架OPEN-1对标分析.md
+_research\CacheAligner与AI框架OPEN-1对标分析.json
+_research\ChatGPT-5.5独立审查_headroom对标三文档.json
+_research\CCR作为逃生口案例研究.md
+_research\ChatGPT-5.5独立审查_headroom对标三文档.md
+_archive\独立审查标准操作程序_SOP.md
+_archive\独立审查标准操作程序_SOP.json
+_archive\元审查合规清单.md
+_archive\元审查合规清单.json
+_archive\v1.5.1冻结期_待执行协议清单.md
+_archive\provenance_erratum_20260617.md
+_research\drafts\框架v1.5.1_新增节草案.md
+_research\drafts\框架v1.5.1_新增节草案.json
+_research\drafts\框架v1.5.1_新增节草案.docx
+_research\drafts\框架v1.3.2_新增节草案.md
+_research\drafts\框架v1.3.2_新增节草案.json
+_research\drafts\框架v1.3.2_修正路线图.md
+_archive\docx_legacy_scripts\sync_v16_json.py
+_archive\docx_legacy_scripts\sync_v16_docx.py
+_archive\docx_legacy_scripts\sync_v154_json.py
+_archive\docx_legacy_scripts\sync_trio_v153.py
+_archive\docx_legacy_scripts\style_v16_docx.py
+_archive\docx_legacy_scripts\README.md
+_archive\docx_legacy_scripts\md_to_docx_framework.py
+_archive\docx_legacy_scripts\embed_mermaid_png.py
+
+ succeeded in 238ms:
+
+
+    目录: E:\workspace\projects\AI协作项目全生命周期框架
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d--h--         2026/6/25      0:58                .git                                                                 
+d-----         2026/6/24     21:11                en                                                                   
+d-----         2026/6/24      1:37                zh-Hant                                                              
+d-----         2026/6/21     21:59                _archive                                                             
+d-----         2026/6/23     20:35                _mermaid_png                                                         
+d-----         2026/6/24      0:51                _pipeline_output                                                     
+d-----         2026/6/23      1:13                _protocols-and-tools                                                 
+d-----         2026/6/23      1:22                _research                                                            
+d-----         2026/6/27      0:38                _reviews                                                             
+d-----         2026/6/24     22:00                _workflows                                                           
+-a----         2026/6/25      0:36            910 .gitignore                                                           
+-a----         2026/6/24      1:51        6849320 AI协作项目全生命周期框架.docx                                                   
+-a----         2026/6/24     13:23         204202 AI协作项目全生命周期框架.json                                                   
+-a----         2026/6/24      0:47         326020 AI协作项目全生命周期框架.md                                                     
+-a----         2026/6/24     23:50            370 check.sh                                                             
+-a----         2026/6/27      0:31           5895 CLAUDE.md                                                            
+-a----         2026/6/24     21:23          14784 inventory.csv                                                        
+-a----         2026/6/23      0:43          18652 LICENSE                                                              
+-a----         2026/6/24     23:03           7890 pre_push_check.py                                                    
+-a----         2026/6/24      0:50           2215 project.yaml                                                         
+-a----         2026/6/25      0:51          15792 project_status.md                                                    
+-a----         2026/6/24     21:23           4160 PUBLISHING.md                                                        
+-a----         2026/6/24     21:23           8895 README.md                                                            
+-a----         2026/6/25      0:52           6808 reference_files.md                                                   
+-a----         2026/6/24     13:27          14237 verify_version_consistency.py                                        
+-a----         2026/6/22     20:38              6 VERSION                                                              
+
+
+
+codex
+实际文件存在，但第一次读取被 PowerShell 控制台编码破坏了；我会用显式 UTF-8 再读一次，避免把乱码当成内容问题。
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -LiteralPath 'CLAUDE.md' -Encoding UTF8 -Raw" in E:\workspace\projects\AI协作项目全生命周期框架
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -LiteralPath 'project_status.md' -Encoding UTF8 -TotalCount 80" in E:\workspace\projects\AI协作项目全生命周期框架
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -LiteralPath 'check.sh' -Encoding UTF8 -Raw" in E:\workspace\projects\AI协作项目全生命周期框架
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -LiteralPath 'pre_push_check.py' -Encoding UTF8 -TotalCount 160" in E:\workspace\projects\AI协作项目全生命周期框架
+ succeeded in 172ms:
+# CLAUDE.md — AI协作项目全生命周期框架
+
+## Agent 边界
+- **可派**：按框架 SOP 执行审查/试读/试跑；按 §8.8 S/M/L 分档执行闭合；按 §1.7 原则评估新增内容是否应外挂
+- **禁止**：修改核心机制（未经试跑回写）；OPEN 项最终裁决；框架级成熟度评估独立复核（需异后端）；GitHub 发布执行
+- **审查独立性硬约束**：禁止用框架编写时的同一后端模型审查框架（违反 §9.2）——同一后端换 CLI 壳=伪独立。已验证可用：Codex GPT-5.5 / Qwen Qwen3.7-Max / Kimi Kimi-K2.7-Code / ZCode GLM-5.2
+
+## 环境与命令
+- **运行环境**：Windows 11 + Git Bash；Python 3.12；Node.js（mmdc 需要）；pandoc（DOCX 生成）；OpenCC（正體中文转换）
+- **Python 中文脚本必须设** `PYTHONIOENCODING=utf-8`，路径全部用正斜杠
+- 关键命令：
+  ```bash
+  bash check.sh                      # 发布前机械闸门（P0 门，推荐入口）
+  python pre_push_check.py           # 同上，需手动设环境变量
+  python verify_version_consistency.py --skip-archive  # 全项目版本一致性验证
+  python _workflows/regenerate_docx.py    # 全量重生成 .docx（pandoc + Mermaid）
+  python _workflows/regenerate_inventory.py  # 重生成 inventory.csv
+  ```
+- DOCX 生成管道详情见 `_workflows/` 下 `sync_v16*.py` 和 `regenerate_docx.py`；翻译管道见 `_workflows/i18n/`
+- 版本号单一事实源：`VERSION` 文件；主文档 §14 为完整 edit_history。勿在 CLAUDE.md 中维护版本号副本
+
+## 快速恢复
+按顺序先读：
+1. 本文件（CLAUDE.md）
+2. `project_status.md` ——上次会话做了什么、当前待办、已知遗留问题（Claude 从代码文件中不可推导）
+3. 主文档 §1.4–§1.7 ——使用强度分档 + 死亡判据 + OPEN 项 + §1.7 最小核心原则
+4. `_protocols-and-tools/框架级成熟度评估表.md` ——了解各部分成熟度，避免高估不稳定组件
+- 需要定位特定文件时：`reference_files.md`（人类标注版文件索引，标注了每个文件"为什么重要"——Glob 可列文件名，但给不了这个判断）
+
+## 停止条件
+- **新增 [Sp] 节或修改核心机制** → 须先经过 ≥1 次试跑验证，不可仅凭方法论提取就写入。v1.5.1 冻结期教训："加复杂度比减复杂度容易"
+- **不用作者模型自审框架**（违反 §9.2 独立性）
+- **不混淆编辑者与审查者角色**——编辑判断仍需异后端独立复核
+- **OPEN-4（试读计时）或 OPEN-1（人类专家 verify）未确认前** → 不启动大规模第二次试跑
+- **三件套（.md / .json / .docx）任一件修改后** → 必须同步更新另外两件 + 触发 ≥1 轮异后端交叉验证
+- **不要用 `_protocols-and-tools/import_integrity_check.py`** ——经审查认定不可靠。正确工具：`pyflakes` / `ruff`
+
+## 已知坑位
+
+### 易误解概念
+- **"冻结期"已解除**（2026-06-16 Protocol 3 完成）——但"谨慎加复杂度"的教训仍适用
+- **"使用强度分档"（§1.4 A/B/C）≠ "项目规模分档"（§8.8 S/M/L）**——两个正交维度，用完不能互换
+- **"独立审查"双轴定义**（§9.2）：后端模型不同 **×** 上下文隔离，两者必须同时满足。审了作者 memory/CLAUDE.md = 上下文未隔离 = [SEMI] 或 [NON]
+- **"Claude"在 provenance 上下文中 = CLI 壳名**，不是后端模型——后端需当场记录，不可事后恢复
+- **§1.7 "最小核心 + 示例外挂"存在自反风险**——框架自身是否遵守了这一原则尚无独立验证
+
+### 易误操作
+- **标识/路径清理仅限发布包**：`.gitignore` 定义了发布边界。`../开源发布准备/` 和 `../_attic/` 不在发布范围内，无需清理
+- **OPEN 项状态变更只改 §1.6 一处**（单一事实源原则）
+- **所有编辑必须记录 provenance**（编辑者模型 + CLI 壳名 + 日期 + 独立性级别）→ 写入主文档 §14 和 JSON `edit_history`
+- **主文档和主 JSON 须同步更新**——JSON 是手工维护的结构化镜像（非全量生成），每版需新建 sync 脚本或手工补入。历史：v1.6.2–v1.6.4 的 .json sync 落后于 .docx sync，靠事后脚本补回
+- **Mermaid 渲染 PNG 不带 DPI 元数据**——Word 默认 96 DPI 致 ~3× 拉伸截断。生成后须注入 300 DPI
+- 归档旧文件时须同步更新 README.md / reference_files.md / inventory.csv 中的交叉引用
+
+## 跨项目行为制约
+每条是框架中特定节的操作限制——来源项目的质量直接约束该节的可升级性：
+- **Evolver（混淆代码项目）** → 四个 [Sp] 节（§3.7.0 / §3.7.4.1 / §9.7 / §9.8）来源可信度低 → **禁止**未经试跑将其从 [Sp] 升级，即使有新证据也要从 [Sp] → [E-] 起步
+- **PocketFlow / prompt-tdd 实验链** → §6.3.2 [E-] ceiling-limited + 附录 H 反模式 → 修改这些节时遵守已有证据上限，不可超出实验覆盖范围
+- **BDC2026（反面案例）** → §7 会话交接 + §8 风险依赖的设计依据 → 不可弱化这两节，不可将 "会话交接缺失致败" 的教训降级为可选
+- **方法论提取 / Protocol 3** → "试跑 → 回写"是框架核心机制 → 所有机制变更必须遵循此模式
+
+## 更新协议
+- **触发条件**：试跑完成后 / OPEN 项状态变更 / 外部方法论提取写入 / 三件套任一件更新 / README 版本号或统计区变更
+- **更新后必做**：更新本文件末尾日期 + README.md 版本号和统计区 + JSON `metadata` 版本/日期
+- **新增内容优先外挂**（附录或独立文件），不直接进核心章节——§1.7 自反要求
+- **重大版本变更后** → 触发 ≥1 轮异后端交叉验证
+- 所有编辑遵守 §14 provenance 记录纪律
+
+---
+最后更新：2026-06-27
+生成模型：DeepSeek-V4-Pro（via Claude Code CLI）
+
+
+ succeeded in 178ms:
+#!/bin/bash
+# pre_push_check wrapper —— 自动检测项目路径和用户名，无需手动设环境变量
+# 用法: ./check.sh [--quiet | --list]
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+export PRE_PUSH_PATH_PREFIX="$SCRIPT_DIR"
+export PRE_PUSH_USERNAME="${USERNAME:-}"
+export PYTHONIOENCODING=utf-8
+python "$SCRIPT_DIR/pre_push_check.py" "$@"
+
+
+ succeeded in 189ms:
+## 会话备注（2026-06-24 第五会话，DeepSeek-V4-Pro via Claude Code CLI）
+
+**发布前最终审计 —— 两层防护闭合**
+
+- **两轮 Codex CLI 裸审**：提示词不含任何搜索 pattern 和"已清理"线索，Codex GPT-5.5 独立搜索策略。R1 → FIX_REQUIRED（F1-F4: qwen_review_prompt_v1.5.json 3处绝对路径 + codex_v164_json_sync_review_output.txt 4处 + pre_push_check.py 自曝用户名/路径），R2 → FIX_REQUIRED→仅剩1项（注释示例），修复后闭合。
+- **C1-C5 用户决策全部执行**：Acerolaorion 保留（C1）/ 删除"独立量化研究员"7处→"金融工程专业学生"（C2）/ O7_R3 prompt 迁至 `../_attic/`（C3）/ kill-test-first 工具结构可公开（C4）/ retrospects 可公开（C5）。
+- **pre_push_check.py 创建与迭代**：机械闸门脚本，205文件10条规则；经三轮迭代——初版自曝用户名/路径（Codex R1发现）→环境变量注入改写（$^ bug导致误报17434→修复为(?!)）→注释示例脱敏（Codex R2发现）。
+- **session-end SKILL.md 修订**：§2.1 新增"更新项目记忆文件"检查项（project_status.md 更新后交叉比对记忆文件的事实断言）；§三新增反例行（记忆文件语义过期未被检出，2026-06-24教训）。
+- **记忆系统修正**：project_ai_framework.md 过期待办行更新（英文翻译+O7终验R3已完成，待办只剩git）；reference_ai_framework_files.md "en/ 待翻译"→"en/ 完成"+文件计数更新。
+- **project_status.md 脱敏**：4处绝对路径→相对/描述性措辞；desensitize_codex_log.py 2处→Path(__file__)动态推导。
+- **被动观测**：(1) 纯日期扫描查不出记忆文件语义过期——2天新的文件内容已错，session-end 此后已加交叉比对；(2) auto classifier 间歇不可用导致多轮 Edit/Bash 被阻，需重试；(3) $^ 在 Python re 中匹配换行边界（multiline），导致无环境变量时17434误报——→改用(?!)；(4) 两层防护（机械闸门+裸审）互补有效——机械闸门挡已知复发、裸审发现新类型→回写闸门规则。
+
+**Next Steps**：
+- `git init` + `git commit -m "v1.6.4: 首次公开发布"` + `git push` → P0 → 下次会话，无依赖
+
+---
+
+## 会话备注（2026-06-24 第四会话，DeepSeek-V4-Pro via Claude Code CLI）
+
+**英文翻译全管道 + O7 终验 R3 闭合**
+
+- **翻译管道执行**：GPT-5.5 初译（7文件→5分块→拼接）+ Qwen3.7-Max 对抗校译（3发现，1 MEDIUM+2 LOW，已修）+ Kimi-K2.6 可读性审查（附录模板代码块缺失，阻塞级）+ 代码块补修（DeepSeek ~131处 + Codex GPT-5.5 155残留→0）
+- **翻译简报**：`_workflows/i18n/configs/en/translation_brief.md`（含术语表、保护规则、风格约定、三审校清单）。关键教训：初版简报"代码块保护规则"未区分可执行代码和模板代码块→GPT-5.5一刀切不译→Qwen审查时也一刀切标"受保护"→Kimi盲读英文才发现模板不可用。**双角度审查设计（Qwen对照源 + Kimi盲读英文）的互补价值在此被实证。**
+- **文本生成两阶段**：翻译简报先锁定术语/风格/保护规则→GPT-5.5批量执行→三后端独立审查，遵循 [[feedback_text_generation_two_phase]] 模式
+- **最终产出**：`en/` 3文件（主文档391KB + README 10KB + reference_files 7KB），翻译provenance全标注（初译+校译+可读性+块修复，4后端×日期×报告引用）
+- **临时文件清理**：5个part文件→`../_attic/en_translation_chunks_20260624/`，chunks/prompts/codex日志→`../_attic/en_translation_temp_20260624/`
+
+- **O7 R3 终验**：提示词更新为最新状态（含en/新文件+i18n脚本检查）→Codex GPT-5.5执行→4项必修发现
+- **R3 必修项闭合**：
+  1. 脚本路径脱敏：7个`_workflows/`脚本硬编码→`Path(__file__)`动态解析，一次性工具`desensitize_scripts.py`删除
+  2. `project_status.md`两处路径→描述性措辞
+  3. 发布边界：`regenerate_inventory.py`加`.gitignore`感知，inventory 227→204文件（排除24个构建产物/缓存/备份）；`reference_files.md`两份的`../开源发布准备/`链接→说明文字
+  4. O7 R3报告经脱敏后纳入发布包，补"裁决后修正"声明闭合
+- **PUBLISHING.md**：翻译行拆分为zh-Hant和en两行，反映实际管道差异
+- **中文README**：加英文翻译链接+en/目录树
+- **最终状态**：inventory 204文件，verify 21/21 PASS，O7自检零个人标识/零本机路径残留（仅.gitignore排除的O7提示词含已知路径线索）
+
+- **被动观测（值得记录）**：
+  1. GPT-5.5对大文件翻译不稳定（API限流+长连接断），分块+管道管道方式→Codex CLI交互模式比管道更稳，但两个都受API端不稳定影响
+  2. 翻译代码块遗漏是系统性失败模式——不是GPT-5.5能力问题，是简报设计未区分代码块类型。Qwen审查时复制了同一盲区。Kimi因不看源文档反而打破了这个盲区。
+  3. Inventory计数在本会话漂移路径：186→246（en+脚本新增）→227（临时文件清理）→205（加gitignore感知）→204（删一次性工具）。再次验证[[发布包单一真值]]：计数是移动靶。
+
+- **Next Steps**：
+  - `git init` 于项目根目录 → P0 → 无依赖
+  - 配置 GitHub 仓库（命名/tag v1.6.4/描述/topics） → P0 → 等用户决定
+  - `git add . && git commit -m "v1.6.4: 首次公开发布" && git push` → P0 → 等仓库配置完成
+  - 讨论：仓库命名（建议 `ai-collaboration-framework`）/ 是否需要 GitHub Pages → P1
+
+- **翻译文件路径**（相对项目根目录，供参考）：
+  - 简报：`_workflows/i18n/configs/en/translation_brief.md`
+  - 源文档：`AI协作项目全生命周期框架.md`
+  - 译文：`en/AI协作项目全生命周期框架.md`
+
+---
+
+## 会话备注（2026-06-24 第三会话，DeepSeek-V4-Pro via Claude Code CLI）
+
+**承接 Opus 第二会话交接：O7 终验准备收尾 3 项**
+
+- **待办 1 — 脱敏 Codex 审查日志**：`_reviews/codex_v164_json_sync_review_output.txt` 含 55 处本机绝对路径前缀（正斜杠项目根路径 + 反斜杠带尾 + 反斜杠无尾），全部删除转为项目内相对路径。脚本 `_workflows/desensitize_codex_log.py`，脱敏后自检项目根路径和盘符路径均为 0 残留。已核实无用户名泄漏。
+- **待办 2 — .gitignore 补规则**：(a) 新增 `*.backup` 和 `*.bak` 通配，防同步/重生成脚本再产生备份副本落进发布包；(b) 排除 `_reviews/prompts/O7_R3_release_audit_prompt_20260624.md`（一次性审查指令，第 26 行明文列了个人标识符清单，发布等于把要清理的标识符原样公开）。
+- **待办 3 — 记录与复验**：本备注写入 project_status.md；`verify_version_consistency.py --skip-archive` 确认 21/21 PASS（见下方）。
+
+---
+
+## 会话备注（2026-06-24 第二会话，Claude Opus 4.8 via Claude Code CLI）
+
+**修复 .json 落后 .md 的 06-23 发布前订正缺口**
+
+- **缺口定位**：06-23 Opus 会话（API 不稳定中断、未做 /session-end）做的「主文档再审查 + 8 处措辞订正」已落入 `.md`；06-24 DeepSeek 会话补做 M8/M10 + 全量重生成 `.docx`（带入 8 处订正）+ 定点替换 `.json`（仅 M2→M1\*），但 `.json` 未拉取 06-23 那批订正 → `.json` 落后 `.md`。`verify_version_consistency.py` 只查版本号不查正文，缺口溜过版本门。
+- **根因（机制层）**：`.json` 是手工维护的结构化镜像，无 md→json 全量生成器；json sync 脚本停在 `sync_v161_json.py`，v162-v164 只建了 `_docx.py`。
+- **修复**：新建 `_workflows/sync_v164_json.py` 定点补齐 3 类差异——(1) 新增 §13.1.2 项目代号说明（`external_references.project_codenames`，9 代号）；(2) §13.2 Constraint Decoupling status「已验证」→「已采纳」；(3) version_timeline「今日操作」/「本日操作」→「当日操作」（5 字段；初版漏了"本日操作"变体，自检发现后补全——同类 `version_upgrade_asymmetry`）。备份 `AI协作项目全生命周期框架.json.pre_v164_sync.backup`。
+- **验证**：O6 版本一致性 21/21 PASS；Codex GPT-5.5 异后端独立 diff 验证（自有 PowerShell/Node 策略）——9/9 代号行逐行一致、Constraint 改对、JSON 合法、版本号 v1.6.4、diff 仅 6 项目标改动无副作用。Codex 在其运行期独立指出 2 处"本日操作"残留，与主会话自检收敛到同一遗漏点（已闭合）。报告：`_reviews/codex_v164_json_sync_review_output.txt`。
+- **结论**：三件套（.md/.json/.docx）现已全部含 06-23 发布前 8 处订正 + M8/M10 订正，内容对齐。
+
+**发布包边界清理：迁出 json 备份副本**
+
+- O7 R3 提示词准备阶段发现：`sync_v164_json.py` 生成的 `AI协作项目全生命周期框架.json.pre_v164_sync.backup`（201,616 字节）留在发布包根目录，且未被 `.gitignore` 排除 → 会被 push。
+- **处理**：迁出至 `../_attic/框架发布前备份_20260623/`（与既有备份归档惯例一致，如 `_attic/框架发布清理_20260623/_backups_原项目备份/` 下的历次 docx/json 备份）。
+- **确认**：发布包根目录已无任何 `.backup/.bak/.tmp`；`inventory.csv` 未收录该 backup（无需改计数）。
+
+ succeeded in 184ms:
+#!/usr/bin/env python3
+"""发布前机械闸门 —— 扫描 git 追踪文件中的禁止模式，任一命中即阻断 push。
+
+设计原则：
+  - 确定性：正则匹配，不依赖 LLM 注意力
+  - 边界尊重：只扫描 git 追踪的文件（.gitignore 已定义发布边界）
+  - 可扩充：每次裸审/审查发现新类型 → 回写进 FORBIDDEN 列表
+  - 零误报占位符：C:/Users/X 等已知占位符显式排除
+
+用法：
+  python pre_push_check.py           # 扫描全部规则
+  python pre_push_check.py --quiet   # 仅输出命中（给 git hook 用）
+  python pre_push_check.py --list    # 列出当前规则但不扫描
+
+集成 git pre-push hook：
+  .git/hooks/pre-push:
+    #!/bin/sh
+    PYTHONIOENCODING=utf-8 python pre_push_check.py || exit 1
+"""
+
+import sys
+import os
+import re
+import subprocess
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent
+
+# 自排除 —— 本脚本自身的正则定义中包含模式示例，不是泄露
+SELF_EXCLUDE = {'pre_push_check.py'}
+
+# ── 本机特定值（从环境变量读取，不在代码中硬编码）───────
+# 用法：PRE_PUSH_PATH_PREFIX="<PATH_PREFIX>" PRE_PUSH_USERNAME="<USERNAME>" python pre_push_check.py
+# 真实值从私有 shell 环境注入，不在代码中硬编码
+# 传纯文本前缀和用户名，脚本自动构造覆盖多种斜杠方向的正则
+_USER_PATH_ROOT = re.compile(
+    r'[A-Z]:/Users/(?!X\b)[^/\\\s"\']+|'
+    r'[A-Z]:\\Users\\(?!X\\b)[^/\\\s"\']+|'
+    r'/c/Users/(?!X\b)[^/\\\s"\']+'
+)
+
+def _build_path_re(prefix: str) -> str:
+    """从纯文本前缀构造匹配正/反斜杠的正则。"""
+    if not prefix:
+        return r'(?!)'
+    p = re.escape(prefix)
+    return p.replace(r'/', r'[/\\\\]')
+
+_PATH_RAW = os.environ.get('PRE_PUSH_PATH_PREFIX', '')
+_USER_RAW = os.environ.get('PRE_PUSH_USERNAME', '')
+_PROJECT_PATH = re.compile(_build_path_re(_PATH_RAW) if _PATH_RAW else r'(?!)')
+_USERNAME_PATTERN = re.compile(r'\b' + re.escape(_USER_RAW) + r'\b' if _USER_RAW else r'(?!)')
+
+# ── 禁止模式 ───────────────────────────────────────────
+# 格式: (编译后的正则, 规则名, 严重度: BLOCKER/WARN)
+# 每次裸审发现新泄露类型 → 在此追加规则
+# 注意：本机特定值通过环境变量注入，不在代码中硬编码
+FORBIDDEN = [
+    # === 本机绝对路径（特定值来自环境变量） ===
+    (_PROJECT_PATH,                                                '本机项目绝对路径',                 'BLOCKER'),
+    (_USER_PATH_ROOT,                                              'Windows用户目录',                  'BLOCKER'),
+
+    # === 个人标识（特定值来自环境变量） ===
+    (_USERNAME_PATTERN,                                            'Windows用户名',                    'BLOCKER'),
+
+    # === 联系方式 ===
+    (re.compile(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'), '邮箱地址',                         'BLOCKER'),
+
+    # === 敏感凭据 ===
+    (re.compile(r'(?i)(api[_-]?key|api[_-]?secret|access[_-]?token|auth[_-]?token|private[_-]?key)\s*[:=]\s*["\'][A-Za-z0-9_\-]{8,}["\']'),
+                                                                   '疑似API凭据硬编码',                  'BLOCKER'),
+    (re.compile(r'(?i)(password|passwd|pwd)\s*[:=]\s*["\'][^"\']+["\']'), '疑似密码硬编码',             'BLOCKER'),
+    (re.compile(r'(?i)\b(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36,}\b'), 'GitHub个人访问令牌',              'BLOCKER'),
+
+    # === 环境文件 ===
+    (re.compile(r'\.env$'),                                        '.env文件',                          'BLOCKER'),
+]
+
+# 已知安全占位符 —— 这些命中不报
+KNOWN_PLACEHOLDERS = [
+    re.compile(r'C:/Users/X\b'),        # retrospect 中的转义层级示例
+    re.compile(r'C:\\Users\\X\b'),
+]
+
+
+def _is_excluded_placeholder(line: str) -> bool:
+    """判断整行是否仅是已知安全占位符的合法使用。"""
+    return any(p.search(line) for p in KNOWN_PLACEHOLDERS)
+
+
+def get_tracked_files() -> list[str]:
+    """返回 git 追踪的文件列表（相对路径）。优先用 git add --dry-run。"""
+    # git add --dry-run 最可靠 —— 它就是 git 实际会追踪的文件集合
+    result = subprocess.run(
+        ['git', 'add', '--dry-run', '.'],
+        capture_output=True, text=True, cwd=str(PROJECT_ROOT),
+        encoding='utf-8', errors='replace'
+    )
+    lines = result.stdout.strip().split('\n')
+    files = []
+    for line in lines:
+        if line.startswith("add '") and line.endswith("'"):
+            files.append(line[5:-1])
+        elif line.startswith('add "') and line.endswith('"'):
+            files.append(line[5:-1])
+    return files
+
+
+def scan_file(filepath: str, quiet: bool) -> list[tuple[int, str, str, str]]:
+    """扫描单个文件，返回命中列表 [(行号, 行内容, 规则名, 严重度), ...]."""
+    hits = []
+    full_path = PROJECT_ROOT / filepath
+
+    # 跳过二进制/大文件
+    if filepath.endswith(('.docx', '.png', '.jpg', '.emf', '.pdf', '.svg', '.pyc')):
+        return hits
+
+    try:
+        with open(full_path, 'r', encoding='utf-8', errors='replace') as f:
+            lines = f.readlines()
+    except (OSError, UnicodeDecodeError):
+        return hits
+
+    for lineno, line in enumerate(lines, 1):
+        if _is_excluded_placeholder(line):
+            continue
+        for pattern, rule_name, severity in FORBIDDEN:
+            if pattern.search(line):
+                hits.append((lineno, line.rstrip('\n'), rule_name, severity))
+
+    return hits
+
+
+def main():
+    quiet = '--quiet' in sys.argv
+
+    if '--list' in sys.argv:
+        print("当前禁止规则：")
+        for _, name, sev in FORBIDDEN:
+            print(f"  [{sev}] {name}")
+        print(f"\n已知占位符（不触发）：")
+        for p in KNOWN_PLACEHOLDERS:
+            print(f"  {p.pattern}")
+        return 0
+
+    if not quiet:
+        print("=" * 60)
+        print("pre_push_check —— 发布前机械闸门")
+        print(f"项目: {PROJECT_ROOT}")
+        print("=" * 60)
+
+    # 获取 git 追踪文件
+    tracked = get_tracked_files()
+    if not quiet:
+        print(f"\n扫描范围: {len(tracked)} 个 git 追踪文件")
+        print(f"禁止规则: {len(FORBIDDEN)} 条\n")
+
+    all_hits: dict[str, list] = {}  # filepath -> hits
+    total = 0
+    blocker_count = 0
+
+codex
+我已经核对到新版实际文件确实约 70 行，且比摘要多两类细节：`reference_files.md` 的“人类标注价值”说明，以及末尾生成模型/日期。这两处会影响“必要性”和“易变信息”的评价。
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'git status --short' in E:\workspace\projects\AI协作项目全生命周期框架
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'git log --oneline --decorate --all -n 10' in E:\workspace\projects\AI协作项目全生命周期框架
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$i=0; Get-Content -LiteralPath '"'CLAUDE.md' -Encoding UTF8 | ForEach-Object { "'$i++; '"'{0,3}: {1}' -f "'$i, $_ }' in E:\workspace\projects\AI协作项目全生命周期框架
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -LiteralPath 'VERSION' -Encoding UTF8 -Raw" in E:\workspace\projects\AI协作项目全生命周期框架
+ succeeded in 164ms:
+ M CLAUDE.md
+?? _reviews/codex_claude_md_methodology_review_20260627.txt
+?? _reviews/prompts/claude_md_methodology_review_prompt_20260627.md
+?? _reviews/qwen_claude_md_methodology_review_20260627.txt
+
+ succeeded in 165ms:
+615c142 (HEAD -> master, origin/master) 更新项目状态至已发布 + 刷新关键文件索引
+dcac073 初始提交：v1.6.4
+
+ succeeded in 161ms:
+1.6.4
+
+
+ succeeded in 175ms:
+  1: # CLAUDE.md — AI协作项目全生命周期框架
+  2: 
+  3: ## Agent 边界
+  4: - **可派**：按框架 SOP 执行审查/试读/试跑；按 §8.8 S/M/L 分档执行闭合；按 §1.7 原则评估新增内容是否应外挂
+  5: - **禁止**：修改核心机制（未经试跑回写）；OPEN 项最终裁决；框架级成熟度评估独立复核（需异后端）；GitHub 发布执行
+  6: - **审查独立性硬约束**：禁止用框架编写时的同一后端模型审查框架（违反 §9.2）——同一后端换 CLI 壳=伪独立。已验证可用：Codex GPT-5.5 / Qwen Qwen3.7-Max / Kimi Kimi-K2.7-Code / ZCode GLM-5.2
+  7: 
+  8: ## 环境与命令
+  9: - **运行环境**：Windows 11 + Git Bash；Python 3.12；Node.js（mmdc 需要）；pandoc（DOCX 生成）；OpenCC（正體中文转换）
+ 10: - **Python 中文脚本必须设** `PYTHONIOENCODING=utf-8`，路径全部用正斜杠
+ 11: - 关键命令：
+ 12:   ```bash
+ 13:   bash check.sh                      # 发布前机械闸门（P0 门，推荐入口）
+ 14:   python pre_push_check.py           # 同上，需手动设环境变量
+ 15:   python verify_version_consistency.py --skip-archive  # 全项目版本一致性验证
+ 16:   python _workflows/regenerate_docx.py    # 全量重生成 .docx（pandoc + Mermaid）
+ 17:   python _workflows/regenerate_inventory.py  # 重生成 inventory.csv
+ 18:   ```
+ 19: - DOCX 生成管道详情见 `_workflows/` 下 `sync_v16*.py` 和 `regenerate_docx.py`；翻译管道见 `_workflows/i18n/`
+ 20: - 版本号单一事实源：`VERSION` 文件；主文档 §14 为完整 edit_history。勿在 CLAUDE.md 中维护版本号副本
+ 21: 
+ 22: ## 快速恢复
+ 23: 按顺序先读：
+ 24: 1. 本文件（CLAUDE.md）
+ 25: 2. `project_status.md` ——上次会话做了什么、当前待办、已知遗留问题（Claude 从代码文件中不可推导）
+ 26: 3. 主文档 §1.4–§1.7 ——使用强度分档 + 死亡判据 + OPEN 项 + §1.7 最小核心原则
+ 27: 4. `_protocols-and-tools/框架级成熟度评估表.md` ——了解各部分成熟度，避免高估不稳定组件
+ 28: - 需要定位特定文件时：`reference_files.md`（人类标注版文件索引，标注了每个文件"为什么重要"——Glob 可列文件名，但给不了这个判断）
+ 29: 
+ 30: ## 停止条件
+ 31: - **新增 [Sp] 节或修改核心机制** → 须先经过 ≥1 次试跑验证，不可仅凭方法论提取就写入。v1.5.1 冻结期教训："加复杂度比减复杂度容易"
+ 32: - **不用作者模型自审框架**（违反 §9.2 独立性）
+ 33: - **不混淆编辑者与审查者角色**——编辑判断仍需异后端独立复核
+ 34: - **OPEN-4（试读计时）或 OPEN-1（人类专家 verify）未确认前** → 不启动大规模第二次试跑
+ 35: - **三件套（.md / .json / .docx）任一件修改后** → 必须同步更新另外两件 + 触发 ≥1 轮异后端交叉验证
+ 36: - **不要用 `_protocols-and-tools/import_integrity_check.py`** ——经审查认定不可靠。正确工具：`pyflakes` / `ruff`
+ 37: 
+ 38: ## 已知坑位
+ 39: 
+ 40: ### 易误解概念
+ 41: - **"冻结期"已解除**（2026-06-16 Protocol 3 完成）——但"谨慎加复杂度"的教训仍适用
+ 42: - **"使用强度分档"（§1.4 A/B/C）≠ "项目规模分档"（§8.8 S/M/L）**——两个正交维度，用完不能互换
+ 43: - **"独立审查"双轴定义**（§9.2）：后端模型不同 **×** 上下文隔离，两者必须同时满足。审了作者 memory/CLAUDE.md = 上下文未隔离 = [SEMI] 或 [NON]
+ 44: - **"Claude"在 provenance 上下文中 = CLI 壳名**，不是后端模型——后端需当场记录，不可事后恢复
+ 45: - **§1.7 "最小核心 + 示例外挂"存在自反风险**——框架自身是否遵守了这一原则尚无独立验证
+ 46: 
+ 47: ### 易误操作
+ 48: - **标识/路径清理仅限发布包**：`.gitignore` 定义了发布边界。`../开源发布准备/` 和 `../_attic/` 不在发布范围内，无需清理
+ 49: - **OPEN 项状态变更只改 §1.6 一处**（单一事实源原则）
+ 50: - **所有编辑必须记录 provenance**（编辑者模型 + CLI 壳名 + 日期 + 独立性级别）→ 写入主文档 §14 和 JSON `edit_history`
+ 51: - **主文档和主 JSON 须同步更新**——JSON 是手工维护的结构化镜像（非全量生成），每版需新建 sync 脚本或手工补入。历史：v1.6.2–v1.6.4 的 .json sync 落后于 .docx sync，靠事后脚本补回
+ 52: - **Mermaid 渲染 PNG 不带 DPI 元数据**——Word 默认 96 DPI 致 ~3× 拉伸截断。生成后须注入 300 DPI
+ 53: - 归档旧文件时须同步更新 README.md / reference_files.md / inventory.csv 中的交叉引用
+ 54: 
+ 55: ## 跨项目行为制约
+ 56: 每条是框架中特定节的操作限制——来源项目的质量直接约束该节的可升级性：
+ 57: - **Evolver（混淆代码项目）** → 四个 [Sp] 节（§3.7.0 / §3.7.4.1 / §9.7 / §9.8）来源可信度低 → **禁止**未经试跑将其从 [Sp] 升级，即使有新证据也要从 [Sp] → [E-] 起步
+ 58: - **PocketFlow / prompt-tdd 实验链** → §6.3.2 [E-] ceiling-limited + 附录 H 反模式 → 修改这些节时遵守已有证据上限，不可超出实验覆盖范围
+ 59: - **BDC2026（反面案例）** → §7 会话交接 + §8 风险依赖的设计依据 → 不可弱化这两节，不可将 "会话交接缺失致败" 的教训降级为可选
+ 60: - **方法论提取 / Protocol 3** → "试跑 → 回写"是框架核心机制 → 所有机制变更必须遵循此模式
+ 61: 
+ 62: ## 更新协议
+ 63: - **触发条件**：试跑完成后 / OPEN 项状态变更 / 外部方法论提取写入 / 三件套任一件更新 / README 版本号或统计区变更
+ 64: - **更新后必做**：更新本文件末尾日期 + README.md 版本号和统计区 + JSON `metadata` 版本/日期
+ 65: - **新增内容优先外挂**（附录或独立文件），不直接进核心章节——§1.7 自反要求
+ 66: - **重大版本变更后** → 触发 ≥1 轮异后端交叉验证
+ 67: - 所有编辑遵守 §14 provenance 记录纪律
+ 68: 
+ 69: ---
+ 70: 最后更新：2026-06-27
+ 71: 生成模型：DeepSeek-V4-Pro（via Claude Code CLI）
+
+codex
+我还会对比一下 Git 里上一版的 `CLAUDE.md`，这样可以判断哪些“删掉的上下文”是真删，哪些只是被压缩或迁移了。
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'git show HEAD:CLAUDE.md' in E:\workspace\projects\AI协作项目全生命周期框架
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'git diff -- CLAUDE.md' in E:\workspace\projects\AI协作项目全生命周期框架
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'git show dcac073:CLAUDE.md' in E:\workspace\projects\AI协作项目全生命周期框架
+ succeeded in 159ms:
+# CLAUDE.md — AI协作项目全生命周期框架
+
+## 项目定位
+- 一句话定义：AI协作项目的元层次方法框架——描述"如何用AI协作跑完一个完整项目"的七层+四跨层关切+Dev Log产物体系，不是某个具体项目的说明书。
+- 当前状态：active（v1.6.4，冻结已解除；prompt-tdd A1/A2/A3 三实验链全部写回+M8/M10证据标注订正，2026-06-24）
+- 状态置信度：高
+- 适合交给 agent 的任务：按框架协议执行已设计的审查/试读/试跑；根据框架SOP执行独立审查；按§8.8分档执行项目闭合流程；按§1.7最小核心+示例外挂原则评估新增内容是否应外挂。
+- 不适合交给 agent 猜测的事项：修改框架核心机制（需先经过试跑验证）；OPEN项的最终裁决；框架级成熟度评估的独立复核；GitHub公开发布的执行决策。
+
+## 证据来源
+- 生成日期：2026-06-15（原始）；2026-06-24 更新——M8/M10证据标注订正([B+/M2]→[B+/M1*])+三件套同步(DOCX重生成+JSON更新+zh-Hant同步)，经 Codex GPT-5.5+Qwen qwen3.7-max 双后端独立审查；2026-06-23 目录地图/计数结构校正（Claude Opus 4.8 via Claude Code CLI）
+- 生成模型：DeepSeek-V4-Pro（via Claude Code CLI）
+- 已读取的主要文件：
+  - `AI协作项目全生命周期框架.md`（主文档，约 16 万字符/约 310KB，v1.6.4，含 6 Mermaid 图；精确统计随版本变动不在此维护）
+  - `AI协作项目全生命周期框架.json`（主配套，~170KB，v1.6.4）
+  - `AI协作项目全生命周期框架.docx`（docx版，~816KB，v1.6.4）
+  - `_protocols-and-tools/框架级成熟度评估表.md` + `.json`（v0.4，Protocol 3试跑后更新）
+  - `_protocols-and-tools/methodological-review-sop.md` + `.json`（独立审查SOP v1.0.4）
+  - `_protocols-and-tools/meta-audit-checklist.md` + `.json`（元审查合规清单 v1.0.4+，75项）
+  - `_reviews/` 子目录（多后端独立审查报告 + 交叉验证记录，递归含 prompts/last_messages/retrospects/）
+  - `_research/` 子目录（对标分析/案例研究 + drafts/废弃草案）
+- 高风险未确认项：
+  - 框架已通过2次真实试跑（Protocol 3 + prompt-tdd A1/A2/A3 三实验链）——仍待多类型项目验证
+  - OPEN-4试读计时未执行（需找非设计者）
+  - 四个[Sp]节（§3.7.0/§3.7.4.1/§9.7/§9.8）的行为有效性——均标"零数据"
+  - GitHub公开发布执行——P0阻断项9项/P1质量项9项/P2增强项6项
+
+## 快速恢复
+- 先读：
+  1. 本文件（CLAUDE.md）——2分钟内了解项目全貌
+  2. `AI协作项目全生命周期框架.md` §1.4-§1.7 ——使用强度分档+死亡判据+OPEN项+框架自身架构原则
+  3. `_protocols-and-tools/框架级成熟度评估表.md`（v0.4）——了解框架各部分成熟度
+- 关键入口：
+  - 主文档：`AI协作项目全生命周期框架.md`（约 310KB，v1.6.4）
+  - 主配套JSON：`AI协作项目全生命周期框架.json`（~170KB，v1.6.4）
+  - 独立审查SOP：`_protocols-and-tools/methodological-review-sop.md`（v1.0.4）
+  - 元审查清单：`_protocols-and-tools/meta-audit-checklist.md`（v1.0.4+，75项）
+  - 成熟度评估表：`_protocols-and-tools/框架级成熟度评估表.md` + `.json`（v0.4）
+  - 阅读导航：主文档 §9.9（☆☆☆→★★★难度标注+3条阅读路径）
+  - 反模式清单：主文档 附录H（4条反模式）
+
+## 目录地图
+- 核心文件：
+  - `AI协作项目全生命周期框架.md` —— 主框架文档（~313KB，v1.6.4）
+  - `AI协作项目全生命周期框架.json` —— 主配套（~170KB，v1.6.4）
+  - `AI协作项目全生命周期框架.docx` —— docx版（~816KB，v1.6.4）
+  - `README.md` —— 结构导航+项目简介
+  - `CLAUDE.md` —— 本文件
+  - `VERSION` —— 版本号（1.6.4）
+  - `project.yaml` —— DOCX管道项目配置
+  - `project_status.md` —— 项目状态追踪
+  - `reference_files.md` —— 关键文件索引
+- 协议与工具 → `_protocols-and-tools/`：
+  - `meta-audit-checklist.{md,json}` —— 元审查合规清单 v1.0.4+（75项）
+  - `methodological-review-sop.{md,json}` —— 独立审查SOP v1.0.4
+  - `框架级成熟度评估表.{md,json}` —— 成熟度表 v0.4
+  - `AI协作项目全生命周期框架_OPEN4试读计时协议.{md,json}` —— v1.6.3修订
+  - `AI协作项目全生命周期框架_人类专家verify包.{md,json}` —— v1.1
+  - `外部依赖登记表.{md,json}` —— v1.6.3新增
+  - `可调参数索引.md` —— v1.6.3新增
+- 审查 → `_reviews/`（多后端独立审查报告 + 交叉验证记录 + prompts/ + last_messages/ + retrospects/）
+- 研究 → `_research/`（案例研究/对标分析 + drafts/废弃草案）
+- 工作流 → `_workflows/`（构建+同步脚本+workflow定义+翻译管道 i18n/）
+- 归档 → `_archive/`（历史封存，含 docx_legacy_scripts/ DOCX 旧版脚本归档）
+
+## 版本脉络
+- v1.0-v1.2（2026-06-10~11）：七层框架+Dev Log产物体系，经三模型审查链校准
+- v1.3-v1.4（2026-06-13）：漂移检测层（detector-only哲学，来自headroom CacheAligner）；三轮审查闭合
+- v1.5-v1.5.1（2026-06-14）：模式8/9+证据分类体系+四个[Sp]节（Evolver），进入冻结期
+- **v1.5.2（2026-06-16，冻结解除）**：Protocol 3首次真实试跑回写——7项改进，首次实现"试跑→回写"闭环
+- **v1.5.3（2026-06-18）**：PocketFlow A类资产写回——§1.7最小核心+§9.9阅读导航+附录H反模式清单
+- **v1.6（2026-06-20）**：证据体系升级——§9.6.1二维表示+§9.10三层模板+§4.1.1.1对照实验检查清单+§2.6维护流程+§1.8诚实声明
+- **v1.6.2（2026-06-21）**：被动观测机制——§7.7被动观测+§9.11跨层可观测性；首次满足§2.6 Minor升级审查门
+- **v1.6.3（2026-06-21）**：维护流程补全——§2.6规则退役判定+外部依赖登记表+可调参数索引+§1.8扩展至10条
+- **v1.6.4（2026-06-22）**：prompt-tdd A1 Flow-as-Node实验写回——§6.3.2 [E-] ceiling-limited，7轮双后端审查链闭合，三实验链（A1+A2+A3）全部写回
+- 版本升级模式：每个版本由外部项目方法论提取→框架吸收驱动，非框架自省膨胀。v1.5.2打破单向流动实现闭环，v1.5.3起采用多后端交叉验证提升提取质量
+
+## OPEN项速览（§1.6）
+| ID | 内容 | 严重性 | 状态 |
+|----|------|--------|------|
+| OPEN-1 | 连续漂移/HG频率-覆盖缺口 | 高→中 | 已操作化，待人类专家裁决 |
+| OPEN-2 | 框架级死亡判据缺预登记基线 | 中→降低 | 基线已建立，待多项目验证 |
+| OPEN-3 | "提炼准确度"未评估（80→60分风险） | 中 | 有首次量化数据，待更多样本 |
+| OPEN-4 | 最低上手时间未测（需非设计者试读） | 中 | 协议就绪，缺测试者 |
+| OPEN-5 | Closure缺项目规模分档 | 低-中 | 已关闭（v1.5.1 §8.8 S/M/L） |
+
+## 核心资产
+- 七层框架（L0 Spec → L-H Human Gate → L1 Prompt → L2 Loop → L3 Workflow → L4 Retrospect → L5 Closure）+ 四跨层关切（可复现性/评估度量/会话交接/风险依赖）
+- 证据分类体系：§9.6 [S]/[E]/[I]/[J]/[Sp]五级 + §9.6.1 二维表示（内部强度A-D×跨模型推广性M0-M3）
+- 漂移检测层：§3.7 五类信号+四级告警+规则退役自动化+闭环策展（detector-only哲学）
+- 使用强度分档：§1.4 最低强制版/默认版/完整版
+- 项目规模分档：§8.8 S/M/L三档闭合要求
+- Workflow模式库：§6.2 模式1-9（含Pipeline DAG和Structured Multi-Role Review）
+- 分级逃生口：§4.3 L1检索恢复/L2同源降级/L3停止报告（ETF R5事故驱动）
+- 多轮多后端独立审查编排：§9.2 触发条件/维度互补/后端切换判据/盲读优先
+- §1.7「最小核心+示例外挂」[Sp] ——核心vs外挂三层模型+4种反模式
+- §9.9「阅读导航与难度分层」[Sp] ——☆☆☆→★★★标注+3条阅读路径
+- 附录H「反模式清单」——4条集中收纳
+- §7.7「被动观测」[C+/N/A] ——8渠道扩展分类框架+Failure Space 10种失效模式
+- §9.11「跨层可观测性设计」[Sp] ——L0-L5各层关切+3原则
+- §6.3.2「Flow-as-Node嵌套工作流」[E-] ceiling-limited ——Tier 0负证据，7轮审查闭合
+- 独立审查SOP（`_protocols-and-tools/methodological-review-sop.md`）——可跨项目复用
+- 元审查合规清单（`_protocols-and-tools/meta-audit-checklist.md`，75项）——可fork到其他方法论项目
+
+## 停止条件 / 不要做
+- 新增[Sp]节需先经过至少1次试跑验证——冻结已解除但"加复杂度比减复杂度容易"的教训仍适用
+- 不要修改框架核心机制而未经过试跑回写——v1.5.2模式是正例
+- 不要用作者模型自审框架——违反§9.2独立性要求。已验证渠道：Codex GPT-5.5 / Qwen Qwen3.7-Max / Kimi Kimi-K2.7-Code / ZCode GLM-5.2
+- 不要在未确认OPEN-4/OPEN-1状态前启动大规模第二次试跑
+- 不要混淆编辑者和审查者角色——编辑判断仍需独立复核
+- 框架三件套（.md/.json/.docx）必须同步更新
+
+## 已知坑位
+- 容易误读的概念：
+  - "冻结期"已解除（2026-06-16）——但"加复杂度比减复杂度容易"的教训仍适用
+  - "使用强度分档"（§1.4 A/B/C）和"项目规模分档"（§8.8 S/M/L）是正交的两个维度
+  - "独立审查"按§9.2定义为后端模型不同×上下文隔离的双轴独立性——同一后端换壳=伪独立，审了作者memory/CLAUDE.md=上下文未隔离=[SEMI]或[NON]
+  - "[SEMI-ED]"是特殊独立性级别——编辑独立于内容创作但指令由用户提供，比[IND]弱得多
+  - "Claude"在provenance上下文中=CLI壳名，不是后端模型——后端需当场记录，不可事后恢复
+  - §1.7"最小核心+示例外挂"存在自反风险——框架自身是否遵守了这一原则尚无独立验证
+- 容易误操作的路径：
+  - **标识/路径清理仅限发布包**：`.gitignore` 定义了什么会进 git。仅此目录内未被排除的文件需要清理个人标识和绝对路径。以下同级目录不在发布范围内，无需清理：`../开源发布准备/`（发布准备工作）、`../_attic/`（阁楼备份）
+  - **主文档和主JSON必须同步更新**——历史上v1.4时JSON曾停更
+  - **OPEN项的状态变更只需改§1.6一处**（单一事实源原则）
+  - **所有编辑必须记录provenance**——写入JSON的`edit_history`和主文档§14
+  - 归档旧版文件时需同步更新交叉引用
+  - **不要用`import_integrity_check.py`**——经审查认定不可靠，正确做法：用`pyflakes`/`ruff`
+  - 不要用作者模型自审框架
+- 需要用户确认的决策：
+  - OPEN-4试读计时：找非设计者测试者（唯一外部依赖）
+  - OPEN-1人类专家verify：找零卷入人类专家
+  - 第二次试跑选哪个项目（需多类型验证）
+  - GitHub公开发布执行时机
+
+## 跨项目关联
+- 形态匹配ETF项目 —— 七层框架基础结构+S1-S10组件清单+分级逃生口（ETF R5事故）
+- 并购重组案例研究（已归档） —— 八阶段流水线经验→Workflow模式设计
+- LIT项目 —— AI自评不可靠论据+OPEN-3触发源
+- BDC2026项目 —— 会话交接+风险依赖反面案例
+- 多模型对照实验项目 —— 独立审查裸环境checklist+provenance纪律
+- GitNexus分析（已归档） —— 模式8/9+证据分类体系实战验证
+- Evolver分析（已归档） —— 四个[Sp]节来源（低质量源的方法论提取风险）
+- Small_Scale/PilotDeck分析（已归档） —— v1.4转化+训练-评估配置对齐
+- headroom工具 —— detector-only哲学（CacheAligner对标）
+- 方法论提取项目（已归档，Protocol 3试跑） —— 首次"试跑→回写"闭环+异后端审查互补量化
+- PocketFlow/prompt-tdd项目 —— v1.5.3-v1.6.4 全部写回来源
+
+## 更新协议
+- 何时更新：
+  - 每次试跑完成后——回写成熟度评估表+本文件相关节
+  - OPEN项状态变更时——同步更新§1.6和本文件
+  - 外部项目方法论提取→框架吸收时——更新版本脉络+核心资产+跨项目关联
+  - 三件套（.md/.json/.docx）任一件更新后——运行同步+异后端交叉验证
+  - README.md 版本号/统计/目录结构变更时——同步更新 README.md
+- 更新规则：
+  - 更新后必须同步更新本文件"证据来源"和"生成日期"，以及 README.md 版本号和统计区
+  - 新增[Sp]节或机制需先经过至少1次试跑验证，不可仅凭方法论提取就写入
+  - 新增内容应优先考虑放入附录或外挂，而非直接进入核心章节——§1.7的自反要求
+  - JSON配套文件的metadata需同步反映版本/日期变更
+  - 所有编辑必须记录provenance（编辑者模型+CLI壳名+日期+独立性级别）
+  - 重大版本变更后应触发至少一轮异后端交叉验证
+- 冻结期历史：v1.5.1冻结期（2026-06-14~16）已由Protocol 3完成解除。核心教训——"加复杂度比减复杂度容易"——已转化为§1.7原则和本协议的试跑前置要求
+
+ succeeded in 163ms:
+# CLAUDE.md — AI协作项目全生命周期框架
+
+## 项目定位
+- 一句话定义：AI协作项目的元层次方法框架——描述"如何用AI协作跑完一个完整项目"的七层+四跨层关切+Dev Log产物体系，不是某个具体项目的说明书。
+- 当前状态：active（v1.6.4，冻结已解除；prompt-tdd A1/A2/A3 三实验链全部写回+M8/M10证据标注订正，2026-06-24）
+- 状态置信度：高
+- 适合交给 agent 的任务：按框架协议执行已设计的审查/试读/试跑；根据框架SOP执行独立审查；按§8.8分档执行项目闭合流程；按§1.7最小核心+示例外挂原则评估新增内容是否应外挂。
+- 不适合交给 agent 猜测的事项：修改框架核心机制（需先经过试跑验证）；OPEN项的最终裁决；框架级成熟度评估的独立复核；GitHub公开发布的执行决策。
+
+## 证据来源
+- 生成日期：2026-06-15（原始）；2026-06-24 更新——M8/M10证据标注订正([B+/M2]→[B+/M1*])+三件套同步(DOCX重生成+JSON更新+zh-Hant同步)，经 Codex GPT-5.5+Qwen qwen3.7-max 双后端独立审查；2026-06-23 目录地图/计数结构校正（Claude Opus 4.8 via Claude Code CLI）
+- 生成模型：DeepSeek-V4-Pro（via Claude Code CLI）
+- 已读取的主要文件：
+  - `AI协作项目全生命周期框架.md`（主文档，约 16 万字符/约 310KB，v1.6.4，含 6 Mermaid 图；精确统计随版本变动不在此维护）
+  - `AI协作项目全生命周期框架.json`（主配套，~170KB，v1.6.4）
+  - `AI协作项目全生命周期框架.docx`（docx版，~816KB，v1.6.4）
+  - `_protocols-and-tools/框架级成熟度评估表.md` + `.json`（v0.4，Protocol 3试跑后更新）
+  - `_protocols-and-tools/methodological-review-sop.md` + `.json`（独立审查SOP v1.0.4）
+  - `_protocols-and-tools/meta-audit-checklist.md` + `.json`（元审查合规清单 v1.0.4+，75项）
+  - `_reviews/` 子目录（多后端独立审查报告 + 交叉验证记录，递归含 prompts/last_messages/retrospects/）
+  - `_research/` 子目录（对标分析/案例研究 + drafts/废弃草案）
+- 高风险未确认项：
+  - 框架已通过2次真实试跑（Protocol 3 + prompt-tdd A1/A2/A3 三实验链）——仍待多类型项目验证
+  - OPEN-4试读计时未执行（需找非设计者）
+  - 四个[Sp]节（§3.7.0/§3.7.4.1/§9.7/§9.8）的行为有效性——均标"零数据"
+  - GitHub公开发布执行——P0阻断项9项/P1质量项9项/P2增强项6项
+
+## 快速恢复
+- 先读：
+  1. 本文件（CLAUDE.md）——2分钟内了解项目全貌
+  2. `AI协作项目全生命周期框架.md` §1.4-§1.7 ——使用强度分档+死亡判据+OPEN项+框架自身架构原则
+  3. `_protocols-and-tools/框架级成熟度评估表.md`（v0.4）——了解框架各部分成熟度
+- 关键入口：
+  - 主文档：`AI协作项目全生命周期框架.md`（约 310KB，v1.6.4）
+  - 主配套JSON：`AI协作项目全生命周期框架.json`（~170KB，v1.6.4）
+  - 独立审查SOP：`_protocols-and-tools/methodological-review-sop.md`（v1.0.4）
+  - 元审查清单：`_protocols-and-tools/meta-audit-checklist.md`（v1.0.4+，75项）
+  - 成熟度评估表：`_protocols-and-tools/框架级成熟度评估表.md` + `.json`（v0.4）
+  - 阅读导航：主文档 §9.9（☆☆☆→★★★难度标注+3条阅读路径）
+  - 反模式清单：主文档 附录H（4条反模式）
+
+## 目录地图
+- 核心文件：
+  - `AI协作项目全生命周期框架.md` —— 主框架文档（~313KB，v1.6.4）
+  - `AI协作项目全生命周期框架.json` —— 主配套（~170KB，v1.6.4）
+  - `AI协作项目全生命周期框架.docx` —— docx版（~816KB，v1.6.4）
+  - `README.md` —— 结构导航+项目简介
+  - `CLAUDE.md` —— 本文件
+  - `VERSION` —— 版本号（1.6.4）
+  - `project.yaml` —— DOCX管道项目配置
+  - `project_status.md` —— 项目状态追踪
+  - `reference_files.md` —— 关键文件索引
+- 协议与工具 → `_protocols-and-tools/`：
+  - `meta-audit-checklist.{md,json}` —— 元审查合规清单 v1.0.4+（75项）
+  - `methodological-review-sop.{md,json}` —— 独立审查SOP v1.0.4
+  - `框架级成熟度评估表.{md,json}` —— 成熟度表 v0.4
+  - `AI协作项目全生命周期框架_OPEN4试读计时协议.{md,json}` —— v1.6.3修订
+  - `AI协作项目全生命周期框架_人类专家verify包.{md,json}` —— v1.1
+  - `外部依赖登记表.{md,json}` —— v1.6.3新增
+  - `可调参数索引.md` —— v1.6.3新增
+- 审查 → `_reviews/`（多后端独立审查报告 + 交叉验证记录 + prompts/ + last_messages/ + retrospects/）
+- 研究 → `_research/`（案例研究/对标分析 + drafts/废弃草案）
+- 工作流 → `_workflows/`（构建+同步脚本+workflow定义+翻译管道 i18n/）
+- 归档 → `_archive/`（历史封存，含 docx_legacy_scripts/ DOCX 旧版脚本归档）
+
+## 版本脉络
+- v1.0-v1.2（2026-06-10~11）：七层框架+Dev Log产物体系，经三模型审查链校准
+- v1.3-v1.4（2026-06-13）：漂移检测层（detector-only哲学，来自headroom CacheAligner）；三轮审查闭合
+- v1.5-v1.5.1（2026-06-14）：模式8/9+证据分类体系+四个[Sp]节（Evolver），进入冻结期
+- **v1.5.2（2026-06-16，冻结解除）**：Protocol 3首次真实试跑回写——7项改进，首次实现"试跑→回写"闭环
+- **v1.5.3（2026-06-18）**：PocketFlow A类资产写回——§1.7最小核心+§9.9阅读导航+附录H反模式清单
+- **v1.6（2026-06-20）**：证据体系升级——§9.6.1二维表示+§9.10三层模板+§4.1.1.1对照实验检查清单+§2.6维护流程+§1.8诚实声明
+- **v1.6.2（2026-06-21）**：被动观测机制——§7.7被动观测+§9.11跨层可观测性；首次满足§2.6 Minor升级审查门
+- **v1.6.3（2026-06-21）**：维护流程补全——§2.6规则退役判定+外部依赖登记表+可调参数索引+§1.8扩展至10条
+- **v1.6.4（2026-06-22）**：prompt-tdd A1 Flow-as-Node实验写回——§6.3.2 [E-] ceiling-limited，7轮双后端审查链闭合，三实验链（A1+A2+A3）全部写回
+- 版本升级模式：每个版本由外部项目方法论提取→框架吸收驱动，非框架自省膨胀。v1.5.2打破单向流动实现闭环，v1.5.3起采用多后端交叉验证提升提取质量
+
+## OPEN项速览（§1.6）
+| ID | 内容 | 严重性 | 状态 |
+|----|------|--------|------|
+| OPEN-1 | 连续漂移/HG频率-覆盖缺口 | 高→中 | 已操作化，待人类专家裁决 |
+| OPEN-2 | 框架级死亡判据缺预登记基线 | 中→降低 | 基线已建立，待多项目验证 |
+| OPEN-3 | "提炼准确度"未评估（80→60分风险） | 中 | 有首次量化数据，待更多样本 |
+| OPEN-4 | 最低上手时间未测（需非设计者试读） | 中 | 协议就绪，缺测试者 |
+| OPEN-5 | Closure缺项目规模分档 | 低-中 | 已关闭（v1.5.1 §8.8 S/M/L） |
+
+## 核心资产
+- 七层框架（L0 Spec → L-H Human Gate → L1 Prompt → L2 Loop → L3 Workflow → L4 Retrospect → L5 Closure）+ 四跨层关切（可复现性/评估度量/会话交接/风险依赖）
+- 证据分类体系：§9.6 [S]/[E]/[I]/[J]/[Sp]五级 + §9.6.1 二维表示（内部强度A-D×跨模型推广性M0-M3）
+- 漂移检测层：§3.7 五类信号+四级告警+规则退役自动化+闭环策展（detector-only哲学）
+- 使用强度分档：§1.4 最低强制版/默认版/完整版
+- 项目规模分档：§8.8 S/M/L三档闭合要求
+- Workflow模式库：§6.2 模式1-9（含Pipeline DAG和Structured Multi-Role Review）
+- 分级逃生口：§4.3 L1检索恢复/L2同源降级/L3停止报告（ETF R5事故驱动）
+- 多轮多后端独立审查编排：§9.2 触发条件/维度互补/后端切换判据/盲读优先
+- §1.7「最小核心+示例外挂」[Sp] ——核心vs外挂三层模型+4种反模式
+- §9.9「阅读导航与难度分层」[Sp] ——☆☆☆→★★★标注+3条阅读路径
+- 附录H「反模式清单」——4条集中收纳
+- §7.7「被动观测」[C+/N/A] ——8渠道扩展分类框架+Failure Space 10种失效模式
+- §9.11「跨层可观测性设计」[Sp] ——L0-L5各层关切+3原则
+- §6.3.2「Flow-as-Node嵌套工作流」[E-] ceiling-limited ——Tier 0负证据，7轮审查闭合
+- 独立审查SOP（`_protocols-and-tools/methodological-review-sop.md`）——可跨项目复用
+- 元审查合规清单（`_protocols-and-tools/meta-audit-checklist.md`，75项）——可fork到其他方法论项目
+
+## 停止条件 / 不要做
+- 新增[Sp]节需先经过至少1次试跑验证——冻结已解除但"加复杂度比减复杂度容易"的教训仍适用
+- 不要修改框架核心机制而未经过试跑回写——v1.5.2模式是正例
+- 不要用作者模型自审框架——违反§9.2独立性要求。已验证渠道：Codex GPT-5.5 / Qwen Qwen3.7-Max / Kimi Kimi-K2.7-Code / ZCode GLM-5.2
+- 不要在未确认OPEN-4/OPEN-1状态前启动大规模第二次试跑
+- 不要混淆编辑者和审查者角色——编辑判断仍需独立复核
+- 框架三件套（.md/.json/.docx）必须同步更新
+
+## 已知坑位
+- 容易误读的概念：
+  - "冻结期"已解除（2026-06-16）——但"加复杂度比减复杂度容易"的教训仍适用
+  - "使用强度分档"（§1.4 A/B/C）和"项目规模分档"（§8.8 S/M/L）是正交的两个维度
+  - "独立审查"按§9.2定义为后端模型不同×上下文隔离的双轴独立性——同一后端换壳=伪独立，审了作者memory/CLAUDE.md=上下文未隔离=[SEMI]或[NON]
+  - "[SEMI-ED]"是特殊独立性级别——编辑独立于内容创作但指令由用户提供，比[IND]弱得多
+  - "Claude"在provenance上下文中=CLI壳名，不是后端模型——后端需当场记录，不可事后恢复
+  - §1.7"最小核心+示例外挂"存在自反风险——框架自身是否遵守了这一原则尚无独立验证
+- 容易误操作的路径：
+  - **标识/路径清理仅限发布包**：`.gitignore` 定义了什么会进 git。仅此目录内未被排除的文件需要清理个人标识和绝对路径。以下同级目录不在发布范围内，无需清理：`../开源发布准备/`（发布准备工作）、`../_attic/`（阁楼备份）
+  - **主文档和主JSON必须同步更新**——历史上v1.4时JSON曾停更
+  - **OPEN项的状态变更只需改§1.6一处**（单一事实源原则）
+  - **所有编辑必须记录provenance**——写入JSON的`edit_history`和主文档§14
+  - 归档旧版文件时需同步更新交叉引用
+  - **不要用`import_integrity_check.py`**——经审查认定不可靠，正确做法：用`pyflakes`/`ruff`
+  - 不要用作者模型自审框架
+- 需要用户确认的决策：
+  - OPEN-4试读计时：找非设计者测试者（唯一外部依赖）
+  - OPEN-1人类专家verify：找零卷入人类专家
+  - 第二次试跑选哪个项目（需多类型验证）
+  - GitHub公开发布执行时机
+
+## 跨项目关联
+- 形态匹配ETF项目 —— 七层框架基础结构+S1-S10组件清单+分级逃生口（ETF R5事故）
+- 并购重组案例研究（已归档） —— 八阶段流水线经验→Workflow模式设计
+- LIT项目 —— AI自评不可靠论据+OPEN-3触发源
+- BDC2026项目 —— 会话交接+风险依赖反面案例
+- 多模型对照实验项目 —— 独立审查裸环境checklist+provenance纪律
+- GitNexus分析（已归档） —— 模式8/9+证据分类体系实战验证
+- Evolver分析（已归档） —— 四个[Sp]节来源（低质量源的方法论提取风险）
+- Small_Scale/PilotDeck分析（已归档） —— v1.4转化+训练-评估配置对齐
+- headroom工具 —— detector-only哲学（CacheAligner对标）
+- 方法论提取项目（已归档，Protocol 3试跑） —— 首次"试跑→回写"闭环+异后端审查互补量化
+- PocketFlow/prompt-tdd项目 —— v1.5.3-v1.6.4 全部写回来源
+
+## 更新协议
+- 何时更新：
+  - 每次试跑完成后——回写成熟度评估表+本文件相关节
+  - OPEN项状态变更时——同步更新§1.6和本文件
+  - 外部项目方法论提取→框架吸收时——更新版本脉络+核心资产+跨项目关联
+  - 三件套（.md/.json/.docx）任一件更新后——运行同步+异后端交叉验证
+  - README.md 版本号/统计/目录结构变更时——同步更新 README.md
+- 更新规则：
+  - 更新后必须同步更新本文件"证据来源"和"生成日期"，以及 README.md 版本号和统计区
+  - 新增[Sp]节或机制需先经过至少1次试跑验证，不可仅凭方法论提取就写入
+  - 新增内容应优先考虑放入附录或外挂，而非直接进入核心章节——§1.7的自反要求
+  - JSON配套文件的metadata需同步反映版本/日期变更
+  - 所有编辑必须记录provenance（编辑者模型+CLI壳名+日期+独立性级别）
+  - 重大版本变更后应触发至少一轮异后端交叉验证
+- 冻结期历史：v1.5.1冻结期（2026-06-14~16）已由Protocol 3完成解除。核心教训——"加复杂度比减复杂度容易"——已转化为§1.7原则和本协议的试跑前置要求
+
+ succeeded in 160ms:
+diff --git a/CLAUDE.md b/CLAUDE.md
+index 3c39061..f14c63c 100644
+--- a/CLAUDE.md
++++ b/CLAUDE.md
+@@ -1,162 +1,71 @@
+ # CLAUDE.md — AI协作项目全生命周期框架
+ 
+-## 项目定位
+-- 一句话定义：AI协作项目的元层次方法框架——描述"如何用AI协作跑完一个完整项目"的七层+四跨层关切+Dev Log产物体系，不是某个具体项目的说明书。
+-- 当前状态：active（v1.6.4，冻结已解除；prompt-tdd A1/A2/A3 三实验链全部写回+M8/M10证据标注订正，2026-06-24）
+-- 状态置信度：高
+-- 适合交给 agent 的任务：按框架协议执行已设计的审查/试读/试跑；根据框架SOP执行独立审查；按§8.8分档执行项目闭合流程；按§1.7最小核心+示例外挂原则评估新增内容是否应外挂。
+-- 不适合交给 agent 猜测的事项：修改框架核心机制（需先经过试跑验证）；OPEN项的最终裁决；框架级成熟度评估的独立复核；GitHub公开发布的执行决策。
++## Agent 边界
++- **可派**：按框架 SOP 执行审查/试读/试跑；按 §8.8 S/M/L 分档执行闭合；按 §1.7 原则评估新增内容是否应外挂
++- **禁止**：修改核心机制（未经试跑回写）；OPEN 项最终裁决；框架级成熟度评估独立复核（需异后端）；GitHub 发布执行
++- **审查独立性硬约束**：禁止用框架编写时的同一后端模型审查框架（违反 §9.2）——同一后端换 CLI 壳=伪独立。已验证可用：Codex GPT-5.5 / Qwen Qwen3.7-Max / Kimi Kimi-K2.7-Code / ZCode GLM-5.2
+ 
+-## 证据来源
+-- 生成日期：2026-06-15（原始）；2026-06-24 更新——M8/M10证据标注订正([B+/M2]→[B+/M1*])+三件套同步(DOCX重生成+JSON更新+zh-Hant同步)，经 Codex GPT-5.5+Qwen qwen3.7-max 双后端独立审查；2026-06-23 目录地图/计数结构校正（Claude Opus 4.8 via Claude Code CLI）
+-- 生成模型：DeepSeek-V4-Pro（via Claude Code CLI）
+-- 已读取的主要文件：
+-  - `AI协作项目全生命周期框架.md`（主文档，约 16 万字符/约 310KB，v1.6.4，含 6 Mermaid 图；精确统计随版本变动不在此维护）
+-  - `AI协作项目全生命周期框架.json`（主配套，~170KB，v1.6.4）
+-  - `AI协作项目全生命周期框架.docx`（docx版，~816KB，v1.6.4）
+-  - `_protocols-and-tools/框架级成熟度评估表.md` + `.json`（v0.4，Protocol 3试跑后更新）
+-  - `_protocols-and-tools/methodological-review-sop.md` + `.json`（独立审查SOP v1.0.4）
+-  - `_protocols-and-tools/meta-audit-checklist.md` + `.json`（元审查合规清单 v1.0.4+，75项）
+-  - `_reviews/` 子目录（多后端独立审查报告 + 交叉验证记录，递归含 prompts/last_messages/retrospects/）
+-  - `_research/` 子目录（对标分析/案例研究 + drafts/废弃草案）
+-- 高风险未确认项：
+-  - 框架已通过2次真实试跑（Protocol 3 + prompt-tdd A1/A2/A3 三实验链）——仍待多类型项目验证
+-  - OPEN-4试读计时未执行（需找非设计者）
+-  - 四个[Sp]节（§3.7.0/§3.7.4.1/§9.7/§9.8）的行为有效性——均标"零数据"
+-  - GitHub公开发布执行——P0阻断项9项/P1质量项9项/P2增强项6项
++## 环境与命令
++- **运行环境**：Windows 11 + Git Bash；Python 3.12；Node.js（mmdc 需要）；pandoc（DOCX 生成）；OpenCC（正體中文转换）
++- **Python 中文脚本必须设** `PYTHONIOENCODING=utf-8`，路径全部用正斜杠
++- 关键命令：
++  ```bash
++  bash check.sh                      # 发布前机械闸门（P0 门，推荐入口）
++  python pre_push_check.py           # 同上，需手动设环境变量
++  python verify_version_consistency.py --skip-archive  # 全项目版本一致性验证
++  python _workflows/regenerate_docx.py    # 全量重生成 .docx（pandoc + Mermaid）
++  python _workflows/regenerate_inventory.py  # 重生成 inventory.csv
++  ```
++- DOCX 生成管道详情见 `_workflows/` 下 `sync_v16*.py` 和 `regenerate_docx.py`；翻译管道见 `_workflows/i18n/`
++- 版本号单一事实源：`VERSION` 文件；主文档 §14 为完整 edit_history。勿在 CLAUDE.md 中维护版本号副本
+ 
+ ## 快速恢复
+-- 先读：
+-  1. 本文件（CLAUDE.md）——2分钟内了解项目全貌
+-  2. `AI协作项目全生命周期框架.md` §1.4-§1.7 ——使用强度分档+死亡判据+OPEN项+框架自身架构原则
+-  3. `_protocols-and-tools/框架级成熟度评估表.md`（v0.4）——了解框架各部分成熟度
+-- 关键入口：
+-  - 主文档：`AI协作项目全生命周期框架.md`（约 310KB，v1.6.4）
+-  - 主配套JSON：`AI协作项目全生命周期框架.json`（~170KB，v1.6.4）
+-  - 独立审查SOP：`_protocols-and-tools/methodological-review-sop.md`（v1.0.4）
+-  - 元审查清单：`_protocols-and-tools/meta-audit-checklist.md`（v1.0.4+，75项）
+-  - 成熟度评估表：`_protocols-and-tools/框架级成熟度评估表.md` + `.json`（v0.4）
+-  - 阅读导航：主文档 §9.9（☆☆☆→★★★难度标注+3条阅读路径）
+-  - 反模式清单：主文档 附录H（4条反模式）
++按顺序先读：
++1. 本文件（CLAUDE.md）
++2. `project_status.md` ——上次会话做了什么、当前待办、已知遗留问题（Claude 从代码文件中不可推导）
++3. 主文档 §1.4–§1.7 ——使用强度分档 + 死亡判据 + OPEN 项 + §1.7 最小核心原则
++4. `_protocols-and-tools/框架级成熟度评估表.md` ——了解各部分成熟度，避免高估不稳定组件
++- 需要定位特定文件时：`reference_files.md`（人类标注版文件索引，标注了每个文件"为什么重要"——Glob 可列文件名，但给不了这个判断）
+ 
+-## 目录地图
+-- 核心文件：
+-  - `AI协作项目全生命周期框架.md` —— 主框架文档（~313KB，v1.6.4）
+-  - `AI协作项目全生命周期框架.json` —— 主配套（~170KB，v1.6.4）
+-  - `AI协作项目全生命周期框架.docx` —— docx版（~816KB，v1.6.4）
+-  - `README.md` —— 结构导航+项目简介
+-  - `CLAUDE.md` —— 本文件
+-  - `VERSION` —— 版本号（1.6.4）
+-  - `project.yaml` —— DOCX管道项目配置
+-  - `project_status.md` —— 项目状态追踪
+-  - `reference_files.md` —— 关键文件索引
+-- 协议与工具 → `_protocols-and-tools/`：
+-  - `meta-audit-checklist.{md,json}` —— 元审查合规清单 v1.0.4+（75项）
+-  - `methodological-review-sop.{md,json}` —— 独立审查SOP v1.0.4
+-  - `框架级成熟度评估表.{md,json}` —— 成熟度表 v0.4
+-  - `AI协作项目全生命周期框架_OPEN4试读计时协议.{md,json}` —— v1.6.3修订
+-  - `AI协作项目全生命周期框架_人类专家verify包.{md,json}` —— v1.1
+-  - `外部依赖登记表.{md,json}` —— v1.6.3新增
+-  - `可调参数索引.md` —— v1.6.3新增
+-- 审查 → `_reviews/`（多后端独立审查报告 + 交叉验证记录 + prompts/ + last_messages/ + retrospects/）
+-- 研究 → `_research/`（案例研究/对标分析 + drafts/废弃草案）
+-- 工作流 → `_workflows/`（构建+同步脚本+workflow定义+翻译管道 i18n/）
+-- 归档 → `_archive/`（历史封存，含 docx_legacy_scripts/ DOCX 旧版脚本归档）
++## 停止条件
++- **新增 [Sp] 节或修改核心机制** → 须先经过 ≥1 次试跑验证，不可仅凭方法论提取就写入。v1.5.1 冻结期教训："加复杂度比减复杂度容易"
++- **不用作者模型自审框架**（违反 §9.2 独立性）
++- **不混淆编辑者与审查者角色**——编辑判断仍需异后端独立复核
++- **OPEN-4（试读计时）或 OPEN-1（人类专家 verify）未确认前** → 不启动大规模第二次试跑
++- **三件套（.md / .json / .docx）任一件修改后** → 必须同步更新另外两件 + 触发 ≥1 轮异后端交叉验证
++- **不要用 `_protocols-and-tools/import_integrity_check.py`** ——经审查认定不可靠。正确工具：`pyflakes` / `ruff`
+ 
+-## 版本脉络
+-- v1.0-v1.2（2026-06-10~11）：七层框架+Dev Log产物体系，经三模型审查链校准
+-- v1.3-v1.4（2026-06-13）：漂移检测层（detector-only哲学，来自headroom CacheAligner）；三轮审查闭合
+-- v1.5-v1.5.1（2026-06-14）：模式8/9+证据分类体系+四个[Sp]节（Evolver），进入冻结期
+-- **v1.5.2（2026-06-16，冻结解除）**：Protocol 3首次真实试跑回写——7项改进，首次实现"试跑→回写"闭环
+-- **v1.5.3（2026-06-18）**：PocketFlow A类资产写回——§1.7最小核心+§9.9阅读导航+附录H反模式清单
+-- **v1.6（2026-06-20）**：证据体系升级——§9.6.1二维表示+§9.10三层模板+§4.1.1.1对照实验检查清单+§2.6维护流程+§1.8诚实声明
+-- **v1.6.2（2026-06-21）**：被动观测机制——§7.7被动观测+§9.11跨层可观测性；首次满足§2.6 Minor升级审查门
+-- **v1.6.3（2026-06-21）**：维护流程补全——§2.6规则退役判定+外部依赖登记表+可调参数索引+§1.8扩展至10条
+-- **v1.6.4（2026-06-22）**：prompt-tdd A1 Flow-as-Node实验写回——§6.3.2 [E-] ceiling-limited，7轮双后端审查链闭合，三实验链（A1+A2+A3）全部写回
+-- 版本升级模式：每个版本由外部项目方法论提取→框架吸收驱动，非框架自省膨胀。v1.5.2打破单向流动实现闭环，v1.5.3起采用多后端交叉验证提升提取质量
+-
+-## OPEN项速览（§1.6）
+-| ID | 内容 | 严重性 | 状态 |
+-|----|------|--------|------|
+-| OPEN-1 | 连续漂移/HG频率-覆盖缺口 | 高→中 | 已操作化，待人类专家裁决 |
+-| OPEN-2 | 框架级死亡判据缺预登记基线 | 中→降低 | 基线已建立，待多项目验证 |
+-| OPEN-3 | "提炼准确度"未评估（80→60分风险） | 中 | 有首次量化数据，待更多样本 |
+-| OPEN-4 | 最低上手时间未测（需非设计者试读） | 中 | 协议就绪，缺测试者 |
+-| OPEN-5 | Closure缺项目规模分档 | 低-中 | 已关闭（v1.5.1 §8.8 S/M/L） |
++## 已知坑位
+ 
+-## 核心资产
+-- 七层框架（L0 Spec → L-H Human Gate → L1 Prompt → L2 Loop → L3 Workflow → L4 Retrospect → L5 Closure）+ 四跨层关切（可复现性/评估度量/会话交接/风险依赖）
+-- 证据分类体系：§9.6 [S]/[E]/[I]/[J]/[Sp]五级 + §9.6.1 二维表示（内部强度A-D×跨模型推广性M0-M3）
+-- 漂移检测层：§3.7 五类信号+四级告警+规则退役自动化+闭环策展（detector-only哲学）
+-- 使用强度分档：§1.4 最低强制版/默认版/完整版
+-- 项目规模分档：§8.8 S/M/L三档闭合要求
+-- Workflow模式库：§6.2 模式1-9（含Pipeline DAG和Structured Multi-Role Review）
+-- 分级逃生口：§4.3 L1检索恢复/L2同源降级/L3停止报告（ETF R5事故驱动）
+-- 多轮多后端独立审查编排：§9.2 触发条件/维度互补/后端切换判据/盲读优先
+-- §1.7「最小核心+示例外挂」[Sp] ——核心vs外挂三层模型+4种反模式
+-- §9.9「阅读导航与难度分层」[Sp] ——☆☆☆→★★★标注+3条阅读路径
+-- 附录H「反模式清单」——4条集中收纳
+-- §7.7「被动观测」[C+/N/A] ——8渠道扩展分类框架+Failure Space 10种失效模式
+-- §9.11「跨层可观测性设计」[Sp] ——L0-L5各层关切+3原则
+-- §6.3.2「Flow-as-Node嵌套工作流」[E-] ceiling-limited ——Tier 0负证据，7轮审查闭合
+-- 独立审查SOP（`_protocols-and-tools/methodological-review-sop.md`）——可跨项目复用
+-- 元审查合规清单（`_protocols-and-tools/meta-audit-checklist.md`，75项）——可fork到其他方法论项目
++### 易误解概念
++- **"冻结期"已解除**（2026-06-16 Protocol 3 完成）——但"谨慎加复杂度"的教训仍适用
++- **"使用强度分档"（§1.4 A/B/C）≠ "项目规模分档"（§8.8 S/M/L）**——两个正交维度，用完不能互换
++- **"独立审查"双轴定义**（§9.2）：后端模型不同 **×** 上下文隔离，两者必须同时满足。审了作者 memory/CLAUDE.md = 上下文未隔离 = [SEMI] 或 [NON]
++- **"Claude"在 provenance 上下文中 = CLI 壳名**，不是后端模型——后端需当场记录，不可事后恢复
++- **§1.7 "最小核心 + 示例外挂"存在自反风险**——框架自身是否遵守了这一原则尚无独立验证
+ 
+-## 停止条件 / 不要做
+-- 新增[Sp]节需先经过至少1次试跑验证——冻结已解除但"加复杂度比减复杂度容易"的教训仍适用
+-- 不要修改框架核心机制而未经过试跑回写——v1.5.2模式是正例
+-- 不要用作者模型自审框架——违反§9.2独立性要求。已验证渠道：Codex GPT-5.5 / Qwen Qwen3.7-Max / Kimi Kimi-K2.7-Code / ZCode GLM-5.2
+-- 不要在未确认OPEN-4/OPEN-1状态前启动大规模第二次试跑
+-- 不要混淆编辑者和审查者角色——编辑判断仍需独立复核
+-- 框架三件套（.md/.json/.docx）必须同步更新
++### 易误操作
++- **标识/路径清理仅限发布包**：`.gitignore` 定义了发布边界。`../开源发布准备/` 和 `../_attic/` 不在发布范围内，无需清理
++- **OPEN 项状态变更只改 §1.6 一处**（单一事实源原则）
++- **所有编辑必须记录 provenance**（编辑者模型 + CLI 壳名 + 日期 + 独立性级别）→ 写入主文档 §14 和 JSON `edit_history`
++- **主文档和主 JSON 须同步更新**——JSON 是手工维护的结构化镜像（非全量生成），每版需新建 sync 脚本或手工补入。历史：v1.6.2–v1.6.4 的 .json sync 落后于 .docx sync，靠事后脚本补回
++- **Mermaid 渲染 PNG 不带 DPI 元数据**——Word 默认 96 DPI 致 ~3× 拉伸截断。生成后须注入 300 DPI
++- 归档旧文件时须同步更新 README.md / reference_files.md / inventory.csv 中的交叉引用
+ 
+-## 已知坑位
+-- 容易误读的概念：
+-  - "冻结期"已解除（2026-06-16）——但"加复杂度比减复杂度容易"的教训仍适用
+-  - "使用强度分档"（§1.4 A/B/C）和"项目规模分档"（§8.8 S/M/L）是正交的两个维度
+-  - "独立审查"按§9.2定义为后端模型不同×上下文隔离的双轴独立性——同一后端换壳=伪独立，审了作者memory/CLAUDE.md=上下文未隔离=[SEMI]或[NON]
+-  - "[SEMI-ED]"是特殊独立性级别——编辑独立于内容创作但指令由用户提供，比[IND]弱得多
+-  - "Claude"在provenance上下文中=CLI壳名，不是后端模型——后端需当场记录，不可事后恢复
+-  - §1.7"最小核心+示例外挂"存在自反风险——框架自身是否遵守了这一原则尚无独立验证
+-- 容易误操作的路径：
+-  - **标识/路径清理仅限发布包**：`.gitignore` 定义了什么会进 git。仅此目录内未被排除的文件需要清理个人标识和绝对路径。以下同级目录不在发布范围内，无需清理：`../开源发布准备/`（发布准备工作）、`../_attic/`（阁楼备份）
+-  - **主文档和主JSON必须同步更新**——历史上v1.4时JSON曾停更
+-  - **OPEN项的状态变更只需改§1.6一处**（单一事实源原则）
+-  - **所有编辑必须记录provenance**——写入JSON的`edit_history`和主文档§14
+-  - 归档旧版文件时需同步更新交叉引用
+-  - **不要用`import_integrity_check.py`**——经审查认定不可靠，正确做法：用`pyflakes`/`ruff`
+-  - 不要用作者模型自审框架
+-- 需要用户确认的决策：
+-  - OPEN-4试读计时：找非设计者测试者（唯一外部依赖）
+-  - OPEN-1人类专家verify：找零卷入人类专家
+-  - 第二次试跑选哪个项目（需多类型验证）
+-  - GitHub公开发布执行时机
+-
+-## 跨项目关联
+-- 形态匹配ETF项目 —— 七层框架基础结构+S1-S10组件清单+分级逃生口（ETF R5事故）
+-- 并购重组案例研究（已归档） —— 八阶段流水线经验→Workflow模式设计
+-- LIT项目 —— AI自评不可靠论据+OPEN-3触发源
+-- BDC2026项目 —— 会话交接+风险依赖反面案例
+-- 多模型对照实验项目 —— 独立审查裸环境checklist+provenance纪律
+-- GitNexus分析（已归档） —— 模式8/9+证据分类体系实战验证
+-- Evolver分析（已归档） —— 四个[Sp]节来源（低质量源的方法论提取风险）
+-- Small_Scale/PilotDeck分析（已归档） —— v1.4转化+训练-评估配置对齐
+-- headroom工具 —— detector-only哲学（CacheAligner对标）
+-- 方法论提取项目（已归档，Protocol 3试跑） —— 首次"试跑→回写"闭环+异后端审查互补量化
+-- PocketFlow/prompt-tdd项目 —— v1.5.3-v1.6.4 全部写回来源
++## 跨项目行为制约
++每条是框架中特定节的操作限制——来源项目的质量直接约束该节的可升级性：
++- **Evolver（混淆代码项目）** → 四个 [Sp] 节（§3.7.0 / §3.7.4.1 / §9.7 / §9.8）来源可信度低 → **禁止**未经试跑将其从 [Sp] 升级，即使有新证据也要从 [Sp] → [E-] 起步
++- **PocketFlow / prompt-tdd 实验链** → §6.3.2 [E-] ceiling-limited + 附录 H 反模式 → 修改这些节时遵守已有证据上限，不可超出实验覆盖范围
++- **BDC2026（反面案例）** → §7 会话交接 + §8 风险依赖的设计依据 → 不可弱化这两节，不可将 "会话交接缺失致败" 的教训降级为可选
++- **方法论提取 / Protocol 3** → "试跑 → 回写"是框架核心机制 → 所有机制变更必须遵循此模式
+ 
+ ## 更新协议
+-- 何时更新：
+-  - 每次试跑完成后——回写成熟度评估表+本文件相关节
+-  - OPEN项状态变更时——同步更新§1.6和本文件
+-  - 外部项目方法论提取→框架吸收时——更新版本脉络+核心资产+跨项目关联
+-  - 三件套（.md/.json/.docx）任一件更新后——运行同步+异后端交叉验证
+-  - README.md 版本号/统计/目录结构变更时——同步更新 README.md
+-- 更新规则：
+-  - 更新后必须同步更新本文件"证据来源"和"生成日期"，以及 README.md 版本号和统计区
+-  - 新增[Sp]节或机制需先经过至少1次试跑验证，不可仅凭方法论提取就写入
+-  - 新增内容应优先考虑放入附录或外挂，而非直接进入核心章节——§1.7的自反要求
+-  - JSON配套文件的metadata需同步反映版本/日期变更
+-  - 所有编辑必须记录provenance（编辑者模型+CLI壳名+日期+独立性级别）
+-  - 重大版本变更后应触发至少一轮异后端交叉验证
+-- 冻结期历史：v1.5.1冻结期（2026-06-14~16）已由Protocol 3完成解除。核心教训——"加复杂度比减复杂度容易"——已转化为§1.7原则和本协议的试跑前置要求
++- **触发条件**：试跑完成后 / OPEN 项状态变更 / 外部方法论提取写入 / 三件套任一件更新 / README 版本号或统计区变更
++- **更新后必做**：更新本文件末尾日期 + README.md 版本号和统计区 + JSON `metadata` 版本/日期
++- **新增内容优先外挂**（附录或独立文件），不直接进核心章节——§1.7 自反要求
++- **重大版本变更后** → 触发 ≥1 轮异后端交叉验证
++- 所有编辑遵守 §14 provenance 记录纪律
++
++---
++最后更新：2026-06-27
++生成模型：DeepSeek-V4-Pro（via Claude Code CLI）
+warning: in the working copy of 'CLAUDE.md', LF will be replaced by CRLF the next time Git touches it
+
+codex
+有一个实际风险浮出来了：新版把 `project_status.md` 作为恢复入口，但我读到的文件顶部仍有“下次 git init/push”的旧待办，而仓库本身已经有 `origin/master` 和后续提交。这个不是 `CLAUDE.md` 的直接错误，但会影响“快速恢复”规则的可靠性。
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'git remote -v' in E:\workspace\projects\AI协作项目全生命周期框架
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'rg -n "已发布|git init|git push|origin/master|Next Steps|当前" project_status.md README.md reference_files.md CLAUDE.md' in E:\workspace\projects\AI协作项目全生命周期框架
+exec
+"C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -LiteralPath 'project_status.md' -Encoding UTF8 | Select-Object -Last 120" in E:\workspace\projects\AI协作项目全生命周期框架
+ succeeded in 155ms:
+README.md:26:主文档 `AI协作项目全生命周期框架.md` 是一份约 16 万字符（约 310 KB）的 Markdown 文档，以中文为主，含若干代码块、表格和 Mermaid 图表。精确的字符级统计随版本变动，不在此维护；如需当前数值可运行 `_workflows/count_chars_v164.py`。
+README.md:114:| 了解项目当前状态和待办 | [`project_status.md`](project_status.md) |
+CLAUDE.md:25:2. `project_status.md` ——上次会话做了什么、当前待办、已知遗留问题（Claude 从代码文件中不可推导）
+project_status.md:13:**Next Steps**：
+project_status.md:14:- `git init` + `git commit -m "v1.6.4: 首次公开发布"` + `git push` → P0 → 下次会话，无依赖
+project_status.md:43:- **Next Steps**：
+project_status.md:44:  - `git init` 于项目根目录 → P0 → 无依赖
+project_status.md:46:  - `git add . && git commit -m "v1.6.4: 首次公开发布" && git push` → P0 → 等仓库配置完成
+project_status.md:114:3. GitHub 配置 + git init + push
+project_status.md:133:- 当前阶段: v1.6.4（已发布）——GitHub 公开仓库 `github.com/redamancy231-create/ai-collaboration-framework`，206 文件 + Release v1.6.4 附件（.docx 6.6MB）
+project_status.md:134:- 本轮完成: git init + git commit + git push 到 GitHub；gh CLI 安装与认证；.docx 移出 git 历史走 Release 附件；check.sh wrapper 简化 pre_push_check.py 调用；代理端口修正 7890→7897；仓库描述设置
+project_status.md:141:- **git init/push**：仓库 `redamancy231-create/ai-collaboration-framework`，206 文件，描述 "AI协作项目全生命周期框架：面向人-AI协作的系统方法论与技术文档"
+project_status.md:150:## Next Steps
+
+ succeeded in 156ms:
+origin	https://github.com/redamancy231-create/ai-collaboration-framework.git (fetch)
+origin	https://github.com/redamancy231-create/ai-collaboration-framework.git (push)
+
+ succeeded in 195ms:
+- **PUBLISHING.md**：翻译行拆分为zh-Hant和en两行，反映实际管道差异
+- **中文README**：加英文翻译链接+en/目录树
+- **最终状态**：inventory 204文件，verify 21/21 PASS，O7自检零个人标识/零本机路径残留（仅.gitignore排除的O7提示词含已知路径线索）
+
+- **被动观测（值得记录）**：
+  1. GPT-5.5对大文件翻译不稳定（API限流+长连接断），分块+管道管道方式→Codex CLI交互模式比管道更稳，但两个都受API端不稳定影响
+  2. 翻译代码块遗漏是系统性失败模式——不是GPT-5.5能力问题，是简报设计未区分代码块类型。Qwen审查时复制了同一盲区。Kimi因不看源文档反而打破了这个盲区。
+  3. Inventory计数在本会话漂移路径：186→246（en+脚本新增）→227（临时文件清理）→205（加gitignore感知）→204（删一次性工具）。再次验证[[发布包单一真值]]：计数是移动靶。
+
+- **Next Steps**：
+  - `git init` 于项目根目录 → P0 → 无依赖
+  - 配置 GitHub 仓库（命名/tag v1.6.4/描述/topics） → P0 → 等用户决定
+  - `git add . && git commit -m "v1.6.4: 首次公开发布" && git push` → P0 → 等仓库配置完成
+  - 讨论：仓库命名（建议 `ai-collaboration-framework`）/ 是否需要 GitHub Pages → P1
+
+- **翻译文件路径**（相对项目根目录，供参考）：
+  - 简报：`_workflows/i18n/configs/en/translation_brief.md`
+  - 源文档：`AI协作项目全生命周期框架.md`
+  - 译文：`en/AI协作项目全生命周期框架.md`
+
+---
+
+## 会话备注（2026-06-24 第三会话，DeepSeek-V4-Pro via Claude Code CLI）
+
+**承接 Opus 第二会话交接：O7 终验准备收尾 3 项**
+
+- **待办 1 — 脱敏 Codex 审查日志**：`_reviews/codex_v164_json_sync_review_output.txt` 含 55 处本机绝对路径前缀（正斜杠项目根路径 + 反斜杠带尾 + 反斜杠无尾），全部删除转为项目内相对路径。脚本 `_workflows/desensitize_codex_log.py`，脱敏后自检项目根路径和盘符路径均为 0 残留。已核实无用户名泄漏。
+- **待办 2 — .gitignore 补规则**：(a) 新增 `*.backup` 和 `*.bak` 通配，防同步/重生成脚本再产生备份副本落进发布包；(b) 排除 `_reviews/prompts/O7_R3_release_audit_prompt_20260624.md`（一次性审查指令，第 26 行明文列了个人标识符清单，发布等于把要清理的标识符原样公开）。
+- **待办 3 — 记录与复验**：本备注写入 project_status.md；`verify_version_consistency.py --skip-archive` 确认 21/21 PASS（见下方）。
+
+---
+
+## 会话备注（2026-06-24 第二会话，Claude Opus 4.8 via Claude Code CLI）
+
+**修复 .json 落后 .md 的 06-23 发布前订正缺口**
+
+- **缺口定位**：06-23 Opus 会话（API 不稳定中断、未做 /session-end）做的「主文档再审查 + 8 处措辞订正」已落入 `.md`；06-24 DeepSeek 会话补做 M8/M10 + 全量重生成 `.docx`（带入 8 处订正）+ 定点替换 `.json`（仅 M2→M1\*），但 `.json` 未拉取 06-23 那批订正 → `.json` 落后 `.md`。`verify_version_consistency.py` 只查版本号不查正文，缺口溜过版本门。
+- **根因（机制层）**：`.json` 是手工维护的结构化镜像，无 md→json 全量生成器；json sync 脚本停在 `sync_v161_json.py`，v162-v164 只建了 `_docx.py`。
+- **修复**：新建 `_workflows/sync_v164_json.py` 定点补齐 3 类差异——(1) 新增 §13.1.2 项目代号说明（`external_references.project_codenames`，9 代号）；(2) §13.2 Constraint Decoupling status「已验证」→「已采纳」；(3) version_timeline「今日操作」/「本日操作」→「当日操作」（5 字段；初版漏了"本日操作"变体，自检发现后补全——同类 `version_upgrade_asymmetry`）。备份 `AI协作项目全生命周期框架.json.pre_v164_sync.backup`。
+- **验证**：O6 版本一致性 21/21 PASS；Codex GPT-5.5 异后端独立 diff 验证（自有 PowerShell/Node 策略）——9/9 代号行逐行一致、Constraint 改对、JSON 合法、版本号 v1.6.4、diff 仅 6 项目标改动无副作用。Codex 在其运行期独立指出 2 处"本日操作"残留，与主会话自检收敛到同一遗漏点（已闭合）。报告：`_reviews/codex_v164_json_sync_review_output.txt`。
+- **结论**：三件套（.md/.json/.docx）现已全部含 06-23 发布前 8 处订正 + M8/M10 订正，内容对齐。
+
+**发布包边界清理：迁出 json 备份副本**
+
+- O7 R3 提示词准备阶段发现：`sync_v164_json.py` 生成的 `AI协作项目全生命周期框架.json.pre_v164_sync.backup`（201,616 字节）留在发布包根目录，且未被 `.gitignore` 排除 → 会被 push。
+- **处理**：迁出至 `../_attic/框架发布前备份_20260623/`（与既有备份归档惯例一致，如 `_attic/框架发布清理_20260623/_backups_原项目备份/` 下的历次 docx/json 备份）。
+- **确认**：发布包根目录已无任何 `.backup/.bak/.tmp`；`inventory.csv` 未收录该 backup（无需改计数）。
+- **遗留（已由 06-24 第三会话 DeepSeek 处理）**：~~`.gitignore` 仍未排除 `*.backup` 通配（建议补规则防复发）；`_reviews/codex_v164_json_sync_review_output.txt` 含 ~24 处本机绝对路径（Codex CLI 日志），是否脱敏/排除待 R3 结论。~~ → `.gitignore` 已补 `*.backup`/`*.bak` + 排除 O7 R3 prompt；审查日志已脱敏 55 处路径前缀，零残留。
+
+---
+
+
+
+**本会话完成：构建产物迁移 + 文档结构漂移修正**
+
+- **构建产物/缓存迁移**：移走 44 个不入发布包的文件 → `../_attic/框架构建产物_20260623/`（含 MANIFEST.json 可回溯）。`_pipeline_output/`(15) + `_mermaid_png/` 的 png/svg/pdf(26) + 无引用临时验证产物(3)；`retrospect_2026-06-23.md` 归入 retrospects/。脚本均 `mkdir(exist_ok)` 自重建，无需改路径。
+- **结果**：磁盘 = 发布包 = inventory.csv 三者统一（228 → 186 文件）。根除了"磁盘视图 vs 发布包视图"歧义。
+- **文档漂移修正（5 文件）**：README.md / CLAUDE.md / reference_files.md / zh-Hant/{README,reference_files}.md。删除已不存在的 `_backups/` 引用、修正归档路径（冻结期待执行协议清单移至 `_archive/`）、对齐目录树与计数、glossary 条数/版本号、成熟度表版本号。产物目录改为类别描述（不写易漂移的硬数字）。
+- **Mermaid 计数订正**：Codex 独立发现主文档实际 6 个 mermaid 代码块（第 7 个是正文内联字符串，统计脚本误计）。已改门面文件 7→6。
+- **主文档未改**：§9.1 的 `_research/import_integrity_check.py` 经核实是 v1.4 历史陈述（准确），不改，避免无谓三件套同步。
+- **独立验证**：Codex GPT-5.5（PowerShell 自行遍历、未读 inventory）两轮交叉验证，计数全部收敛；唯一分歧查实为时序差（Codex 正确）。
+- **O6 版本一致性**：21/21 PASS。
+
+**本会话后段追加：统计数据清理 + 主文档 4 角度审查与订正**
+
+- **删除易过期统计数据**：两个 README 的整块字符统计表 + CLAUDE.md 的精确字符/行/表格数 → 改为"约 16 万字符,精确统计随版本变动不在此维护,需要时跑脚本"。根除"每次文件增删都要重统计验证"的负担（用户质疑驱动）。
+- **主文档 4 角度审查**（Workflow 5 agent：口吻一致性/代号可理解性/证据标注诚实性/时效与占位符）→ 28 项发现,无高严重性,证据标注方向反偏保守。
+- **主文档订正 8 处**（Codex CLI 执行 + Opus 复核,挂 v1.6.4 不升版）：
+  - M1 header v1.6"待 Codex 验证"→ 已闭合；M2 §2.6"待自动化"→ 已脚本化；M3 §14 changelog"今日操作"→"当日操作"
+  - M4 新增 §13.1.2 项目代号说明表（9 代号）；M5/M6 形态匹配/prompt-tdd 补定性
+  - A-1 §10.2"你们 ETF 项目 V3.6"→ 中性第三人称；A-2 §13.2"我们的"→"本框架"、"已验证"→"已采纳"
+  - 复核：11 项目标措辞零残留；修了 Codex 一处双重括号；记录登记于 header + §14「v1.6.4 发布前订正批次」
+
+**2026-06-24 会话（DeepSeek-V4-Pro）已完成**：
+1. ✅ **M8/M10 证据标注诚实性** → Codex GPT-5.5 + Qwen qwen3.7-max 双后端独立审查裁决：裸 [B+/M2] 不诚实，采纳 M1*（Qwen 更保守方案）。§4.1.1 标注 [B+/M1*] + §9.6.1 新增规则 #6（阴性结果的 M 等级降级）+ 审查报告存入 `_reviews/m8m10_*_20260624.md`
+2. ✅ **三件套同步**：DOCX pandoc 泛化管道全量重生成（845KB）+ JSON 脚本批量更新（M2→M1* 全部替换）+ zh-Hant 关键修改同步
+
+**下次接续待办（优先级排序）**：
+1. 英文翻译（GPT-5.5+Opus 双翻译互校）→ en/
+2. Codex O7 路径/标识终验
+3. GitHub 配置 + git init + push
+
+**主文档统计脚本遗留**：`count_chars_v164.py` 内联```mermaid误计 bug 仍未修（README 已不依赖该数,优先级降低；若 M8/M10 轮要重统计再修）。
+
+---
+
+**遗留待办（已部分处理，见上）**：
+- ~~主文档正文统计注解 Mermaid 7→6~~（README 统计区已整块删除,不再维护）+ 字符数口径（同上,已删除统计表）+ `count_chars_v164.py` 脚本 bug（见上,优先级降低）
+
+---
+
+## 会话备注（2026-06-23，DeepSeek-V4-Pro）
+
+- **英文翻译必须走双翻译互校**：GPT-5.5 + Opus，不可单模型直翻
+- **push 前必须由 Codex 独立验证**：用自有搜索策略确认零个人标识/零绝对路径（检查清单 O7），不可基于本次会话的 grep 结果声称清零
+- **翻译管道泛化暂缓**：等英文翻译经验积累后再抽象（见 `_workflows/i18n/DESIGN.md`）
+
+## 项目状态: AI协作项目全生命周期框架
+
+- 当前阶段: v1.6.4（已发布）——GitHub 公开仓库 `github.com/redamancy231-create/ai-collaboration-framework`，206 文件 + Release v1.6.4 附件（.docx 6.6MB）
+- 本轮完成: git init + git commit + git push 到 GitHub；gh CLI 安装与认证；.docx 移出 git 历史走 Release 附件；check.sh wrapper 简化 pre_push_check.py 调用；代理端口修正 7890→7897；仓库描述设置
+- 发现的问题: 无
+
+## 会话备注（2026-06-25，DeepSeek-V4-Pro via Claude Code CLI）
+
+**GitHub 发布**
+
+- **git init/push**：仓库 `redamancy231-create/ai-collaboration-framework`，206 文件，描述 "AI协作项目全生命周期框架：面向人-AI协作的系统方法论与技术文档"
+- **.docx 走 Release**：6.6MB 主 .docx 从 git 历史移除 → `.gitignore` 排除 → GitHub Release v1.6.4 附件下载
+- **check.sh wrapper**：自动检测项目路径+用户名，零硬编码，公开安全
+- **Acerolaorion 署名**：`git config user.name` 改为 Acerolaorion，commit --amend --reset-author
+- **O7_R3 死规则清理**：`.gitignore` 中 `_reviews/prompts/O7_R3_release_audit_prompt_20260624.md` 已剔除（文件已迁至 _attic）
+- **gh CLI**：winget 安装 v2.95.0，PATH 为 `C:/Program Files/GitHub CLI/`，Git Bash 需手动 export
+- **代理端口**：系统代理实际为 `127.0.0.1:7897`（非默认 7890），已配入 git global config
+- **安全分类器**：deepseek-v4-pro 分类器间歇不可用，多处命令通过用户 `!` 前缀绕过执行
+
+## Next Steps
+
+- 找非设计者执行 OPEN-4 试读计时协议 → P2 → 发布后，无依赖
+- 确认 GitHub 页面上仓库描述/README 渲染正常 → P2 → 无依赖
+
+codex
+结论：新版方向是对的，明显比旧版更符合“少即多”和“失败预防型指令”的定位；但还没有完全执行自己的原则。主要问题不是删得太多，而是仍保留了一些易变/证明性/历史性内容，同时遗漏了几个真正会导致 agent 操作失误的项目规则。
+
+**1. 方法论一致性**
+
+总体通过，但有瑕疵。
+
+做得好的地方：目录地图、已读文件、版本脉络、OPEN 表、核心资产清单被移出，是正确的。这些内容可以通过 `rg --files`、README、主文档、`VERSION` 或 §1.6 得到，放在 `CLAUDE.md` 里只会制造漂移。新版改成 Agent 边界、命令、停止条件、坑位和更新协议，基本转向了“行为约束”。
+
+主要不一致点：
+
+- [CLAUDE.md:6](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:6) 的“已验证可用模型列表”是易变信息。应改成“审查必须异后端；可用后端以当前环境/项目状态为准”，不要在 `CLAUDE.md` 维护模型白名单。
+- [CLAUDE.md:64](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:64) 要求更新本文件末尾日期，和“减少 prompt cache 失效”的原则冲突。`CLAUDE.md` 应只在指令变更时改，不应因 README/版本/统计变化而改。
+- [CLAUDE.md:70](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:70) 到 [CLAUDE.md:71](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:71) 的最后更新/生成模型属于元数据，不是 agent 行为指令，建议移到 `project_status.md` 或主文档 §14 provenance。
+- [CLAUDE.md:31](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:31)、[CLAUDE.md:41](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:41)、[CLAUDE.md:51](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:51) 仍保留了版本/历史证据。保留规则可以，历史日期和版本号应删或移出。
+
+**2. 盲点检测**
+
+我认为有四个实际遗漏。
+
+第一，`project_status.md` 的读取规则不够精确。现在它是追加式日志，顶部仍能看到旧的 `git init/git push` 待办，而底部才是“已发布”的当前状态。`CLAUDE.md` 只说读 `project_status.md`，没有说“读最新日期/当前阶段块/文件末尾”。这会让 LLM 误判项目阶段。建议改为：`project_status.md` 为追加日志，恢复时先读文件末尾“当前阶段/Next Steps”，不要以顶部旧会话为准。
+
+第二，缺少“核心产物优先级”一句。这个项目不是软件项目，脚本只是构建/校验工具。建议加一句：核心交付物是 `.md/.json/.docx` 三件套；代码修改只服务生成、同步、验证，不做无关重构。
+
+第三，翻译资产同步规则不足。仓库已有 `en/` 和 `zh-Hant/`，但停止条件只强调三件套。若主文档发生公开文本变更，agent 很可能忘记同步译文或标记译文滞后。建议加：修改主文档公开内容后，必须同步 `zh-Hant/`、`en/`，或明确记录译文未同步状态。
+
+第四，`pre_push_check.py` 直跑的语义有误导风险。[CLAUDE.md:13](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:13) 推荐 `bash check.sh` 是对的；[CLAUDE.md:14](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:14) 说直跑需手动环境变量，但未说明直跑可能少扫项目绝对路径。建议写成“优先只用 `bash check.sh`；除调试外不要直跑”。
+
+**3. 过度削减风险**
+
+有两处可能误删。
+
+一是旧版的 `[SEMI-ED]` 概念。新版保留了“不要混淆编辑者与审查者”，但 provenance 又要求记录独立性级别。如果 agent 不知道 `[SEMI-ED]`，容易把“用户指定方向的编辑”误记成 `[IND]`。建议加一行：用户给定修改方向、agent 只执行编辑时，独立性不得标 `[IND]`，按 §9.2/§14 记录为相应编辑级别。
+
+二是独立审查 SOP 的具体路径。新版说“按框架 SOP”，但没有给 `_protocols-and-tools/methodological-review-sop.md`。这个不是目录地图噪声，而是任务入口。建议在 Agent 边界或快速恢复中补：审查任务先读该 SOP。
+
+**4. 可推广性**
+
+这套“脆弱性测试驱动 + 逐条删留判断”很可推广，尤其适合软件仓库、文档型项目、CLI 工具、研究管道这类“可通过文件系统发现事实，但无法自动知道约束”的项目。
+
+更容易的项目：标准软件项目。测试命令、禁止操作、架构边界、环境变量、迁移纪律都很适合写进 `CLAUDE.md`。
+
+更难的项目：多语言内容项目、数据科学项目、法律/医疗/金融合规项目、品牌/产品策略项目。难点在于很多“不可推导信息”不是命令，而是审美标准、合规边界、数据来源可信度、发布时间窗口、人工批准链。它们容易被误判为空泛背景，但删掉后会直接出错。
+
+**5. 反直觉发现**
+
+我支持几个和主流习惯相反的判断：
+
+- 版本历史应该砍。它看似重要，实际是高漂移、高 token、低操作性的上下文。
+- 目录地图应该砍。文件系统本身就是目录地图，除非目录名有反直觉语义。
+- “已读文件列表”应该砍。它记录的是上一轮 agent 的经历，不是下一轮 agent 的规则。
+- `CLAUDE.md` 不应该维护“最后更新日期”。这看起来专业，但会制造无意义变更和 cache 失效。
+- 真正该留的不是“项目是什么”，而是“agent 最容易在哪些地方犯不可恢复的错”。
+
+建议的修正方向：再压掉历史/元数据/易变模型列表，补上“当前状态读取规则、SOP 路径、核心产物优先级、翻译同步、直跑 check 的限制、SEMI-ED provenance”这六类规则。新版已经从百科式记忆转向操作契约，但还需要最后一轮去历史化和去易变化。
+tokens used
+122,820
+结论：新版方向是对的，明显比旧版更符合“少即多”和“失败预防型指令”的定位；但还没有完全执行自己的原则。主要问题不是删得太多，而是仍保留了一些易变/证明性/历史性内容，同时遗漏了几个真正会导致 agent 操作失误的项目规则。
+
+**1. 方法论一致性**
+
+总体通过，但有瑕疵。
+
+做得好的地方：目录地图、已读文件、版本脉络、OPEN 表、核心资产清单被移出，是正确的。这些内容可以通过 `rg --files`、README、主文档、`VERSION` 或 §1.6 得到，放在 `CLAUDE.md` 里只会制造漂移。新版改成 Agent 边界、命令、停止条件、坑位和更新协议，基本转向了“行为约束”。
+
+主要不一致点：
+
+- [CLAUDE.md:6](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:6) 的“已验证可用模型列表”是易变信息。应改成“审查必须异后端；可用后端以当前环境/项目状态为准”，不要在 `CLAUDE.md` 维护模型白名单。
+- [CLAUDE.md:64](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:64) 要求更新本文件末尾日期，和“减少 prompt cache 失效”的原则冲突。`CLAUDE.md` 应只在指令变更时改，不应因 README/版本/统计变化而改。
+- [CLAUDE.md:70](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:70) 到 [CLAUDE.md:71](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:71) 的最后更新/生成模型属于元数据，不是 agent 行为指令，建议移到 `project_status.md` 或主文档 §14 provenance。
+- [CLAUDE.md:31](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:31)、[CLAUDE.md:41](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:41)、[CLAUDE.md:51](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:51) 仍保留了版本/历史证据。保留规则可以，历史日期和版本号应删或移出。
+
+**2. 盲点检测**
+
+我认为有四个实际遗漏。
+
+第一，`project_status.md` 的读取规则不够精确。现在它是追加式日志，顶部仍能看到旧的 `git init/git push` 待办，而底部才是“已发布”的当前状态。`CLAUDE.md` 只说读 `project_status.md`，没有说“读最新日期/当前阶段块/文件末尾”。这会让 LLM 误判项目阶段。建议改为：`project_status.md` 为追加日志，恢复时先读文件末尾“当前阶段/Next Steps”，不要以顶部旧会话为准。
+
+第二，缺少“核心产物优先级”一句。这个项目不是软件项目，脚本只是构建/校验工具。建议加一句：核心交付物是 `.md/.json/.docx` 三件套；代码修改只服务生成、同步、验证，不做无关重构。
+
+第三，翻译资产同步规则不足。仓库已有 `en/` 和 `zh-Hant/`，但停止条件只强调三件套。若主文档发生公开文本变更，agent 很可能忘记同步译文或标记译文滞后。建议加：修改主文档公开内容后，必须同步 `zh-Hant/`、`en/`，或明确记录译文未同步状态。
+
+第四，`pre_push_check.py` 直跑的语义有误导风险。[CLAUDE.md:13](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:13) 推荐 `bash check.sh` 是对的；[CLAUDE.md:14](E:/workspace/projects/AI协作项目全生命周期框架/CLAUDE.md:14) 说直跑需手动环境变量，但未说明直跑可能少扫项目绝对路径。建议写成“优先只用 `bash check.sh`；除调试外不要直跑”。
+
+**3. 过度削减风险**
+
+有两处可能误删。
+
+一是旧版的 `[SEMI-ED]` 概念。新版保留了“不要混淆编辑者与审查者”，但 provenance 又要求记录独立性级别。如果 agent 不知道 `[SEMI-ED]`，容易把“用户指定方向的编辑”误记成 `[IND]`。建议加一行：用户给定修改方向、agent 只执行编辑时，独立性不得标 `[IND]`，按 §9.2/§14 记录为相应编辑级别。
+
+二是独立审查 SOP 的具体路径。新版说“按框架 SOP”，但没有给 `_protocols-and-tools/methodological-review-sop.md`。这个不是目录地图噪声，而是任务入口。建议在 Agent 边界或快速恢复中补：审查任务先读该 SOP。
+
+**4. 可推广性**
+
+这套“脆弱性测试驱动 + 逐条删留判断”很可推广，尤其适合软件仓库、文档型项目、CLI 工具、研究管道这类“可通过文件系统发现事实，但无法自动知道约束”的项目。
+
+更容易的项目：标准软件项目。测试命令、禁止操作、架构边界、环境变量、迁移纪律都很适合写进 `CLAUDE.md`。
+
+更难的项目：多语言内容项目、数据科学项目、法律/医疗/金融合规项目、品牌/产品策略项目。难点在于很多“不可推导信息”不是命令，而是审美标准、合规边界、数据来源可信度、发布时间窗口、人工批准链。它们容易被误判为空泛背景，但删掉后会直接出错。
+
+**5. 反直觉发现**
+
+我支持几个和主流习惯相反的判断：
+
+- 版本历史应该砍。它看似重要，实际是高漂移、高 token、低操作性的上下文。
+- 目录地图应该砍。文件系统本身就是目录地图，除非目录名有反直觉语义。
+- “已读文件列表”应该砍。它记录的是上一轮 agent 的经历，不是下一轮 agent 的规则。
+- `CLAUDE.md` 不应该维护“最后更新日期”。这看起来专业，但会制造无意义变更和 cache 失效。
+- 真正该留的不是“项目是什么”，而是“agent 最容易在哪些地方犯不可恢复的错”。
+
+建议的修正方向：再压掉历史/元数据/易变模型列表，补上“当前状态读取规则、SOP 路径、核心产物优先级、翻译同步、直跑 check 的限制、SEMI-ED provenance”这六类规则。新版已经从百科式记忆转向操作契约，但还需要最后一轮去历史化和去易变化。

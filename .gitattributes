@@ -1,0 +1,8 @@
+# 语言统计覆盖 —— 本文档仓库的核心交付物是 Markdown 方法论文档，
+# Python 脚本仅为文档生成/同步/验证工具，非主要交付物。
+# 这些目录下的 Python 脚本标记为 generated，不参与语言统计，
+# 使语言条反映仓库真实性质（Markdown 方法论文档）。
+
+_workflows/** linguist-generated
+_archive/** linguist-generated
+_reviews/prompts/*.py linguist-generated
