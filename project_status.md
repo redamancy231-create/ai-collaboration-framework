@@ -192,11 +192,11 @@
 **Next Steps**：
 - 在 BDC2026 项目上测试 write-claude-md Skill（数据竞赛类型） → P1 → 下次会话，无依赖
 - 在 prompt-tdd 项目上测试 write-claude-md Skill（Python 库类型） → P1 → 下次会话，无依赖
-- 继续排查 Python Git Bash 不可用问题（exit code 49） → P2 → 下次会话
+- ~~继续排查 Python Git Bash 不可用问题（exit code 49）~~ → ✅ CLOSED（2026-07-01：根因=WindowsApps AppInstallerPythonRedirector，已删除重定向器）
 
 **Retrospect 候选**：
 - 两次三后端审查自然多样性模式复现 → 值得写 Retrospect（跨项目通用的方法论发现）
-- Python exit code 49 问题 → 仅本项目环境，不写 Retrospect
+- Python exit code 49 问题 → 已闭环（2026-07-01 定位根因并修复），不写 Retrospect
 
 ## 会话备注（2026-06-25，DeepSeek-V4-Pro via Claude Code CLI）
 
