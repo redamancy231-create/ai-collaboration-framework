@@ -177,5 +177,15 @@ AI协作项目全生命周期框架/
 
 ---
 
-*生成模型：DeepSeek-V4-Pro (via Claude Code CLI) · 2026-06-22*  
+## 相关工具
+
+本仓库的方法论已拆分为独立工具：
+
+| 工具 | 说明 |
+|------|------|
+| [**Independent Review Toolkit**](https://github.com/redamancy231-create/independent-review-toolkit) | 独立审查工具包——SOP · prompt 模板 · 对抗式挑战框架 · 真实案例。从本文档 §9.2 + 50+ 轮实战审查提炼。**复制 prompt 即可用**。 |
+
+---
+
+*生成模型：DeepSeek-V4-Pro (via Claude Code CLI) · 2026-07-01*  
 *目录结构与文件计数校正：Claude Opus 4.8 (via Claude Code CLI) · 2026-06-23 — 移除已迁出的构建产物/缓存条目，对齐发布包真实结构（经 Codex GPT-5.5 独立清点交叉验证）*
