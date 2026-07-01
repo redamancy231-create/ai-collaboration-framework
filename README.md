@@ -10,6 +10,30 @@
 
 > **English Abstract**: A comprehensive methodology framework for **full-lifecycle human-AI collaboration** — from project initiation, execution, and independent review through to archival. ~68,000 Chinese characters; empirically tested through **3 controlled prompt engineering experiments** (Prompt-TDD) and **50+ rounds of multi-model independent review** across 5 LLM backends. Covers: specification-driven development (Spec Coding), prompt experiment design with evidence grading, multi-agent workflow orchestration, passive observation mechanisms for serendipitous discovery, and project closure protocols. Full **[English translation](en/)** available. Licensed **CC BY 4.0**.
 
+```mermaid
+flowchart TB
+    HG["🧑 <b>Human Gate（人类闸门）</b><br/>贯穿全流程的人类决策点 —— 不可自动化"]
+
+    subgraph LAYERS["<b>六层分层架构</b>"]
+        direction LR
+        L0["<b>L0 · Spec</b><br/>项目宪法<br/>──────<br/>范围 · 边界<br/>死亡判据<br/>维护流程"]
+        L1["<b>L1 · Prompt</b><br/>任务规格<br/>──────<br/>Prompt-TDD<br/>对照实验<br/>证据标注 [E/C/N]"]
+        L2["<b>L2 · Loop</b><br/>执行迭代<br/>──────<br/>执行→反馈<br/>→修正循环"]
+        L3["<b>L3 · Workflow</b><br/>多任务编排<br/>──────<br/>9种模式<br/>审查链<br/>并行/流水线"]
+        L4["<b>L4 · Retrospect</b><br/>回顾沉淀<br/>──────<br/>方法论提取<br/>被动观测<br/>10种失效模式"]
+        L5["<b>L5 · Closure</b><br/>项目闭合<br/>──────<br/>S/M/L 分档<br/>封存清单<br/>资产归档"]
+    end
+
+    HG -.-> LAYERS
+
+    CROSS["📐 <b>跨层关切</b><br/>──────<br/>证据等级二维表示 [内部强度 × 跨模型推广性]<br/>方法论片段三层模板 · 跨层可观测性设计"]
+
+    EMPIRICAL["✅ <b>实证基础</b><br/>──────<br/>3 次对照实验（含阴性结果公开）<br/>50+ 轮独立审查 · 5 种 LLM 后端 · 4 个 CLI house"]
+
+    LAYERS --> CROSS
+    CROSS --> EMPIRICAL
+```
+
 一套描述"如何用 AI 协作跑完一个完整项目"的元层次操作规范——从启动、执行、审查到封存的全生命周期流程框架。核心信念：方向盘 > 发动机、分层不互相替代、从失败反向沉淀、AI 闭环 ≠ 人类审查。
 
 > **定位声明**：这是一个**半开放的个人方法论工具**——它不追求成为独立于作者的"通用框架"（一个人不可能拥有覆盖所有项目类型、工具链、验证独立性的经验谱系）。它提供的是经过多后端审查和对照实验证据标注的个人实践模式。欢迎参考、改编、和贡献反例；但读者应预期需要翻译成本才能适配自己的场景。详见 §1.8 局限 #9 和 `_research/通用框架可行性讨论_20260621.md`。
