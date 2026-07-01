@@ -173,14 +173,11 @@
 
 - 当前阶段: v1.6.4（已发布）— 同前
 - 本轮完成:
-  1. 配置了 LSP 集成：安装 pyright 1.1.411，创建 `.lsp.json`，CLAUE.md 加 LSP 优先约束，pyright 诊断验证通过
-  2. 澄清了 Claude Code LSP 三层架构（内置/ MCP 桥接/ VS Code 桥接），确认内置 LSP 为最简路径
-  3. 回答了"为何 LSP 不自动优先"：系统提示历史惯性 + 普适性 vs 条件可用性 + opt-in 设计哲学
-- 发现的问题:
-  - LSP 工具需会话重启才注册（`.lsp.json` 中途创建不被热加载）
-  - Python exit code 49 仍存在（Git Bash 裸 `python` 不可用，全路径可用），本次未排查
-  - write-claude-md Skill 待多项目类型验证（同前，来自 06-27）
-  - auto classifier 间歇不可用（同前，来自 06-27）
+  1. GitHub 渲染确认-修复 7 项（Release 附件名/语言条/变更推送/BOM/Pages/Topics/文件计数）
+  2. README 增强-Mermaid 图+英文摘要+中英双语描述+字符数统一
+  3. 主文档中文字符精确统计-68,202 CJK 汉字
+  4. 生态扩展-independent-review-toolkit(v2.0.2)+prompt-tdd-methodology(v0.1) 两仓库发布+交叉链接
+- 发现的问题: 无
 
 ## 会话备注（2026-06-27，DeepSeek-V4-Pro via Claude Code CLI）
 
@@ -216,5 +213,5 @@
 
 ## Next Steps
 
-- 找非设计者执行 OPEN-4 试读计时协议 → P2 → 发布后，无依赖
-- 确认 GitHub 页面上仓库描述/README 渲染正常 → P2 → 无依赖
+- 找非设计者执行 OPEN-4 试读计时协议 → P2 → 无依赖
+- 写介绍文章（知乎/博客）覆盖三仓库生态 → P2 → 无依赖
