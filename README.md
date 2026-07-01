@@ -8,7 +8,7 @@
 **翻译**：[正體中文](zh-Hant/README.md) · [English](en/README.md)  
 **AI 生成声明**：本仓库大部分内容由人机协作生成（详见 [PUBLISHING.md](PUBLISHING.md)）
 
-> **English Abstract**: A comprehensive methodology framework for **full-lifecycle human-AI collaboration** — from project initiation, execution, and independent review through to archival. ~68,000 Chinese characters; empirically tested through **3 controlled prompt engineering experiments** (Prompt-TDD) and **50+ rounds of multi-model independent review** across 5 LLM backends. Covers: specification-driven development (Spec Coding), prompt experiment design with evidence grading, multi-agent workflow orchestration, passive observation mechanisms for serendipitous discovery, and project closure protocols. Full **[English translation](en/)** available. Licensed **CC BY 4.0**.
+> **English Abstract**: A comprehensive methodology framework for **full-lifecycle human-AI collaboration** — from project initiation, execution, and independent review through to archival. ~68,000 Chinese characters; empirically tested through **3 controlled prompt engineering experiments** (Prompt-TDD) and **50+ rounds of multi-model independent review** across 5 LLM backends. Covers: specification-driven development (Spec Coding), prompt experiment design with evidence grading, multi-agent workflow orchestration, passive observation mechanisms for serendipitous discovery, and project closure protocols. Full **[English translation](en/)** available. The independent review methodology has been extracted as a standalone toolkit: **[Independent Review Toolkit](https://github.com/redamancy231-create/independent-review-toolkit)** — SOP + prompt templates + adversarial challenge framework + real examples. Licensed **CC BY 4.0**.
 
 ```mermaid
 flowchart TB
