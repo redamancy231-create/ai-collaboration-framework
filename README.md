@@ -185,6 +185,7 @@ AI协作项目全生命周期框架/
 |------|------|
 | [**Independent Review Toolkit**](https://github.com/redamancy231-create/independent-review-toolkit) | 独立审查工具包——SOP · prompt 模板 · 对抗式挑战框架 · 真实案例。从本文档 §9.2 + 50+ 轮实战审查提炼。**复制 prompt 即可用**。 |
 | [**Prompt-TDD Methodology**](https://github.com/redamancy231-create/prompt-tdd-methodology) | Prompt 对照实验方法论案例手册——SOP + 两个真实实验（含阴性结果）+ 核心教训。本文档 §4.1.1.1 的 CK1-CK6 检查清单即提炼自此项目。 |
+| [**M&A Case Study Pipeline**](https://github.com/redamancy231-create/ma-case-study-pipeline) | 多模型学术生产流水线——框架的六层理念在并购重组案例研究中的八阶段端到端实证（含交叉双盲审 + 开卷/盲答对照实验 + 可复用 playbook）。|
 
 ---
 
