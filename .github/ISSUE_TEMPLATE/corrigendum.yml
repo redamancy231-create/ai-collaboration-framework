@@ -1,0 +1,13 @@
+name: Corrigendum
+description: 报告文档中的错误或笔误
+labels: [corrigendum]
+body:
+  - type: input
+    attributes:
+      label: 位置（文件+行号）
+  - type: textarea
+    attributes:
+      label: 当前文本
+  - type: textarea
+    attributes:
+      label: 建议修正
