@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this framework in your academic work, please cite it as follows."
 title: "AI协作项目全生命周期框架 · AI Collaboration Project Full-Lifecycle Framework"
 authors:
-  - family-names: "Acerolaorion"
+  - name: "Acerolaorion"
 type: software
 abstract: "A comprehensive methodology framework for full-lifecycle human-AI collaboration — empirically tested through 3 controlled prompt engineering experiments and 50+ rounds of multi-model independent review across 5 LLM backends. ~68,000 Chinese characters."
 keywords:
