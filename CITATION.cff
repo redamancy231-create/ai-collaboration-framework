@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this framework in your academic work, please cite it as follows."
+title: "AI协作项目全生命周期框架 · AI Collaboration Project Full-Lifecycle Framework"
+authors:
+  - family-names: "Acerolaorion"
+type: software
+abstract: "A comprehensive methodology framework for full-lifecycle human-AI collaboration — empirically tested through 3 controlled prompt engineering experiments and 50+ rounds of multi-model independent review across 5 LLM backends. ~68,000 Chinese characters."
+keywords:
+  - "human-AI collaboration"
+  - "methodology framework"
+  - "prompt engineering"
+  - "independent review"
+  - "controlled experiment"
+  - "LLM"
+license: CC-BY-4.0
+version: 1.6.4
+date-released: "2026-06-24"
+repository-code: "https://github.com/redamancy231-create/ai-collaboration-framework"
+url: "https://github.com/redamancy231-create/ai-collaboration-framework"
