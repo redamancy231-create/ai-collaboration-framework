@@ -11,9 +11,9 @@
 - **被动观测**：(1) 指针化不彻底是编辑者审查自己产出的系统性盲区——三个项目都被 Codex 抓到模型名残留；(2) CLOSED 项目的 CLAUDE.md 标准应不同——操作命令权重降低、避坑/教训/重启门槛权重提高，当前 write-claude-md Skill 未区分项目生命周期；(3) Codex 在形态匹配ETF策略中实测了日志 glob 命令确认匹配 0 文件——这是前两份审查未做的"命令可执行性验证"，比纯粹文本审查多一层防护
 
 **Next Steps**：
-- 将 write-claude-md Skill 中补充"项目生命周期差异"（活跃/CLOSED 不同标准） → P2 → 下次会话
+- ~~将 write-claude-md Skill 中补充"项目生命周期差异"（活跃/CLOSED 不同标准）~~ → ✅ 2026-07-03 已完成（本次会话）
 - 找非设计者执行 OPEN-4 试读计时协议 → P2 → 发布后，无依赖
-- 确认 GitHub 页面上仓库描述/README 渲染正常 → P2 → 无依赖
+- ~~确认 GitHub 页面上仓库描述/README 渲染正常~~ → ✅ 2026-07-01 已完成（7 处修正）
 
 ---
 
@@ -34,7 +34,7 @@
 - ~~在 prompt-tdd 项目上测试 write-claude-md Skill（Python 库类型）~~ → ✅ 2026-06-30 完成
 - ~~复制 `.lsp.json` 到其他活跃 Python 项目~~ → ✅ 2026-06-30 完成
 - 找非设计者执行 OPEN-4 试读计时协议 → P2 → 发布后，无依赖
-- 确认 GitHub 页面上仓库描述/README 渲染正常 → P2 → 无依赖
+- ~~确认 GitHub 页面上仓库描述/README 渲染正常~~ → ✅ 2026-07-01 已完成
 
 ---
 
@@ -171,12 +171,13 @@
 
 ## 项目状态: AI协作项目全生命周期框架
 
-- 当前阶段: v1.6.4（已发布）— 同前
+- 当前阶段: v1.6.4（已发布，GitHub 页面全面优化）
 - 本轮完成:
-  1. GitHub 渲染确认-修复 7 项（Release 附件名/语言条/变更推送/BOM/Pages/Topics/文件计数）
-  2. README 增强-Mermaid 图+英文摘要+中英双语描述+字符数统一
-  3. 主文档中文字符精确统计-68,202 CJK 汉字
-  4. 生态扩展-independent-review-toolkit(v2.0.2)+prompt-tdd-methodology(v0.1) 两仓库发布+交叉链接
+  1. GitHub 页面全面优化（Topics 15/Discussions 启用/Description 措辞修正/CITATION.cff 创建+name字段修正）
+  2. Release v1.6.4 notes 3行→结构化中英双语
+  3. CONTRIBUTING.md + 2 Issue Forms（corrigendum/methodology-question）
+  4. Social Preview 自定义图片（1280×640，六层架构 Mermaid 图）
+  5. Codex GPT-5.5 独立审查全四仓库，含 API 核实+措辞建议→全部采纳
 - 发现的问题: 无
 
 ## 会话备注（2026-06-27，DeepSeek-V4-Pro via Claude Code CLI）
