@@ -169,16 +169,24 @@
 - **push 前必须由 Codex 独立验证**：用自有搜索策略确认零个人标识/零绝对路径（检查清单 O7），不可基于本次会话的 grep 结果声称清零
 - **翻译管道泛化暂缓**：等英文翻译经验积累后再抽象（见 `_workflows/i18n/DESIGN.md`）
 
+## 会话备注（2026-07-05，DeepSeek-V4-Pro via Claude Code CLI）
+
+**GitHub Pages 部署修复 + CI 工作流创建**
+
+- **诊断**：Pages 部署 runs #12/#21 持续失败。根因为 `build_type: "legacy"` 旧版 Jekyll 管道与 Actions `deploy-pages@v5` 双管道冲突。旧版构建卡在 `"building"`(duration=0) 阻塞新部署。2026-07-03 多次 "Page build failed" 错误→间歇性成功→持续失败。
+- **修复**：(1) API 切换 `build_type` legacy→workflow；(2) 创建 `.github/workflows/pages.yml`（build+deploy 两 job，并发控制 cancel-in-progress）；(3) PR #1 合并后 Run #22 绿勾验证通过。
+- **工具**：gh CLI API 操作（pages 配置切换、environment 检查、branch policy 检查、部署日志下载）；GitHub MCP。
+- **被动观测**：(1) `get_file_contents` 对 `.github/workflows` 返回 Not Found（目录为空时代码 404）；(2) 安全分类器间歇不可用导致多轮 MCP/Bash 被阻→重试通过；(3) `build_type: "workflow"` 切换后无需额外操作，GitHub 自动从 legacy build pipeline 切换到 Actions-only。
+- **Next Steps**：无——部署修复已闭环。
+
 ## 项目状态: AI协作项目全生命周期框架
 
-- 当前阶段: v1.6.4（已发布，GitHub 页面全面优化）
+- 当前阶段: v1.6.4（已发布，GitHub Pages 部署已修复）
 - 本轮完成:
-  1. GitHub 页面全面优化（Topics 15/Discussions 启用/Description 措辞修正/CITATION.cff 创建+name字段修正）
-  2. Release v1.6.4 notes 3行→结构化中英双语
-  3. CONTRIBUTING.md + 2 Issue Forms（corrigendum/methodology-question）
-  4. Social Preview 自定义图片（1280×640，六层架构 Mermaid 图）
-  5. Codex GPT-5.5 独立审查全四仓库，含 API 核实+措辞建议→全部采纳
-- 发现的问题: 无
+  1. 诊断 GitHub Pages 部署 failure 根因（build_type legacy 与 Actions 双管道冲突）
+  2. API 切换 build_type legacy→workflow + 创建 .github/workflows/pages.yml
+  3. PR #1 合并→Run #22 绿勾验证通过
+- 发现的问题: 无（Pages 部署已修复闭环）
 
 ## 会话备注（2026-06-27，DeepSeek-V4-Pro via Claude Code CLI）
 
