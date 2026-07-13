@@ -14,6 +14,8 @@
 
 > **English Abstract**: A comprehensive methodology framework for **full-lifecycle human-AI collaboration** — from project initiation, execution, and independent review through to archival. ~68,000 Chinese characters; empirically tested through **3 controlled prompt engineering experiments** (Prompt-TDD) and **50+ rounds of multi-model independent review** across 5 LLM backends. Covers: specification-driven development (Spec Coding), prompt experiment design with evidence grading, multi-agent workflow orchestration, passive observation mechanisms for serendipitous discovery, and project closure protocols. Full **[English translation](en/)** available. The independent review methodology has been extracted as a standalone toolkit: **[Independent Review Toolkit](https://github.com/redamancy231-create/independent-review-toolkit)** — SOP + prompt templates + adversarial challenge framework + real examples. Licensed **CC BY 4.0**.
 
+> 📖 ~6.8万字 | 六层架构 | 3次对照实验 | 50+轮多后端独立审查 | Spec Coding · Prompt-TDD · 项目闭合
+
 ```mermaid
 flowchart TB
     HG["🧑 <b>Human Gate（人类闸门）</b><br/>贯穿全流程的人类决策点 —— 不可自动化"]
