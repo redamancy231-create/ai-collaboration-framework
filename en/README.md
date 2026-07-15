@@ -5,8 +5,38 @@
 **License**: CC BY 4.0  
 **Language**: Simplified Chinese (if translations in other languages appear in the future, the Simplified Chinese original is authoritative)  
 **Encoding**: UTF-8 (all text files)  
-**Translations**: [Traditional Chinese](../zh-Hant/README.md)  
+**Translations**: [Simplified Chinese](../README.md) · [Traditional Chinese](../zh-Hant/README.md)  
 **AI Generation Statement**: Most content in this repository was produced through human-AI collaboration (see [PUBLISHING.md](../PUBLISHING.md))
+
+[![简体中文](https://img.shields.io/badge/lang-简体中文-red)](../README.md)
+[![English](https://img.shields.io/badge/lang-English-blue)]()
+[![正體中文](https://img.shields.io/badge/lang-正體中文-green)](../zh-Hant/README.md)
+
+> 📖 ~168,000 characters | 6-layer architecture | 3 controlled experiments | 50+ rounds of multi-backend independent review | Spec Coding · Prompt-TDD · Project Closure
+
+```mermaid
+flowchart TB
+    HG["🧑 <b>Human Gate</b><br/>Human decision points throughout the entire process — cannot be automated"]
+
+    subgraph LAYERS["<b>Six-Layer Architecture</b>"]
+        direction LR
+        L0["<b>L0 · Spec</b><br/>Project Constitution<br/>──────<br/>Scope · Boundaries<br/>Death Criteria<br/>Maintenance Process"]
+        L1["<b>L1 · Prompt</b><br/>Task Specification<br/>──────<br/>Prompt-TDD<br/>Controlled Experiments<br/>Evidence Labeling [E/C/N]"]
+        L2["<b>L2 · Loop</b><br/>Execution Iteration<br/>──────<br/>Execute→Feedback<br/>→Correct Cycle"]
+        L3["<b>L3 · Workflow</b><br/>Multi-Task Orchestration<br/>──────<br/>9 Patterns<br/>Review Chain<br/>Parallel/Pipeline"]
+        L4["<b>L4 · Retrospect</b><br/>Retrospective Distillation<br/>──────<br/>Methodology Extraction<br/>Passive Observation<br/>10 Failure Modes"]
+        L5["<b>L5 · Closure</b><br/>Project Closure<br/>──────<br/>S/M/L Tiers<br/>Archive Checklist<br/>Asset Archiving"]
+    end
+
+    HG -.-> LAYERS
+
+    CROSS["📐 <b>Cross-Layer Concerns</b><br/>──────<br/>2D Evidence Representation [Internal Strength × Cross-Model Generalizability]<br/>Methodology Fragment 3-Layer Template · Cross-Layer Observability Design"]
+
+    EMPIRICAL["✅ <b>Empirical Foundation</b><br/>──────<br/>3 Controlled Experiments (including published negative results)<br/>50+ Rounds of Independent Review · 5 LLM Backends · 4 CLI Houses"]
+
+    LAYERS --> CROSS
+    CROSS --> EMPIRICAL
+```
 
 A meta-level operational specification for "how to run a complete project with AI collaboration": a full-lifecycle process framework from initiation, execution, and review through archival. Core beliefs: Steering Wheel > Engine, Layers Are Not Interchangeable, Reverse Precipitation from Failures, and AI Internal Closed Loop ≠ Human Review.
 

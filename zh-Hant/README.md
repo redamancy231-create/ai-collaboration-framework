@@ -5,8 +5,38 @@
 **許可**：CC BY 4.0  
 **語言**：正體中文（以簡體中文原文為準，若有歧義從原文）  
 **編碼**：UTF-8（全部文字檔案）  
-**Translations**: [简体中文](../README.md)  
+**翻譯**：[简体中文](../README.md) · [English](../en/README.md)  
 **AI 生成宣告**：本倉庫大部分內容由人機協作生成（詳見 [PUBLISHING.md](../PUBLISHING.md)）
+
+[![简体中文](https://img.shields.io/badge/lang-简体中文-red)](../README.md)
+[![English](https://img.shields.io/badge/lang-English-blue)](../en/README.md)
+[![正體中文](https://img.shields.io/badge/lang-正體中文-green)]()
+
+> 📖 ~16.8萬字元 | 六層架構 | 3次對照實驗 | 50+輪多後端獨立審查 | Spec Coding · Prompt-TDD · 專案閉合
+
+```mermaid
+flowchart TB
+    HG["🧑 <b>Human Gate（人類閘門）</b><br/>貫穿全流程的人類決策點 —— 不可自動化"]
+
+    subgraph LAYERS["<b>六層分層架構</b>"]
+        direction LR
+        L0["<b>L0 · Spec</b><br/>專案憲法<br/>──────<br/>範圍 · 邊界<br/>死亡判據<br/>維護流程"]
+        L1["<b>L1 · Prompt</b><br/>任務規格<br/>──────<br/>Prompt-TDD<br/>對照實驗<br/>證據標註 [E/C/N]"]
+        L2["<b>L2 · Loop</b><br/>執行迭代<br/>──────<br/>執行→回饋<br/>→修正迴圈"]
+        L3["<b>L3 · Workflow</b><br/>多任務編排<br/>──────<br/>9種模式<br/>審查鏈<br/>並行/流水線"]
+        L4["<b>L4 · Retrospect</b><br/>回顧沉澱<br/>──────<br/>方法論提取<br/>被動觀測<br/>10種失效模式"]
+        L5["<b>L5 · Closure</b><br/>專案閉合<br/>──────<br/>S/M/L 分檔<br/>封存清單<br/>資產歸檔"]
+    end
+
+    HG -.-> LAYERS
+
+    CROSS["📐 <b>跨層關切</b><br/>──────<br/>證據等級二維表示 [內部強度 × 跨模型推廣性]<br/>方法論片段三層模板 · 跨層可觀測性設計"]
+
+    EMPIRICAL["✅ <b>實證基礎</b><br/>──────<br/>3 次對照實驗（含陰性結果公開）<br/>50+ 輪獨立審查 · 5 種 LLM 後端 · 4 個 CLI house"]
+
+    LAYERS --> CROSS
+    CROSS --> EMPIRICAL
+```
 
 > **檔案名稱說明**：本譯文中的連結路徑保留簡體中文（與磁碟上的實際檔案名稱一致），連結文字則使用正體中文。此為刻意設計——確保連結在跨平臺環境中可正確解析。
 
