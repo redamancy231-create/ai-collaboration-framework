@@ -148,5 +148,20 @@ AI协作项目全生命周期框架/
 
 ---
 
+## 相關專案
+
+本倉庫的方法論已拆分為獨立專案：
+
+| 專案 | 說明 |
+|------|------|
+| [**Independent Review Toolkit**](https://github.com/redamancy231-create/independent-review-toolkit) | 獨立審查工具包——SOP · prompt 模板 · 對抗式挑戰框架 · 真實案例。從本文檔 §9.2 + 50+ 輪實戰審查提煉。**複製 prompt 即可用**。 |
+| [**Prompt-TDD Methodology**](https://github.com/redamancy231-create/prompt-tdd-methodology) | Prompt 對照實驗方法論案例手冊——SOP + 兩個真實實驗（含陰性結果）+ 核心教訓。本文檔 §4.1.1.1 的 CK1-CK6 檢查清單即提煉自此專案。 |
+| [**M&A Case Study Pipeline**](https://github.com/redamancy231-create/ma-case-study-pipeline) | 多模型學術生產流水線——框架的六層理念在併購重組案例研究中的八階段端到端實證（含交叉雙盲審 + 開卷/盲答對照實驗 + 可複用 playbook）。 |
+| [**ETF Pattern Match — pybind11**](https://github.com/redamancy231-create/etf-pattern-match-pybind11) | pybind11/C++20 混合程式設計加速實踐——從量化策略提取純計算模組並用 C++20 加速（DTW 43x / pattern_match 58x）；採用本框架的多後端審查、被動觀測、專案閉合協定。 |
+| [**DOCX Pipeline**](https://github.com/redamancy231-create/docx-pipeline) | Markdown → 高品質中文 DOCX — 雙後端 + Mermaid 渲染 + 4 套預設範本。從本文檔的 DOCX 生成管道提煉為獨立開源工具，經 3 輪異後端審查閉合。 |
+| [**Claude Skills**](https://github.com/redamancy231-create/claude-skills) | 3 個實戰驗證的 Claude Code Skill——會話交接 · CLAUDE.md 編寫 · 事前否決。從本文檔 §9.2–§9.3 + 50+ 輪跨模型審查提煉，經 3 後端獨立驗證閉合。 |
+
+---
+
 *生成模型：DeepSeek-V4-Pro (via Claude Code CLI) · 2026-06-22*  
 *目錄結構與檔案計數校正：Claude Opus 4.8 (via Claude Code CLI) · 2026-06-23 — 移除已遷出的建置產物/快取與 `_backups/` 條目，對齊發布套件真實結構（經 Codex GPT-5.5 獨立清點交叉驗證）*
