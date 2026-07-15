@@ -193,6 +193,7 @@ AI协作项目全生命周期框架/
 | [**Prompt-TDD Methodology**](https://github.com/redamancy231-create/prompt-tdd-methodology) | Prompt 对照实验方法论案例手册——SOP + 两个真实实验（含阴性结果）+ 核心教训。本文档 §4.1.1.1 的 CK1-CK6 检查清单即提炼自此项目。 |
 | [**M&A Case Study Pipeline**](https://github.com/redamancy231-create/ma-case-study-pipeline) | 多模型学术生产流水线——框架的六层理念在并购重组案例研究中的八阶段端到端实证（含交叉双盲审 + 开卷/盲答对照实验 + 可复用 playbook）。 |
 | [**ETF Pattern Match — pybind11**](https://github.com/redamancy231-create/etf-pattern-match-pybind11) | pybind11/C++20 混合编程加速实践——从量化策略提取纯计算模块并用 C++20 加速（DTW 43x / pattern_match 58x）；采用本框架的多后端审查、被动观测、项目闭合协议。 |
+| [**DOCX Pipeline**](https://github.com/redamancy231-create/docx-pipeline) | Markdown → 高质量中文 DOCX — 双后端 + Mermaid 渲染 + 4 套预设模板。从本文档的 DOCX 生成管道提炼为独立开源工具，经 3 轮异后端审查闭合。 |
 | [**Claude Skills**](https://github.com/redamancy231-create/claude-skills) | 3 个实战验证的 Claude Code Skill——会话交接 · CLAUDE.md 编写 · 事前否决。从本文档 §9.2–§9.3 + 50+ 轮跨模型审查提炼，经 3 后端独立验证闭合。 |
 
 ---
