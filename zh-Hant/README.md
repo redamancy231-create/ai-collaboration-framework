@@ -1,5 +1,7 @@
 # AI 協作專案全生命週期框架
 
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+
 **版本**：v1.6.4（2026-06-22）  
 **狀態**：Working Paper（持續更新中，引用請註明版本號）  
 **許可**：CC BY 4.0  
