@@ -42,13 +42,13 @@ flowchart TB
 
 > **檔案名稱說明**：本譯文中的連結路徑保留簡體中文（與磁碟上的實際檔案名稱一致），連結文字則使用正體中文。此為刻意設計——確保連結在跨平臺環境中可正確解析。
 
-一套描述"如何用 AI 協作跑完一個完整專案"的元層次操作規範——從啟動、執行、審查到封存的全生命週期流程框架。核心信念：方向盤 > 引擎、分層不互相替代、從失敗反向沉澱、AI 閉環 ≠ 人類審查。
+一套描述「如何用 AI 協作跑完一個完整專案」的元層次操作規範——從啟動、執行、審查到封存的全生命週期流程框架。核心信念：方向盤 > 引擎、分層不互相替代、從失敗反向沉澱、AI 閉環 ≠ 人類審查。
 
-> **定位宣告**：這是一個**半開放的個人方法論工具**——它不追求成為獨立於作者的"通用框架"（一個人不可能擁有覆蓋所有專案型別、工具鏈、驗證獨立性的經驗譜系）。它提供的是經過多後端審查和對照實驗證據標註的個人實踐模式。歡迎參考、改編、和貢獻反例；但讀者應預期需要翻譯成本才能適配自己的場景。詳見 §1.8 侷限 #9 和 `_research/通用框架可行性討論_20260621.md`。
+> **定位宣告**：這是一個**半開放的個人方法論工具**——它不追求成為獨立於作者的「通用框架」（一個人不可能擁有覆蓋所有專案型別、工具鏈、驗證獨立性的經驗譜系）。它提供的是經過多後端審查和對照實驗證據標註的個人實踐模式。歡迎參考、改編、和貢獻反例；但讀者應預期需要翻譯成本才能適配自己的場景。詳見 §1.8 侷限 #9 和 `_research/通用框架可行性討論_20260621.md`。
 
 ### 專案性質
 
-**這是一份小型技術檔案，不是軟體專案。** 本倉庫不包含可執行的應用程式、庫或 Web 服務。這裡的"程式碼"是檔案生成指令碼（MD → JSON/DOCX 轉換），"資料"是審查報告和案例研究，核心交付物是一份約 15 萬字元的 Markdown 檔案。
+**這是一份小型技術檔案，不是軟體專案。** 本倉庫不包含可執行的應用程式、庫或 Web 服務。這裡的「程式碼」是檔案生成指令碼（MD → JSON/DOCX 轉換），「資料」是審查報告和案例研究，核心交付物是一份約 15 萬字元的 Markdown 檔案。
 
 如果你在找：下載安裝指南、API 檔案、Demo 頁面 —— 這些這裡都沒有。  
 如果你在找：一套經過實證檢驗的 AI 協作方法論框架 —— [`AI協作專案全生命週期框架.md`](AI协作项目全生命周期框架.md) 是入口。
@@ -189,7 +189,7 @@ AI协作项目全生命周期框架/
 | [**Independent Review Toolkit**](https://github.com/redamancy231-create/independent-review-toolkit) | 獨立審查工具包——SOP · prompt 模板 · 對抗式挑戰框架 · 真實案例。從本文檔 §9.2 + 50+ 輪實戰審查提煉。**複製 prompt 即可用**。 |
 | [**Prompt-TDD Methodology**](https://github.com/redamancy231-create/prompt-tdd-methodology) | Prompt 對照實驗方法論案例手冊——SOP + 兩個真實實驗（含陰性結果）+ 核心教訓。本文檔 §4.1.1.1 的 CK1-CK6 檢查清單即提煉自此專案。 |
 | [**M&A Case Study Pipeline**](https://github.com/redamancy231-create/ma-case-study-pipeline) | 多模型學術生產流水線——框架的六層理念在併購重組案例研究中的八階段端到端實證（含交叉雙盲審 + 開卷/盲答對照實驗 + 可複用 playbook）。 |
-| [**ETF Pattern Match — pybind11**](https://github.com/redamancy231-create/etf-pattern-match-pybind11) | pybind11/C++20 混合程式設計加速實踐——從量化策略提取純計算模組並用 C++20 加速（DTW 43x / pattern_match 58x）；採用本框架的多後端審查、被動觀測、專案閉合協定。 |
+| [**ETF Pattern Match — pybind11**](https://github.com/redamancy231-create/etf-pattern-match-pybind11) | pybind11/C++20 混合程式設計加速實踐——從量化策略提取純計算模組並用 C++20 加速（DTW 37× / pattern match 61×）；採用本框架的多後端審查、被動觀測、專案閉合協定。 |
 | [**DOCX Pipeline**](https://github.com/redamancy231-create/docx-pipeline) | Markdown → 高品質中文 DOCX — 雙後端 + Mermaid 渲染 + 4 套預設範本。從本文檔的 DOCX 生成管道提煉為獨立開源工具，經 3 輪異後端審查閉合。 |
 | [**Claude Skills**](https://github.com/redamancy231-create/claude-skills) | 3 個實戰驗證的 Claude Code Skill——會話交接 · CLAUDE.md 編寫 · 事前否決。從本文檔 §9.2–§9.3 + 50+ 輪跨模型審查提煉，經 3 後端獨立驗證閉合。 |
 
