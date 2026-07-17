@@ -210,18 +210,28 @@ AI协作项目全生命周期框架/
 
 ---
 
-## 相关项目
+## 相关项目 | Related Projects
 
-本仓库的方法论已拆分为独立项目：
+本仓库是方法论上游，以下 6 个仓库均为其派生或实证项目：
 
-| 项目 | 说明 |
+```
+ai-collaboration-framework  ← 方法论上游（本仓库）
+├── independent-review-toolkit   ← §9.2 审查 SOP 提取
+├── prompt-tdd-methodology       ← §4.1.1 实验方法论提取
+├── claude-skills               ← §9.2–§9.3 Claude Code 技能提取
+├── docx-pipeline               ← DOCX 生成管道提取
+├── ma-case-study-pipeline      ← 六层框架实证案例
+└── etf-pattern-match-pybind11  ← 采用审查/观测/闭合协议
+```
+
+| 项目 | 关系 |
 |------|------|
-| [**Independent Review Toolkit**](https://github.com/redamancy231-create/independent-review-toolkit) | 独立审查工具包——SOP · prompt 模板 · 对抗式挑战框架 · 真实案例。从本文档 §9.2 + 50+ 轮实战审查提炼。**复制 prompt 即可用**。 |
-| [**Prompt-TDD Methodology**](https://github.com/redamancy231-create/prompt-tdd-methodology) | Prompt 对照实验方法论案例手册——SOP + 两个真实实验（含阴性结果）+ 核心教训。本文档 §4.1.1.1 的 CK1-CK6 检查清单即提炼自此项目。 |
-| [**M&A Case Study Pipeline**](https://github.com/redamancy231-create/ma-case-study-pipeline) | 多模型学术生产流水线——框架的六层理念在并购重组案例研究中的八阶段端到端实证（含交叉双盲审 + 开卷/盲答对照实验 + 可复用 playbook）。 |
-| [**ETF Pattern Match — pybind11**](https://github.com/redamancy231-create/etf-pattern-match-pybind11) | pybind11/C++20 混合编程加速实践——从量化策略提取纯计算模块并用 C++20 加速（DTW 43x / pattern_match 58x）；采用本框架的多后端审查、被动观测、项目闭合协议。 |
-| [**DOCX Pipeline**](https://github.com/redamancy231-create/docx-pipeline) | Markdown → 高质量中文 DOCX — 双后端 + Mermaid 渲染 + 4 套预设模板。从本文档的 DOCX 生成管道提炼为独立开源工具，经 3 轮异后端审查闭合。 |
-| [**Claude Skills**](https://github.com/redamancy231-create/claude-skills) | 3 个实战验证的 Claude Code Skill——会话交接 · CLAUDE.md 编写 · 事前否决。从本文档 §9.2–§9.3 + 50+ 轮跨模型审查提炼，经 3 后端独立验证闭合。 |
+| [**Independent Review Toolkit**](https://github.com/redamancy231-create/independent-review-toolkit) | **上游提取**：从本文档 §9.2 + 50+ 轮实战审查提炼的审查 SOP。**复制 prompt 即可用**。 |
+| [**Prompt-TDD Methodology**](https://github.com/redamancy231-create/prompt-tdd-methodology) | **上游提取**：Prompt 对照实验方法论案例手册——SOP + 两个真实实验（含阴性结果）。本文档 §4.1.1.1 的 CK1-CK6 提取自此项目。 |
+| [**Claude Skills**](https://github.com/redamancy231-create/claude-skills) | **上游提取**：3 个 Claude Code Skill——会话交接 · CLAUDE.md 编写 · 事前否决。从本文档 §9.2–§9.3 + 50+ 轮跨模型审查提炼。 |
+| [**DOCX Pipeline**](https://github.com/redamancy231-create/docx-pipeline) | **上游提取**：Markdown → 中文 DOCX 泛化管道——双后端 + Mermaid + 4 模板。从本文档的 DOCX 生成管道提炼。 |
+| [**M&A Case Study Pipeline**](https://github.com/redamancy231-create/ma-case-study-pipeline) | **下游实证**：框架六层理念在并购重组案例中的八阶段端到端实证（含交叉双盲审 + 对照实验 + 可复用 playbook）。 |
+| [**ETF Pattern Match — pybind11**](https://github.com/redamancy231-create/etf-pattern-match-pybind11) | **下游采用**：pybind11/C++20 加速实践——采用本框架的多后端审查、被动观测、项目闭合协议。DTW 34× / pattern match 53×。 |
 
 ---
 
