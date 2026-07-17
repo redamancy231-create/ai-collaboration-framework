@@ -1,3 +1,16 @@
+## 会话备注（2026-07-17，Claude Code DeepSeek-V4-Pro + GPT-5.6-Sol）
+
+**GPT-5.6-Sol 执行 2 项 + 审查 + 修复：**
+- README 前三段重写（价值优先：问题→受众→入口，元数据压缩为一行）
+- 时间限阅读路径（5min/30min/2h/full adoption 四档）
+- 生态地图（上游/下游关系树状图，三语同步）
+- **翻译审计**(GPT-5.6-Sol): zh-Hant 发现 6 MEDIUM + 2 LOW — 全部修复(规则#6缺失/header过期/sync状态/措辞/私密用语/今日→當日)
+- **CLAUDE.md 审计**(GPT-5.6-Sol): 2 CRITICAL(regenerate_docx.py硬编码版本+DPI缺失) + 3 MEDIUM(CI声明/翻译义务/跨仓库传播) — 全部修复
+- PDF 发布(GitHub Release, WPS转换), gh CLI 中文名限制→英文 `AI-Collaboration-Framework.pdf`
+- Release 命名统一(去版本号, DOCX+PDF 同名)
+
+**GPT-5.6-Sol 改进方案审查**: 翻译同步P2→P0, 8 个方法论文档专属维度中 5 个适用(个人创作者视角)
+
 ## 会话备注（2026-06-30，DeepSeek-V4-Pro via Claude Code CLI）
 
 **write-claude-md 多项目类型测试 + .lsp.json 部署 + Codex 异后端交叉验证闭环**
