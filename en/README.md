@@ -179,16 +179,26 @@ This framework has undergone multi-round Independent Review across **5 backends 
 
 ## Related Projects
 
-The methodology of this repository has been split into independent projects:
+This repository is the methodology upstream. The following 6 repos are derivatives or empirical validations:
 
-| Project | Description |
+```
+ai-collaboration-framework  ← methodology upstream (this repo)
+├── independent-review-toolkit   ← §9.2 review SOP extraction
+├── prompt-tdd-methodology       ← §4.1.1 experiment methodology extraction
+├── claude-skills               ← §9.2–§9.3 Claude Code skill extraction
+├── docx-pipeline               ← DOCX generation pipeline extraction
+├── ma-case-study-pipeline      ← six-layer framework empirical case study
+└── etf-pattern-match-pybind11  ← adopted review/observation/closure protocols
+```
+
+| Project | Relationship |
 |---------|-------------|
-| [**Independent Review Toolkit**](https://github.com/redamancy231-create/independent-review-toolkit) | Independent review toolkit — SOP · prompt templates · adversarial challenge framework · real examples. Extracted from §9.2 of this document + 50+ rounds of practical review. **Copy the prompts and use immediately**. |
-| [**Prompt-TDD Methodology**](https://github.com/redamancy231-create/prompt-tdd-methodology) | Prompt controlled experiment methodology casebook — SOP + two real experiments (including negative results) + core lessons. The CK1-CK6 checklist in §4.1.1.1 of this document is distilled from this project. |
-| [**M&A Case Study Pipeline**](https://github.com/redamancy231-create/ma-case-study-pipeline) | Multi-model academic production pipeline — end-to-end empirical validation of the framework's six-layer philosophy in an eight-stage M&A case study (including cross double-blind review + open-book/blind-answer controlled experiment + reusable playbook). |
-| [**ETF Pattern Match — pybind11**](https://github.com/redamancy231-create/etf-pattern-match-pybind11) | pybind11/C++20 hybrid programming acceleration practice — extracting pure computation modules from quantitative strategies and accelerating with C++20 (DTW 37× / pattern match 61×); employs the framework's multi-backend review, passive observation, and project closure protocols. |
-| [**DOCX Pipeline**](https://github.com/redamancy231-create/docx-pipeline) | Markdown → high-quality Chinese DOCX — dual-backend + Mermaid rendering + 4 preset templates. Extracted from this document's DOCX generation pipeline as an independent open-source tool, closed after 3 rounds of cross-backend review. |
-| [**Claude Skills**](https://github.com/redamancy231-create/claude-skills) | 3 battle-tested Claude Code Skills — session handoff · CLAUDE.md authoring · pre-emptive veto. Extracted from §9.2–§9.3 of this document + 50+ rounds of cross-model review, independently verified and closed by 3 backends. |
+| [**Independent Review Toolkit**](https://github.com/redamancy231-create/independent-review-toolkit) | **Upstream extraction**: Review SOP distilled from §9.2 + 50+ rounds of practical review. **Copy the prompts and use immediately**. |
+| [**Prompt-TDD Methodology**](https://github.com/redamancy231-create/prompt-tdd-methodology) | **Upstream extraction**: Prompt controlled experiment methodology casebook — SOP + two real experiments (including negative results). |
+| [**Claude Skills**](https://github.com/redamancy231-create/claude-skills) | **Upstream extraction**: 3 battle-tested Claude Code Skills — session handoff, CLAUDE.md authoring, pre-emptive veto. Extracted from §9.2–§9.3. |
+| [**DOCX Pipeline**](https://github.com/redamancy231-create/docx-pipeline) | **Upstream extraction**: Markdown → Chinese DOCX pipeline — dual-backend + Mermaid + 4 templates. Extracted from this document's DOCX generation pipeline. |
+| [**M&A Case Study Pipeline**](https://github.com/redamancy231-create/ma-case-study-pipeline) | **Downstream empirical**: End-to-end validation of the framework's six-layer philosophy in an eight-stage M&A case study. |
+| [**ETF Pattern Match — pybind11**](https://github.com/redamancy231-create/etf-pattern-match-pybind11) | **Downstream adoption**: pybind11/C++20 acceleration practice — employs the framework's multi-backend review, passive observation, and project closure protocols. DTW 34× / pattern match 53×. |
 
 ---
 
