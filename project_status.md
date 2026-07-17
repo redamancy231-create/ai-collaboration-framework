@@ -181,12 +181,13 @@
 
 ## 项目状态: AI协作项目全生命周期框架
 
-- 当前阶段: v1.6.4（已发布，GitHub Pages 部署已修复）
+- 当前阶段: v1.6.4（已发布）
 - 本轮完成:
-  1. 诊断 GitHub Pages 部署 failure 根因（build_type legacy 与 Actions 双管道冲突）
-  2. API 切换 build_type legacy→workflow + 创建 .github/workflows/pages.yml
-  3. PR #1 合并→Run #22 绿勾验证通过
-- 发现的问题: 无（Pages 部署已修复闭环）
+  1. README 三语同步：补全 zh-Hant/en 缺失的 badges/stats/Mermaid/相关项目段落，翻译链接修正
+  2. "相关工具"→"相关项目" 命名修正（三语），表头同步
+  3. 三语均加 CC BY 4.0 License badge
+  4. 同批次修复 independent-review-toolkit / prompt-tdd-methodology / ma-case-study-pipeline / docx-pipeline 的 README 多语言不一致
+- 发现的问题: README 多语言版本长期漂移——根 README 更新后 zh-Hant/en 翻译版漏同步（badges/stats/相关项目表均截断）
 
 ## 会话备注（2026-06-27，DeepSeek-V4-Pro via Claude Code CLI）
 

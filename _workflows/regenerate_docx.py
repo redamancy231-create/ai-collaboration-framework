@@ -1,6 +1,7 @@
 """全量重生成 DOCX —— Mermaid渲染 + pandoc转换 + 样式后处理"""
 import subprocess, re, os, tempfile, shutil, hashlib
 from pathlib import Path
+from PIL import Image
 
 # mmdc: try PATH first, fall back to common npm global install locations
 def _find_mmdc():
@@ -68,6 +69,12 @@ for i, m in enumerate(mermaid_blocks):
             capture_output=True, text=True, timeout=60
         )
     if png_path.exists():
+        # Inject 300 DPI metadata (mmdc does not embed DPI; Word defaults to 96 DPI → ~3× stretch)
+        try:
+            img = Image.open(png_path)
+            img.save(png_path, dpi=(300, 300))
+        except Exception as exc:
+            print(f"  WARNING: DPI injection failed for {h}.png: {exc}")
         rendered[h] = png_path
         print(f"  Rendered diagram {i+1}/{len(mermaid_blocks)}: {h}.png ({png_path.stat().st_size} bytes)")
     else:
@@ -152,10 +159,11 @@ with zipfile.ZipFile(DOCX_OUT, 'r') as zin:
                 data = re.sub(rb'<dc:creator>[^<]*</dc:creator>', b'<dc:creator/>', data)
                 data = re.sub(rb'<cp:lastPrinted>[^<]*</cp:lastPrinted>', b'<cp:lastPrinted/>', data)
                 data = re.sub(rb'<cp:revision>[^<]*</cp:revision>', b'<cp:revision>1</cp:revision>', data)
-                # Add version if missing
+                # Add version from VERSION file
                 if b'<cp:version>' not in data:
+                    version = Path(__file__).parent.parent.joinpath('VERSION').read_text().strip()
                     data = data.replace(b'</cp:coreProperties>',
-                        b'<cp:version>v1.6.4</cp:version></cp:coreProperties>')
+                        f'<cp:version>{version}</cp:version>'.encode())
             zout.writestr(item, data)
 shutil.move(tmp_path, str(DOCX_OUT))
 print("Metadata cleaned")
