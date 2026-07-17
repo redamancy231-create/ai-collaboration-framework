@@ -2,13 +2,14 @@
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-**版本**：v1.6.4（2026-06-22）  
-**状态**：Working Paper（持续更新中，引用请注明版本号）  
-**许可**：CC BY 4.0  
-**语言**：简体中文（其他语言译本以简体中文原文为准）  
-**编码**：UTF-8（全部文本文件）  
-**翻译**：[正體中文](zh-Hant/README.md) · [English](en/README.md)  
-**AI 生成声明**：本仓库大部分内容由人机协作生成（详见 [PUBLISHING.md](PUBLISHING.md)）
+这套框架帮助独立创作者把零散的 AI 对话转化为可执行、可验证、可复盘、可封存的完整项目流程。
+
+**适用对象 / For**：个人独立使用 AI 工具推进项目的创作者（solo creators）。  
+**你将获得 / Get**：六层生命周期方法、Prompt-TDD 实验规范、独立审查流程与项目闭合清单。  
+**最快入口 / Start**：打开 [`AI协作项目全生命周期框架.md`](AI协作项目全生命周期框架.md)，先读 §1.4–§1.7。
+
+**版本 / Version**：v1.6.4（2026-06-22）· **状态 / Status**：Working Paper（持续更新；引用请注明版本）· **许可 / License**：CC BY 4.0 · **编码 / Encoding**：UTF-8  
+**语言 / Languages**：简体中文为准 · [正體中文](zh-Hant/README.md) · [English](en/README.md) · **AI 生成 / AI-assisted**：本仓库大部分内容由人机协作生成，详见 [PUBLISHING.md](PUBLISHING.md)
 
 [![中文](https://img.shields.io/badge/lang-中文-red)]()
 [![English](https://img.shields.io/badge/lang-English-blue)](./en/README.md)
@@ -150,6 +151,30 @@ AI协作项目全生命周期框架/
 | 查看独立审查记录 | [`_reviews/`](_reviews/) |
 | 查看审查 SOP | [`_protocols-and-tools/methodological-review-sop.md`](_protocols-and-tools/methodological-review-sop.md) |
 | 了解框架成熟度 | [`_protocols-and-tools/框架级成熟度评估表.md`](_protocols-and-tools/框架级成熟度评估表.md) |
+
+---
+
+## 时间限阅读路径 | Time-Boxed Reading Paths
+
+> **难度 / Difficulty**：沿用主文档 §9.9 的 ☆☆☆ 入门、★☆☆ 基础、★★☆ 进阶、★★★ 高级。
+
+### 🕐 5 分钟 | 5 minutes — 判断是否适合我 / Is this for me?
+- **阅读 / Read**：本 README + §1.1「核心理念」+ §1.8「已知局限与诚实声明」（§1：☆☆☆ 入门）
+- **目标 / Goal**：判断这套框架是否适合你的需求 / Decide if this framework fits your needs.
+
+### 🕐 30 分钟 | 30 minutes — 理解核心机制 / Understand the core mechanisms
+- **阅读 / Read**：§1「框架总览」→ §2「L0: Spec（项目宪法）」→ §3「L-H: Human Gate（人类闸门）」+ §9.9「阅读导航与难度分层」（§1–§2：☆☆☆ 入门；§3：★☆☆ 基础；§9.9：☆☆☆ 入门）
+- **目标 / Goal**：理解最重要的两个层级，以及如何导航其余内容 / Understand the two most important layers and how to navigate the rest.
+
+### 🕐 2 小时 | 2 hours — 跑通一个实验 / Run one experiment
+- **阅读 / Read**：§4「L1: Prompt（任务规格）」+ §4.1.1.1「对照实验设计强制检查清单」+ §6「L3: Workflow（多任务编排）」（§4：★☆☆ 基础；§6：★★☆ 进阶）
+- **目标 / Goal**：设计并执行你的第一个受控 Prompt 实验 / Design and execute your first controlled prompt experiment.
+
+### 🕐 完整采纳 | Full Adoption — 端到端掌握 / End-to-end mastery
+- **阅读 / Read**：按顺序通读 §1–§14，再阅读 `_protocols-and-tools/` 补充材料（覆盖 §9.9 的 ☆☆☆→★★★ 全部难度层级）
+- **目标 / Goal**：将完整框架应用于一个真实项目，从启动一直推进到闭合 / Apply the full framework to a real project from start to closure.
+
+<!-- GPT-5.6-Sol (via Codex CLI), 2026-07-17 -->
 
 ---
 
