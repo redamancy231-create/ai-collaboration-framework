@@ -232,6 +232,7 @@ ai-collaboration-framework  ← 方法论上游（本仓库）
 | [**DOCX Pipeline**](https://github.com/redamancy231-create/docx-pipeline) | **上游提取**：Markdown → 中文 DOCX 泛化管道——双后端 + Mermaid + 4 模板。从本文档的 DOCX 生成管道提炼。 |
 | [**M&A Case Study Pipeline**](https://github.com/redamancy231-create/ma-case-study-pipeline) | **下游实证**：框架六层理念在并购重组案例中的八阶段端到端实证（含交叉双盲审 + 对照实验 + 可复用 playbook）。 |
 | [**ETF Pattern Match — pybind11**](https://github.com/redamancy231-create/etf-pattern-match-pybind11) | **下游采用**：pybind11/C++20 加速实践——采用本框架的多后端审查、被动观测、项目闭合协议。DTW 34× / pattern match 53×。 |
+| [**Methodology Handbook**](https://github.com/redamancy231-create/methodology-handbook) | **下游提取**：从框架实战经验中提炼的 50 条踩坑速查手册——适合按场景查阅，与框架互为「教材」与「错题本」。 |
 
 ---
 
