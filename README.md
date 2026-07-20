@@ -221,7 +221,8 @@ ai-collaboration-framework  ← 方法论上游（本仓库）
 ├── claude-skills               ← §9.2–§9.3 Claude Code 技能提取
 ├── docx-pipeline               ← DOCX 生成管道提取
 ├── ma-case-study-pipeline      ← 六层框架实证案例
-└── etf-pattern-match-pybind11  ← 采用审查/观测/闭合协议
+├── etf-pattern-match-pybind11  ← 采用审查/观测/闭合协议
+└── methodology-handbook        ← 50条踩坑速查手册
 ```
 
 | 项目 | 关系 |
