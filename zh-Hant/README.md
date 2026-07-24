@@ -180,28 +180,10 @@ AI协作项目全生命周期框架/
 
 ---
 
-## 相關專案 | Related Projects
 
-本倉庫是方法論上游，以下 6 個倉庫均為其派生或實證專案：
+## 相關專案
 
-```
-ai-collaboration-framework  ← 方法論上游（本倉庫）
-├── independent-review-toolkit   ← §9.2 審查 SOP 提取
-├── prompt-tdd-methodology       ← §4.1.1 實驗方法論提取
-├── claude-skills               ← §9.2–§9.3 Claude Code 技能提取
-├── docx-pipeline               ← DOCX 生成管道提取
-├── ma-case-study-pipeline      ← 六層框架實證案例
-└── etf-pattern-match-pybind11  ← 採用審查/觀測/閉合協定
-```
-
-| 專案 | 關係 |
-|------|------|
-| [**Independent Review Toolkit**](https://github.com/redamancy231-create/independent-review-toolkit) | **上游提取**：從本文檔 §9.2 + 50+ 輪實戰審查提煉的審查 SOP。**複製 prompt 即可用**。 |
-| [**Prompt-TDD Methodology**](https://github.com/redamancy231-create/prompt-tdd-methodology) | **上游提取**：Prompt 對照實驗方法論案例手冊——SOP + 兩個真實實驗（含陰性結果）。 |
-| [**Claude Skills**](https://github.com/redamancy231-create/claude-skills) | **上游提取**：3 個 Claude Code Skill——會話交接 · CLAUDE.md 編寫 · 事前否決。從本文檔 §9.2–§9.3 提煉。 |
-| [**DOCX Pipeline**](https://github.com/redamancy231-create/docx-pipeline) | **上游提取**：Markdown → 中文 DOCX 泛化管道——雙後端 + Mermaid + 4 範本。從本文檔的 DOCX 生成管道提煉。 |
-| [**M&A Case Study Pipeline**](https://github.com/redamancy231-create/ma-case-study-pipeline) | **下游實證**：框架六層理念在併購重組案例中的八階段端到端實證（含交叉雙盲審 + 對照實驗 + 可複用 playbook）。 |
-| [**ETF Pattern Match — pybind11**](https://github.com/redamancy231-create/etf-pattern-match-pybind11) | **下游採用**：pybind11/C++20 加速實踐——採用本框架的多後端審查、被動觀測、專案閉合協定。DTW 34× / pattern match 53×。 |
+更多專案請見 [個人主頁](https://github.com/redamancy231-create/redamancy231-create)
 
 ---
 
