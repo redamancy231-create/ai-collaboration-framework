@@ -177,28 +177,10 @@ This framework has undergone multi-round Independent Review across **5 backends 
 
 ---
 
+
 ## Related Projects
 
-This repository is the methodology upstream. The following 6 repos are derivatives or empirical validations:
-
-```
-ai-collaboration-framework  ← methodology upstream (this repo)
-├── independent-review-toolkit   ← §9.2 review SOP extraction
-├── prompt-tdd-methodology       ← §4.1.1 experiment methodology extraction
-├── claude-skills               ← §9.2–§9.3 Claude Code skill extraction
-├── docx-pipeline               ← DOCX generation pipeline extraction
-├── ma-case-study-pipeline      ← six-layer framework empirical case study
-└── etf-pattern-match-pybind11  ← adopted review/observation/closure protocols
-```
-
-| Project | Relationship |
-|---------|-------------|
-| [**Independent Review Toolkit**](https://github.com/redamancy231-create/independent-review-toolkit) | **Upstream extraction**: Review SOP distilled from §9.2 + 50+ rounds of practical review. **Copy the prompts and use immediately**. |
-| [**Prompt-TDD Methodology**](https://github.com/redamancy231-create/prompt-tdd-methodology) | **Upstream extraction**: Prompt controlled experiment methodology casebook — SOP + two real experiments (including negative results). |
-| [**Claude Skills**](https://github.com/redamancy231-create/claude-skills) | **Upstream extraction**: 3 battle-tested Claude Code Skills — session handoff, CLAUDE.md authoring, pre-emptive veto. Extracted from §9.2–§9.3. |
-| [**DOCX Pipeline**](https://github.com/redamancy231-create/docx-pipeline) | **Upstream extraction**: Markdown → Chinese DOCX pipeline — dual-backend + Mermaid + 4 templates. Extracted from this document's DOCX generation pipeline. |
-| [**M&A Case Study Pipeline**](https://github.com/redamancy231-create/ma-case-study-pipeline) | **Downstream empirical**: End-to-end validation of the framework's six-layer philosophy in an eight-stage M&A case study. |
-| [**ETF Pattern Match — pybind11**](https://github.com/redamancy231-create/etf-pattern-match-pybind11) | **Downstream adoption**: pybind11/C++20 acceleration practice — employs the framework's multi-backend review, passive observation, and project closure protocols. DTW 34× / pattern match 53×. |
+See more projects at [profile](https://github.com/redamancy231-create/redamancy231-create)
 
 ---
 
