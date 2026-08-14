@@ -14,23 +14,20 @@
 [![English](https://img.shields.io/badge/lang-English-blue)](../en/README.md)
 [![正體中文](https://img.shields.io/badge/lang-正體中文-green)]()
 
-> 📖 ~16.8萬字元 | 六層架構 | 3次對照實驗 | 50+輪多後端獨立審查 | Spec Coding · Prompt-TDD · 專案閉合
+> 📖 ~16.8萬字元 | 七層架構 | 3次對照實驗 | 50+輪多後端獨立審查 | Spec Coding · Prompt-TDD · 專案閉合
 
 ```mermaid
 flowchart TB
-    HG["🧑 <b>Human Gate（人類閘門）</b><br/>貫穿全流程的人類決策點 —— 不可自動化"]
-
-    subgraph LAYERS["<b>六層分層架構</b>"]
+    subgraph LAYERS["<b>七層分層架構</b>"]
         direction LR
         L0["<b>L0 · Spec</b><br/>專案憲法<br/>──────<br/>範圍 · 邊界<br/>死亡判據<br/>維護流程"]
-        L1["<b>L1 · Prompt</b><br/>任務規格<br/>──────<br/>Prompt-TDD<br/>對照實驗<br/>證據標註 [E/C/N]"]
+        LH["🧑 <b>L-H · Human Gate（人類閘門）</b><br/>貫穿全流程的人類決策點 —— 不可自動化"]
+        L1["<b>L1 · Prompt</b><br/>任務規格<br/>──────<br/>Prompt-TDD<br/>對照實驗<br/>證據分類 [S/E/I/J/Sp]"]
         L2["<b>L2 · Loop</b><br/>執行迭代<br/>──────<br/>執行→回饋<br/>→修正迴圈"]
         L3["<b>L3 · Workflow</b><br/>多任務編排<br/>──────<br/>9種模式<br/>審查鏈<br/>並行/流水線"]
         L4["<b>L4 · Retrospect</b><br/>回顧沉澱<br/>──────<br/>方法論提取<br/>被動觀測<br/>10種失效模式"]
         L5["<b>L5 · Closure</b><br/>專案閉合<br/>──────<br/>S/M/L 分檔<br/>封存清單<br/>資產歸檔"]
     end
-
-    HG -.-> LAYERS
 
     CROSS["📐 <b>跨層關切</b><br/>──────<br/>證據等級二維表示 [內部強度 × 跨模型推廣性]<br/>方法論片段三層模板 · 跨層可觀測性設計"]
 
@@ -176,7 +173,7 @@ AI协作项目全生命周期框架/
 
 ## 審查鏈
 
-本框架經 **5 種後端 × 5 個 CLI** 的多輪獨立審查，審查譜系記錄於主檔案 § 審查鏈。所有審查報告歸檔於 [`_reviews/`](_reviews/)。
+本框架經 **5 種後端 × 4 個 CLI house** 的多輪獨立審查，審查譜系記錄於主檔案 § 審查鏈。所有審查報告歸檔於 [`_reviews/`](_reviews/)。
 
 ---
 
@@ -184,7 +181,6 @@ AI协作项目全生命周期框架/
 ## 相關專案
 
 更多專案請見 [個人主頁](https://github.com/redamancy231-create/redamancy231-create)
-
 ---
 
 *生成模型：DeepSeek-V4-Pro (via Claude Code CLI) · 2026-06-22*  

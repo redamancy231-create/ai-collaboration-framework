@@ -14,23 +14,20 @@
 [![English](https://img.shields.io/badge/lang-English-blue)]()
 [![正體中文](https://img.shields.io/badge/lang-正體中文-green)](../zh-Hant/README.md)
 
-> 📖 ~168,000 characters | 6-layer architecture | 3 controlled experiments | 50+ rounds of multi-backend independent review | Spec Coding · Prompt-TDD · Project Closure
+> 📖 ~168,000 characters | 7-layer architecture | 3 controlled experiments | 50+ rounds of multi-backend independent review | Spec Coding · Prompt-TDD · Project Closure
 
 ```mermaid
 flowchart TB
-    HG["🧑 <b>Human Gate</b><br/>Human decision points throughout the entire process — cannot be automated"]
-
-    subgraph LAYERS["<b>Six-Layer Architecture</b>"]
+    subgraph LAYERS["<b>Seven-Layer Architecture</b>"]
         direction LR
         L0["<b>L0 · Spec</b><br/>Project Constitution<br/>──────<br/>Scope · Boundaries<br/>Death Criteria<br/>Maintenance Process"]
-        L1["<b>L1 · Prompt</b><br/>Task Specification<br/>──────<br/>Prompt-TDD<br/>Controlled Experiments<br/>Evidence Labeling [E/C/N]"]
+        LH["🧑 <b>L-H · Human Gate</b><br/>Human decision points throughout the entire process — cannot be automated"]
+        L1["<b>L1 · Prompt</b><br/>Task Specification<br/>──────<br/>Prompt-TDD<br/>Controlled Experiments<br/>Evidence Classification [S/E/I/J/Sp]"]
         L2["<b>L2 · Loop</b><br/>Execution Iteration<br/>──────<br/>Execute→Feedback<br/>→Correct Cycle"]
         L3["<b>L3 · Workflow</b><br/>Multi-Task Orchestration<br/>──────<br/>9 Patterns<br/>Review Chain<br/>Parallel/Pipeline"]
         L4["<b>L4 · Retrospect</b><br/>Retrospective Distillation<br/>──────<br/>Methodology Extraction<br/>Passive Observation<br/>10 Failure Modes"]
         L5["<b>L5 · Closure</b><br/>Project Closure<br/>──────<br/>S/M/L Tiers<br/>Archive Checklist<br/>Asset Archiving"]
     end
-
-    HG -.-> LAYERS
 
     CROSS["📐 <b>Cross-Layer Concerns</b><br/>──────<br/>2D Evidence Representation [Internal Strength × Cross-Model Generalizability]<br/>Methodology Fragment 3-Layer Template · Cross-Layer Observability Design"]
 
@@ -173,7 +170,7 @@ Both `.json` and `.docx` are derived from `.md`; modifications are governed by `
 
 ## Review Chain
 
-This framework has undergone multi-round Independent Review across **5 backends × 5 CLIs**. Review provenance is recorded in the main document's § Review Chain. All review reports are archived under [`_reviews/`](../_reviews/).
+This framework has undergone multi-round Independent Review across **5 backends × 4 CLI houses**. Review provenance is recorded in the main document's § Review Chain. All review reports are archived under [`_reviews/`](../_reviews/).
 
 ---
 
@@ -181,7 +178,6 @@ This framework has undergone multi-round Independent Review across **5 backends 
 ## Related Projects
 
 See more projects at [profile](https://github.com/redamancy231-create/redamancy231-create)
-
 ---
 
 *Translation: GPT-5.5 (via Codex CLI) · 2026-06-24*  

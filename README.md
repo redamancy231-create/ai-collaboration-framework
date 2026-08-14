@@ -5,7 +5,7 @@
 这套框架帮助独立创作者把零散的 AI 对话转化为可执行、可验证、可复盘、可封存的完整项目流程。
 
 **适用对象 / For**：个人独立使用 AI 工具推进项目的创作者（solo creators）。  
-**你将获得 / Get**：六层生命周期方法、Prompt-TDD 实验规范、独立审查流程与项目闭合清单。  
+**你将获得 / Get**：七层生命周期方法、Prompt-TDD 实验规范、独立审查流程与项目闭合清单。  
 **最快入口 / Start**：打开 [`AI协作项目全生命周期框架.md`](AI协作项目全生命周期框架.md)，先读 §1.4–§1.7。
 
 **版本 / Version**：v1.6.4（2026-06-22）· **状态 / Status**：Working Paper（持续更新；引用请注明版本）· **许可 / License**：CC BY 4.0 · **编码 / Encoding**：UTF-8  
@@ -17,23 +17,20 @@
 
 > **English Abstract**: A comprehensive methodology framework for **full-lifecycle human-AI collaboration** — from project initiation, execution, and independent review through to archival. ~68,000 Chinese characters; empirically tested through **3 controlled prompt engineering experiments** (Prompt-TDD) and **50+ rounds of multi-model independent review** across 5 LLM backends. Covers: specification-driven development (Spec Coding), prompt experiment design with evidence grading, multi-agent workflow orchestration, passive observation mechanisms for serendipitous discovery, and project closure protocols. Full **[English translation](en/)** available. The independent review methodology has been extracted as a standalone toolkit: **[Independent Review Toolkit](https://github.com/redamancy231-create/independent-review-toolkit)** — SOP + prompt templates + adversarial challenge framework + real examples. Licensed **CC BY 4.0**.
 
-> 📖 ~16.8万字符 | 六层架构 | 3次对照实验 | 50+轮多后端独立审查 | Spec Coding · Prompt-TDD · 项目闭合
+> 📖 ~16.8万字符 | 七层架构 | 3次对照实验 | 50+轮多后端独立审查 | Spec Coding · Prompt-TDD · 项目闭合
 
 ```mermaid
 flowchart TB
-    HG["🧑 <b>Human Gate（人类闸门）</b><br/>贯穿全流程的人类决策点 —— 不可自动化"]
-
-    subgraph LAYERS["<b>六层分层架构</b>"]
+    subgraph LAYERS["<b>七层分层架构</b>"]
         direction LR
         L0["<b>L0 · Spec</b><br/>项目宪法<br/>──────<br/>范围 · 边界<br/>死亡判据<br/>维护流程"]
-        L1["<b>L1 · Prompt</b><br/>任务规格<br/>──────<br/>Prompt-TDD<br/>对照实验<br/>证据标注 [E/C/N]"]
+        LH["🧑 <b>L-H · Human Gate（人类闸门）</b><br/>贯穿全流程的人类决策点 —— 不可自动化"]
+        L1["<b>L1 · Prompt</b><br/>任务规格<br/>──────<br/>Prompt-TDD<br/>对照实验<br/>证据分类 [S/E/I/J/Sp]"]
         L2["<b>L2 · Loop</b><br/>执行迭代<br/>──────<br/>执行→反馈<br/>→修正循环"]
         L3["<b>L3 · Workflow</b><br/>多任务编排<br/>──────<br/>9种模式<br/>审查链<br/>并行/流水线"]
         L4["<b>L4 · Retrospect</b><br/>回顾沉淀<br/>──────<br/>方法论提取<br/>被动观测<br/>10种失效模式"]
         L5["<b>L5 · Closure</b><br/>项目闭合<br/>──────<br/>S/M/L 分档<br/>封存清单<br/>资产归档"]
     end
-
-    HG -.-> LAYERS
 
     CROSS["📐 <b>跨层关切</b><br/>──────<br/>证据等级二维表示 [内部强度 × 跨模型推广性]<br/>方法论片段三层模板 · 跨层可观测性设计"]
 
@@ -206,7 +203,7 @@ AI协作项目全生命周期框架/
 
 ## 审查链
 
-本框架经 **5 种后端 × 5 个 CLI** 的多轮独立审查，审查谱系记录于主文档 § 审查链。所有审查报告归档于 [`_reviews/`](_reviews/)。
+本框架经 **5 种后端 × 4 个 CLI house** 的多轮独立审查，审查谱系记录于主文档 § 审查链。所有审查报告归档于 [`_reviews/`](_reviews/)。
 
 ---
 
@@ -214,7 +211,6 @@ AI协作项目全生命周期框架/
 ## 相关项目
 
 更多项目请见 [个人主页](https://github.com/redamancy231-create/redamancy231-create)
-
 ---
 
 *生成模型：DeepSeek-V4-Pro (via Claude Code CLI) · 2026-07-01*  
